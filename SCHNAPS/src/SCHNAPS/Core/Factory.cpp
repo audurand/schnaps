@@ -1,0 +1,116 @@
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+ 
+#include "SCHNAPS/Core.hpp"
+
+#include <stdexcept>
+
+using namespace core;
+
+/*!
+ *  \brief Construct object factory component.
+ */
+Factory::Factory() :
+		Component("Factory")
+{
+	// Anytypes
+	insertAllocator("Vector", new Vector::Alloc());
+
+	// Atoms
+	insertAllocator("Bool", new Bool::Alloc());
+	insertAllocator("Char", new Char::Alloc());
+	insertAllocator("String", new String::Alloc());
+
+	// Numbers
+	insertAllocator("Double", new Double::Alloc());
+	insertAllocator("Float", new Float::Alloc());
+	insertAllocator("Int", new Int::Alloc());
+	insertAllocator("Long", new Long::Alloc());
+	insertAllocator("UInt", new UInt::Alloc());
+	insertAllocator("ULong", new ULong::Alloc());
+
+	// Primitives
+	insertAllocator("PrimitiveTree", new PrimitiveTree::Alloc());
+}
+
+void Factory::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
+	schnaps_StackTraceBeginM();
+		// TODO: write current state?
+	schnaps_StackTraceEndM("void core::Factory::writeContent(PACC::XML::Streamer&, bool) const");
+}
+
+/*!
+ *  \brief Alias a type name to an already existing one in object factory.
+ *  \param inTypeName Original name of type.
+ *  \param inAlias Alias name of that type.
+ *  \throw RunTimeException If the original type name is not in the factory
+ *     or if the alias is already in the factory.
+ */
+void Factory::aliasAllocator(const std::string& inTypeName, const std::string& inAlias) {
+	schnaps_StackTraceBeginM();
+		Factory::AllocatorMap::const_iterator lIterType = mAllocatorMap.find(inTypeName);
+		if(lIterType == mAllocatorMap.end()) {
+			std::ostringstream lOSS;
+			lOSS << "The type name '" << inTypeName;
+			lOSS << "' is not present in the factory's allocator map; ";
+			lOSS << "could not alias it";
+			throw schnaps_RunTimeExceptionM(lOSS.str());
+		}
+		Factory::AllocatorMap::const_iterator lIterAlias = mAllocatorMap.find(inAlias);
+		if(lIterAlias != mAllocatorMap.end()) {
+			std::ostringstream lOSS;
+			lOSS << "The type name '" << inAlias;
+			lOSS << "' is already present in the factory's allocator map; ";
+			lOSS << "could not make an alias using its name";
+			throw schnaps_RunTimeExceptionM(lOSS.str());
+		}
+		mAllocatorMap[inAlias] = lIterType->second;
+	schnaps_StackTraceEndM("void Factory::aliasAllocator(const std::string&,const std::string&)");
+}
+
+/*!
+ *  \brief Insert new allocator in object factory.
+ *  \param inTypeName Name of type inserted.
+ *  \param inAllocator Allocator associated to type.
+ *  \throw LSD::RunTimeException If the type name is already in the factory.
+ */
+void Factory::insertAllocator(const std::string& inTypeName, Allocator::Handle inAllocator) {
+	schnaps_StackTraceBeginM();
+		Factory::AllocatorMap::const_iterator lIterAllocMap = mAllocatorMap.find(inTypeName);
+		if(lIterAllocMap != mAllocatorMap.end()) {
+			std::ostringstream lOSS;
+			lOSS << "The type name '" << inTypeName;
+			lOSS << "' is already present in the factory's allocator map; ";
+			lOSS << "could not add it.";
+			throw schnaps_RunTimeExceptionM(lOSS.str());
+		}
+		mAllocatorMap[inTypeName] = inAllocator;
+	schnaps_StackTraceEndM("void Factory::insertAllocator(const std::string&, Allocator::Handle)");
+}
+
+/*!
+ *  \brief Remove allocator from the factory.
+ *  \param inTypeName Type name of the allocator to remove.
+ *  \return Allocator associated to the removed type name, NULL handle if unknown type.
+ */
+Allocator::Handle Factory::removeAllocator(const std::string& inTypeName) {
+	schnaps_StackTraceBeginM();
+		Factory::AllocatorMap::iterator lIterAllocMap = mAllocatorMap.find(inTypeName);
+		if(lIterAllocMap == mAllocatorMap.end()) return NULL;
+		Allocator::Handle lAlloc = lIterAllocMap->second;
+		mAllocatorMap.erase(lIterAllocMap);
+		return lAlloc;
+	schnaps_StackTraceEndM("Allocator::Handle Factory::removeAllocator(const std::string&)");
+}
