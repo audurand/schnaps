@@ -37,5 +37,5 @@ BadCastException::BadCastException(std::string inMessage,
 { }
 
 const char* BadCastException::getExceptionName() const throw() {
-	return "SIMULATOR_Simulator::BadCastException";
+	return "Simulator::BadCastException";
 }

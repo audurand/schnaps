@@ -239,32 +239,52 @@ message(STATUS "++ include directories")
 link_directories(${PACC_LIB_DIR} ${ZLIB_LIB_DIR} ${DL_LID_DIR})
 message(STATUS "++ link directories")
 
+message(STATUS "Setting up rpath")
+# use, i.e. don't skip the full RPATH for the build tree
+SET(CMAKE_SKIP_BUILD_RPATH  FALSE)
+
+# when building, don't use the install RPATH already
+# (but later on when installing)
+SET(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE) 
+
+SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib/SCHNAPS:${CMAKE_INSTALL_PREFIX}/lib/SCHNAPS/Plugins")
+
+# add the automatically determined parts of the RPATH
+# which point to directories outside the build tree to the install RPATH
+SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
+# the RPATH to be used when installing, but only if it's not a system directory
+LIST(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/lib/SCHNAPS:${CMAKE_INSTALL_PREFIX}/lib/SCHNAPS/Plugins" isSystemDir)
+IF("${isSystemDir}" STREQUAL "-1")
+   SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib/SCHNAPS:${CMAKE_INSTALL_PREFIX}/lib/SCHNAPS/Plugins")
+ENDIF("${isSystemDir}" STREQUAL "-1")
+
 # Setting up library
 add_library(
-	schnaps
+	schnaps-lib
 	${SCHNAPS_LIBRARY_TYPE}
 	${SCHNAPS_SOURCES}
 	${SCHNAPS_ALL_HEADERS}
 	)
 
-target_link_libraries(schnaps pacc)
-target_link_libraries(schnaps z)
-target_link_libraries(schnaps dl)
+target_link_libraries(schnaps-lib pacc)
+target_link_libraries(schnaps-lib z)
+target_link_libraries(schnaps-lib dl)
 
-set_target_properties(schnaps PROPERTIES VERSION ${LIBRARY_VERSION} LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib" COMPILE_FLAGS "-rdynamic")
+set_target_properties(schnaps-lib PROPERTIES OUTPUT_NAME schnaps VERSION ${LIBRARY_VERSION} LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/lib" COMPILE_FLAGS "-rdynamic")
 
 # Setting up executable
 add_executable(
-	schnaps-standalone
+	schnaps-bin
 	${SCHNAPS_SOURCES}
 	${SCHNAPS_ALL_HEADERS}
 	)
 
-target_link_libraries(schnaps-standalone pacc)
-target_link_libraries(schnaps-standalone z)
-target_link_libraries(schnaps-standalone dl)
+target_link_libraries(schnaps-bin pacc)
+target_link_libraries(schnaps-bin z)
+target_link_libraries(schnaps-bin dl)
 
-set_target_properties(schnaps-standalone PROPERTIES VERSION ${SCHNAPS_VERSION} RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin" COMPILE_FLAGS "-rdynamic")
+set_target_properties(schnaps-bin PROPERTIES OUTPUT_NAME schnaps VERSION ${SCHNAPS_VERSION} RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin" COMPILE_FLAGS "-rdynamic")
 
 # Install dependencies
 install(FILES ${SCHNAPS_MAIN_HEADER} DESTINATION include)
@@ -273,10 +293,10 @@ install(FILES ${SCHNAPS_CORE_HEADERS} DESTINATION include/SCHNAPS/Core)
 install(FILES ${SCHNAPS_SIMULATOR_HEADERS} DESTINATION include/SCHNAPS/Simulator)
 
 # Install targets
-install(TARGETS schnaps-standalone schnaps
+install(TARGETS schnaps-bin schnaps-lib
   RUNTIME DESTINATION bin
-  LIBRARY DESTINATION lib
-  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib/SCHNAPS
+  ARCHIVE DESTINATION lib/SCHNAPS
 )
 
 include(CPack)

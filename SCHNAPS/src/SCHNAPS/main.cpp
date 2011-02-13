@@ -60,7 +60,8 @@ int main(int argc, char* argv[]) {
 		simulator::Simulator lSimulator;
 
 		if (lDirectory.empty() == false) {
-			schnaps_AssertM(chdir(lDirectory.c_str()) == 0);
+			int lChdir = chdir(lDirectory.c_str());
+			schnaps_AssertM(lChdir == 0);
 		}
 
 		PACC::XML::Document *lDocument = new PACC::XML::Document();

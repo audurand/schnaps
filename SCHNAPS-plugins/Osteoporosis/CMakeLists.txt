@@ -5,8 +5,8 @@
 # Copyright (c) 2011
 #
 
-project(SCHNAPSPLUGIN_BASIC CXX)
-set(SCHNAPSPLUGIN_BASIC_VERSION 1.0)
+project(SCHNAPSPLUGIN_OSTEOPOROSIS CXX)
+set(SCHNAPSPLUGIN_OSTEOPOROSIS_VERSION 1.0)
 
 # This is the shared library versioning info
 set(LIBRARY_VERSION 1.0.0)
@@ -43,9 +43,9 @@ else(NOT DEFINED LIBRARY_TYPE)
 endif(NOT DEFINED LIBRARY_TYPE)
 
 if(BUILD_STATIC_LIB)
-	set(SCHNAPSPLUGIN_BASIC_LIBRARY_TYPE "STATIC")
+	set(SCHNAPSPLUGIN_OSTEOPOROSIS_LIBRARY_TYPE "STATIC")
 else(BUILD_STATIC_LIB)
-	set(SCHNAPSPLUGIN_BASIC_LIBRARY_TYPE "SHARED")
+	set(SCHNAPSPLUGIN_OSTEOPOROSIS_LIBRARY_TYPE "SHARED")
 endif(BUILD_STATIC_LIB)
 
 # Define build mode
@@ -128,61 +128,41 @@ endif(DL_LIB MATCHES DL_LIB-NOTFOUND)
 # Extract path to dl library
 get_filename_component(DL_LIB_DIR ${DL_LIB} PATH)
 
-message(STATUS "Looking for SCHNAPS plugin Basic sourcefiles...")
-# Include all SCHNAPS plugin Basic sourcefiles and headers
-file(GLOB_RECURSE SCHNAPSPLUGIN_BASIC_SOURCES src/SCHNAPS-plugins/Basic/*.cpp )
-file(GLOB_RECURSE SCHNAPSPLUGIN_BASICS_ALL_HEADERS src/SCHNAPS-plugins/Basic/*.hpp)
+message(STATUS "Looking for SCHNAPS plugin Osteoporosis sourcefiles...")
+# Include all SCHNAPS plugin Osteoporosis sourcefiles and headers
+file(GLOB_RECURSE SCHNAPSPLUGIN_OSTEOPOROSIS_SOURCES src/SCHNAPS-plugins/Osteoporosis/*.cpp )
+file(GLOB_RECURSE SCHNAPSPLUGIN_OSTEOPOROSISS_ALL_HEADERS src/SCHNAPS-plugins/Osteoporosis/*.hpp)
 
-file(GLOB SCHNAPSPLUGIN_BASIC_MAIN_HEADER src/SCHNAPS-plugins/Basic/Basic.hpp)
-file(GLOB SCHNAPSPLUGIN_BASIC_GEN_HEADERS src/SCHNAPS-plugins/Basic/*.hpp )
+file(GLOB SCHNAPSPLUGIN_OSTEOPOROSIS_MAIN_HEADER src/SCHNAPS-plugins/Osteoporosis/Osteoporosis.hpp)
+file(GLOB SCHNAPSPLUGIN_OSTEOPOROSIS_GEN_HEADERS src/SCHNAPS-plugins/Osteoporosis/*.hpp )
 
 message(STATUS "Configuration...")
 
 include_directories("${PROJECT_SOURCE_DIR}/src" "${CMAKE_CURRENT_BINARY_DIR}/include" ${PACC_HEADERS} ${SCHNAPS_HEADERS} ${ZLIB_HEADERS})
 link_directories(${PACC_LIB_DIR} ${SCHNAPS_LIB_DIR} ${DL_LID_DIR})
 
-message(STATUS "Setting up rpath...")
-# use, i.e. don't skip the full RPATH for the build tree
-SET(CMAKE_SKIP_BUILD_RPATH  FALSE)
-
-# when building, don't use the install RPATH already
-# (but later on when installing)
-SET(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE) 
-
-SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib/SCHNAPS:${CMAKE_INSTALL_PREFIX}/lib/SCHNAPS/Plugins/Basic")
-
-# add the automatically determined parts of the RPATH
-# which point to directories outside the build tree to the install RPATH
-SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-
-# the RPATH to be used when installing, but only if it's not a system directory
-LIST(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/lib/SCHNAPS:${CMAKE_INSTALL_PREFIX}/lib/SCHNAPS/Plugins/Basic" isSystemDir)
-IF("${isSystemDir}" STREQUAL "-1")
-   SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib/SCHNAPS:${CMAKE_INSTALL_PREFIX}/lib/SCHNAPS/Plugins/Basic")
-ENDIF("${isSystemDir}" STREQUAL "-1")
-
 # Setting up library
 add_library(
-	basic
-	${SCHNAPSPLUGIN_BASIC_LIBRARY_TYPE}
-	${SCHNAPSPLUGIN_BASIC_SOURCES}
-	${SCHNAPSPLUGIN_BASIC_ALL_HEADERS}
+	osteoporosis
+	${SCHNAPSPLUGIN_OSTEOPOROSIS_LIBRARY_TYPE}
+	${SCHNAPSPLUGIN_OSTEOPOROSIS_SOURCES}
+	${SCHNAPSPLUGIN_OSTEOPOROSIS_ALL_HEADERS}
 	)
 
-target_link_libraries(basic pacc)
-target_link_libraries(basic schnaps)
-target_link_libraries(basic dl)
+target_link_libraries(osteoporosis pacc)
+target_link_libraries(osteoporosis schnaps)
+target_link_libraries(osteoporosis dl)
 
-set_target_properties(basic PROPERTIES VERSION ${LIBRARY_VERSION} LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/lib" COMPILE_FLAGS "-rdynamic")
+set_target_properties(osteoporosis PROPERTIES VERSION ${LIBRARY_VERSION} LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/lib" COMPILE_FLAGS "-rdynamic")
 
 # Install dependencies
-install(FILES ${SCHNAPSPLUGIN_BASIC_MAIN_HEADER} DESTINATION include/SCHNAPS/Plugins)
-install(FILES ${SCHNAPSPLUGIN_BASIC_GEN_HEADERS} DESTINATION include/SCHNAPS/Plugins/Basic)
+install(FILES ${SCHNAPSPLUGIN_OSTEOPOROSIS_MAIN_HEADER} DESTINATION include/SCHNAPS-plugins)
+install(FILES ${SCHNAPSPLUGIN_OSTEOPOROSIS_GEN_HEADERS} DESTINATION include/SCHNAPS-plugins/Osteoporosis)
 
 # Install targets
-install(TARGETS basic
-  LIBRARY DESTINATION lib/SCHNAPS/Plugins
-  ARCHIVE DESTINATION lib/SCHNAPS/Plugins
+install(TARGETS osteoporosis	
+  LIBRARY DESTINATION lib/SCHNAPS-plugins
+  ARCHIVE DESTINATION lib/SCHNAPS-plugins
 )
 
 include(CPack)

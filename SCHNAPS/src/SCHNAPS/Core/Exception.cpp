@@ -42,7 +42,7 @@ void Exception::explain(std::ostream& ioES) throw()
 {
 	std::string lMessage = std::string("'")+mMessage+std::string("'");
 
-#ifndef SIMULATOR_NDEBUG
+#ifndef SCHNAPS_NDEBUG
 	if(!mStackTrace.empty()) {
 		lMessage += "\nIn:";
 		for (unsigned int i=0; i<mStackTrace.size(); i++) {
@@ -51,7 +51,7 @@ void Exception::explain(std::ostream& ioES) throw()
 			            int2str(mStackTrace[i].mLineNumber)+std::string(")");
 		}
 	}
-#endif // SIMULATOR_NDEBUG
+#endif // SCHNAPS_NDEBUG
 
 	wrapString(lMessage);
 	ioES << lMessage << std::endl << std::flush;

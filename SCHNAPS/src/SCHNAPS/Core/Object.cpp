@@ -42,14 +42,14 @@ Object::Object(const Object&) :
  */
 Object::~Object() {
 	schnaps_StackTraceBeginM();
-#ifndef SIMULATOR_NDEBUG
+#ifndef SCHNAPS_NDEBUG
 		if (mRefCounter != 0) {
 			std::string lMessage = "Reference counter of actual object is non-zero (value: ";
 			lMessage += int2str(mRefCounter);
 			lMessage += ")";
 			throw schnaps_InternalExceptionM(lMessage);
 		}
-#endif // SIMULATOR_NDEBUG
+#endif // SCHNAPS_NDEBUG
 	schnaps_StackTraceEndM("Object::~Object()");
 }
 

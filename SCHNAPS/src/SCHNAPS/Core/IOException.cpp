@@ -68,6 +68,6 @@ IOException::IOException(const PACC::XML::Node& inIter,
  */
 const char* IOException::getExceptionName() const throw()
 {
-	return "SIMULATOR_Simulator::IOException";
+	return "Simulator::IOException";
 }
 

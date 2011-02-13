@@ -55,7 +55,7 @@ void Vector::readStr(const std::string& inStr) {
 
 		unsigned int i = 0;
 		while (lTokenizer.getNextToken(lValue)) {
-#ifndef SIMULATOR_NDEBUG
+#ifndef SCHNAPS_NDEBUG
 			if (i == this->size()) {
 				std::ostringstream lOSS;
 				lOSS << "The number of values in vector reading must be equal to the current size of vector(" << this->size() << ")!";
@@ -67,7 +67,7 @@ void Vector::readStr(const std::string& inStr) {
 			(*this)[i]->readStr(lValue);
 			i++;
 		}
-#ifndef SIMULATOR_NDEBUG
+#ifndef SCHNAPS_NDEBUG
 			if (i != this->size()) {
 				std::ostringstream lOSS;
 				lOSS << "The number of values in vector reading must be equal to the current size of vector(" << this->size() << "!";

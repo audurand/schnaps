@@ -267,7 +267,7 @@ void Plugin::load(std::string inSource) {
 	mLibName.clear();
 	mVersion.clear();
 	mAllocatorMap.clear();
-	PluginSpecFctPtr lFunctPtr = (PluginSpecFctPtr) bindDynLibFunction(mDynLib, "__SIMULATOR_Plugin_getPluginSpecs");
+	PluginSpecFctPtr lFunctPtr = (PluginSpecFctPtr) bindDynLibFunction(mDynLib, "__SCHNAPS_Plugin_getPluginSpecs");
 	lFunctPtr(mLibName, mVersion, mAllocatorMap);
 	mSource = inSource;
 }

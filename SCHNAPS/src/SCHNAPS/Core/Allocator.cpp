@@ -30,13 +30,13 @@ using namespace core;
  */
 core::Object* core::Allocator::allocate() const {
 	schnaps_StackTraceBeginM();
-#ifndef SIMULATOR_NDEBUG
+#ifndef SCHNAPS_NDEBUG
 		Object* lObject = new Object;
 		if(!lObject) throw schnaps_InternalExceptionM("Out-of-memory!");
 		return lObject;
-#else // SIMULATOR_NDEBUG
+#else // SCHNAPS_NDEBUG
 		return new Object;
-#endif // SIMULATOR_NDEBUG
+#endif // SCHNAPS_NDEBUG
 	schnaps_StackTraceEndM("core::Object* core::Allocator::allocate() const");
 }
 
@@ -47,13 +47,13 @@ core::Object* core::Allocator::allocate() const {
  */
 core::Object* core::Allocator::clone(const core::Object& inOriginal) const {
   schnaps_StackTraceBeginM();
-#ifndef SIMULATOR_NDEBUG
+#ifndef SCHNAPS_NDEBUG
 	  Object* lObject = new Object(inOriginal);
 	  if(!lObject) throw schnaps_InternalExceptionM("Out-of-memory!");
 	  return lObject;
-#else // SIMULATOR_NDEBUG
+#else // SCHNAPS_NDEBUG
 	  return new Object(inOriginal);
-#endif // SIMULATOR_NDEBUG
+#endif // SCHNAPS_NDEBUG
   schnaps_StackTraceEndM("core::Object* core::Allocator::clone(const core::Object&) const");
 }
 

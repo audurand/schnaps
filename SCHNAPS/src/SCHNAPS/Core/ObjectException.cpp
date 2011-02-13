@@ -22,9 +22,9 @@
 
 #include "SCHNAPS/Core.hpp"
 
-#ifdef SIMULATOR_HAVE_RTTI
+#ifdef SCHNAPS_HAVE_RTTI
 #include <typeinfo>
-#endif // SIMULATOR_HAVE_RTTI
+#endif // SCHNAPS_HAVE_RTTI
 
 using namespace core;
 
@@ -67,7 +67,7 @@ void ObjectException::explain(std::ostream& ioES) throw()
  */
 const char* ObjectException::getExceptionName() const throw()
 {
-	return "SIMULATOR_Simulator::ObjectException";
+	return "Simulator::ObjectException";
 }
 
 
@@ -80,15 +80,15 @@ void ObjectException::setObjectState(const Object& inObject)
 	schnaps_StackTraceBeginM();
 	mObjectRefCounter = inObject.getRefCounter();
 	mObjectName = inObject.getName();
-#ifdef SIMULATOR_HAVE_RTTI
+#ifdef SCHNAPS_HAVE_RTTI
 	try {
 		mObjectTypeName = typeid(inObject).name();
 	} catch(...) {
 		mObjectTypeName = "<Failed>";
 	}
-#else // SIMULATOR_HAVE_RTTI
+#else // SCHNAPS_HAVE_RTTI
 	mObjectTypeName = "<RTTI disabled>";
-#endif // SIMULATOR_HAVE_RTTI
+#endif // SCHNAPS_HAVE_RTTI
 	schnaps_StackTraceEndM("void ObjectException::setObjectState(const Object& inObject)");
 }
 

@@ -44,6 +44,6 @@ InternalException::InternalException(std::string inMessage,
  */
 const char* InternalException::getExceptionName() const throw()
 {
-	return "SIMULATOR_Simulator::InternalException";
+	return "Simulator::InternalException";
 }
 
