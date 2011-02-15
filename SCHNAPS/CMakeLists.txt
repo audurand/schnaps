@@ -165,20 +165,20 @@ find_library(PACC_LIB pacc PATH ${MORE_LIB_DIR})
 if(PACC_LIB MATCHES PACC_LIB-NOTFOUND)
 	message(FATAL_ERROR "Cannot find PACC library!")
 else(PACC_LIB MATCHES PACC_LIB-NOTFOUND)
+	# Extract path to PACC library
+	get_filename_component(PACC_LIB_PATH ${PACC_LIB} PATH)
 #	message(STATUS "PACC library found - OK")
-	message(STATUS "++ PACC library found - ${PACC_LIB}")
+	message(STATUS "++ PACC library found - ${PACC_LIB_PATH}")
 endif(PACC_LIB MATCHES PACC_LIB-NOTFOUND)
-# Extract path to PACC library
-get_filename_component(PACC_LIB_DIR ${PACC_LIB} PATH)
 
 message(STATUS "Checking for PACC headers...")
-find_path(PACC_HEADERS PACC.hpp PATH ${MORE_INCLUDE_DIR})
-if(PACC_HEADERS MATCHES PACC_HEADERS-NOTFOUND)
+find_path(PACC_HEADERS_PATH PACC.hpp PATH ${MORE_INCLUDE_DIR})
+if(PACC_HEADERS_PATH MATCHES PACC_HEADERS_PATH-NOTFOUND)
 	message(FATAL_ERROR "Cannot find PACC headers!")
-else(PACC_HEADERS MATCHES PACC_HEADERS-NOTFOUND)
+else(PACC_HEADERS_PATH MATCHES PACC_HEADERS_PATH-NOTFOUND)
 #	message(STATUS "PACC headers found - OK")
-	message(STATUS "++ PACC headers found - ${PACC_HEADERS}")
-endif(PACC_HEADERS MATCHES PACC_HEADERS-NOTFOUND)
+	message(STATUS "++ PACC headers found - ${PACC_HEADERS_PATH}")
+endif(PACC_HEADERS_PATH MATCHES PACC_HEADERS_PATH-NOTFOUND)
 
 # Check for zlib
 message(STATUS "Checking for zlib library...")
@@ -186,20 +186,20 @@ find_library(ZLIB_LIB z PATH ${MORE_LIB_DIR})
 if(ZLIB_LIB MATCHES ZLIB_LIB-NOTFOUND)
 	message(FATAL_ERROR "Cannot find zlib library!")
 else(ZLIB_LIB MATCHES ZLIB_LIB-NOTFOUND)
+	# Extract path to zlib library
+	get_filename_component(ZLIB_LIB_PATH ${ZLIB_LIB} PATH)
 #	message(STATUS "zlib library found - OK")
-	message(STATUS "++ zlib library found - ${ZLIB_LIB}")
+	message(STATUS "++ zlib library found - ${ZLIB_LIB_PATH}")
 endif(ZLIB_LIB MATCHES ZLIB_LIB-NOTFOUND)
-# Extract path to zlib library
-get_filename_component(ZLIB_LIB_DIR ${ZLIB_LIB} PATH)
 
 message(STATUS "Checking for zlib headers...")
-find_path(ZLIB_HEADERS zlib.h PATH ${MORE_INCLUDE_DIR})
-if(ZLIB_HEADERS MATCHES ZLIB_HEADERS-NOTFOUND)
+find_path(ZLIB_HEADERS_PATH zlib.h PATH ${MORE_INCLUDE_DIR})
+if(ZLIB_HEADERS_PATH MATCHES ZLIB_HEADERS_PATH-NOTFOUND)
 	message(FATAL_ERROR "Cannot find zlib headers!")
-else(PACC_HEADERS MATCHES ZLIB_HEADERS-NOTFOUND)
+else(ZLIB_HEADERS_PATH MATCHES ZLIB_HEADERS_PATH-NOTFOUND)
 #	message(STATUS "zlib headers found - OK")
-	message(STATUS "++ zlib headers found - ${ZLIB_HEADERS}")
-endif(ZLIB_HEADERS MATCHES ZLIB_HEADERS-NOTFOUND)
+	message(STATUS "++ zlib headers found - ${ZLIB_HEADERS_PATH}")
+endif(ZLIB_HEADERS_PATH MATCHES ZLIB_HEADERS_PATH-NOTFOUND)
 
 # Check for dl (dynamic library support)
 message(STATUS "Checking for dl library...")
@@ -207,11 +207,11 @@ find_library(DL_LIB dl PATH ${MORE_LIB_DIR})
 if(DL_LIB MATCHES DL_LIB-NOTFOUND)
 	message(FATAL_ERROR "Cannot find dl library!")
 else(DL_LIB MATCHES DL_LIB-NOTFOUND)
+	# Extract path to dl library
+	get_filename_component(DL_LIB_PATH ${DL_LIB} PATH)
 #	message(STATUS "dl library found - OK")
-	message(STATUS "++ dl library found - ${DL_LIB}")
+	message(STATUS "++ dl library found - ${DL_LIB_PATH}")
 endif(DL_LIB MATCHES DL_LIB-NOTFOUND)
-# Extract path to dl library
-get_filename_component(DL_LIB_DIR ${DL_LIB} PATH)
 
 message(STATUS "Looking for SCHNAPS sourcefiles...")
 # Include all SCHNAPS sourcefiles and headers
@@ -220,12 +220,11 @@ file(GLOB_RECURSE SCHNAPS_ALL_HEADERS src/SCHNAPS/*.hpp src/SCHNAPS/*.h)
 
 # Include sourcefiles and headers by section
 file(GLOB SCHNAPS_CORE_SRCS	src/SCHNAPS/Core/*.cpp)
-file(GLOB SCHNAPS_SIMULATOR_SRCS src/SCHNAPS/Simulator/*.cpp)
+file(GLOB SCHNAPS_SIMULATION_SRCS src/SCHNAPS/Simulation/*.cpp)
 
-file(GLOB SCHNAPS_MAIN_HEADER src/SCHNAPS/SCHNAPS.hpp)
 file(GLOB SCHNAPS_GEN_HEADERS src/SCHNAPS/*.hpp src/SCHNAPS/*.h)
 file(GLOB SCHNAPS_CORE_HEADERS src/SCHNAPS/Core/*.hpp )
-file(GLOB SCHNAPS_SIMULATOR_HEADERS	src/SCHNAPS/Simulator/*.hpp )
+file(GLOB SCHNAPS_SIMULATION_HEADERS src/SCHNAPS/Simulation/*.hpp )
 
 message(STATUS "Configuration...")
 # Writing results in configuration file
@@ -233,31 +232,20 @@ configure_file("${PROJECT_SOURCE_DIR}/src/SCHNAPS/config.hpp.in" "${PROJECT_SOUR
 file(GLOB SCHNAPS_CONFIG_HEADER	"${CMAKE_CURRENT_BINARY_DIR}/include/SCHNAPS/config.hpp")
 message(STATUS "++ config.hpp")
 
-include_directories("${PROJECT_SOURCE_DIR}/src" "${CMAKE_CURRENT_BINARY_DIR}/include" ${PACC_HEADERS} ${ZLIB_HEADERS})
+include_directories("${PROJECT_SOURCE_DIR}/src" "${CMAKE_CURRENT_BINARY_DIR}/include" ${PACC_HEADERS_PATH} ${ZLIB_HEADERS_PATH})
 message(STATUS "++ include directories")
 
-link_directories(${PACC_LIB_DIR} ${ZLIB_LIB_DIR} ${DL_LID_DIR})
+link_directories(${PACC_LIB_PATH} ${ZLIB_LIB_PATH} ${DL_LIB_PATH} "${CMAKE_INSTALL_PREFIX}/lib/schnaps-plugins")
 message(STATUS "++ link directories")
 
-message(STATUS "Setting up rpath")
 # use, i.e. don't skip the full RPATH for the build tree
 SET(CMAKE_SKIP_BUILD_RPATH  FALSE)
-
 # when building, don't use the install RPATH already
 # (but later on when installing)
-SET(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE) 
-
-SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib/SCHNAPS:${CMAKE_INSTALL_PREFIX}/lib/SCHNAPS/Plugins")
-
+SET(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
 # add the automatically determined parts of the RPATH
 # which point to directories outside the build tree to the install RPATH
 SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-
-# the RPATH to be used when installing, but only if it's not a system directory
-LIST(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/lib/SCHNAPS:${CMAKE_INSTALL_PREFIX}/lib/SCHNAPS/Plugins" isSystemDir)
-IF("${isSystemDir}" STREQUAL "-1")
-   SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib/SCHNAPS:${CMAKE_INSTALL_PREFIX}/lib/SCHNAPS/Plugins")
-ENDIF("${isSystemDir}" STREQUAL "-1")
 
 # Setting up library
 add_library(
@@ -287,16 +275,15 @@ target_link_libraries(schnaps-bin dl)
 set_target_properties(schnaps-bin PROPERTIES OUTPUT_NAME schnaps VERSION ${SCHNAPS_VERSION} RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin" COMPILE_FLAGS "-rdynamic")
 
 # Install dependencies
-install(FILES ${SCHNAPS_MAIN_HEADER} DESTINATION include)
 install(FILES ${SCHNAPS_GEN_HEADERS} ${SCHNAPS_config_HEADER} DESTINATION include/SCHNAPS)
 install(FILES ${SCHNAPS_CORE_HEADERS} DESTINATION include/SCHNAPS/Core)
-install(FILES ${SCHNAPS_SIMULATOR_HEADERS} DESTINATION include/SCHNAPS/Simulator)
+install(FILES ${SCHNAPS_SIMULATION_HEADERS} DESTINATION include/SCHNAPS/Simulation)
 
 # Install targets
 install(TARGETS schnaps-bin schnaps-lib
   RUNTIME DESTINATION bin
-  LIBRARY DESTINATION lib/SCHNAPS
-  ARCHIVE DESTINATION lib/SCHNAPS
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
 )
 
 include(CPack)

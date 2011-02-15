@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef core_Primitive_hpp
-#define core_Primitive_hpp
+#ifndef SCHNAPS_Core_Primitive_hpp
+#define SCHNAPS_Core_Primitive_hpp
 
 #include <limits.h>
 
@@ -29,13 +29,15 @@
 #include "SCHNAPS/Core/ContainerT.hpp"
 #include "SCHNAPS/Core/AnyType.hpp"
 
-namespace core {
+namespace SCHNAPS {
 
-// Forward declaration
+namespace Core {
+
+// forward declaration
 class ExecutionContext;
 
 /*!
- *  \class Primitive Simulator/include/Primitive.hpp "Simulator/include/Primitive.hpp"
+ *  \class Primitive SCHNAPS/Core/Primitive.hpp "SCHNAPS/Core/Primitive.hpp"
  *  \brief Primitive class, the implementation of a primitive as Object.
  */
 class Primitive: public Object {
@@ -104,6 +106,7 @@ protected:
 private:
 	unsigned int mNumberArguments; //!< Number of arguments of the primitive.
 };
-} // end of core namespace
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif /* core_Primitive_hpp */
+#endif /* SCHNAPS_Core_Primitive_hpp */

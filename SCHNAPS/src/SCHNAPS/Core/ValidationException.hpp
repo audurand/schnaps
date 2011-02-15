@@ -24,8 +24,8 @@
  *
  */
 
-#ifndef core_ValidationException_hpp
-#define core_ValidationException_hpp
+#ifndef SCHNAPS_Core_ValidationException_hpp
+#define SCHNAPS_Core_ValidationException_hpp
 
 #include <string>
 
@@ -33,23 +33,26 @@
 #include "SCHNAPS/Core/Exception.hpp"
 
 /*!
- *  \def   core_ValidateParameterM
+ *  \def   schnaps_ValidateParameterM
  *  \brief Assert that a parameter is valid, following a given condition.
  *  \param COND Condition to test.
  *  \param PARAM String containing the name of the parameter.
  *  \param MESS String explaining the condition.
  *  \throw ValidationException When the condition is false.
  */
-#ifndef core_NDEBUG
-#define core_ValidateParameterM(COND,PARAM,MESS) \
-  if( !(COND) ) throw core::ValidationException( \
+#ifndef SCHNAPS_NDEBUG
+#define schnaps_ValidateParameterM(COND,PARAM,MESS) \
+  if( !(COND) ) throw SCHNAPS::Core::ValidationException( \
     std::string("The parameter ").append(PARAM).append(" is invalid (").append(MESS).append(")."))
-#else  // core_NDEBUG
-#define core_ValidateParameterM(COND,PARAM,MESS)
-#endif // core_NDEBUG
+#else  // SCHNAPS_NDEBUG
+#define schnaps_ValidateParameterM(COND,PARAM,MESS)
+#endif // SCHNAPS_NDEBUG
 
-namespace core {
-// Forward declarations.
+namespace SCHNAPS {
+
+namespace Core {
+
+// forward declarations
 template<class T, class BaseType> class AllocatorT;
 template<class T, class BaseType> class PointerT;
 template<class T, class BaseType> class ContainerT;
@@ -72,6 +75,7 @@ public:
 
 	virtual const char* getExceptionName() const throw ();
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_ValidationException_hpp
+#endif // SCHNAPS_Core_ValidationException_hpp

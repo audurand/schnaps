@@ -17,7 +17,8 @@
 
 #include <stdexcept>
 
-using namespace core;
+using namespace SCHNAPS;
+using namespace Core;
 
 /*!
  *  \brief Construct object factory component.
@@ -48,7 +49,7 @@ Factory::Factory() :
 void Factory::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
 		// TODO: write current state?
-	schnaps_StackTraceEndM("void core::Factory::writeContent(PACC::XML::Streamer&, bool) const");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Factory::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
 /*!

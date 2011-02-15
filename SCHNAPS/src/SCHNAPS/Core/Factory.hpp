@@ -24,8 +24,8 @@
  *
  */
 
-#ifndef core_Factory_hpp
-#define core_Factory_hpp
+#ifndef SCHNAPS_Core_Factory_hpp
+#define SCHNAPS_Core_Factory_hpp
 
 #include "SCHNAPS/Core/Allocator.hpp"
 #include "SCHNAPS/Core/Component.hpp"
@@ -39,7 +39,8 @@
 #include <map>
 #endif
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
 
 /*!
  *  \class Factory SCHNAPS/Core/Factory.hpp "SCHNAPS/Core/Factory.hpp"
@@ -101,6 +102,7 @@ public:
 protected:
 	AllocatorMap mAllocatorMap; //!< Map of stored allocators.
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_Factory_hpp
+#endif // SCHNAPS_Core_Factory_hpp

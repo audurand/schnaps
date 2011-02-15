@@ -21,8 +21,8 @@
  *
  */
  
-#ifndef core_Plugin_hpp
-#define core_Plugin_hpp
+#ifndef SCHNAPS_Core_Plugin_hpp
+#define SCHNAPS_Core_Plugin_hpp
 
 #include <map>
 #include <vector>
@@ -62,7 +62,7 @@ extern "C" { \
   __declspec( dllexport ) void __SCHNAPS_Plugin_getPluginSpecs( \
          std::string& outName, \
          std::string& outVersion, \
-         std::map<std::string, core::Allocator::Handle>& outAllocators) \
+         std::map<std::string, SCHNAPS::Core::Allocator::Handle>& outAllocators) \
   { \
     outName = (NAME); \
     outVersion = (VERSION); \
@@ -73,7 +73,7 @@ extern "C" { \
   void __SCHNAPS_Plugin_getPluginSpecs( \
          std::string& outName, \
          std::string& outVersion, \
-         std::map<std::string, core::Allocator::Handle>& outAllocators) \
+         std::map<std::string, SCHNAPS::Core::Allocator::Handle>& outAllocators) \
   { \
     outName = (NAME); \
     outVersion = (VERSION); \
@@ -99,7 +99,9 @@ extern "C" { \
   } \
 }
 
-namespace core {
+namespace SCHNAPS {
+
+namespace Core {
 
 /*!
  *  A plugin object is used to load a dynamic library into memory. It provides method to generate
@@ -177,7 +179,7 @@ namespace core {
  *  same type of system libraries (Single Threaded Debug, Multi-threaded DLL, etc.) that will be
  *  used to generate in the binaries that will load the DLL. For more details on DLL in
  *  Microsoft Visual C++, see
- *  http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vccore98/html/_core_dlls.3a_.overview.asp.
+ *  http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vccore98/html/_SCHNAPS_Core_dlls.3a_.overview.asp.
  *
  */
 class Plugin : public Object {
@@ -254,6 +256,7 @@ protected:
 	std::string mSource;				//!< Source of the plugin.
 	void* mDynLib;						//!< Opaque handler of the dynamic lib.
 };
-} // end of core namepsace
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_Plugin_hpp
+#endif // SCHNAPS_Core_Plugin_hpp

@@ -66,14 +66,15 @@
  *
  */
 
-#ifndef core_Allocator_hpp
-#define core_Allocator_hpp
+#ifndef SCHNAPS_Core_Allocator_hpp
+#define SCHNAPS_Core_Allocator_hpp
 
 #include "SCHNAPS/Core/Object.hpp"
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
 
-// Forward declarations.
+// forward declarations
 template<class T, class BaseType> class AbstractAllocT;
 template<class T, class BaseType> class PointerT;
 template<class T, class BaseType> class ContainerT;
@@ -103,6 +104,7 @@ public:
 	//! Copy an object to another.
 	virtual void copy(Object& outCopy, const Object& inOriginal) const;
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_Allocator_hpp
+#endif // SCHNAPS_Core_Allocator_hpp

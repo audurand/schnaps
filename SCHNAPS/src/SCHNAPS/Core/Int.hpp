@@ -18,20 +18,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef core_Int_hpp
-#define core_Int_hpp
+#ifndef SCHNAPS_Core_Int_hpp
+#define SCHNAPS_Core_Int_hpp
 
 #include "SCHNAPS/Core/Number.hpp"
 #include "SCHNAPS/Core/ArrayT.hpp"
 #include "SCHNAPS/Core/AllocatorT.hpp"
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
 
-class Double;	// Forward declaration
-class Float;	// Forward declaration
-class Long;		// Forward declaration
-class UInt;		// Forward declaration
-class ULong;	// Forward declaration
+// forward declarations
+class Double;
+class Float;
+class Long;
+class UInt;
+class ULong;
 
 //! Array of the atomic integer type.
 typedef ArrayT<int> IntArray;
@@ -107,6 +109,7 @@ public:
 private:
 	int mValue; //! Value of integer object.
 };
-} // end of core namespace
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_Int_hpp
+#endif // SCHNAPS_Core_Int_hpp

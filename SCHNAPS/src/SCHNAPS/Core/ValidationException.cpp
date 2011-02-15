@@ -24,16 +24,10 @@
  *
  */
 
-/*!
- *  \file   SCHNAPS/Core/ValidationException.cpp
- *  \brief  Implementation of class ValidationException.
- *  \author Christian Gagne
- *  \author Marc Parizeau
- */
-
 #include "SCHNAPS/Core.hpp"
 
-using namespace core;
+using namespace SCHNAPS;
+using namespace Core;
 
 
 /*!
@@ -51,6 +45,6 @@ ValidationException::ValidationException(std::string inMessage) :
  */
 const char* ValidationException::getExceptionName() const throw()
 {
-	return "core::ValidationException";
+	return "SCHNAPS::Core::ValidationException";
 }
 

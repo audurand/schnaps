@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef core_TypingManager_hpp
-#define core_TypingManager_hpp
+#ifndef SCHNAPS_Core_TypingManager_hpp
+#define SCHNAPS_Core_TypingManager_hpp
 
 #include "SCHNAPS/Core/Component.hpp"
 #include "SCHNAPS/Core/String.hpp"
@@ -33,7 +33,9 @@
 #include <map>
 #endif
 
-namespace core {
+namespace SCHNAPS {
+	
+namespace Core {
 
 /*!
  *  \class TypingManager SCHNAPS/Core/TypingManager.hpp "SCHNAPS/Core/TypingManager.hpp"
@@ -132,6 +134,7 @@ public:
 protected:
 	TypeMap mTypeMap; //!< Map of stored types to their parents.
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_TypingManager_hpp
+#endif // SCHNAPS_Core_TypingManager_hpp

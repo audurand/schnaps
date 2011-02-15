@@ -76,7 +76,7 @@
  */
 #define schnaps_Pow2M(X) ( (X)*(X) )
 
-namespace core {
+namespace SCHNAPS {
 	/*!
 	 *  \brief Test if a floating-point number is in a not-a-number state.
 	 *  \param inValue Value to evaluate not-a-number state.
@@ -472,6 +472,6 @@ namespace core {
 			}
 		}
 	}
-}
+} // end of SCHNAPS namespace
 
 #endif // macros_hpp

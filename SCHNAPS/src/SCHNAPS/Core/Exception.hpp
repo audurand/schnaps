@@ -58,8 +58,8 @@
  *
  */
 
-#ifndef core_Exception_hpp
-#define core_Exception_hpp
+#ifndef SCHNAPS_Core_Exception_hpp
+#define SCHNAPS_Core_Exception_hpp
 
 #include <exception>
 #include <iostream>
@@ -88,16 +88,18 @@
 #ifndef SCHNAPS_NDEBUG
 #define schnaps_StackTraceEndM(NAME) \
   } \
-  catch (core::Exception& inException) { \
+  catch (SCHNAPS::Core::Exception& inException) { \
     inException.pushStackTrace(NAME,__FILE__,__LINE__); \
     throw; \
   }
 #else // SCHNAPS_NDEBUG
 #define schnaps_StackTraceEndM(NAME)
 #endif // SCHNAPS_NDEBUG
-namespace core {
 
-// Forward declarations
+namespace SCHNAPS {
+namespace Core {
+
+// forward declarations
 template<class T, class BaseType> class AbstractAllocT;
 template<class T, class BaseType> class PointerT;
 template<class T, class BaseType> class ContainerT;
@@ -177,6 +179,7 @@ protected:
 	std::vector<StackTraceItem> mStackTrace; //!< Stack trace of the calls
 	std::string mMessage; //!< Exception message describing the abnormal situation.
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_Exception_hpp
+#endif // SCHNAPS_Core_Exception_hpp

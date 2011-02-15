@@ -18,13 +18,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef core_LoggerMulti_hpp
-#define core_LoggerMulti_hpp
+#ifndef SCHNAPS_Core_LoggerMulti_hpp
+#define SCHNAPS_Core_LoggerMulti_hpp
 
 #include "SCHNAPS/Core/Component.hpp"
 #include "SCHNAPS/Core/Logger.hpp"
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
 
 /*!
  *  \class LoggerMulti SCHNAPS/Core/LoggerMulti.hpp "SCHNAPS/Core/LoggerMulti.hpp"
@@ -65,6 +66,7 @@ public:
 protected:
 	Logger::Bag::Handle mLoggers; //!< Bag of random number generators, one per thread.
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_LoggerMulti_hpp
+#endif // SCHNAPS_Core_LoggerMulti_hpp

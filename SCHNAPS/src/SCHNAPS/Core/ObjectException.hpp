@@ -24,8 +24,8 @@
  *
  */
 
-#ifndef core_ObjectException_hpp
-#define core_ObjectException_hpp
+#ifndef SCHNAPS_Core_ObjectException_hpp
+#define SCHNAPS_Core_ObjectException_hpp
 
 #include "SCHNAPS/Core/Object.hpp"
 #include "SCHNAPS/Core/TargetedException.hpp"
@@ -36,11 +36,13 @@
  *  \param MESS Exception message.
  */
 #define schnaps_ObjectExceptionM(MESS) \
-  core::ObjectException((*this),MESS,__FILE__,__LINE__)
+  SCHNAPS::Core::ObjectException((*this),MESS,__FILE__,__LINE__)
 
-namespace core {
+namespace SCHNAPS {
 
-// Forward declarations.
+namespace Core {
+
+// forward declarations
 template<class T, class BaseType> class AllocatorT;
 template<class T, class BaseType> class PointerT;
 template<class T, class BaseType> class ContainerT;
@@ -50,6 +52,7 @@ template<class T, class BaseType> class ContainerT;
  *  \brief SCHNAPS exception relative to a erroneous state of an Object.
  */
 class ObjectException: public TargetedException {
+
 public:
 	//! ObjectException allocator type.
 	typedef AllocatorT<ObjectException, TargetedException::Alloc> Alloc;
@@ -102,6 +105,7 @@ private:
 	std::string mObjectTypeName; //!< RTTI name of the erroneous Object.
 	unsigned int mObjectRefCounter; //!< Value of the reference counter of the Object.
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_ObjectException_hpp
+#endif // SCHNAPS_Core_ObjectException_hpp

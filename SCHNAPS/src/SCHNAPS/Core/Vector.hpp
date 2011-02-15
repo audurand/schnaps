@@ -19,15 +19,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef core_Vector_hpp
-#define core_Vector_hpp
+#ifndef SCHNAPS_Core_Vector_hpp
+#define SCHNAPS_Core_Vector_hpp
 
 #include <vector>
 
 #include "SCHNAPS/Core/AnyType.hpp"
 #include "SCHNAPS/Core/AllocatorT.hpp"
 
-namespace core {
+
+namespace SCHNAPS {
+
+namespace Core {
 
 /*!
  *  \class Vector SCHNAPS/Core/Vector.hpp "SCHNAPS/Core/Vector.hpp"
@@ -60,7 +63,7 @@ public:
 		schnaps_StackTraceEndM("const std::string& Vector::getType() const");
 	}
 
-	virtual void readWithSystem(PACC::XML::ConstIterator inIter, core::System& ioSystem);
+	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
 	Vector& operator=(const Vector& inOriginal);
@@ -71,6 +74,7 @@ public:
 	virtual bool isEqual(const Object& inRightObj) const;
 	virtual bool isLess(const Object& inRightObj) const;
 };
-} // end of core namespace
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif /* core_Vector_hpp */
+#endif /* SCHNAPS_Core_Vector_hpp */

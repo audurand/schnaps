@@ -20,7 +20,8 @@
 
 #include "SCHNAPS/Core.hpp"
 
-using namespace core;
+using namespace SCHNAPS;
+using namespace Core;
 
 /*!
  *  \brief Construct a string object with the value given.
@@ -46,37 +47,37 @@ bool String::isEqual(const Object& inRightObj) const {
 	schnaps_StackTraceBeginM();
 		const String& lRightWrapper = castObjectT<const String&>(inRightObj);
 		return mValue == lRightWrapper.mValue;
-	schnaps_StackTraceEndM("bool core::String::isEqual(const core::Object&) const");
+	schnaps_StackTraceEndM("bool SCHNAPS::Core::String::isEqual(const SCHNAPS::Core::Object&) const");
 }
 
 bool String::isLess(const Object& inRightObj) const {
 	schnaps_StackTraceBeginM();
 		const String& lRightWrapper = castObjectT<const String&>(inRightObj);
 		return mValue < lRightWrapper.mValue;
-	schnaps_StackTraceEndM("bool core::String::isLess(const core::Object&) const");
+	schnaps_StackTraceEndM("bool SCHNAPS::Core::String::isLess(const SCHNAPS::Core::Object&) const");
 }
 
 String& String::operator=(const String& inOriginal) {
 	schnaps_StackTraceBeginM();
 		mValue = inOriginal.getValue().c_str();
 		return *this;
-	schnaps_StackTraceEndM("core::String& core::String::operator=(const core::String&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::String& SCHNAPS::Core::String::operator=(const SCHNAPS::Core::String&)");
 }
 
 void String::readStr(const std::string& inStr) {
 	schnaps_StackTraceBeginM();
 		mValue = inStr.c_str();
-	schnaps_StackTraceEndM("void core::String::readStr(const std::string&)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::String::readStr(const std::string&)");
 }
 
 std::string String::writeStr() const {
 	schnaps_StackTraceBeginM();
 		return mValue;
-	schnaps_StackTraceEndM("std::string core::String::writeStr() const");
+	schnaps_StackTraceEndM("std::string SCHNAPS::Core::String::writeStr() const");
 }
 
 AnyType::Handle String::clone() const {
 	schnaps_StackTraceBeginM();
 		return new String(*this);
-	schnaps_StackTraceEndM("core::AnyType::Handle core::String::clone() const");
+	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Core::String::clone() const");
 }

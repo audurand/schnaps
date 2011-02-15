@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef core_Parameters_hpp
-#define core_Parameters_hpp
+#ifndef SCHNAPS_Core_Parameters_hpp
+#define SCHNAPS_Core_Parameters_hpp
 
 #include "SCHNAPS/Core/AnyType.hpp"
 #include "SCHNAPS/Core/Component.hpp"
@@ -33,7 +33,9 @@
 #include <map>
 #endif
 
-namespace core {
+namespace SCHNAPS {
+
+namespace Core {
 
 /*!
  *  \class Parameters SCHNAPS/Core/Parameters.hpp "SCHNAPS/Core/Parameters.hpp"
@@ -132,6 +134,7 @@ public:
 private:
 	ParametersMap mParametersMap;
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_Parameters_hpp
+#endif // SCHNAPS_Core_Parameters_hpp

@@ -18,12 +18,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef core_Atom_hpp
-#define core_Atom_hpp
+#ifndef SCHNAPS_Core_Atom_hpp
+#define SCHNAPS_Core_Atom_hpp
 
 #include "SCHNAPS/Core/AnyType.hpp"
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
 
 /*!
  *  \class Atom SCHNAPS/Core/Atom.hpp "SCHNAPS/Core/Atom.hpp"
@@ -47,7 +48,7 @@ public:
 		schnaps_StackTraceBeginM();
 			const static std::string lName("Atom");
 			return lName;
-		schnaps_StackTraceEndM("const std::string& core::Atom::getName() const");
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Core::Atom::getName() const");
 	}
 
 	//! Return the type of data (for use with type manager).
@@ -55,12 +56,13 @@ public:
 		schnaps_StackTraceBeginM();
 			const static std::string lType("Atom");
 			return lType;
-		schnaps_StackTraceEndM("const std::string& core::Atom::getType() const");
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Core::Atom::getType() const");
 	}
 
 	virtual void read(PACC::XML::ConstIterator inIter);
 	virtual void readWithSystem(PACC::XML::ConstIterator inIter, System& ioSystem);
 };
-} // end of core namespace
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif /* core_Atom_hpp */
+#endif /* SCHNAPS_Core_Atom_hpp */

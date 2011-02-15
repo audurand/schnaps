@@ -28,7 +28,8 @@
 
 #include <cmath>
 
-using namespace core;
+using namespace SCHNAPS;
+using namespace Core;
 
 /*!
  *  \brief Construct a randomizer.

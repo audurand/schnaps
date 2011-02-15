@@ -24,8 +24,8 @@
  *
  */
 
-#ifndef core_System_hpp
-#define core_System_hpp
+#ifndef SCHNAPS_Core_System_hpp
+#define SCHNAPS_Core_System_hpp
 
 #include "SCHNAPS/Core/Component.hpp"
 #include "SCHNAPS/Core/Factory.hpp"
@@ -45,7 +45,9 @@
 #include <map>
 #endif
 
-namespace core {
+namespace SCHNAPS {
+
+namespace Core {
 
 /*!
  *  \class System SCHNAPS/Core/System.hpp "SCHNAPS/Core/System.hpp"
@@ -186,6 +188,7 @@ private:
 	TypingManager::Handle mTypingManager;	//!< Typing manager system component.
 	Plugins::Handle mPlugins;				//!< Plugins system component.
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_System_hpp
+#endif // SCHNAPS_Core_System_hpp

@@ -20,34 +20,35 @@
 
 #include "SCHNAPS/Core.hpp"
 
-using namespace core;
+using namespace SCHNAPS;
+using namespace Core;
 
 AnyType& AnyType::operator=(const AnyType& inOriginal) {
 	schnaps_StackTraceBeginM();
 		return *this;
-	schnaps_StackTraceEndM("core::AnyType& core::AnyType::operator=(const core::AnyType&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType& SCHNAPS::Core::AnyType::operator=(const SCHNAPS::Core::AnyType&)");
 }
 
 /*!
  *  \brief Read data from string.
  *  \param inStr Reference to the string to read.
- *  \throw core::InternalException If the method is not overdefined in a subclass.
+ *  \throw SCHNAPS::Core::InternalException If the method is not overdefined in a subclass.
  */
 void AnyType::readStr(const std::string& inStr) {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("readStr", "AnyType", getName());
-	schnaps_StackTraceEndM("void core::AnyType::readStr(std::string&)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::AnyType::readStr(std::string&)");
 }
 
 /*!
  *  \brief Write data to string.
  *  \return The string.
- *  \throw core::InternalException If the method is not overdefined in a subclass.
+ *  \throw SCHNAPS::Core::InternalException If the method is not overdefined in a subclass.
  */
 std::string AnyType::writeStr() const {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("writeStr", "AnyType", getName());
-	schnaps_StackTraceEndM("std::string core::AnyType::writeStr() const");
+	schnaps_StackTraceEndM("std::string SCHNAPS::Core::AnyType::writeStr() const");
 }
 
 /*!
@@ -58,5 +59,5 @@ std::string AnyType::writeStr() const {
 AnyType::Handle AnyType::clone() const {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("clone", "AnyType", getName());
-	schnaps_StackTraceEndM("core::AnyType::Handle core::AnyType::clone() const");
+	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Core::AnyType::clone() const");
 }

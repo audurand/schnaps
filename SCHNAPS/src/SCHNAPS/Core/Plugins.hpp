@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef core_Plugins_hpp
-#define core_Plugins_hpp
+#ifndef SCHNAPS_Core_Plugins_hpp
+#define SCHNAPS_Core_Plugins_hpp
 
 #include "SCHNAPS/Core/AllocatorT.hpp"
 #include "SCHNAPS/Core/PointerT.hpp"
@@ -36,7 +36,9 @@
 #include <map>
 #endif
 
-namespace core {
+namespace SCHNAPS {
+	
+namespace Core {
 
 /*!
  *  \class Plugins SCHNAPS/Core/Plugins.hpp "SCHNAPS/Core/Plugins.hpp"
@@ -49,6 +51,7 @@ namespace core {
  *  of the allocator for that type exact type, FitnessSimple.
  */
 class Plugins: public Component {
+
 protected:
 #if defined(SCHNAPS_HAVE_STD_HASHMAP)
 	typedef std::hash_map<std::string, Plugin::Handle, HashString> PluginMap;
@@ -94,6 +97,7 @@ public:
 protected:
 	PluginMap mPluginMap; //!< Map of stored plugins.
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_Plugins_hpp
+#endif // SCHNAPS_Core_Plugins_hpp

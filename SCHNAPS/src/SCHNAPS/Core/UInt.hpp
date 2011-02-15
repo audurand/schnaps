@@ -18,16 +18,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef core_UInt_hpp
-#define core_UInt_hpp
+#ifndef SCHNAPS_Core_UInt_hpp
+#define SCHNAPS_Core_UInt_hpp
 
 #include "SCHNAPS/Core/Number.hpp"
 #include "SCHNAPS/Core/ArrayT.hpp"
 #include "SCHNAPS/Core/AllocatorT.hpp"
 
-namespace core {
+namespace SCHNAPS {
+	
+namespace Core {
 
-// Forward declaration
+// forward declaration
 class Double;
 class Float;
 class Int;
@@ -107,6 +109,7 @@ public:
 private:
 	unsigned int mValue; //! Value of unsigned integer object.
 };
-} // end of core namespace
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_UInt_hpp
+#endif // SCHNAPS_Core_UInt_hpp

@@ -18,14 +18,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef core_Long_hpp
-#define core_Long_hpp
+#ifndef SCHNAPS_Core_Long_hpp
+#define SCHNAPS_Core_Long_hpp
 
 #include "SCHNAPS/Core/Number.hpp"
 #include "SCHNAPS/Core/ArrayT.hpp"
 #include "SCHNAPS/Core/AllocatorT.hpp"
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
 
 // forward declaration
 class Double;
@@ -107,6 +108,7 @@ public:
 private:
 	long mValue; //! Value of long object.
 };
-} // end of core namespace
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_Long_hpp
+#endif // SCHNAPS_Core_Long_hpp

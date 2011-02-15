@@ -20,7 +20,8 @@
 
 #include "SCHNAPS/Core.hpp"
 
-using namespace core;
+using namespace SCHNAPS;
+using namespace Core;
 
 /*!
  *  \brief Construct typing manager component.
@@ -28,21 +29,21 @@ using namespace core;
 TypingManager::TypingManager() :
 		Component("TypingManager")
 {
-	// Root type
+	// root type
 	mTypeMap["Any"];
 
-	// Basic types
+	// basic types
 	mTypeMap["Atom"].push_back("Any");
 	mTypeMap["Vector"].push_back("Any");
 	mTypeMap["Void"].push_back("Any");
 
-	// Atom types
+	// atom types
 	mTypeMap["Bool"].push_back("Atom");
 	mTypeMap["Char"].push_back("Atom");
 	mTypeMap["String"].push_back("Atom");
 	mTypeMap["Number"].push_back("Atom");
 
-	// Number types
+	// number types
 	mTypeMap["Double"].push_back("Number");
 	mTypeMap["Float"].push_back("Number");
 	mTypeMap["Int"].push_back("Number");
@@ -61,5 +62,5 @@ TypingManager::TypingManager(const TypingManager& inOriginal) :
 void TypingManager::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
 		// TODO: write current state?
-	schnaps_StackTraceEndM("void core::TypingManager::writeContent(PACC::XML::Streamer&, bool) const");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::TypingManager::writeContent(PACC::XML::Streamer&, bool) const");
 }

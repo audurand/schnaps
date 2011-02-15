@@ -24,8 +24,8 @@
  *
  */
 
-#ifndef core_BadCastException_hpp
-#define core_BadCastException_hpp
+#ifndef SCHNAPS_Core_BadCastException_hpp
+#define SCHNAPS_Core_BadCastException_hpp
 
 #include "SCHNAPS/Core/Object.hpp"
 #include "SCHNAPS/Core/TargetedException.hpp"
@@ -35,16 +35,17 @@
 #endif // SCHNAPS_HAVE_RTTI
 
 /*!
- *  \def   core_BadCastExceptionM
+ *  \def   SCHNAPS_Core_BadCastExceptionM
  *  \brief Construct a BadCastException.
  *  \param MESS Message explaining the bad cast problem.
  */
-#define core_BadCastExceptionM(MESS) \
-  core::BadCastException(MESS,__FILE__,__LINE__)
+#define SCHNAPS_Core_BadCastExceptionM(MESS) \
+  SCHNAPS::Core::BadCastException(MESS,__FILE__,__LINE__)
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
 
-// Forward declarations.
+// forward declarations
 template<class T, class BaseType> class AllocatorT;
 template<class T, class BaseType> class ContainerT;
 
@@ -67,6 +68,7 @@ public:
 
 	virtual const char* getExceptionName() const throw ();
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_BadCastException_hpp
+#endif // SCHNAPS_Core_BadCastException_hpp

@@ -20,7 +20,8 @@
 
 #include "SCHNAPS/Core.hpp"
 
-using namespace core;
+using namespace SCHNAPS;
+using namespace Core;
 
 Primitive::Primitive(const Primitive& inOriginal) :
 		mNumberArguments(inOriginal.getNumberArguments())
@@ -48,7 +49,7 @@ void Primitive::readWithSystem(PACC::XML::ConstIterator inIter, System& ioSystem
 			lOSS << "got tag <" << inIter->getValue() << "> instead!";
 			throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
 		}
-	schnaps_StackTraceEndM("void core::Primitive::readWithSystem(PACC::XML::ConstIterator, Context&)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Primitive::readWithSystem(PACC::XML::ConstIterator, Context&)");
 }
 
 void Primitive::writeContent(PACC::XML::Streamer& inStreamer, bool inIndent) const
@@ -67,7 +68,7 @@ Primitive& Primitive::operator=(const Primitive& inOriginal) {
 	schnaps_StackTraceBeginM();
 		this->setNumberArguments(inOriginal.getNumberArguments());
 		return *this;
-	schnaps_StackTraceEndM("core::Primitive& core::Primitive::operator=(const core::Primitive&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Primitive& SCHNAPS::Core::Primitive::operator=(const SCHNAPS::Core::Primitive&)");
 }
 
 /*!
@@ -89,7 +90,7 @@ bool Primitive::isValid(unsigned int inIndex, ExecutionContext& ioContext) const
 			}
 		}
 		return true;
-	schnaps_StackTraceEndM("bool Primitive::isValid(unsigned int, core::ExecutionContext&) const");
+	schnaps_StackTraceEndM("bool Primitive::isValid(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 
 /*!
@@ -102,7 +103,7 @@ bool Primitive::isValid(unsigned int inIndex, ExecutionContext& ioContext) const
 AnyType::Handle Primitive::execute(unsigned int inIndex, ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("execute", "Primitive", getName());
-	schnaps_StackTraceEndM("AnyType::Handle Primitive::execute(unsigned int, core::ExecutionContext&) const");
+	schnaps_StackTraceEndM("AnyType::Handle Primitive::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 
 /*!
@@ -116,7 +117,7 @@ AnyType::Handle Primitive::execute(unsigned int inIndex, ExecutionContext& ioCon
 const std::string& Primitive::getArgType(unsigned int inIndex, unsigned int inN, ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("getArgType", "Primitive", getName());
-	schnaps_StackTraceEndM("const std::type_info* core::Primitive::getArgType(unsigned int, unsigned int, core::ExecutionContext&) const");
+	schnaps_StackTraceEndM("const std::type_info* SCHNAPS::Core::Primitive::getArgType(unsigned int, unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 
 /*!
@@ -129,7 +130,7 @@ const std::string& Primitive::getArgType(unsigned int inIndex, unsigned int inN,
 const std::string& Primitive::getReturnType(unsigned int inIndex, ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("getReturnType", "Primitive", getName());
-	schnaps_StackTraceEndM("const std::type_info* core::Primitive::getReturnType(unsigned int, core::ExecutionContext&) const");
+	schnaps_StackTraceEndM("const std::type_info* SCHNAPS::Core::Primitive::getReturnType(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 
 /*!
@@ -146,7 +147,7 @@ unsigned int Primitive::getArgumentIndex(unsigned int inIndex, unsigned int inN,
 			lNodeIndex += lActualTree[lNodeIndex].mSubTreeSize;
 		}
 		return lNodeIndex;
-	schnaps_StackTraceEndM("unsigned int core::Primitive::getArgumentIndex(unsigned int, unsigned int, core::ExecutionContext&) const");
+	schnaps_StackTraceEndM("unsigned int SCHNAPS::Core::Primitive::getArgumentIndex(unsigned int, unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 
 /*!
@@ -163,5 +164,5 @@ AnyType::Handle Primitive::getArgument(unsigned int inIndex, unsigned int inN, E
 		unsigned int lNodeIndex = getArgumentIndex(inIndex, inN, ioContext);
 		AnyType::Handle outResult = ioContext.getPrimitiveTree()[lNodeIndex].mPrimitive->execute(lNodeIndex, ioContext);
 		return outResult;
-	schnaps_StackTraceEndM("AnyType::Handle Primitive::getArgument(unsigned int, unsigned int, core::ExecutionContext&) const");
+	schnaps_StackTraceEndM("AnyType::Handle Primitive::getArgument(unsigned int, unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }

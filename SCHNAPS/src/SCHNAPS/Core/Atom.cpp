@@ -20,7 +20,8 @@
 
 #include "SCHNAPS/Core.hpp"
 
-using namespace core;
+using namespace SCHNAPS;
+using namespace Core;
 
 void Atom::read(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceBeginM();
@@ -38,11 +39,11 @@ void Atom::read(PACC::XML::ConstIterator inIter) {
 				readStr(inIter->getAttribute("value"));
 			}
 		}
-	schnaps_StackTraceEndM("void core::Atom::read(PACC::XML::ConstIterator inIter)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Atom::read(PACC::XML::ConstIterator inIter)");
 }
 
 void Atom::readWithSystem(PACC::XML::ConstIterator inIter, System& ioSystem) {
 	schnaps_StackTraceBeginM();
 		this->read(inIter);
-	schnaps_StackTraceEndM("void core::Atom::read(PACC::XML::ConstIterator inIter, core::System&)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Atom::read(PACC::XML::ConstIterator inIter, SCHNAPS::Core::System&)");
 }

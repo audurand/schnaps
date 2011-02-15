@@ -6,7 +6,7 @@
  */
 
 #include "SCHNAPS/Core.hpp"
-#include "SCHNAPS/Simulator.hpp"
+#include "SCHNAPS/Simulation.hpp"
 
 #ifdef SCHNAPS_IS_UNIX
 #include <unistd.h>
@@ -16,6 +16,7 @@
 #endif
 
 using namespace std;
+using namespace SCHNAPS;
 
 int main(int argc, char* argv[]) {
 	int lOpt;
@@ -57,7 +58,7 @@ int main(int argc, char* argv[]) {
 		schnaps_AssertM(lConfigurationFile.empty() == false);
 		schnaps_AssertM(lScenario.empty() == false);
 
-		simulator::Simulator lSimulator;
+		Simulation::Simulator lSimulator;
 
 		if (lDirectory.empty() == false) {
 			int lChdir = chdir(lDirectory.c_str());
@@ -75,7 +76,7 @@ int main(int argc, char* argv[]) {
 		printf("Simulating\n");
 		// Simulate
 		lSimulator.simulate(lScenario);
-	} catch (core::AssertException e) {
+	} catch (Core::AssertException e) {
 		e.explain(std::cerr);
 	}
 

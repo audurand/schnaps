@@ -20,7 +20,8 @@
 
 #include "SCHNAPS/Core.hpp"
 
-using namespace core;
+using namespace SCHNAPS;
+using namespace Core;
 
 /*!
  *  \brief Construct a component formed of multiple loggers.
@@ -33,7 +34,7 @@ LoggerMulti::LoggerMulti() :
 void LoggerMulti::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
 		// TODO: write current state?
-	schnaps_StackTraceEndM("void core::LoggerMulti::writeContent(PACC::XML::Streamer&, bool) const");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::LoggerMulti::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
 void LoggerMulti::init(System& ioSystem) {
@@ -53,5 +54,5 @@ void LoggerMulti::init(System& ioSystem) {
 		for (unsigned int i = 0; i < lThreads_Max; ++i) {
 			mLoggers->push_back(new Logger());
 		}
-	schnaps_StackTraceEndM("void core::LoggerMulti::init(core::System&)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::LoggerMulti::init(SCHNAPS::Core::System&)");
 }

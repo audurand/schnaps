@@ -24,8 +24,8 @@
  *
  */
 
-#ifndef core_AllocatorT_hpp
-#define core_AllocatorT_hpp
+#ifndef SCHNAPS_Core_AllocatorT_hpp
+#define SCHNAPS_Core_AllocatorT_hpp
 
 #include "SCHNAPS/Core/Object.hpp"
 #include "SCHNAPS/Core/castObjectT.hpp"
@@ -33,9 +33,10 @@
 #include "SCHNAPS/Core/InternalException.hpp"
 #include "SCHNAPS/Core/BadCastException.hpp"
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
 
-// Forward declarations.
+// forward declarations
 template<class T, class BaseType> class AllocatorT;
 template<class T, class BaseType> class PointerT;
 
@@ -67,14 +68,15 @@ public:
 	//! Copy a T-type object into another.
 	virtual void copy(Object& outCopy, const Object& inOriginal) const;
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
 /*!
  *  \brief  Allocate a new T-type object and the heap.
  *  \return Pointer to the allocated T-type object.
  */
 template<class T, class BaseType>
-core::Object* core::AllocatorT<T, BaseType>::allocate() const {
+SCHNAPS::Core::Object* SCHNAPS::Core::AllocatorT<T, BaseType>::allocate() const {
 	schnaps_StackTraceBeginM();
 #ifndef SCHNAPS_NDEBUG
 		T* lT = new T;
@@ -94,7 +96,7 @@ core::Object* core::AllocatorT<T, BaseType>::allocate() const {
  *  \throw  BasCastException If the type of the parameter is not as specified.
  */
 template<class T, class BaseType>
-core::Object* core::AllocatorT<T, BaseType>::clone(const core::Object& inOriginal) const {
+SCHNAPS::Core::Object* SCHNAPS::Core::AllocatorT<T, BaseType>::clone(const SCHNAPS::Core::Object& inOriginal) const {
 	schnaps_StackTraceBeginM();
 #ifndef SCHNAPS_NDEBUG
 		const T& lOrigT = castObjectT<const T&> (inOriginal);
@@ -116,7 +118,7 @@ core::Object* core::AllocatorT<T, BaseType>::clone(const core::Object& inOrigina
  *  \throw BasCastException If the types of the parameters are not as specified.
  */
 template<class T, class BaseType>
-void core::AllocatorT<T, BaseType>::copy(core::Object& outCopy, const core::Object& inOriginal) const {
+void SCHNAPS::Core::AllocatorT<T, BaseType>::copy(SCHNAPS::Core::Object& outCopy, const SCHNAPS::Core::Object& inOriginal) const {
 	schnaps_StackTraceBeginM();
 		T& lCopyT = castObjectT<T&> (outCopy);
 		const T& lOriginalT = castObjectT<const T&> (inOriginal);
@@ -124,4 +126,4 @@ void core::AllocatorT<T, BaseType>::copy(core::Object& outCopy, const core::Obje
 	schnaps_StackTraceEndM("void AllocatorT<T,BaseType>::copy(Object&, const Object&) const");
 }
 
-#endif // core_AllocatorT_hpp
+#endif // SCHNAPS_Core_AllocatorT_hpp

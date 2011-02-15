@@ -18,15 +18,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef core_AnyType_hpp
-#define core_AnyType_hpp
+#ifndef SCHNAPS_Core_AnyType_hpp
+#define SCHNAPS_Core_AnyType_hpp
 
 #include "SCHNAPS/Core/Object.hpp"
 #include "SCHNAPS/Core/AbstractAllocT.hpp"
 #include "SCHNAPS/Core/PointerT.hpp"
 #include "SCHNAPS/Core/ContainerT.hpp"
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
 
 /*!
  *  \class AnyType SCHNAPS/Core/AnyType.hpp "SCHNAPS/Core/AnyType.hpp"
@@ -51,14 +52,14 @@ public:
 		schnaps_StackTraceBeginM();
 			const static std::string lName("AnyType");
 			return lName;
-		schnaps_StackTraceEndM("const std::string& core::AnyType::getName() const");
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Core::AnyType::getName() const");
 	}
 
 	virtual const std::string& getType() const {
 		schnaps_StackTraceBeginM();
 			const static std::string lType("AnyType");
 			return lType;
-		schnaps_StackTraceEndM("const std::string& core::AnyType::getType() const");
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Core::AnyType::getType() const");
 	}
 
 	//! Read data from string.
@@ -68,6 +69,7 @@ public:
 	//! Return a clone (deep copy).
 	virtual AnyType::Handle clone() const;
 };
-} // end of core namespace
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif /* core_AnyType_hpp */
+#endif /* SCHNAPS_Core_AnyType_hpp */

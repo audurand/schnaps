@@ -26,7 +26,8 @@
 
 #include "SCHNAPS/Core.hpp"
 
-using namespace core;
+using namespace SCHNAPS;
+using namespace Core;
 
 /*!
  *  \brief Construct a component formed of multiple randomizers.
@@ -40,7 +41,7 @@ RandomizerMulti::RandomizerMulti() :
 void RandomizerMulti::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
 		// TODO: write current state?
-	schnaps_StackTraceEndM("void core::RandomizerMulti::writeContent(PACC::XML::Streamer&, bool) const");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::RandomizerMulti::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
 void RandomizerMulti::init(System& ioSystem) {
@@ -60,5 +61,5 @@ void RandomizerMulti::init(System& ioSystem) {
 		for (unsigned int i = 0; i < lThreads_Max; ++i) {
 			mRandomizers->push_back(new Randomizer());
 		}
-	schnaps_StackTraceEndM("void core::RandomizerMulti::init(core::System&)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::RandomizerMulti::init(SCHNAPS::Core::System&)");
 }

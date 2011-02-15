@@ -15,7 +15,8 @@
 
 #include "SCHNAPS/Core.hpp"
 
-using namespace core;
+using namespace SCHNAPS;
+using namespace Core;
 
 /*!
  *  \brief Construct object parameters component.
@@ -55,7 +56,7 @@ void Parameters::readWithSystem(PACC::XML::ConstIterator inIter, System& ioSyste
 				}
 			}
 		}
-	schnaps_StackTraceEndM("void core::Parameters::readWithSystem(PACC::XML::ConstIterator, core::System&)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Parameters::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
 void Parameters::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
@@ -66,5 +67,5 @@ void Parameters::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) co
 			lIt->second->write(ioStreamer, inIndent);
 			ioStreamer.closeTag();
 		}
-	schnaps_StackTraceEndM("void core::Parameters::writeContent(PACC::XML::Streamer&, bool) const");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Parameters::writeContent(PACC::XML::Streamer&, bool) const");
 }

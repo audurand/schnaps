@@ -24,13 +24,14 @@
  *
  */
 
-#ifndef core_RandomizerMulti_hpp
-#define core_RandomizerMulti_hpp
+#ifndef SCHNAPS_Core_RandomizerMulti_hpp
+#define SCHNAPS_Core_RandomizerMulti_hpp
 
 #include "SCHNAPS/Core/Component.hpp"
 #include "SCHNAPS/Core/Randomizer.hpp"
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
 
 /*!
  *  \class RandomizerMulti SCHNAPS/Core/RandomizerMulti.hpp "SCHNAPS/Core/RandomizerMulti.hpp"
@@ -71,6 +72,7 @@ public:
 protected:
 	Randomizer::Bag::Handle mRandomizers; //!< Bag of random number generators, one per thread.
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_RandomizerMulti_hpp
+#endif // SCHNAPS_Core_RandomizerMulti_hpp

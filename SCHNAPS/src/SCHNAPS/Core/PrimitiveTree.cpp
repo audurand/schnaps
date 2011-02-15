@@ -23,7 +23,8 @@
 #include <algorithm>
 #include <cstring>
 
-using namespace core;
+using namespace SCHNAPS;
+using namespace Core;
 
 Node::Node(const Node& inOriginal) :
 		mPrimitive(inOriginal.mPrimitive),
@@ -43,7 +44,7 @@ Node::Node(Primitive::Handle inPrimitive, unsigned int inSubTreeSize) :
 bool Node::operator==(const Node& inRightNode) const {
 	schnaps_StackTraceBeginM();
 		return (mPrimitive == inRightNode.mPrimitive) && (mSubTreeSize == inRightNode.mSubTreeSize);
-	schnaps_StackTraceEndM("bool core::Node::operator==(const Node&) const");
+	schnaps_StackTraceEndM("bool SCHNAPS::Core::Node::operator==(const Node&) const");
 }
 
 PrimitiveTree::PrimitiveTree(const PrimitiveTree& inOriginal) {
@@ -91,7 +92,7 @@ void PrimitiveTree::readWithSystem(PACC::XML::ConstIterator inIter, System& ioSy
 			clear();
 			readSubTree(lChild, ioSystem);
 		}
-	schnaps_StackTraceEndM("void core::PrimitiveTree::readWithSystem(PACC::XML::ConstIterator, core::System&)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::PrimitiveTree::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
 void PrimitiveTree::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
@@ -101,14 +102,14 @@ void PrimitiveTree::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent)
 			unsigned int lSizeSubTree = writeSubTree(ioStreamer, 0, inIndent);
 			schnaps_AssertM(lSizeSubTree == size());
 		}
-	schnaps_StackTraceEndM("void core::PrimitiveTree::writeContent(PACC::XML::Streamer&, bool) const");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::PrimitiveTree::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
 PrimitiveTree& PrimitiveTree::operator=(const PrimitiveTree& inOriginal) {
 	schnaps_StackTraceBeginM();
 		this->insert(this->begin(), inOriginal.begin(), inOriginal.end());
 		return *this;
-	schnaps_StackTraceEndM("core::PrimitiveTree& core::PrimitiveTree::operator=(const core::PrimitiveTree&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::PrimitiveTree& SCHNAPS::Core::PrimitiveTree::operator=(const SCHNAPS::Core::PrimitiveTree&)");
 }
 
 /*!
@@ -122,27 +123,27 @@ PrimitiveTree::Handle PrimitiveTree::deepCopy(const System& ioSystem) const {
 
 	lPrimitiveTree->reserve(this->size());
 	for (unsigned int i = 0; i < this->size(); i++) {
-		lPrimitiveTree->push_back(core::Node(
-					core::castHandleT<core::Primitive>(ioSystem.getFactory().getAllocator(this->at(i).mPrimitive->getName())->clone(*this->at(i).mPrimitive)),
+		lPrimitiveTree->push_back(SCHNAPS::Core::Node(
+					SCHNAPS::Core::castHandleT<SCHNAPS::Core::Primitive>(ioSystem.getFactory().getAllocator(this->at(i).mPrimitive->getName())->clone(*this->at(i).mPrimitive)),
 					this->at(i).mSubTreeSize));
 	}
 
 	return lPrimitiveTree;
-	schnaps_StackTraceEndM("core::PrimitiveTree::Handle core::PrimitiveTree::deepCopy(const System&) const");
+	schnaps_StackTraceEndM("SCHNAPS::Core::PrimitiveTree::Handle SCHNAPS::Core::PrimitiveTree::deepCopy(const System&) const");
 }
 
 /*!
  *  \brief Interpret the primitive tree.
  *  \param ioContext Execution context.
  *  \return The result of the interpretation.
- *  \throw core::ObjectException When tree is empty.
+ *  \throw SCHNAPS::Core::ObjectException When tree is empty.
  */
 AnyType::Handle PrimitiveTree::interpret(ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	schnaps_AssertM(empty() == false);
 		ioContext.setPrimitiveTree(this);
 		return (*this)[0].mPrimitive->execute(0, ioContext);
-	schnaps_StackTraceEndM("core::Atom::Handle core::PrimitiveTree::interpret(core::ExecutionContext&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Atom::Handle SCHNAPS::Core::PrimitiveTree::interpret(SCHNAPS::Core::ExecutionContext&)");
 }
 
 /*!
@@ -154,7 +155,7 @@ const std::string& PrimitiveTree::getReturnType(ExecutionContext& ioContext) con
 	schnaps_StackTraceBeginM();
 		ioContext.setPrimitiveTree(this);
 		return (*this)[0].mPrimitive->getReturnType(0, ioContext);
-	schnaps_StackTraceEndM("const std::string& core::PrimitiveTree::getReturnType(core::ExecutionContext&) const");
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Core::PrimitiveTree::getReturnType(SCHNAPS::Core::ExecutionContext&) const");
 }
 
 /*!
@@ -170,7 +171,7 @@ void PrimitiveTree::validate(ExecutionContext& ioContext) const {
 		} else {
 			throw schnaps_InternalExceptionM("Primitive tree is not valid!");
 		}
-	schnaps_StackTraceEndM("const std::string& core::PrimitiveTree::getReturnType(core::ExecutionContext&) const");
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Core::PrimitiveTree::getReturnType(SCHNAPS::Core::ExecutionContext&) const");
 }
 
 /*!
@@ -178,7 +179,7 @@ void PrimitiveTree::validate(ExecutionContext& ioContext) const {
  *  \param inIter XML iterator to read primitive tree from.
  *  \param ioSystem System to use to map the node to the appropriate primitive.
  *  \return Read subtree size.
- *  \throw core::InternalException When the the tree format is incorrect.
+ *  \throw SCHNAPS::Core::InternalException When the the tree format is incorrect.
  */
 unsigned int PrimitiveTree::readSubTree(PACC::XML::ConstIterator inIter, System& ioSystem) {
 	schnaps_StackTraceBeginM();
@@ -222,7 +223,7 @@ unsigned int PrimitiveTree::readSubTree(PACC::XML::ConstIterator inIter, System&
 		}
 		(*this)[lNodeIdx].mSubTreeSize = lSubTreeSize;
 		return lSubTreeSize;
-	schnaps_StackTraceEndM("void core::PrimitiveTree::readSubTree(PACC::XML::ConstIterator, core::System&)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::PrimitiveTree::readSubTree(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
 /*!
@@ -230,7 +231,7 @@ unsigned int PrimitiveTree::readSubTree(PACC::XML::ConstIterator inIter, System&
  *  \param ioStreamer XML streamer to write the tree into.
  *  \param inN Index of the actual subtree root node in the vector.
  *  \param inIndent Whether XML output should be indented.
- *  \throw core::AssertException When sub-tree size doesn't match.
+ *  \throw SCHNAPS::Core::AssertException When sub-tree size doesn't match.
  */
 unsigned int PrimitiveTree::writeSubTree(PACC::XML::Streamer& ioStreamer, unsigned int inN, bool inIndent) const {
 	schnaps_StackTraceBeginM();
@@ -245,5 +246,5 @@ unsigned int PrimitiveTree::writeSubTree(PACC::XML::Streamer& ioStreamer, unsign
 		schnaps_AssertM(lSubTreeSize == (*this)[inN].mSubTreeSize);
 		ioStreamer.closeTag();
 		return lSubTreeSize;
-	schnaps_StackTraceEndM("void core::PrimitiveTree::writeSubTree(PACC::XML::Streamer&, bool) const");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::PrimitiveTree::writeSubTree(PACC::XML::Streamer&, bool) const");
 }

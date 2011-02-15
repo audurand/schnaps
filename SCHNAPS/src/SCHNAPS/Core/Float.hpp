@@ -18,14 +18,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef core_Float_hpp
-#define core_Float_hpp
+#ifndef SCHNAPS_Core_Float_hpp
+#define SCHNAPS_Core_Float_hpp
 
 #include "SCHNAPS/Core/Number.hpp"
 #include "SCHNAPS/Core/ArrayT.hpp"
 #include "SCHNAPS/Core/AllocatorT.hpp"
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
 
 // forward declaration
 class Double;
@@ -108,6 +109,7 @@ public:
 private:
 	float mValue; //! Value of float object.
 };
-} // end of core namespace
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_Float_hpp
+#endif // SCHNAPS_Core_Float_hpp

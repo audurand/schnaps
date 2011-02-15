@@ -26,7 +26,8 @@
 
 #include "SCHNAPS/Core.hpp"
 
-using namespace core;
+using namespace SCHNAPS;
+using namespace Core;
 
 /*!
  *  \brief Construct a new system with the default basic components.
@@ -47,7 +48,7 @@ System::System() :
 		addComponent(mLoggers);
 		addComponent(mTypingManager);
 		addComponent(mPlugins);
-    schnaps_StackTraceEndM("core::System::System()");
+    schnaps_StackTraceEndM("SCHNAPS::Core::System::System()");
 
 }
 
@@ -76,7 +77,7 @@ void System::read(PACC::XML::ConstIterator inIter) {
 		}
 
 		initComponents();
-	schnaps_StackTraceEndM("void core::System::read(PACC::XML::ConstIterator)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::System::read(PACC::XML::ConstIterator)");
 }
 
 void System::writeContent(PACC::XML::Streamer& outStreamer, bool inIndent) const {
@@ -85,7 +86,7 @@ void System::writeContent(PACC::XML::Streamer& outStreamer, bool inIndent) const
 			const Component::Handle lComponent = castHandleT<const Component>(lItr->second);
 			lComponent->write(outStreamer, inIndent);
 		}
-	schnaps_StackTraceEndM("void core::System::writeContent(PACC::XML::Streamer&, bool) const");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::System::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
 bool System::isEqual(const Object& inRightObj) const {
@@ -95,7 +96,7 @@ bool System::isEqual(const Object& inRightObj) const {
 			return false;
 		}
 		return std::equal(this->begin(), this->end(), lRightSystem.begin(), IsEqualMapPairPredicate<std::string>());
-	schnaps_StackTraceEndM("bool core::System::isEqual(const Object&) const");
+	schnaps_StackTraceEndM("bool SCHNAPS::Core::System::isEqual(const Object&) const");
 }
 
 bool System::isLess(const Object& inRightObj) const {
@@ -105,7 +106,7 @@ bool System::isLess(const Object& inRightObj) const {
 			return true;
 		}
 		return false;
-	schnaps_StackTraceEndM("bool core::System::isLess(const Object&) const");
+	schnaps_StackTraceEndM("bool SCHNAPS::Core::System::isLess(const Object&) const");
 }
 
 /*!
@@ -126,7 +127,7 @@ void System::addComponent(Component::Handle inComponent) {
 
 		// Add component
 		(*this)[inComponent->getName()] = inComponent;
-	schnaps_StackTraceEndM("void core::System::addComponent(core::Component::Handle)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::System::addComponent(SCHNAPS::Core::Component::Handle)");
 }
 
 /*!
@@ -141,5 +142,5 @@ void System::initComponents() {
 						lComponent->setInitializedFlag(true);
 				}
 		}
-	schnaps_StackTraceEndM("void core::System::initComponents()");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::System::initComponents()");
 }

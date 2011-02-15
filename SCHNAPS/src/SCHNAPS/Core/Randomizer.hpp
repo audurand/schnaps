@@ -26,8 +26,8 @@
  *  Updated on: 2010-09-30
  */
 
-#ifndef core_Randomizer_hpp
-#define core_Randomizer_hpp
+#ifndef SCHNAPS_Core_Randomizer_hpp
+#define SCHNAPS_Core_Randomizer_hpp
 
 #include <fstream>
 
@@ -35,9 +35,11 @@
 
 #include "SCHNAPS/Core/Object.hpp"
 
-namespace core {
+namespace SCHNAPS {
+	
+namespace Core {
 
-// Forward declaration
+// forward declaration
 class System;
 
 /*!
@@ -131,6 +133,7 @@ public:
 protected:
 	unsigned long mSeed; //!< Seed used to initialize the random number generator.
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_Randomizer_hpp
+#endif // SCHNAPS_Core_Randomizer_hpp

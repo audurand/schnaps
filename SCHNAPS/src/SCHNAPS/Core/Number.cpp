@@ -20,134 +20,135 @@
 
 #include "SCHNAPS/Core.hpp"
 
-using namespace core;
+using namespace SCHNAPS;
+using namespace Core;
 
 Number& Number::operator=(const Number& inOriginal) {
 	schnaps_StackTraceBeginM();
 		return *this;
-	schnaps_StackTraceEndM("core::Number& core::Number::operator=(const core::Number&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Number::operator=(const SCHNAPS::Core::Number&)");
 }
 
 /*!
  *  \brief  Apply the absolute value operator to a number.
  *  \return The resulting number.
- *  \throw  core::InternalException If the method is not overdefined in a subclass.
+ *  \throw  SCHNAPS::Core::InternalException If the method is not overdefined in a subclass.
  */
 Number& Number::abs() {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("abs", "Number", getName());
-	schnaps_StackTraceEndM("core::Number& core::Number::abs()");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Number::abs()");
 }
 
 /*!
  *  \brief  Apply the addition operator to a number.
  *  \return The resulting number.
- *  \throw  core::InternalException If the method is not overdefined in a subclass.
+ *  \throw  SCHNAPS::Core::InternalException If the method is not overdefined in a subclass.
  */
 Number& Number::add(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("add", "Number", getName());
-	schnaps_StackTraceEndM("core::Number& core::Number::add(core::Number&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Number::add(SCHNAPS::Core::Number&)");
 }
 
 /*!
  *  \brief  Apply the subtract operator to a number.
  *  \return The resulting number.
- *  \throw  core::InternalException If the method is not overdefined in a subclass.
+ *  \throw  SCHNAPS::Core::InternalException If the method is not overdefined in a subclass.
  */
 Number& Number::sub(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("sub", "Number", getName());
-	schnaps_StackTraceEndM("core::Number& core::Number::sub(core::Number&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Number::sub(SCHNAPS::Core::Number&)");
 }
 
 /*!
  *  \brief  Apply the multiply operator to a number.
  *  \return The resulting number.
- *  \throw  core::InternalException If the method is not overdefined in a subclass.
+ *  \throw  SCHNAPS::Core::InternalException If the method is not overdefined in a subclass.
  */
 Number& Number::mult(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("mult", "Number", getName());
-	schnaps_StackTraceEndM("core::Number& core::Number::mult(core::Number&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Number::mult(SCHNAPS::Core::Number&)");
 }
 
 /*!
  *  \brief  Apply the divide operator to a number.
  *  \return The resulting number.
- *  \throw  core::InternalException If the method is not overdefined in a subclass.
+ *  \throw  SCHNAPS::Core::InternalException If the method is not overdefined in a subclass.
  */
 Number& Number::div(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("div", "Number", getName());
-	schnaps_StackTraceEndM("core::Number& core::Number::div(core::Number&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Number::div(SCHNAPS::Core::Number&)");
 }
 
 /*!
  *  \brief  Raise the current number to the power exponent.
  *  \return The resulting number.
- *  \throw  core::InternalException If the method is not overdefined in a subclass.
+ *  \throw  SCHNAPS::Core::InternalException If the method is not overdefined in a subclass.
  */
 Number& Number::pow(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("pow", "Number", getName());
-	schnaps_StackTraceEndM("core::Number& core::Number::pow(core::Number&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Number::pow(SCHNAPS::Core::Number&)");
 }
 
 /*!
  *  \brief  Apply the modulo operator to a number.
  *  \return The resulting number.
- *  \throw  core::InternalException If the method is not overdefined in a subclass.
+ *  \throw  SCHNAPS::Core::InternalException If the method is not overdefined in a subclass.
  */
 Number& Number::mod(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("mod", "Number", getName());
-	schnaps_StackTraceEndM("core::Number& core::Number::mod(core::Number&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Number::mod(SCHNAPS::Core::Number&)");
 }
 
 /*!
  *  \brief  Compute the base-e exponential function, which is the e number raised to the power x.
  *  \return The resulting number.
- *  \throw  core::InternalException If the method is not overdefined in a subclass.
+ *  \throw  SCHNAPS::Core::InternalException If the method is not overdefined in a subclass.
  */
 Number& Number::exp() {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("exp", "Number", getName());
-	schnaps_StackTraceEndM("core::Number& core::Number::exp(core::Number&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Number::exp(SCHNAPS::Core::Number&)");
 }
 
 Number::operator Double() const {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("operator Double", "Number", getName());
-	schnaps_StackTraceEndM("core::Number::operator Double() const");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::operator Double() const");
 }
 
 Number::operator Float() const {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("operator Float", "Number", getName());
-	schnaps_StackTraceEndM("core::Number::operator Float() const");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::operator Float() const");
 }
 
 Number::operator Int() const {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("operator Int", "Number", getName());
-	schnaps_StackTraceEndM("core::Number::operator Int() const");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::operator Int() const");
 }
 
 Number::operator Long() const {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("operator Long", "Number", getName());
-	schnaps_StackTraceEndM("core::Number::operator Long() const");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::operator Long() const");
 }
 
 Number::operator UInt() const {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("operator UInt", "Number", getName());
-	schnaps_StackTraceEndM("core::Number::operator UInt() const");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::operator UInt() const");
 }
 
 Number::operator ULong() const {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("operator ULong", "Number", getName());
-	schnaps_StackTraceEndM("core::Number::operator ULong() const");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::operator ULong() const");
 }

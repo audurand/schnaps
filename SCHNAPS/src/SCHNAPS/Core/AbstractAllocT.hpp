@@ -24,14 +24,15 @@
  *
  */
 
-#ifndef core_AbstractAllocT_hpp
-#define core_AbstractAllocT_hpp
+#ifndef SCHNAPS_Core_AbstractAllocT_hpp
+#define SCHNAPS_Core_AbstractAllocT_hpp
 
 #include "SCHNAPS/Core/Object.hpp"
 #include "SCHNAPS/Core/PointerT.hpp"
 #include "SCHNAPS/Core/ContainerT.hpp"
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
 
 /*!
  *  \class AbstractAllocT SCHNAPS/Core/AbstractAllocT.hpp "SCHNAPS/Core/AbstractAllocT.hpp"
@@ -74,6 +75,7 @@ public:
 	 */
 	virtual void copy(Object& outCopy, const Object& inOriginal) const =0;
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_AbstractAllocT_hpp
+#endif // SCHNAPS_Core_AbstractAllocT_hpp

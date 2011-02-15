@@ -24,15 +24,16 @@
  *
  */
 
-#ifndef core_IsLessMapPairPredicate_hpp
-#define core_IsLessMapPairPredicate_hpp
+#ifndef SCHNAPS_Core_IsLessMapPairPredicate_hpp
+#define SCHNAPS_Core_IsLessMapPairPredicate_hpp
 
 #include <string>
 #include <utility>
 
 #include "SCHNAPS/Core/Object.hpp"
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
 
 /*!
  *  \class IsLessMapPairPredicate SCHNAPS/Core/IsLessMapPairPredicate.hpp
@@ -65,6 +66,7 @@ public:
 				"bool operator()(const std::pair<std::string,Object::Handle>& inLeftPair, const std::pair<std::string,Object::Handle>& inRightPair) const");
 	}
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_IsLessMapPairPredicate_hpp
+#endif // SCHNAPS_Core_IsLessMapPairPredicate_hpp

@@ -26,7 +26,8 @@
 #include <typeinfo>
 #endif // SCHNAPS_HAVE_RTTI
 
-using namespace core;
+using namespace SCHNAPS;
+using namespace Core;
 
 
 /*!

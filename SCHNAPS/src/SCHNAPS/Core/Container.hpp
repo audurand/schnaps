@@ -55,15 +55,16 @@
  *
  */
 
-#ifndef core_Container_hpp
-#define core_Container_hpp
+#ifndef SCHNAPS_Core_Container_hpp
+#define SCHNAPS_Core_Container_hpp
 
 #include <vector>
 
 #include "SCHNAPS/Core/Object.hpp"
 #include "SCHNAPS/Core/AssertException.hpp"
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
 	
 // forward declarations
 template<class T, class BaseType> class AllocatorT;
@@ -109,7 +110,7 @@ public:
 		schnaps_StackTraceBeginM();
 		schnaps_UpperBoundCheckAssertM(inN,size()-1);
 			return std::vector<Pointer>::operator[](inN);
-		schnaps_StackTraceEndM("const core::Object::Handle& core::Container::operator[](unsigned int) const");
+		schnaps_StackTraceEndM("const SCHNAPS::Core::Object::Handle& SCHNAPS::Core::Container::operator[](unsigned int) const");
 	}
 
 	/*!
@@ -121,9 +122,10 @@ public:
 		schnaps_StackTraceBeginM();
 		schnaps_UpperBoundCheckAssertM(inN,size()-1);
 			return std::vector<Pointer>::operator[](inN);
-		schnaps_StackTraceEndM("core::Object::Handle& core::Container::operator[](unsigned int)");
+		schnaps_StackTraceEndM("SCHNAPS::Core::Object::Handle& SCHNAPS::Core::Container::operator[](unsigned int)");
 	}
 };
-} // end of core namespace
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_Container_hpp
+#endif // SCHNAPS_Core_Container_hpp

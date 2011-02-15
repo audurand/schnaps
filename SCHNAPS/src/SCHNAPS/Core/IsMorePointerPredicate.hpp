@@ -24,12 +24,13 @@
  *
  */
 
-#ifndef core_IsMorePointerPredicate_hpp
-#define core_IsMorePointerPredicate_hpp
+#ifndef SCHNAPS_Core_IsMorePointerPredicate_hpp
+#define SCHNAPS_Core_IsMorePointerPredicate_hpp
 
 #include "SCHNAPS/Core/Object.hpp"
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
 
 /*!
  *  \class IsMorePointerPredicate SCHNAPS/Core/IsMorePointerPredicate.hpp
@@ -57,6 +58,7 @@ public:
 		schnaps_StackTraceEndM("bool operator()(const Pointer& inLeftPtr, const Pointer& inRightPtr) const");
 	}
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_IsMorePointerPredicate_hpp
+#endif // SCHNAPS_Core_IsMorePointerPredicate_hpp

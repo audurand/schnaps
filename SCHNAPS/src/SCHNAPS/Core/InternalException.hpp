@@ -24,8 +24,8 @@
  *
  */
 
-#ifndef core_InternalException_hpp
-#define core_InternalException_hpp
+#ifndef SCHNAPS_Core_InternalException_hpp
+#define SCHNAPS_Core_InternalException_hpp
 
 #include "SCHNAPS/Core/Object.hpp"
 #include "SCHNAPS/Core/TargetedException.hpp"
@@ -38,7 +38,7 @@
  *  \param NAME   Name of the instance that generated this exception.
  */
 #define schnaps_UndefinedMethodInternalExceptionM(METHOD,OBJECT,NAME) \
-  core::InternalException( \
+  SCHNAPS::Core::InternalException( \
     std::string("Method '").append(METHOD).append("' of class '").append(OBJECT).append( \
       "' is called but is not properly overdefined in subclass with name '").append(NAME).append("'."), \
     __FILE__,__LINE__)
@@ -49,11 +49,12 @@
  *  \param MESS Exception message.
  */
 #define schnaps_InternalExceptionM(MESS) \
-  core::InternalException(MESS,__FILE__,__LINE__)
+  SCHNAPS::Core::InternalException(MESS,__FILE__,__LINE__)
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
 
-// Forward declarations.
+// forward declarations
 template<class T, class BaseType> class AllocatorT;
 template<class T, class BaseType> class PointerT;
 template<class T, class BaseType> class ContainerT;
@@ -76,6 +77,7 @@ public:
 
 	virtual const char* getExceptionName() const throw ();
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_InternalException_hpp
+#endif // SCHNAPS_Core_InternalException_hpp

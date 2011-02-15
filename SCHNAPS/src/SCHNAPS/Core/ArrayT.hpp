@@ -24,8 +24,8 @@
  *
  */
 
-#ifndef core_ArrayT_hpp
-#define core_ArrayT_hpp
+#ifndef SCHNAPS_Core_ArrayT_hpp
+#define SCHNAPS_Core_ArrayT_hpp
 
 #include <vector>
 
@@ -37,7 +37,8 @@
 #include "SCHNAPS/Core/ContainerT.hpp"
 #include "SCHNAPS/Core/IOException.hpp"
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
 
 /*!
  *  \class ArrayT SCHNAPS/Core/ArrayT.hpp "SCHNAPS/Core/ArrayT.hpp"
@@ -74,14 +75,15 @@ public:
 	//! Write a array into a XML streamer.
 	virtual void write(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
 /*!
  *  \brief Constructor an array of the given size.
  *  \param inSize Size of the array.
  */
 template<class T>
-core::ArrayT<T>::ArrayT(unsigned int inSize) :
+SCHNAPS::Core::ArrayT<T>::ArrayT(unsigned int inSize) :
 	std::vector<T>(inSize) {
 }
 
@@ -91,7 +93,7 @@ core::ArrayT<T>::ArrayT(unsigned int inSize) :
  *  \param inModel Model to use to build the array.
  */
 template<class T>
-core::ArrayT<T>::ArrayT(unsigned int inSize, const T& inModel) :
+SCHNAPS::Core::ArrayT<T>::ArrayT(unsigned int inSize, const T& inModel) :
 	std::vector<T>(inSize, inModel) {
 }
 
@@ -101,7 +103,7 @@ core::ArrayT<T>::ArrayT(unsigned int inSize, const T& inModel) :
  *  \return True if arrays are equal, false if not.
  */
 template<class T>
-bool core::ArrayT<T>::isEqual(const core::Object& inRightObj) const {
+bool SCHNAPS::Core::ArrayT<T>::isEqual(const SCHNAPS::Core::Object& inRightObj) const {
 	schnaps_StackTraceBeginM();
 			const ArrayT<T>& lLeftArray  = castObjectT<const ArrayT<T>&>(*this);
 			const std::vector<T>& lLeftVector    = lLeftArray;
@@ -117,11 +119,11 @@ bool core::ArrayT<T>::isEqual(const core::Object& inRightObj) const {
  *  \return True if left (this) array is less than the right one, false if not.
  */
 template<class T>
-bool core::ArrayT<T>::isLess(const core::Object& inRightObj) const {
+bool SCHNAPS::Core::ArrayT<T>::isLess(const SCHNAPS::Core::Object& inRightObj) const {
 	schnaps_StackTraceBeginM();
-		const core::ArrayT<T>& lLeftArray = castObjectT<const core::ArrayT<T>&> (*this);
+		const SCHNAPS::Core::ArrayT<T>& lLeftArray = castObjectT<const SCHNAPS::Core::ArrayT<T>&> (*this);
 		const std::vector<T>& lLeftVector = lLeftArray;
-		const core::ArrayT<T>& lRightArray = castObjectT<const core::ArrayT<T>&> (inRightObj);
+		const SCHNAPS::Core::ArrayT<T>& lRightArray = castObjectT<const SCHNAPS::Core::ArrayT<T>&> (inRightObj);
 		const std::vector<T>& lRightVector = lRightArray;
 		return (lLeftVector < lRightVector);
 	schnaps_StackTraceEndM("bool ArrayT<T>::isLess(const Object& inRightObj) const");
@@ -133,7 +135,7 @@ bool core::ArrayT<T>::isLess(const core::Object& inRightObj) const {
  *  \throw IOException If a problem occurred during the operation (usually bad format).
  */
 template<class T>
-void core::ArrayT<T>::read(PACC::XML::ConstIterator inIter) {
+void SCHNAPS::Core::ArrayT<T>::read(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceBeginM();
 		if (inIter->getType() != PACC::XML::eString) {
 			throw schnaps_IOExceptionNodeM(*inIter,"expected string to read array!");
@@ -161,7 +163,7 @@ void core::ArrayT<T>::read(PACC::XML::ConstIterator inIter) {
  *  \param inIndent Whether output should be indented.
  */
 template<class T>
-void core::ArrayT<T>::write(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
+void SCHNAPS::Core::ArrayT<T>::write(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
 		std::ostringstream lOSS;
 		for (unsigned int i = 0; i < std::vector<T>::size(); ++i) {
@@ -174,4 +176,4 @@ void core::ArrayT<T>::write(PACC::XML::Streamer& ioStreamer, bool inIndent) cons
 	schnaps_StackTraceEndM("void ArrayT<T>::write(PACC::XML::Streamer& ioStreamer, bool inIndent) const");
 }
 
-#endif // core_ArrayT_hpp
+#endif // SCHNAPS_Core_ArrayT_hpp

@@ -20,7 +20,8 @@
 
 #include "SCHNAPS/Core.hpp"
 
-using namespace core;
+using namespace SCHNAPS;
+using namespace Core;
 
 Vector::Vector(const Vector& inOriginal) {
 	this->insert(this->begin(), inOriginal.begin(), inOriginal.end());
@@ -29,20 +30,20 @@ Vector::Vector(const Vector& inOriginal) {
 bool Vector::isEqual(const Object&) const {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("isEqual","Vector",getName());
-	schnaps_StackTraceEndM("bool core::Vector::isEqual(const core::Object&) const");
+	schnaps_StackTraceEndM("bool SCHNAPS::Core::Vector::isEqual(const SCHNAPS::Core::Object&) const");
 }
 
 bool Vector::isLess(const Object&) const {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("isLess","Vector",getName());
-	schnaps_StackTraceEndM("bool core::Vector::isLess(const core::Object&) const");
+	schnaps_StackTraceEndM("bool SCHNAPS::Core::Vector::isLess(const SCHNAPS::Core::Object&) const");
 }
 
 Vector& Vector::operator=(const Vector& inOriginal) {
 	schnaps_StackTraceBeginM();
 		this->insert(this->begin(), inOriginal.begin(), inOriginal.end());
 		return *this;
-	schnaps_StackTraceEndM("core::Vector& core::Vector::operator=(const core::Vector&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Vector& SCHNAPS::Core::Vector::operator=(const SCHNAPS::Core::Vector&)");
 }
 
 void Vector::readStr(const std::string& inStr) {
@@ -76,7 +77,7 @@ void Vector::readStr(const std::string& inStr) {
 #else
 			schnaps_AssertM(i == this->size());
 #endif
-	schnaps_StackTraceEndM("void core::Vector::readStr(std::string&)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Vector::readStr(std::string&)");
 }
 
 std::string Vector::writeStr() const {
@@ -88,10 +89,10 @@ std::string Vector::writeStr() const {
 		}
 		lOSS << (*this)[i]->writeStr();
 		return lOSS.str();
-	schnaps_StackTraceEndM("std::string core::Vector::writeStr() const");
+	schnaps_StackTraceEndM("std::string SCHNAPS::Core::Vector::writeStr() const");
 }
 
-void Vector::readWithSystem(PACC::XML::ConstIterator inIter, core::System& ioSystem) {
+void Vector::readWithSystem(PACC::XML::ConstIterator inIter, SCHNAPS::Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
 		if (inIter->getType() != PACC::XML::eData) {
 			throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
@@ -109,18 +110,18 @@ void Vector::readWithSystem(PACC::XML::ConstIterator inIter, core::System& ioSys
 		AnyType::Handle lElement;
 		for (PACC::XML::ConstIterator lChild = inIter->getFirstChild(); lChild; lChild++) {
 			if (lChild->getType() == PACC::XML::eData) {
-				lAlloc = core::castHandleT<core::AnyType::Alloc>(ioSystem.getFactory().getAllocator(lChild->getValue()));
+				lAlloc = SCHNAPS::Core::castHandleT<SCHNAPS::Core::AnyType::Alloc>(ioSystem.getFactory().getAllocator(lChild->getValue()));
 				if (lAlloc == NULL) {
 					std::ostringstream lOSS;
 					lOSS << "no element named '" <<  lChild->getValue();
 					lOSS << "' found in the factory";
 					throw schnaps_IOExceptionNodeM(*lChild, lOSS.str());
 				}
-				this->push_back(core::castHandleT<core::AnyType>(lAlloc->allocate()));
+				this->push_back(SCHNAPS::Core::castHandleT<SCHNAPS::Core::AnyType>(lAlloc->allocate()));
 				this->back()->readWithSystem(lChild, ioSystem);
 			}
 		}
-	schnaps_StackTraceEndM("void core::Vector::readWithSystem(PACC::XML::ConstIterator, core::System&)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Vector::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
 void Vector::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
@@ -128,5 +129,5 @@ void Vector::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const 
 		for (unsigned int i = 0; i < this->size(); i++) {
 			(*this)[i]->write(ioStreamer, inIndent);
 		}
-	schnaps_StackTraceEndM("void core::Vector::writeContent(PACC::XML::Streamer&, bool) const");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Vector::writeContent(PACC::XML::Streamer&, bool) const");
 }

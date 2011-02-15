@@ -20,7 +20,8 @@
 
 #include "SCHNAPS/Core.hpp"
 
-using namespace core;
+using namespace SCHNAPS;
+using namespace Core;
 
 /*!
  *  \brief Construct a char object with the value given.
@@ -46,28 +47,28 @@ bool Char::isEqual(const Object& inRightObj) const {
 	schnaps_StackTraceBeginM();
 		const Char& lRightWrapper = castObjectT<const Char&>(inRightObj);
 		return mValue == lRightWrapper.mValue;
-	schnaps_StackTraceEndM("bool core::Char::isEqual(const core::Object&) const");
+	schnaps_StackTraceEndM("bool SCHNAPS::Core::Char::isEqual(const SCHNAPS::Core::Object&) const");
 }
 
 bool Char::isLess(const Object& inRightObj) const {
 	schnaps_StackTraceBeginM();
 		const Char& lRightWrapper = castObjectT<const Char&>(inRightObj);
 		return mValue < lRightWrapper.mValue;
-	schnaps_StackTraceEndM("bool core::Char::isLess(const core::Object&) const");
+	schnaps_StackTraceEndM("bool SCHNAPS::Core::Char::isLess(const SCHNAPS::Core::Object&) const");
 }
 
 Char& Char::operator=(const Char& inOriginal) {
 	schnaps_StackTraceBeginM();
 		mValue = inOriginal.getValue();
 		return *this;
-	schnaps_StackTraceEndM("core::Char& core::Char::operator=(const core::Char&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Char& SCHNAPS::Core::Char::operator=(const SCHNAPS::Core::Char&)");
 }
 
 void Char::readStr(const std::string& inStr) {
 	schnaps_StackTraceBeginM();
 		std::istringstream lISS(inStr);
 		lISS >> mValue;
-	schnaps_StackTraceEndM("void core::Char::readStr(std::string&)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Char::readStr(std::string&)");
 }
 
 std::string Char::writeStr() const {
@@ -75,11 +76,11 @@ std::string Char::writeStr() const {
 		std::ostringstream lOSS;
 		lOSS << mValue;
 		return lOSS.str();
-	schnaps_StackTraceEndM("std::string core::Char::writeStr() const");
+	schnaps_StackTraceEndM("std::string SCHNAPS::Core::Char::writeStr() const");
 }
 
 AnyType::Handle Char::clone() const {
 	schnaps_StackTraceBeginM();
 		return new Char(*this);
-	schnaps_StackTraceEndM("core::Atom::Handle core::Char::clone() const");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Atom::Handle SCHNAPS::Core::Char::clone() const");
 }

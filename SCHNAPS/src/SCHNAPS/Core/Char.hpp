@@ -18,13 +18,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef core_Char_hpp
-#define core_Char_hpp
+#ifndef SCHNAPS_Core_Char_hpp
+#define SCHNAPS_Core_Char_hpp
 
 #include "SCHNAPS/Core/Atom.hpp"
 #include "SCHNAPS/Core/AllocatorT.hpp"
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
+
 /*!
  *  \class Char SCHNAPS/Core/Char.hpp "SCHNAPS/Core/Char.hpp"
  *  \brief Char class, the char implementation as Object.
@@ -81,6 +83,7 @@ public:
 private:
 	char mValue; //! Value of charobject.
 };
-} // end of core namespace
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_Char_hpp
+#endif // SCHNAPS_Core_Char_hpp

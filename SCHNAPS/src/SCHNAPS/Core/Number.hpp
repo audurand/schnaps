@@ -18,12 +18,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef core_Number_hpp
-#define core_Number_hpp
+#ifndef SCHNAPS_Core_Number_hpp
+#define SCHNAPS_Core_Number_hpp
 
 #include "SCHNAPS/Core/Atom.hpp"
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
 
 // forward declaration
 class Double;
@@ -35,7 +36,7 @@ class ULong;
 
 /*!
  *  \class Number SCHNAPS/Core/Number.hpp "SCHNAPS/Core/Number.hpp"
- *  \brief Number class, the implementation of any (std) number types as a LSD Object.
+ *  \brief Number class, the implementation of any (std) number types as a SCHNAPS object.
  */
 class Number: public Atom {
 public:
@@ -54,14 +55,14 @@ public:
 		schnaps_StackTraceBeginM();
 			const static std::string lName("Number");
 			return lName;
-		schnaps_StackTraceEndM("const std::string& core::Number::getName() const");
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Core::Number::getName() const");
 	}
 
 	virtual const std::string& getType() const {
 		schnaps_StackTraceBeginM();
 			const static std::string lType("Number");
 			return lType;
-		schnaps_StackTraceEndM("const std::string& core::Number::getType() const");
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Core::Number::getType() const");
 	}
 
 	Number& operator=(const Number& inOriginal);
@@ -96,6 +97,7 @@ public:
 	//! Casting operator to unsigned long.
 	virtual operator ULong() const;
 };
-} // end of core namespace
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif /* core_Number_hpp */
+#endif /* SCHNAPS_Core_Number_hpp */

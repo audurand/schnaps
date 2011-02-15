@@ -24,13 +24,14 @@
  *
  */
 
-#ifndef core_Pointer_hpp
-#define core_Pointer_hpp
+#ifndef SCHNAPS_Core_Pointer_hpp
+#define SCHNAPS_Core_Pointer_hpp
 
 #include "SCHNAPS/Core/Object.hpp"
 #include "SCHNAPS/Core/AssertException.hpp"
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
 
 /*!
  *  \class Pointer SCHNAPS/Core/Pointer.hpp "SCHNAPS/Core/Pointer.hpp"
@@ -58,7 +59,7 @@ public:
 	 *  \param inPointer Smart pointer to copy.
 	 */
 	inline Pointer(const Pointer& inPointer) :
-		mObjectPointer((inPointer.getPointer() != NULL) ? (const_cast<core::Object*> (inPointer.getPointer())->refer())
+		mObjectPointer((inPointer.getPointer() != NULL) ? (const_cast<SCHNAPS::Core::Object*> (inPointer.getPointer())->refer())
 				: NULL) {
 	}
 
@@ -236,6 +237,7 @@ public:
 private:
 	Object* mObjectPointer; //!< Pointer to the object refered.
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_Pointer_hpp
+#endif // SCHNAPS_Core_Pointer_hpp

@@ -24,15 +24,16 @@
  *
  */
 
-#ifndef core_IsEqualMapPairPredicate_hpp
-#define core_IsEqualMapPairPredicate_hpp
+#ifndef SCHNAPS_Core_IsEqualMapPairPredicate_hpp
+#define SCHNAPS_Core_IsEqualMapPairPredicate_hpp
 
 #include <utility>
 #include <string>
 
 #include "SCHNAPS/Core/Object.hpp"
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
 
 /*!
  *  \class IsEqualMapPairPredicate SCHNAPS/Core/IsEqualMapPairPredicate.hpp
@@ -68,6 +69,7 @@ public:
 				"bool operator()(const std::pair<std::string,Object::Handle>& inLeftPair, const std::pair<std::string,Object::Handle>& inRightPair) const");
 	}
 };
-}
+} //end of Core namespace
+} //end of SCHNAPS namespace
 
-#endif // core_IsEqualMapPairPredicate_hpp
+#endif // SCHNAPS_Core_IsEqualMapPairPredicate_hpp

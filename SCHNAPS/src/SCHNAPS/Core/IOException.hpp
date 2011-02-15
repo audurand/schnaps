@@ -24,8 +24,8 @@
  *
  */
 
-#ifndef core_IOException_hpp
-#define core_IOException_hpp
+#ifndef SCHNAPS_Core_IOException_hpp
+#define SCHNAPS_Core_IOException_hpp
 
 #include <string>
 
@@ -33,12 +33,12 @@
 #include "SCHNAPS/Core/TargetedException.hpp"
 
 /*!
- *  \def   core_IOExceptionMessageM
+ *  \def   SCHNAPS_Core_IOExceptionMessageM
  *  \brief Construct a IOException using the message given.
  *  \param MESS Exception message.
  */
 #define schnaps_IOExceptionMessageM(MESS) \
-  core::IOException((MESS),__FILE__,__LINE__)
+  SCHNAPS::Core::IOException((MESS),__FILE__,__LINE__)
 
 /*!
  *  \def   schnaps_IOExceptionNodeM
@@ -47,11 +47,12 @@
  *  \param MESS Exception message.
  */
 #define schnaps_IOExceptionNodeM(XMLNODE,MESS) \
-  core::IOException((XMLNODE),(MESS),__FILE__,__LINE__)
+  SCHNAPS::Core::IOException((XMLNODE),(MESS),__FILE__,__LINE__)
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
 
-// Forward declarations
+// forward declaration
 template<class T, class BaseType> class AllocatorT;
 template<class T, class BaseType> class PointerT;
 template<class T, class BaseType> class ContainerT;
@@ -76,6 +77,7 @@ public:
 
 	virtual const char* getExceptionName() const throw ();
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_IOException_hpp
+#endif // SCHNAPS_Core_IOException_hpp

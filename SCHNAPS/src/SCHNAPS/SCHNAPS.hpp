@@ -22,6 +22,6 @@
 #define SCHNAPS_hpp
 
 #include "SCHNAPS/Core.hpp"
-#include "SCHNAPS/Simulator.hpp"
+#include "SCHNAPS/Simulation.hpp"
 
 #endif /* SCHNAPS_hpp */

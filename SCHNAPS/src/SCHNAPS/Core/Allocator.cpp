@@ -22,13 +22,14 @@
 
 #include "SCHNAPS/Core.hpp"
 
-using namespace core;
+using namespace SCHNAPS;
+using namespace Core;
 
 /*!
  *  \brief  Allocate a new object on the heap.
  *  \return Pointer to the allocated object.
  */
-core::Object* core::Allocator::allocate() const {
+SCHNAPS::Core::Object* SCHNAPS::Core::Allocator::allocate() const {
 	schnaps_StackTraceBeginM();
 #ifndef SCHNAPS_NDEBUG
 		Object* lObject = new Object;
@@ -37,7 +38,7 @@ core::Object* core::Allocator::allocate() const {
 #else // SCHNAPS_NDEBUG
 		return new Object;
 #endif // SCHNAPS_NDEBUG
-	schnaps_StackTraceEndM("core::Object* core::Allocator::allocate() const");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Object* SCHNAPS::Core::Allocator::allocate() const");
 }
 
 /*!
@@ -45,7 +46,7 @@ core::Object* core::Allocator::allocate() const {
  *  \param  inOriginal Constant reference to the original object to clone.
  *  \return Pointer to the allocated object.
  */
-core::Object* core::Allocator::clone(const core::Object& inOriginal) const {
+SCHNAPS::Core::Object* SCHNAPS::Core::Allocator::clone(const SCHNAPS::Core::Object& inOriginal) const {
   schnaps_StackTraceBeginM();
 #ifndef SCHNAPS_NDEBUG
 	  Object* lObject = new Object(inOriginal);
@@ -54,7 +55,7 @@ core::Object* core::Allocator::clone(const core::Object& inOriginal) const {
 #else // SCHNAPS_NDEBUG
 	  return new Object(inOriginal);
 #endif // SCHNAPS_NDEBUG
-  schnaps_StackTraceEndM("core::Object* core::Allocator::clone(const core::Object&) const");
+  schnaps_StackTraceEndM("SCHNAPS::Core::Object* SCHNAPS::Core::Allocator::clone(const SCHNAPS::Core::Object&) const");
 }
 
 /*!
@@ -62,9 +63,9 @@ core::Object* core::Allocator::clone(const core::Object& inOriginal) const {
  *  \param outCopy Constant reference to the original object to copy.
  *  \param inOriginal  Reference to the object that is a copy of the original.
  */
-void core::Allocator::copy(core::Object& outCopy, const core::Object& inOriginal) const {
+void SCHNAPS::Core::Allocator::copy(SCHNAPS::Core::Object& outCopy, const SCHNAPS::Core::Object& inOriginal) const {
   schnaps_StackTraceBeginM();
 	  outCopy = inOriginal;
-  schnaps_StackTraceEndM("void core::Allocator::copy(core::Object&, const core::Object&) const");
+  schnaps_StackTraceEndM("void SCHNAPS::Core::Allocator::copy(SCHNAPS::Core::Object&, const SCHNAPS::Core::Object&) const");
 }
 

@@ -18,14 +18,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef core_PrimitiveTree_hpp
-#define core_PrimitiveTree_hpp
+#ifndef SCHNAPS_Core_PrimitiveTree_hpp
+#define SCHNAPS_Core_PrimitiveTree_hpp
 
 #include <vector>
 
 #include "SCHNAPS/Core/Primitive.hpp"
 
-namespace core {
+namespace SCHNAPS {
+
+namespace Core {
 
 /*!
  *  \struct Node SCHNAPS/Core/PrimitiveTree.hpp "SCHNAPS/Core/PrimitiveTree.hpp"
@@ -85,6 +87,7 @@ private:
 	//! Write a primitive sub-tree into a XML streamer.
 	unsigned int writeSubTree(PACC::XML::Streamer& ioStreamer, unsigned int inN, bool inIndent = true) const;
 };
-} // end of core namespace
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif /* core_PrimitiveTree_hpp */
+#endif /* SCHNAPS_Core_PrimitiveTree_hpp */

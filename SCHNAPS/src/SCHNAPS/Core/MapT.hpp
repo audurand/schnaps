@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef core_MapT_hpp
-#define core_MapT_hpp
+#ifndef SCHNAPS_Core_MapT_hpp
+#define SCHNAPS_Core_MapT_hpp
 
 #include <map>
 
@@ -31,7 +31,8 @@
 #include "SCHNAPS/Core/Exception.hpp"
 #include "SCHNAPS/Core/IOException.hpp"
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
 
 /*!
  *  \class MapT SCHNAPS/Core/MapT.hpp "SCHNAPS/Core/MapT.hpp"
@@ -90,11 +91,11 @@ MapT<Key, T>::MapT(unsigned int inSize, const T& inModel) :
  *  \return True if maps are equal, false if not.
  */
 template<class Key, class T>
-bool MapT<Key, T>::isEqual(const core::Object& inRightObj) const {
+bool MapT<Key, T>::isEqual(const SCHNAPS::Core::Object& inRightObj) const {
 	schnaps_StackTraceBeginM();
-		const core::MapT<Key, T>& lLeftArray = castObjectT<const core::MapT<Key, T>&> (*this);
+		const SCHNAPS::Core::MapT<Key, T>& lLeftArray = castObjectT<const SCHNAPS::Core::MapT<Key, T>&> (*this);
 		const std::map<Key, T>& lLeftVector = lLeftArray;
-		const core::MapT<Key, T>& lRightArray = castObjectT<const core::MapT<Key, T>&> (inRightObj);
+		const SCHNAPS::Core::MapT<Key, T>& lRightArray = castObjectT<const SCHNAPS::Core::MapT<Key, T>&> (inRightObj);
 		const std::map<Key, T>& lRightVector = lRightArray;
 		return (lLeftVector == lRightVector);
 	schnaps_StackTraceEndM("bool MapT<Key, T>::isEqual(const Object& inRightObj) const");
@@ -106,15 +107,16 @@ bool MapT<Key, T>::isEqual(const core::Object& inRightObj) const {
  *  \return True if left (this) map is less than the right one, false if not.
  */
 template<class Key, class T>
-bool MapT<Key, T>::isLess(const core::Object& inRightObj) const {
+bool MapT<Key, T>::isLess(const SCHNAPS::Core::Object& inRightObj) const {
 	schnaps_StackTraceBeginM();
-		const core::MapT<Key, T>& lLeftArray = castObjectT<const core::MapT<Key, T>&> (*this);
+		const SCHNAPS::Core::MapT<Key, T>& lLeftArray = castObjectT<const SCHNAPS::Core::MapT<Key, T>&> (*this);
 		const std::map<Key, T>& lLeftVector = lLeftArray;
-		const core::MapT<Key, T>& lRightArray = castObjectT<const core::MapT<Key, T>&> (inRightObj);
+		const SCHNAPS::Core::MapT<Key, T>& lRightArray = castObjectT<const SCHNAPS::Core::MapT<Key, T>&> (inRightObj);
 		const std::map<Key, T>& lRightVector = lRightArray;
 		return (lLeftVector < lRightVector);
 	schnaps_StackTraceEndM("bool MapT<Key, T>::isLess(const Object& inRightObj) const");
 }
-} // end of core namespace
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif /* core_MapT_hpp */
+#endif /* SCHNAPS_Core_MapT_hpp */

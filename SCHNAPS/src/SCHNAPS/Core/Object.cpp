@@ -20,7 +20,8 @@
 
 #include "SCHNAPS/Core.hpp"
 
-using namespace core;
+using namespace SCHNAPS;
+using namespace Core;
 
 /*!
  *  \brief Default constructor.
@@ -38,7 +39,7 @@ Object::Object(const Object&) :
 
 /*!
  *  \brief Destructor.
- *  \throw core::InternalException If reference counter is not equal to zero.
+ *  \throw SCHNAPS::Core::InternalException If reference counter is not equal to zero.
  */
 Object::~Object() {
 	schnaps_StackTraceBeginM();
@@ -60,23 +61,23 @@ const std::string& Object::getName() const {
 	schnaps_StackTraceBeginM();
 		const static std::string mName("Non-named Object");
 		return mName;
-	schnaps_StackTraceEndM("const std::string& core::Object::getName() const");
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Core::Object::getName() const");
 }
 
 void Object::readWithSystem(PACC::XML::ConstIterator InIter, System& ioSystem) {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("readWithSystem", "Object", getName());
-	schnaps_StackTraceEndM("void core::Object::readWithSystem(PACC::XML::ConstIterator, core::System&)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Object::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
 /*!
  *  \brief Extract Object from a XML tree.
- *  \throw core::InternalException If the method is not overdefined in a subclass.
+ *  \throw SCHNAPS::Core::InternalException If the method is not overdefined in a subclass.
  */
 void Object::read(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("read", "Object", getName());
-	schnaps_StackTraceEndM("void core::Object::read(PACC::XML::ConstIterator)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Object::read(PACC::XML::ConstIterator)");
 }
 
 /*!
@@ -87,39 +88,39 @@ void Object::write(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 		ioStreamer.openTag(getName());
 		writeContent(ioStreamer, inIndent);
 		ioStreamer.closeTag();
-	schnaps_StackTraceEndM("void core::Object::write(PACC::XML::Streamer&, bool) const");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Object::write(PACC::XML::Streamer&, bool) const");
 }
 
 /*!
  *  \brief Insert an Object content into a XML streamer.
- *  \throw  core::InternalException If the method is not overdefined in a subclass.
+ *  \throw  SCHNAPS::Core::InternalException If the method is not overdefined in a subclass.
  */
 void Object::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("writeContent", "Object", getName());
-	schnaps_StackTraceEndM("void core::Object::writeContent(PACC::XML::Streamer&, bool) const");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Object::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
 /*!
  *  \brief  Test if an object is equal to another.
  *  \return True if actual object is equal to right object, false if not.
- *  \throw  core::InternalException If the method is not overdefined in a subclass.
+ *  \throw  SCHNAPS::Core::InternalException If the method is not overdefined in a subclass.
  */
 bool Object::isEqual(const Object& inRightObj) const {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("isEqual", "Object", getName());
-	schnaps_StackTraceEndM("bool core::Object::isEqual(const core::Object&) const");
+	schnaps_StackTraceEndM("bool SCHNAPS::Core::Object::isEqual(const SCHNAPS::Core::Object&) const");
 }
 
 /*!
  *  \brief  Test if an object is less than another.
  *  \return True if actual object is less than right object, false if not.
- *  \throw  core::InternalException If the method is not overdefined in a subclass.
+ *  \throw  SCHNAPS::Core::InternalException If the method is not overdefined in a subclass.
  */
 bool Object::isLess(const Object& inRightObj) const {
 	schnaps_StackTraceBeginM();
 		throw schnaps_UndefinedMethodInternalExceptionM("isLess", "Object", getName());
-	schnaps_StackTraceEndM("bool core::Object::isLess(const core::Object&) const");
+	schnaps_StackTraceEndM("bool SCHNAPS::Core::Object::isLess(const SCHNAPS::Core::Object&) const");
 }
 
 /*!
@@ -129,5 +130,5 @@ bool Object::isLess(const Object& inRightObj) const {
 Object& Object::operator=(const Object& inOriginal) {
 	schnaps_StackTraceBeginM();
 		return *this;
-	schnaps_StackTraceEndM("core::Object& core::Object::operator=(const core::Object&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Object& SCHNAPS::Core::Object::operator=(const SCHNAPS::Core::Object&)");
 }

@@ -24,15 +24,16 @@
  *
  */
 
-#ifndef core_Component_hpp
-#define core_Component_hpp
+#ifndef SCHNAPS_Core_Component_hpp
+#define SCHNAPS_Core_Component_hpp
 
 #include "SCHNAPS/Core/Object.hpp"
 #include "SCHNAPS/Core/PointerT.hpp"
 #include "SCHNAPS/Core/AllocatorT.hpp"
 #include "SCHNAPS/Core/ContainerT.hpp"
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
 
 // forward declaration
 class System;
@@ -85,7 +86,7 @@ protected:
 	std::string mName; //!< Name of component.
 	bool mInitialized; //!< Flag that indicates whether this component has been initialized.
 };
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-}
-
-#endif // core_Component_hpp
+#endif // SCHNAPS_Core_Component_hpp

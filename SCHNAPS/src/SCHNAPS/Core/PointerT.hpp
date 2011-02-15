@@ -24,13 +24,14 @@
  *
  */
 
-#ifndef core_PointerT_hpp
-#define core_PointerT_hpp
+#ifndef SCHNAPS_Core_PointerT_hpp
+#define SCHNAPS_Core_PointerT_hpp
 
 #include "SCHNAPS/Core/Object.hpp"
 #include "SCHNAPS/Core/Pointer.hpp"
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
 
 /*!
  *  \class PointerT SCHNAPS/Core/PointerT.hpp "SCHNAPS/Core/PointerT.hpp"
@@ -96,7 +97,7 @@ public:
 	 */
 	inline T& operator*() {
 		schnaps_StackTraceBeginM();
-			return static_cast<T&> (core::Pointer::operator*());
+			return static_cast<T&> (SCHNAPS::Core::Pointer::operator*());
 		schnaps_StackTraceEndM("T& PointerT<T,BaseType>::operator*()");
 	}
 
@@ -107,7 +108,7 @@ public:
 	 */
 	inline const T& operator*() const {
 		schnaps_StackTraceBeginM();
-			return static_cast<const T&> (core::Pointer::operator*());
+			return static_cast<const T&> (SCHNAPS::Core::Pointer::operator*());
 		schnaps_StackTraceEndM("const T& PointerT<T,BaseType>::operator*() const");
 	}
 
@@ -118,7 +119,7 @@ public:
 	 */
 	inline T* operator->() {
 		schnaps_StackTraceBeginM();
-			return static_cast<T*> (core::Pointer::operator->());
+			return static_cast<T*> (SCHNAPS::Core::Pointer::operator->());
 		schnaps_StackTraceEndM("T* PointerT<T,BaseType>::operator->()");
 	}
 
@@ -129,7 +130,7 @@ public:
 	 */
 	inline const T* operator->() const {
 		schnaps_StackTraceBeginM();
-			return static_cast<const T*> (core::Pointer::operator->());
+			return static_cast<const T*> (SCHNAPS::Core::Pointer::operator->());
 		schnaps_StackTraceEndM("const T* PointerT<T,BaseType>::operator->() const");
 	}
 
@@ -140,7 +141,7 @@ public:
 	 */
 	inline bool operator==(const T* inObjPtr) const {
 		schnaps_StackTraceBeginM();
-			return core::Pointer::operator==(inObjPtr);
+			return SCHNAPS::Core::Pointer::operator==(inObjPtr);
 		schnaps_StackTraceEndM("bool PointerT<T,BaseType>::operator==(const T* inObjPtr) const");
 	}
 
@@ -151,7 +152,7 @@ public:
 	 */
 	inline bool operator==(const PointerT<T, BaseType>& inPointerT) const {
 		schnaps_StackTraceBeginM();
-			return core::Pointer::operator==(inPointerT);
+			return SCHNAPS::Core::Pointer::operator==(inPointerT);
 		schnaps_StackTraceEndM("bool PointerT<T,BaseType>::operator==(const PointerT<T,BaseType>& inPointerT) const");
 	}
 
@@ -162,7 +163,7 @@ public:
 	 */
 	inline bool operator!=(const T* inObjPtr) const {
 		schnaps_StackTraceBeginM();
-			return core::Pointer::operator!=(inObjPtr);
+			return SCHNAPS::Core::Pointer::operator!=(inObjPtr);
 		schnaps_StackTraceEndM("bool PointerT<T,BaseType>::operator!=(const T* inObjPtr) const");
 	}
 
@@ -173,7 +174,7 @@ public:
 	 */
 	inline bool operator!=(const PointerT<T, BaseType>& inPointerT) const {
 		schnaps_StackTraceBeginM();
-			return core::Pointer::operator!=(inPointerT);
+			return SCHNAPS::Core::Pointer::operator!=(inPointerT);
 		schnaps_StackTraceEndM("bool PointerT<T,BaseType>::operator!=(const PointerT<T,BaseType>& inPointerT) const");
 	}
 
@@ -183,7 +184,7 @@ public:
 	 */
 	inline T* getPointer() {
 		schnaps_StackTraceBeginM();
-			return static_cast<T*> (core::Pointer::getPointer());
+			return static_cast<T*> (SCHNAPS::Core::Pointer::getPointer());
 		schnaps_StackTraceEndM("T* PointerT<T,BaseType>::getPointer()");
 	}
 
@@ -193,10 +194,11 @@ public:
 	 */
 	inline const T* getPointer() const {
 		schnaps_StackTraceBeginM();
-			return static_cast<const T*> (core::Pointer::getPointer());
+			return static_cast<const T*> (SCHNAPS::Core::Pointer::getPointer());
 		schnaps_StackTraceEndM("const T* PointerT<T,BaseType>::getPointer() const");
 	}
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_PointerT_hpp
+#endif // SCHNAPS_Core_PointerT_hpp

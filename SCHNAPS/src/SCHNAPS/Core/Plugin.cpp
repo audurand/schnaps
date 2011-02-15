@@ -30,7 +30,8 @@
 #include <sstream>
 #include <stdexcept>
 
-using namespace core;
+using namespace SCHNAPS;
+using namespace Core;
 
 void Plugin::read(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceBeginM();
@@ -50,13 +51,13 @@ void Plugin::read(PACC::XML::ConstIterator inIter) {
 			throw schnaps_IOExceptionNodeM(*inIter, "source attribute expected!");
 		}
 		load(lSource);
-	schnaps_StackTraceEndM("void core::Plugin::read(PACC::XML::ConstIterator)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Plugin::read(PACC::XML::ConstIterator)");
 }
 
 void Plugin::readWithSystem(PACC::XML::ConstIterator inIter, System& ioSystem) {
 	schnaps_StackTraceBeginM();
 		read(inIter);
-	schnaps_StackTraceEndM("void core::Plugin::readWithSystem(PACC::XML::ConstIterator, System&)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Plugin::readWithSystem(PACC::XML::ConstIterator, System&)");
 }
 
 /*!
@@ -69,7 +70,7 @@ void Plugin::write(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 		ioStreamer.openTag(getName(), inIndent);
 		writeContent(ioStreamer, inIndent);
 		ioStreamer.closeTag();
-	schnaps_StackTraceEndM("void core::Plugin::write(PACC::XML::Streamer&, bool) const");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Plugin::write(PACC::XML::Streamer&, bool) const");
 }
 
 /*!
@@ -80,7 +81,7 @@ void Plugin::write(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 void Plugin::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
 		ioStreamer.insertAttribute("source", mSource);
-	schnaps_StackTraceEndM("void core::Plugin::writeContent(PACC::XML::Streamer&, bool) const");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Plugin::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
 /*!

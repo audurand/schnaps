@@ -24,8 +24,8 @@
  *
  */
 
-#ifndef core_ContainerT_hpp
-#define core_ContainerT_hpp
+#ifndef SCHNAPS_Core_ContainerT_hpp
+#define SCHNAPS_Core_ContainerT_hpp
 
 #include "SCHNAPS/Core/Allocator.hpp"
 #include "SCHNAPS/Core/AllocatorT.hpp"
@@ -34,7 +34,9 @@
 #include "SCHNAPS/Core/PointerT.hpp"
 #include "SCHNAPS/Core/RunTimeException.hpp"
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
+
 /*!
  *  \class ContainerT SCHNAPS/Core/ContainerT.hpp "SCHNAPS/Core/ContainerT.hpp"
  *  \brief Templated class defining a T-type container, inheriting from BaseType container.
@@ -134,7 +136,8 @@ public:
 		schnaps_StackTraceEndM("const T::Handle& ContainerT<T,BaseType>::back() const");
 	}
 };
-} // end of core namespace
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
 /*!
  *  \brief Construct a container.
@@ -142,8 +145,8 @@ public:
  *  \param inModel Initial value of the composing elements.
  */
 template<class T, class BaseType>
-core::ContainerT<T, BaseType>::ContainerT(unsigned int inN, typename T::Handle inModel) :
+SCHNAPS::Core::ContainerT<T, BaseType>::ContainerT(unsigned int inN, typename T::Handle inModel) :
 	BaseType(inN, inModel) {
 }
 
-#endif // core_ContainerT_hpp
+#endif // SCHNAPS_Core_ContainerT_hpp

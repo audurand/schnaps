@@ -22,7 +22,8 @@
 
 #include <math.h>
 
-using namespace core;
+using namespace SCHNAPS;
+using namespace Core;
 
 /*!
  *  \brief Construct a int object with the value given.
@@ -48,28 +49,28 @@ bool Int::isEqual(const Object& inRightObj) const {
 	schnaps_StackTraceBeginM();
 		const Int& lRightWrapper = castObjectT<const Int&>(inRightObj);
 		return mValue == lRightWrapper.mValue;
-	schnaps_StackTraceEndM("bool core::Int::isEqual(const core::Object&) const");
+	schnaps_StackTraceEndM("bool SCHNAPS::Core::Int::isEqual(const SCHNAPS::Core::Object&) const");
 }
 
 bool Int::isLess(const Object& inRightObj) const {
 	schnaps_StackTraceBeginM();
 		const Int& lRightWrapper = castObjectT<const Int&>(inRightObj);
 		return mValue < lRightWrapper.mValue;
-	schnaps_StackTraceEndM("bool core::Int::isLess(const core::Object&) const");
+	schnaps_StackTraceEndM("bool SCHNAPS::Core::Int::isLess(const SCHNAPS::Core::Object&) const");
 }
 
 Int& Int::operator=(const Int& inOriginal) {
 	schnaps_StackTraceBeginM();
 		mValue = inOriginal.getValue();
 		return *this;
-	schnaps_StackTraceEndM("core::Int& core::Int::operator=(const core::Int&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Int& SCHNAPS::Core::Int::operator=(const SCHNAPS::Core::Int&)");
 }
 
 void Int::readStr(const std::string& inStr) {
 	schnaps_StackTraceBeginM();
 		std::istringstream lISS(inStr);
 		lISS >> mValue;
-	schnaps_StackTraceEndM("void core::Int::readStr(std::string&)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Int::readStr(std::string&)");
 }
 
 std::string Int::writeStr() const {
@@ -77,20 +78,20 @@ std::string Int::writeStr() const {
 		std::ostringstream lOSS;
 		lOSS << mValue;
 		return lOSS.str();
-	schnaps_StackTraceEndM("std::string core::Int::writeStr() const");
+	schnaps_StackTraceEndM("std::string SCHNAPS::Core::Int::writeStr() const");
 }
 
 AnyType::Handle Int::clone() const {
 	schnaps_StackTraceBeginM();
 		return new Int(*this);
-	schnaps_StackTraceEndM("core::AnyType::Handle core::Int::clone() const");
+	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Core::Int::clone() const");
 }
 
 Number& Int::abs() {
 	schnaps_StackTraceBeginM();
 		mValue = std::fabs(mValue);
 		return *this;
-	schnaps_StackTraceEndM("core::Number& core::Int::abs()");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Int::abs()");
 }
 
 Number& Int::add(Number& inRightNumber) {
@@ -98,7 +99,7 @@ Number& Int::add(Number& inRightNumber) {
 	Int lRightInt = inRightNumber;
 		mValue += lRightInt.getValue();
 		return *this;
-	schnaps_StackTraceEndM("core::Number& core::Int::add(core::Number&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Int::add(SCHNAPS::Core::Number&)");
 }
 
 Number& Int::div(Number& inRightNumber) {
@@ -106,7 +107,7 @@ Number& Int::div(Number& inRightNumber) {
 	Int lRightInt = inRightNumber;
 		mValue /= lRightInt.getValue();
 		return *this;
-	schnaps_StackTraceEndM("core::Number& core::Int::div(core::Number&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Int::div(SCHNAPS::Core::Number&)");
 }
 
 Number& Int::mod(Number& inRightNumber) {
@@ -114,7 +115,7 @@ Number& Int::mod(Number& inRightNumber) {
 	Int lRightInt = inRightNumber;
 		mValue % lRightInt.getValue();
 		return *this;
-	schnaps_StackTraceEndM("core::Number& core::Int::mod(core::Number&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Int::mod(SCHNAPS::Core::Number&)");
 }
 
 Number& Int::mult(Number& inRightNumber) {
@@ -122,7 +123,7 @@ Number& Int::mult(Number& inRightNumber) {
 	Int lRightInt = inRightNumber;
 		mValue *= lRightInt.getValue();
 		return *this;
-	schnaps_StackTraceEndM("core::Number& core::Int::mult(core::Number&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Int::mult(SCHNAPS::Core::Number&)");
 }
 
 Number& Int::sub(Number& inRightNumber) {
@@ -130,46 +131,46 @@ Number& Int::sub(Number& inRightNumber) {
 	Int lRightInt = inRightNumber;
 		mValue -= lRightInt.getValue();
 		return *this;
-	schnaps_StackTraceEndM("core::Number& core::Int::sub(core::Number&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Int::sub(SCHNAPS::Core::Number&)");
 }
 
 Int::operator Double() const {
 	schnaps_StackTraceBeginM();
 		Double lDouble(static_cast<double>(mValue));
 		return lDouble;
-	schnaps_StackTraceEndM("core::Int::operator Double() const");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Int::operator Double() const");
 }
 
 Int::operator Float() const {
 	schnaps_StackTraceBeginM();
 		Float lFloat(static_cast<float>(mValue));
 		return lFloat;
-	schnaps_StackTraceEndM("core::Int::operator Float() const");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Int::operator Float() const");
 }
 
 Int::operator Int() const {
 	schnaps_StackTraceBeginM();
 		return *this;
-	schnaps_StackTraceEndM("core::Int::operator Int() const");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Int::operator Int() const");
 }
 
 Int::operator Long() const {
 	schnaps_StackTraceBeginM();
 		Long lLong(static_cast<long>(mValue));
 		return lLong;
-	schnaps_StackTraceEndM("core::Int::operator Long() const");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Int::operator Long() const");
 }
 
 Int::operator UInt() const {
 	schnaps_StackTraceBeginM();
 		UInt lUInt(static_cast<unsigned int>(mValue));
 		return lUInt;
-	schnaps_StackTraceEndM("core::Int::operator UInt() const");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Int::operator UInt() const");
 }
 
 Int::operator ULong() const {
 	schnaps_StackTraceBeginM();
 		ULong lULong(static_cast<unsigned long>(mValue));
 		return lULong;
-	schnaps_StackTraceEndM("core::Int::operator ULong() const");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Int::operator ULong() const");
 }

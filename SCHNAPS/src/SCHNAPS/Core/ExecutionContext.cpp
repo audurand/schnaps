@@ -20,7 +20,8 @@
 
 #include "SCHNAPS/Core.hpp"
 
-using namespace core;
+using namespace SCHNAPS;
+using namespace Core;
 
 ExecutionContext::ExecutionContext() :
 		mSystem(NULL),
@@ -46,5 +47,5 @@ ExecutionContext& ExecutionContext::operator=(const ExecutionContext& inOriginal
 		mPrimitiveTree = inOriginal.mPrimitiveTree;
 		mThreadNb = inOriginal.mThreadNb;
 		return *this;
-	schnaps_StackTraceEndM("core::ExecutionContext& core::ExecutionContext::operator=(const core::ExecutionContext&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::ExecutionContext& SCHNAPS::Core::ExecutionContext::operator=(const SCHNAPS::Core::ExecutionContext&)");
 }

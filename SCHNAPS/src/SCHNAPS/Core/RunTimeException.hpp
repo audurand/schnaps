@@ -24,8 +24,8 @@
  *
  */
 
-#ifndef core_RunTimeException_hpp
-#define core_RunTimeException_hpp
+#ifndef SCHNAPS_Core_RunTimeException_hpp
+#define SCHNAPS_Core_RunTimeException_hpp
 
 #include <string>
 
@@ -39,10 +39,13 @@
  *  \param MESS Exception message.
  */
 #define schnaps_RunTimeExceptionM(MESS) \
-  core::RunTimeException((MESS),__FILE__,__LINE__)
+  SCHNAPS::Core::RunTimeException((MESS),__FILE__,__LINE__)
 
-namespace core {
-// Forward declarations.
+namespace SCHNAPS {
+
+namespace Core {
+	
+// forward declarations
 template<class T, class BaseType> class AllocatorT;
 template<class T, class BaseType> class PointerT;
 template<class T, class BaseType> class ContainerT;
@@ -65,6 +68,7 @@ public:
 
 	virtual const char* getExceptionName() const throw ();
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_RunTimeException_hpp
+#endif // SCHNAPS_Core_RunTimeException_hpp

@@ -24,17 +24,19 @@
  *
  */
 
-#ifndef core_TargetedException_hpp
-#define core_TargetedException_hpp
+#ifndef SCHNAPS_Core_TargetedException_hpp
+#define SCHNAPS_Core_TargetedException_hpp
 
 #include <string>
 
 #include "SCHNAPS/Core/Object.hpp"
 #include "SCHNAPS/Core/Exception.hpp"
 
-namespace core {
+namespace SCHNAPS {
+	
+namespace Core {
 
-// Forward declaration.
+// forward declarations
 template<class T, class BaseType> class AbstractAllocT;
 template<class T, class BaseType> class PointerT;
 template<class T, class BaseType> class ContainerT;
@@ -100,6 +102,7 @@ private:
 	std::string mFileName; //!< Name of the file where the error is targeted.
 	unsigned int mLineNumber; //!< Line number in the file where the error is targeted.
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_ObjectException_hpp
+#endif // SCHNAPS_Core_ObjectException_hpp

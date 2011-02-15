@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef core_ExecutionContext_hpp
-#define core_ExecutionContext_hpp
+#ifndef SCHNAPS_Core_ExecutionContext_hpp
+#define SCHNAPS_Core_ExecutionContext_hpp
 
 #include "SCHNAPS/Core/Object.hpp"
 #include "SCHNAPS/Core/AllocatorT.hpp"
@@ -28,7 +28,9 @@
 #include "SCHNAPS/Core/PrimitiveTree.hpp"
 #include "SCHNAPS/Core/System.hpp"
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
+
 /*!
  *  \class ExecutionContext SCHNAPS/Core/ExecutionContext.hpp "SCHNAPS/Core/ExecutionContext.hpp"
  *  \brief ExecutionContext class, the context for the execution of a primitive tree.
@@ -111,6 +113,7 @@ protected:
 
 	unsigned int mThreadNb;					//!< Thread nnumber associated to that context.
 };
-} // end of core namespace
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif /* core_ExecutionContext_hpp */
+#endif /* SCHNAPS_Core_ExecutionContext_hpp */

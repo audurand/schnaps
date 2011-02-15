@@ -18,13 +18,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef core_Logger_hpp
-#define core_Logger_hpp
+#ifndef SCHNAPS_Core_Logger_hpp
+#define SCHNAPS_Core_Logger_hpp
 
 #include "SCHNAPS/gzstream.h"
 #include "SCHNAPS/Core/Object.hpp"
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
 
 /*!
  *  \class Logger SCHNAPS/Core/Logger.hpp "SCHNAPS/Core/Logger.hpp"
@@ -55,6 +56,7 @@ private:
 	bool mEnabled;			//!< True if log is enabled.
 	ogzstream* mOGZS; 		//!< Output pointer.
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_Logger_hpp
+#endif // SCHNAPS_Core_Logger_hpp

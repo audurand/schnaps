@@ -24,8 +24,8 @@
  *
  */
 
-#ifndef core_RouletteT_hpp
-#define core_RouletteT_hpp
+#ifndef SCHNAPS_Core_RouletteT_hpp
+#define SCHNAPS_Core_RouletteT_hpp
 
 #include <vector>
 
@@ -35,17 +35,12 @@
 #include "SCHNAPS/Core/ContainerT.hpp"
 #include "SCHNAPS/Core/Randomizer.hpp"
 
-namespace core {
-/*!
- *  \class RouletteT RouletteT.hpp "RouletteT.hpp"
- *  \brief Templated class defining a T-type roulette wheel.
- *  \param T Type of the values in the wheel.
- *  \author Matthew Walker
- *  \author Christian Gagne
- *  \author Audrey Durand
- */
+namespace SCHNAPS {
+
+namespace Core {
+
 template<class T>
-class RouletteT: public core::Object, public std::vector<std::pair<double, T> > {
+class RouletteT: public SCHNAPS::Core::Object, public std::vector<std::pair<double, T> > {
 public:
 	//! RouletteT allocator type.
 	typedef AllocatorT<RouletteT<T> , Object::Alloc> Alloc;
@@ -68,7 +63,7 @@ public:
 				inWeight += this->back().first;
 			}
 			push_back(std::make_pair(inWeight, inValue));
-		schnaps_StackTraceEndM("void core::RouletteT<T>::insert(const T&, double)");
+		schnaps_StackTraceEndM("void SCHNAPS::Core::RouletteT<T>::insert(const T&, double)");
 	}
 
 	/*!
@@ -86,14 +81,14 @@ public:
 			for (unsigned int i = 1; i < this->size(); ++i) {
 				(*this)[i].first += (*this)[i - 1].first;
 			}
-		schnaps_StackTraceEndM("void core::RouletteT<T>::optimize()");
+		schnaps_StackTraceEndM("void SCHNAPS::Core::RouletteT<T>::optimize()");
 	}
 
 	/*!
 	 *  \brief Select a value from the roulette wheel
 	 *  \param ioRandomizer Randomizer used to select element.
 	 */
-	inline const T& select(core::Randomizer& ioRandomizer) const {
+	inline const T& select(SCHNAPS::Core::Randomizer& ioRandomizer) const {
 		schnaps_StackTraceBeginM();
 			schnaps_AssertM(this->empty() == false);
 				const double lDice = ioRandomizer.rollUniform(0., this->back().first);
@@ -104,9 +99,10 @@ public:
 				}
 				schnaps_AssertM(lDice < this->back().first);
 				return this->back().second;
-		schnaps_StackTraceEndM("const T& core::RouletteT<T>::select(core::Randomizer&)");
+		schnaps_StackTraceEndM("const T& SCHNAPS::Core::RouletteT<T>::select(SCHNAPS::Core::Randomizer&)");
 	}
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_RouletteT_hpp
+#endif // SCHNAPS_Core_RouletteT_hpp

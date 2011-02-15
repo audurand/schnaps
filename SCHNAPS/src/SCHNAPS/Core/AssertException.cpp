@@ -22,7 +22,8 @@
 
 #include "SCHNAPS/Core.hpp"
 
-using namespace core;
+using namespace SCHNAPS;
+using namespace Core;
 
 /*!
  *  \brief Construct an AssertException.
@@ -37,5 +38,5 @@ AssertException::AssertException(std::string inMessage,
 {}
 
 const char* AssertException::getExceptionName() const throw() {
-	return "core::AssertException";
+	return "SCHNAPS::Core::AssertException";
 }

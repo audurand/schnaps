@@ -24,8 +24,8 @@
  *
  */
 
-#ifndef core_HashString_hpp
-#define core_HashString_hpp
+#ifndef SCHNAPS_Core_HashString_hpp
+#define SCHNAPS_Core_HashString_hpp
 
 #include <string>
 
@@ -51,7 +51,8 @@
 #include <ext/hash_map>
 #endif // SCHNAPS_HAVE_GNUCXX_HASHMAP
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
 
 /*!
  *  \class HashString SCHNAPS/Core/HashString.hpp "SCHNAPS/Core/HashString.hpp"
@@ -123,6 +124,7 @@ public:
 		return hash;
 	}
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_HashString_hpp
+#endif // SCHNAPS_Core_HashString_hpp

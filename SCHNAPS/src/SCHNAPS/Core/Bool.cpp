@@ -20,7 +20,8 @@
 
 #include "SCHNAPS/Core.hpp"
 
-using namespace core;
+using namespace SCHNAPS;
+using namespace Core;
 
 /*!
  *  \brief Construct a bool object with the value given.
@@ -46,21 +47,21 @@ bool Bool::isEqual(const Object& inRightObj) const {
 	schnaps_StackTraceBeginM();
 		const Bool& lRightWrapper = castObjectT<const Bool&>(inRightObj);
 		return mValue == lRightWrapper.mValue;
-	schnaps_StackTraceEndM("bool core::Bool::isEqual(const core::Object&) const");
+	schnaps_StackTraceEndM("bool SCHNAPS::Core::Bool::isEqual(const SCHNAPS::Core::Object&) const");
 }
 
 bool Bool::isLess(const Object& inRightObj) const {
 	schnaps_StackTraceBeginM();
 		const Bool& lRightWrapper = castObjectT<const Bool&>(inRightObj);
 		return mValue < lRightWrapper.mValue;
-	schnaps_StackTraceEndM("bool core::Bool::isLess(const core::Object&) const");
+	schnaps_StackTraceEndM("bool SCHNAPS::Core::Bool::isLess(const SCHNAPS::Core::Object&) const");
 }
 
 Bool& Bool::operator=(const Bool& inOriginal) {
 	schnaps_StackTraceBeginM();
 		mValue = inOriginal.getValue();
 		return *this;
-	schnaps_StackTraceEndM("core::Bool& core::Bool::operator=(const core::Bool&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Bool& SCHNAPS::Core::Bool::operator=(const SCHNAPS::Core::Bool&)");
 }
 
 void Bool::readStr(const std::string& inStr) {
@@ -72,7 +73,7 @@ void Bool::readStr(const std::string& inStr) {
 		} else {
 			throw schnaps_InternalExceptionM("Unknown bool value '" + inStr + "'!");
 		}
-	schnaps_StackTraceEndM("void core::Bool::readStr(std::string&)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Bool::readStr(std::string&)");
 }
 
 std::string Bool::writeStr() const {
@@ -84,11 +85,11 @@ std::string Bool::writeStr() const {
 			lStr = "false";
 		}
 		return lStr;
-	schnaps_StackTraceEndM("std::string core::Bool::writeStr() const");
+	schnaps_StackTraceEndM("std::string SCHNAPS::Core::Bool::writeStr() const");
 }
 
 AnyType::Handle Bool::clone() const {
 	schnaps_StackTraceBeginM();
 		return new Bool(*this);
-	schnaps_StackTraceEndM("core::AnyType::Handle core::Bool::clone() const");
+	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Core::Bool::clone() const");
 }

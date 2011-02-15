@@ -24,8 +24,8 @@
  *
  */
 
-#ifndef core_castObjectT_hpp
-#define core_castObjectT_hpp
+#ifndef SCHNAPS_Core_castObjectT_hpp
+#define SCHNAPS_Core_castObjectT_hpp
 
 #include <typeinfo>
 #include <string>
@@ -34,16 +34,18 @@
 #include "SCHNAPS/Core/Pointer.hpp"
 #include "SCHNAPS/Core/BadCastException.hpp"
 
-namespace core {
+namespace SCHNAPS {
+namespace Core {
+
 /*!
  *  \brief   Cast an Object pointer into a CastType pointer.
  *  \param   inObject Object pointer to be casted.
  *  \return  Casted pointer to the object.
- *  \relates core::Object
+ *  \relates SCHNAPS::Core::Object
  *  \warning If RTTI is enabled and the typecast is invalid, the function return a NULL pointer.
  */
 template<class CastPointerType>
-inline CastPointerType castObjectT(core::Object* inObject) {
+inline CastPointerType castObjectT(SCHNAPS::Core::Object* inObject) {
 	schnaps_StackTraceBeginM();
 #ifdef SCHNAPS_NDEBUG
 		return static_cast<CastPointerType>(inObject);
@@ -61,11 +63,11 @@ inline CastPointerType castObjectT(core::Object* inObject) {
  *  \brief   Cast an Object constant pointer into a CastType constant pointer.
  *  \param   inObject Object constant pointer to be casted.
  *  \return  Casted constant pointer to the object.
- *  \relates core::Object
+ *  \relates SCHNAPS::Core::Object
  *  \warning If RTTI is enabled and the typecast is invalid, the function return a NULL pointer.
  */
 template<class CastPointerType>
-inline CastPointerType castObjectT(const core::Object* inObject) {
+inline CastPointerType castObjectT(const SCHNAPS::Core::Object* inObject) {
 	schnaps_StackTraceBeginM();
 #ifdef SCHNAPS_NDEBUG
 		return static_cast<CastPointerType>(inObject);
@@ -84,10 +86,10 @@ inline CastPointerType castObjectT(const core::Object* inObject) {
  *  \param   inObject Object reference to be casted.
  *  \return  Casted reference to the object.
  *  \throw   BadCastException If RTTI is enabled and the typecast is invalid.
- *  \relates core::Object
+ *  \relates SCHNAPS::Core::Object
  */
 template<class CastRefType>
-inline CastRefType castObjectT(core::Object& inObject) {
+inline CastRefType castObjectT(SCHNAPS::Core::Object& inObject) {
 	schnaps_StackTraceBeginM();
 #ifdef SCHNAPS_NDEBUG
 		return static_cast<CastRefType>(inObject);
@@ -103,7 +105,7 @@ inline CastRefType castObjectT(core::Object& inObject) {
 			lMessage += "Desired type cast: ";
 			lMessage += typeid(CastRefType).name();
 			lMessage += ".";
-			throw core_BadCastExceptionM(lMessage);
+			throw SCHNAPS_Core_BadCastExceptionM(lMessage);
 		}
 		return static_cast<CastRefType> (inObject);
 #else // SCHNAPS_HAVE_DYNAMIC_CAST
@@ -118,10 +120,10 @@ inline CastRefType castObjectT(core::Object& inObject) {
  *  \param   inObject Object constant reference to be casted.
  *  \return  Casted constant reference to the object.
  *  \throw   BadCastException If RTTI is enabled and the typecast is invalid.
- *  \relates core::Object
+ *  \relates SCHNAPS::Core::Object
  */
 template<class CastConstRefType>
-inline CastConstRefType castObjectT(const core::Object& inObject) {
+inline CastConstRefType castObjectT(const SCHNAPS::Core::Object& inObject) {
 	schnaps_StackTraceBeginM();
 #ifdef SCHNAPS_NDEBUG
 		return static_cast<CastConstRefType>(inObject);
@@ -137,7 +139,7 @@ inline CastConstRefType castObjectT(const core::Object& inObject) {
 			lMessage += "Desired type cast: ";
 			lMessage += typeid(CastConstRefType).name();
 			lMessage += ".";
-			throw core_BadCastExceptionM(lMessage);
+			throw SCHNAPS_Core_BadCastExceptionM(lMessage);
 		}
 		return static_cast<CastConstRefType> (inObject);
 #else // SCHNAPS_HAVE_DYNAMIC_CAST
@@ -152,10 +154,10 @@ inline CastConstRefType castObjectT(const core::Object& inObject) {
  *  \param   inObject Object smart pointer to be casted.
  *  \return  Casted smart pointer to the object.
  *  \throw   BadCastException If RTTI is enabled and the typecast is invalid.
- *  \relates core::Object
+ *  \relates SCHNAPS::Core::Object
  */
 template<class CastType>
-inline typename CastType::Handle& castHandleT(core::Object::Handle& inObject) {
+inline typename CastType::Handle& castHandleT(SCHNAPS::Core::Object::Handle& inObject) {
 	schnaps_StackTraceBeginM();
 #ifdef SCHNAPS_NDEBUG
 		return static_cast<typename CastType::Handle&>(inObject);
@@ -170,7 +172,7 @@ inline typename CastType::Handle& castHandleT(core::Object::Handle& inObject) {
 				lMessage += "Desired type cast: ";
 				lMessage += typeid(CastType).name();
 				lMessage += ".";
-				throw core_BadCastExceptionM(lMessage);
+				throw SCHNAPS_Core_BadCastExceptionM(lMessage);
 			}
 		}
 		return static_cast<typename CastType::Handle&> (inObject);
@@ -186,10 +188,10 @@ inline typename CastType::Handle& castHandleT(core::Object::Handle& inObject) {
  *  \param   inObject Constant Object smart pointer to be casted.
  *  \return  Casted constant smart pointer to the object.
  *  \throw   BadCastException If RTTI is enabled and the typecast is invalid.
- *  \relates core::Object
+ *  \relates SCHNAPS::Core::Object
  */
 template<class CastType>
-inline const typename CastType::Handle& castHandleT(const core::Object::Handle& inObject) {
+inline const typename CastType::Handle& castHandleT(const SCHNAPS::Core::Object::Handle& inObject) {
 	schnaps_StackTraceBeginM();
 #ifdef SCHNAPS_NDEBUG
 		return static_cast<const typename CastType::Handle&>(inObject);
@@ -204,7 +206,7 @@ inline const typename CastType::Handle& castHandleT(const core::Object::Handle& 
 				lMessage += "Desired type cast: ";
 				lMessage += typeid(CastType).name();
 				lMessage += ".";
-				throw core_BadCastExceptionM(lMessage);
+				throw SCHNAPS_Core_BadCastExceptionM(lMessage);
 			}
 		}
 		return static_cast<const typename CastType::Handle&> (inObject);
@@ -214,6 +216,7 @@ inline const typename CastType::Handle& castHandleT(const core::Object::Handle& 
 #endif // SCHNAPS_NDEBUG
 	schnaps_StackTraceEndM("const CastType::Handle& castHandleT<CastType>(const Object::Handle& inObject)");
 }
-} // end of core namespace
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_castObjectT_hpp
+#endif // SCHNAPS_Core_castObjectT_hpp

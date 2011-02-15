@@ -20,7 +20,8 @@
 
 #include "SCHNAPS/Core.hpp"
 
-using namespace core;
+using namespace SCHNAPS;
+using namespace Core;
 
 Logger::Logger() :
 		mEnabled(false)
@@ -30,7 +31,7 @@ void Logger::open(const std::string& inLogFile) {
 	schnaps_StackTraceBeginM();
 		mOGZS = new ogzstream(inLogFile.c_str());
 		mEnabled = true;
-	schnaps_StackTraceEndM("void core::Logger::init(const std::string&)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Logger::init(const std::string&)");
 }
 
 /*!
@@ -42,7 +43,7 @@ void Logger::log(const std::string& inLog) {
 		if (mEnabled) {
 			(*mOGZS) << inLog.c_str() << "\n";
 		}
-	schnaps_StackTraceEndM("void core::Logger::log(std::string)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Logger::log(std::string)");
 }
 
 /*!
@@ -57,5 +58,5 @@ void Logger::close() {
 			mEnabled = false;
 			delete mOGZS;
 		}
-	schnaps_StackTraceEndM("void core::Logger::close()");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Logger::close()");
 }

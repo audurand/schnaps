@@ -22,8 +22,8 @@
 
 #include <algorithm>
 
-using namespace core;
-
+using namespace SCHNAPS;
+using namespace Core;
 
 /*!
  *  \brief Container constructor.
@@ -59,7 +59,7 @@ void Container::readWithSystem(PACC::XML::ConstIterator inIter, System& ioSystem
 				push_back(lObjectHandle);
 			}
 		}
-	schnaps_StackTraceEndM("void core::Container::readWithSystem(PACC::XML::ConstIterator, System&)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Container::readWithSystem(PACC::XML::ConstIterator, System&)");
 }
 
 
@@ -80,7 +80,7 @@ bool Container::isEqual(const Object& inRightObj) const {
 		Container::const_iterator lLastIter1  = begin() + size();
 		Container::const_iterator lFirstIter2 = lRightContainer.begin();
 		return std::equal(lFirstIter1, lLastIter1, lFirstIter2, IsEqualPointerPredicate());
-	schnaps_StackTraceEndM("bool core::Container::isEqual(const Object&) const");
+	schnaps_StackTraceEndM("bool SCHNAPS::Core::Container::isEqual(const Object&) const");
 }
 
 
@@ -107,7 +107,7 @@ bool Container::isLess(const Object& inRightObj) const {
 											lFirstIter2,
 											lLastIter2,
 											IsLessPointerPredicate());
-	schnaps_StackTraceEndM("bool core::Container::isLess(const Object&) const");
+	schnaps_StackTraceEndM("bool SCHNAPS::Core::Container::isLess(const Object&) const");
 }
 
 
@@ -139,7 +139,7 @@ void Container::read(PACC::XML::ConstIterator inIter) {
 			}
 			++lChild;
 		}
-	schnaps_StackTraceEndM("void core::Container::read(PACC::XML::ConstIterator)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Container::read(PACC::XML::ConstIterator)");
 }
 
 /*!
@@ -160,5 +160,5 @@ void Container::write(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 			}
 		}
 		ioStreamer.closeTag();
-	schnaps_StackTraceEndM("void core::Container::write(PACC::XML::Streamer&, bool) const");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Container::write(PACC::XML::Streamer&, bool) const");
 }

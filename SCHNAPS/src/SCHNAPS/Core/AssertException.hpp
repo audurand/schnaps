@@ -24,33 +24,33 @@
  *
  */
 
-#ifndef core_AssertException_hpp
-#define core_AssertException_hpp
+#ifndef SCHNAPS_Core_AssertException_hpp
+#define SCHNAPS_Core_AssertException_hpp
 
 #include "SCHNAPS/Core/Object.hpp"
 #include "SCHNAPS/Core/TargetedException.hpp"
 
 /*!
  *  \def   schnaps_AssertM
- *  \brief Assert that the condition is true. If not, throw a core::AssertException.
+ *  \brief Assert that the condition is true. If not, throw a SCHNAPS::Core::AssertException.
  *  \param COND Condition to test, to assert.
  *  \throw AssertException The condition is false.
  */
 #ifndef SCHNAPS_NDEBUG
 #define schnaps_AssertM(COND) \
-  if ( !(COND) ) throw core::AssertException("Assertion failed.",__FILE__,__LINE__)
+  if ( !(COND) ) throw SCHNAPS::Core::AssertException("Assertion failed.",__FILE__,__LINE__)
 #else // SCHNAPS_NDEBUG
 #define schnaps_AssertM(COND)
 #endif // SCHNAPS_NDEBUG
 /*!
  *  \def   schnaps_NonNullPointerAssertM
- *  \brief Assert that the pointer is non null. If not, throw a core::AssertException.
+ *  \brief Assert that the pointer is non null. If not, throw a SCHNAPS::Core::AssertException.
  *  \param PTR Pointer to test.
  *  \throw AssertException If the pointer is NULL.
  */
 #ifndef SCHNAPS_NDEBUG
 #define schnaps_NonNullPointerAssertM(PTR) \
-  if ( !(PTR) ) throw core::AssertException("Pointer asserted is NULL.",__FILE__,__LINE__)
+  if ( !(PTR) ) throw SCHNAPS::Core::AssertException("Pointer asserted is NULL.",__FILE__,__LINE__)
 #else  // SCHNAPS_NDEBUG
 #define schnaps_NonNullPointerAssertM(PTR)
 #endif // SCHNAPS_NDEBUG
@@ -67,14 +67,14 @@
   if ( (INDEX) < (LOWBOUND) ) { \
     std::ostringstream lOSS; \
     lOSS << "Out of bound assertion: Index (" << INDEX << ") is less than the lower bound accepted (" << LOWBOUND << ")."; \
-    throw core::AssertException( \
+    throw SCHNAPS::Core::AssertException( \
       lOSS.str(), \
      __FILE__,__LINE__); \
   } \
   if ( (INDEX) > (UPBOUND) ) { \
     std::ostringstream lOSS; \
     lOSS << "Out of bound assertion: Index (" << INDEX << ") is more than the upper bound accepted (" << UPBOUND << ")."; \
-    throw core::AssertException( \
+    throw SCHNAPS::Core::AssertException( \
       lOSS.str(), \
      __FILE__,__LINE__); \
   }
@@ -93,14 +93,16 @@
   if ( (INDEX) > (UPBOUND) ) { \
     std::ostringstream lOSS; \
     lOSS << "Out of bound assertion: Index (" << INDEX << ") is more than the upper bound accepted (" << UPBOUND << ")."; \
-    throw core::AssertException( \
+    throw SCHNAPS::Core::AssertException( \
       lOSS.str(), \
      __FILE__,__LINE__); \
   }
 #else  // SCHNAPS_NDEBUG
 #define schnaps_UpperBoundCheckAssertM(INDEX,UPBOUND)
 #endif // SCHNAPS_NDEBUG
-namespace core {
+
+namespace SCHNAPS {
+namespace Core {
 
 // forward declarations
 template<class T, class BaseType> class AllocatorT;
@@ -127,6 +129,7 @@ public:
 
 	virtual const char* getExceptionName() const throw ();
 };
-}
+} // end of Core namespace
+} // end of SCHNAPS namespace
 
-#endif // core_AssertException_hpp
+#endif // SCHNAPS_Core_AssertException_hpp

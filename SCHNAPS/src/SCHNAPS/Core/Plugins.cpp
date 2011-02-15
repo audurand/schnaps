@@ -22,7 +22,8 @@
 
 #include <stdexcept>
 
-using namespace core;
+using namespace SCHNAPS;
+using namespace Core;
 
 /*!
  *  \brief Construct object plugins component.
@@ -50,7 +51,7 @@ void Plugins::readWithSystem(PACC::XML::ConstIterator inIter, System& ioSystem)
 		}
 
 		Plugin::Handle lPlugin;
-		core::Factory& lFactory = ioSystem.getFactory();
+		SCHNAPS::Core::Factory& lFactory = ioSystem.getFactory();
 		std::vector<std::string> lAllocatorsList;
 		for (PACC::XML::ConstIterator lChild = inIter->getFirstChild(); lChild; lChild++) {
 			lPlugin = new Plugin();
@@ -80,14 +81,14 @@ void Plugins::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const
 			ioStreamer.insertAttribute("source", lIt->second->getSource());
 			ioStreamer.closeTag();
 		}
-	schnaps_StackTraceEndM("void core::Plugins::writeContent(PACC::XML::Streamer&, bool) const");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Plugins::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
 /*!
  *  \brief Insert new library plugin in object plugins.
  *  \param inLibName Name of library inserted.
  *  \param inPlugin Plugin associated to library.
- *  \throw core::RunTimeException If the library name is already in the plugins.
+ *  \throw SCHNAPS::Core::RunTimeException If the library name is already in the plugins.
  */
 void Plugins::insertPlugin(const std::string& inLibName, Plugin::Handle inPlugin) {
 	schnaps_StackTraceBeginM();
@@ -100,5 +101,5 @@ void Plugins::insertPlugin(const std::string& inLibName, Plugin::Handle inPlugin
 			throw schnaps_RunTimeExceptionM(lOSS.str());
 		}
 		mPluginMap[inLibName] = inPlugin;
-	schnaps_StackTraceEndM("void core::Plugins::insertPlugin(const std::string&, core::Plugin::Handle)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Plugins::insertPlugin(const std::string&, SCHNAPS::Core::Plugin::Handle)");
 }
