@@ -132,7 +132,7 @@
 			<xsd:appinfo>
 				<pmt:info lang="en">Modulo</pmt:info>
 				<pmt:mappedName lang="en">Modulo</pmt:mappedName>
-				<pmt:returnType definedBy="argument">1</pmt:childType>
+				<pmt:returnType definedBy="argument">1</pmt:returnType>
 			</xsd:appinfo>
 		</xsd:annotation>
 		<xsd:complexType>
@@ -812,4 +812,5 @@
 			</xsd:attribute>
 		</xsd:complexType>
 	</xsd:element>
+
 </xsd:schema>

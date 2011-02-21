@@ -38,6 +38,10 @@ To build and install SCHNAPS, follow these easy instructions:
   (the example assumes that the SCHNAPS directory is a 
    sibling of the current directory)
 
+  During this process cmake will search for several dependencies such as PACC and Z-lib. Yous can specify additionnal search paths using CMAKE_PREFIX_PATH.
+  For example:
+  > cmake -D CMAKE_PREFIX_PATH=my-own-specific-search-path ../SCHNAPS
+
 4- Run make to compile the sources and build the library and executable;
 
   > make
@@ -87,8 +91,4 @@ Some variables are specific to SCHNAPS and should be considered :
   platforms and on Windows without the MinGW (GNU) compiler, 
   default behavior is to SHARED. When using the Microsoft VC++
   compiler, default is to STATIC.
-
-  - MORE_LIB_DIR = Additionnals paths to search for libraries.
-  
-  - MORE_INCLUDE_DIR = Additionnals paths to search for headers.
   
