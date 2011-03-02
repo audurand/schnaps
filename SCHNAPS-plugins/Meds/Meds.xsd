@@ -66,6 +66,57 @@
 		</xsd:complexType>
 	</xsd:element>
 	
+	<xsd:element name="Meds_Eventv2" substitutionGroup="_primitive">
+                <xsd:annotation>
+                        <xsd:appinfo>
+                                <pmt:info lang="en">Second version of medical event.</pmt:info>
+                                <pmt:mappedName lang="en">Event (v2)</pmt:mappedName>
+                                <pmt:returnType definedBy="staticType">Void</pmt:returnType>
+                        </xsd:appinfo>
+                </xsd:annotation>
+                <xsd:complexType>
+                        <xsd:sequence minOccurs="1" maxOccurs="1">
+                                <xsd:choice>
+                                        <xsd:annotation>
+                                                <xsd:appinfo>
+                                                        <pmt:childType definedBy="staticType">Any</pmt:childType>
+                                                        <pmt:childBranchTag lang="en">Event</pmt:childBranchTag>
+                                                </xsd:appinfo>
+                                        </xsd:annotation>
+                                        <xsd:element ref="_primitive"/>
+                                </xsd:choice>
+                                <xsd:choice>
+                                        <xsd:annotation>
+                                                <xsd:appinfo>
+                                                        <pmt:childType definedBy="staticType">Any</pmt:childType>
+                                                        <pmt:childBranchTag lang="en">No event</pmt:childBranchTag>
+                                                </xsd:appinfo>
+                                        </xsd:annotation>
+                                        <xsd:element ref="_primitive"/>
+                                </xsd:choice>
+                        </xsd:sequence>
+                        <xsd:attribute name="label" type="xsd:string" use="required">
+                                <xsd:annotation>
+                                        <xsd:appinfo>
+                                                <gui:attributeBehavior>
+                                                        <gui:displayValue/>
+                                                </gui:attributeBehavior>
+                                                <pmt:attributeMappedName lang="en">Name</pmt:attributeMappedName>
+                                        </xsd:appinfo>
+                                </xsd:annotation>
+                        </xsd:attribute>
+                        <xsd:attribute name="probabilityVariableLabel" type="xsd:string" use="required">
+                                <xsd:annotation>
+                                        <xsd:appinfo>
+                                                <gui:attributeBehavior><gui:list type="allVariables" allowEdition="false"/></gui:attributeBehavior>
+                                                <pmt:attributeMappedName lang="en">Probability variable</pmt:attributeMappedName>
+                                                <pmt:attributeInfo lang="en">Individual variable giving event probability.</pmt:attributeInfo>
+                                        </xsd:appinfo>
+                                </xsd:annotation>
+                        </xsd:attribute>
+                </xsd:complexType>
+        </xsd:element>
+	
 	<xsd:element name="Meds_PreventionCampain" substitutionGroup="_primitive">
 		<xsd:annotation>
 			<xsd:appinfo>
@@ -207,6 +258,138 @@
 		</xsd:complexType>
 	</xsd:element>
 	
+	<xsd:element name="Meds_Testv2" substitutionGroup="_conditionOp">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Second version of medical test.</pmt:info>
+				<pmt:mappedName lang="en">Test (v2)</pmt:mappedName>
+				<pmt:returnType definedBy="staticType">Void</pmt:returnType>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence minOccurs="1" maxOccurs="1">
+				<xsd:choice>
+					<xsd:annotation>
+						<xsd:appinfo>
+							<pmt:childType definedBy="staticType">Any</pmt:childType>
+							<pmt:childBranchTag lang="en">Positive</pmt:childBranchTag>
+						</xsd:appinfo>
+					</xsd:annotation>
+					<xsd:element ref="_primitive"/>
+				</xsd:choice>
+				<xsd:choice>
+					<xsd:annotation>
+						<xsd:appinfo>
+							<pmt:childType definedBy="staticType">Any</pmt:childType>
+							<pmt:childBranchTag lang="en">Negative</pmt:childBranchTag>
+						</xsd:appinfo>
+					</xsd:annotation>
+					<xsd:element ref="_primitive"/>
+				</xsd:choice>
+			</xsd:sequence>
+			<xsd:attribute name="label" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:displayValue/>
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Name</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="cost" type="xsd:double" use="optional">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<pmt:attributeMappedName lang="en">Cost</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="cost.ref" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allParameters"/>
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en" reference="true"/>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="discountRate" type="xsd:double" use="optional">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<pmt:attributeMappedName lang="en">Discount rate</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="discountRate.ref" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allParameters"/>
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en" reference="true"/>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="sensitivity" type="xsd:double" use="optional">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<pmt:attributeMappedName lang="en">Sensitivity</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="sensitivity.ref" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allParameters"/>
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en" reference="true"/>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="specificity" type="xsd:double" use="optional">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<pmt:attributeMappedName lang="en">Specificity</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="specificity.ref" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allParameters"/>
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en" reference="true"/>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="costVariableLabel" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allVariables" allowEdition="false"/>
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Cost variable</pmt:attributeMappedName>
+						<pmt:attributeInfo lang="en">Individual variable used to cumulate costs.</pmt:attributeInfo>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="stateVariableLabel" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allVariables" allowEdition="false"/>
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">State variable</pmt:attributeMappedName>
+						<pmt:attributeInfo lang="en">Individual variable giving real individual state. WARNING: this variable MUST be of Bool type!</pmt:attributeInfo>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	
 	<xsd:element name="Meds_Treatment" substitutionGroup="_primitive">
 		<xsd:annotation>
 			<xsd:appinfo>
@@ -310,4 +493,109 @@
 			</xsd:attribute>
 		</xsd:complexType>
 	</xsd:element>
+	
+	 <xsd:element name="Meds_Treatmentv2" substitutionGroup="_primitive">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Second version of medical treatment.</pmt:info>
+				<pmt:mappedName lang="en">Treatment (v2)</pmt:mappedName>
+				<pmt:returnType definedBy="staticType">Void</pmt:returnType>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence minOccurs="1" maxOccurs="1">
+				<xsd:choice>
+					<xsd:annotation>
+						<xsd:appinfo>
+							<pmt:childType definedBy="staticType">Any</pmt:childType>
+							<pmt:childBranchTag lang="en">Compliant</pmt:childBranchTag>
+						</xsd:appinfo>
+					</xsd:annotation>
+					<xsd:element ref="_primitive"/>
+				</xsd:choice>
+				<xsd:choice>
+					<xsd:annotation>
+						<xsd:appinfo>
+							<pmt:childType definedBy="staticType">Any</pmt:childType>
+							<pmt:childBranchTag lang="en">Not compliant</pmt:childBranchTag>
+						</xsd:appinfo>
+					</xsd:annotation>
+					<xsd:element ref="_primitive"/>
+				</xsd:choice>
+			</xsd:sequence>
+			<xsd:attribute name="label" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:displayValue/>
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Name</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="compliance" type="xsd:double" use="optional">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<pmt:attributeMappedName lang="en">Compliance</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="compliance.ref" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allParameters"/>
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en" reference="true"/>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="cost" type="xsd:double" use="optional">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<pmt:attributeMappedName lang="en">Cost</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="cost.ref" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allParameters"/>
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en" reference="true"/>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="discountRate" type="xsd:double" use="optional">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<pmt:attributeMappedName lang="en">Discount rate</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="discountRate.ref" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allParameters"/>
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en" reference="true"/>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="costVariableLabel" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allVariables" allowEdition="false"/>
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Cost variable</pmt:attributeMappedName>
+						<pmt:attributeInfo lang="en">Individual variable used to cumulate costs.</pmt:attributeInfo>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	
 </xsd:schema>

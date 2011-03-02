@@ -130,7 +130,7 @@
 							<pmt:childBranchTag lang="en">Branches weights</pmt:childBranchTag>
 						</xsd:appinfo>
 					</xsd:annotation>
-					<xsd:element ref="Control_RouletteDynamic"/>
+					<xsd:element ref="Data_RouletteDynamic"/>
 				</xsd:choice>
 				<xsd:sequence minOccurs="0" maxOccurs="unbounded">
 					<xsd:choice>
