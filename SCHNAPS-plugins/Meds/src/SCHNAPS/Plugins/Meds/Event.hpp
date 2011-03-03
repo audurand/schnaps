@@ -48,7 +48,7 @@ public:
 
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Osteo_Event");
+			const static std::string lName("Meds_Event");
 			return lName;
 		schnaps_StackTraceEndM("const std::string& Event::getName() const");
 	}

@@ -1,5 +1,5 @@
 /*
- * OsteoporosisPlugin.hpp
+ * Meds.hpp
  *
  *  Created on: 2010-11-02
  *  Author: Audrey Durand
@@ -22,8 +22,11 @@
 #define Meds_hpp
 
 #include "SCHNAPS/Plugins/Meds/Event.hpp"
+#include "SCHNAPS/Plugins/Meds/Eventv2.hpp"
 #include "SCHNAPS/Plugins/Meds/PreventionCampain.hpp"
 #include "SCHNAPS/Plugins/Meds/Test.hpp"
+#include "SCHNAPS/Plugins/Meds/Testv2.hpp"
 #include "SCHNAPS/Plugins/Meds/Treatment.hpp"
+#include "SCHNAPS/Plugins/Meds/Treatmentv2.hpp"
 
 #endif /* Meds_hpp */

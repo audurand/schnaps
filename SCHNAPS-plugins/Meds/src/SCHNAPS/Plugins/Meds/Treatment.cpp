@@ -149,27 +149,27 @@ Core::AnyType::Handle Treatment::execute(unsigned int inIndex, Core::ExecutionCo
 			Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
 			double lTime = lContext.getClock().getValue();
 
-			// Compute cost
+			// compute cost
 			Core::Double lDenum(std::pow(mDiscountRate->getValue() + 1, lTime));
 			Core::Double::Handle lCost = Core::castHandleT<Core::Double>(mCost->clone());
 			lCost->div(lDenum);
 
-			// Set cost
+			// set cost
 			Simulation::State::iterator lStateIt = lContext.getIndividual().getState().find(mCostVariableLabel);
 			if (lStateIt == lContext.getIndividual().getState().end()) {
-				throw schnaps_InternalExceptionM("Treatment cost variable '" + mCostVariableLabel + "' does not refer to a state variable.");
+				throw schnaps_InternalExceptionM("Meds_Treatment cost variable '" + mCostVariableLabel + "' does not refer to a state variable.");
 			}
 			Core::castHandleT<Core::Double>(lStateIt->second)->add(*lCost);
 
 			if (ioContext.getRandomizer().rollUniform() < mCompliance->getValue()) {
-				// Apply treatment effects
+				// apply treatment effects
 				getArgument(inIndex, 0, ioContext);
-			} else { // Not compliant
+			} else { // not compliant
 				getArgument(inIndex, 1, ioContext);
 			}
 
 		} else {
-			throw schnaps_InternalExceptionM("Osteoporosis treatment primitive is not defined for context '" + ioContext.getName() + "'!");
+			throw schnaps_InternalExceptionM("Meds_Treatment primitive is not defined for context '" + ioContext.getName() + "'!");
 		}
 		return NULL;
 	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Meds::Treatment::execute(unsigned int, Core::ExecutionContext&) const");
