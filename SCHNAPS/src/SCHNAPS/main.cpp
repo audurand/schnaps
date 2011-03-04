@@ -70,11 +70,11 @@ int main(int argc, char* argv[]) {
 		lSimulator.read(lDocument->getFirstDataTag());
 		delete lDocument;
 
-		// Command-line parameters override configuration file.
+		// command-line parameters override configuration file.
 		lSimulator.configure(lParameters);
 
 		printf("Simulating\n");
-		// Simulate
+		// simulate
 		lSimulator.simulate(lScenario);
 	} catch (Core::AssertException e) {
 		e.explain(std::cerr);

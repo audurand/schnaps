@@ -100,7 +100,6 @@ extern "C" { \
 }
 
 namespace SCHNAPS {
-
 namespace Core {
 
 /*!
@@ -198,8 +197,8 @@ public:
 
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Plugin");
-			return lName;
+		const static std::string lName("Plugin");
+		return lName;
 		schnaps_StackTraceEndM("const std::string& Plugin::getName() const");
 	}
 

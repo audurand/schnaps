@@ -2,8 +2,7 @@
  * IsLessVariable.hpp
  *
  *  Created on: 2010-11-20
- *  Updated on: 2010-11-20
- *      Author: Audrey Durand
+ *  Author: Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,9 +47,9 @@ public:
 
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Operators_IsLessVariable");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& IsLessVariable::getName() const");
+		const static std::string lName("Operators_IsLessVariable");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::IsLessVariable::getName() const");
 	}
 
 	virtual	void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
@@ -60,9 +59,9 @@ public:
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
-	std::string mLabel; 		//!< label of concerned variable
-	std::string mValue_Ref; 	//!< value for comparison (reference)
-	Core::Number::Handle mValue;//!< value for comparison
+	std::string mLabel;				//!< Label of concerned variable.
+	std::string mValue_Ref;			//!< Value for comparison (reference).
+	Core::Number::Handle mValue;	//!< Value for comparison.
 };
 } // end of Operators namespace
 } // end of Plugins namespace

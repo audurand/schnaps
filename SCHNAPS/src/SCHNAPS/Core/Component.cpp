@@ -23,20 +23,18 @@
 using namespace SCHNAPS;
 using namespace Core;
 
-
 /*!
  *  \brief Component class constructor.
  *  \param inName Name of the component.
  */
-Component::Component(std::string inName) : mName(inName), mInitialized(false)
+Component::Component(std::string inName) :
+	mName(inName)
 {}
 
 /*!
  *  \brief Initialize this component.
  */
-void Component::init(System&) {
-	this->setInitializedFlag(true);
-}
+void Component::init(System&) {}
 
 /*!
  *  \brief Read the system component.
@@ -45,14 +43,14 @@ void Component::init(System&) {
  */
 void Component::readWithSystem(PACC::XML::ConstIterator inIter, System& ioSystem) {
 	schnaps_StackTraceBeginM();
-		if(inIter->getType() != PACC::XML::eData) {
-			throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
-		}
-		if(inIter->getValue() != getName()) {
-			std::ostringstream lOSS;
-			lOSS << "tag <" << getName() << "> expected, but ";
-			lOSS << "got tag <" << inIter->getValue() << "> instead!";
-			throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
-		}
-	schnaps_StackTraceEndM("void Component::readWithSystem(PACC::XML::ConstIterator, System&)");
+	if(inIter->getType() != PACC::XML::eData) {
+		throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
+	}
+	if(inIter->getValue() != getName()) {
+		std::ostringstream lOSS;
+		lOSS << "tag <" << getName() << "> expected, but ";
+		lOSS << "got tag <" << inIter->getValue() << "> instead!";
+		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
+	}
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Component::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }

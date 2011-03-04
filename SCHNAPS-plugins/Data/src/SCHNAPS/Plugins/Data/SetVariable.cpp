@@ -57,24 +57,24 @@ void SetVariable::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
 			throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
 		}
 
-		// Retrieve label
+		// retrieve label
 		if (inIter->getAttribute("label").empty()) {
 			throw schnaps_IOExceptionNodeM(*inIter, "label of variable to set expected!");
 		}
 		mLabel = inIter->getAttribute("label");
 
-		// Retrieve value
+		// retrieve value
 		if (inIter->getAttribute("value").empty()) {
 			if (inIter->getAttribute("value.ref").empty()) {
 				throw schnaps_IOExceptionNodeM(*inIter, "comparison value expected!");
-			} else { // From parameter
+			} else { // from parameter
 				mValue_Ref = inIter->getAttribute("value.ref");
 
 				std::stringstream lSS;
 				lSS << "ref." << mValue_Ref;
 				mValue = Core::castHandleT<Core::Atom>(ioSystem.getParameters()[lSS.str().c_str()]);
 			}
-		} else { // Explicitly given
+		} else { // explicitly given
 			if (inIter->getAttribute("valueType").empty()) {
 				throw schnaps_IOExceptionNodeM(*inIter, "type of comparison value expected!");
 			}

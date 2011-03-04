@@ -91,12 +91,12 @@ public:
 	 */
 	inline Allocator::Handle getAllocator(const std::string& inTypeName) const {
 		schnaps_StackTraceBeginM();
-			Factory::AllocatorMap::const_iterator lIterAllocMap = mAllocatorMap.find(inTypeName);
-			if (lIterAllocMap == mAllocatorMap.end()) {
-				return NULL;
-			}
-			return lIterAllocMap->second;
-		schnaps_StackTraceEndM("Allocator::Handle getAllocator(const std::string&) const");
+		Factory::AllocatorMap::const_iterator lIterAllocMap = mAllocatorMap.find(inTypeName);
+		if (lIterAllocMap == mAllocatorMap.end()) {
+			return NULL;
+		}
+		return lIterAllocMap->second;
+		schnaps_StackTraceEndM("SCHNAPS::Core::Allocator::Handle SCHNAPS::Core::Factory::getAllocator(const std::string&) const");
 	}
 
 protected:

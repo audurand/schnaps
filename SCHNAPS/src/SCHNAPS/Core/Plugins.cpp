@@ -29,7 +29,7 @@ using namespace Core;
  *  \brief Construct object plugins component.
  */
 Plugins::Plugins() :
-		Component("Plugins")
+	Component("Plugins")
 { }
 
 /*!
@@ -40,33 +40,33 @@ Plugins::Plugins() :
 void Plugins::readWithSystem(PACC::XML::ConstIterator inIter, System& ioSystem)
 {
 	schnaps_StackTraceBeginM();
-		if(inIter->getType() != PACC::XML::eData)
-			throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
+	if(inIter->getType() != PACC::XML::eData)
+		throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
 
-		if(inIter->getValue() != getName()) {
-			std::ostringstream lOSS;
-			lOSS << "tag <" << getName() << "> expected, but ";
-			lOSS << "got tag <" << inIter->getValue() << "> instead!";
-			throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
+	if(inIter->getValue() != getName()) {
+		std::ostringstream lOSS;
+		lOSS << "tag <" << getName() << "> expected, but ";
+		lOSS << "got tag <" << inIter->getValue() << "> instead!";
+		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
+	}
+
+	Plugin::Handle lPlugin;
+	SCHNAPS::Core::Factory& lFactory = ioSystem.getFactory();
+	std::vector<std::string> lAllocatorsList;
+	for (PACC::XML::ConstIterator lChild = inIter->getFirstChild(); lChild; lChild++) {
+		lPlugin = new Plugin();
+		lPlugin->read(lChild);
+
+		// add allocators to the factory
+		lAllocatorsList.clear();
+		lPlugin->listFactories(lAllocatorsList);
+		for (unsigned int i = 0; i < lAllocatorsList.size(); ++i) {
+			lFactory.insertAllocator(lAllocatorsList[i], lPlugin->getAllocator(lAllocatorsList[i]));
 		}
 
-		Plugin::Handle lPlugin;
-		SCHNAPS::Core::Factory& lFactory = ioSystem.getFactory();
-		std::vector<std::string> lAllocatorsList;
-		for (PACC::XML::ConstIterator lChild = inIter->getFirstChild(); lChild; lChild++) {
-			lPlugin = new Plugin();
-			lPlugin->read(lChild);
-
-			// Add allocators to the factory
-			lAllocatorsList.clear();
-			lPlugin->listFactories(lAllocatorsList);
-			for (unsigned int i = 0; i < lAllocatorsList.size(); ++i) {
-				lFactory.insertAllocator(lAllocatorsList[i], lPlugin->getAllocator(lAllocatorsList[i]));
-			}
-
-			insertPlugin(lPlugin->getLibName(), lPlugin);
-		}
-	schnaps_StackTraceEndM("void Plugins::readWithSystem(PACC::XML::ConstIterator, System&)");
+		insertPlugin(lPlugin->getLibName(), lPlugin);
+	}
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Plugins::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
 /*!
@@ -76,11 +76,11 @@ void Plugins::readWithSystem(PACC::XML::ConstIterator inIter, System& ioSystem)
  */
 void Plugins::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-		for (PluginMap::const_iterator lIt = mPluginMap.begin(); lIt != mPluginMap.end(); lIt++) {
-			ioStreamer.openTag("Plugin");
-			ioStreamer.insertAttribute("source", lIt->second->getSource());
-			ioStreamer.closeTag();
-		}
+	for (PluginMap::const_iterator lIt = mPluginMap.begin(); lIt != mPluginMap.end(); lIt++) {
+		ioStreamer.openTag("Plugin");
+		ioStreamer.insertAttribute("source", lIt->second->getSource());
+		ioStreamer.closeTag();
+	}
 	schnaps_StackTraceEndM("void SCHNAPS::Core::Plugins::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
@@ -92,14 +92,14 @@ void Plugins::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const
  */
 void Plugins::insertPlugin(const std::string& inLibName, Plugin::Handle inPlugin) {
 	schnaps_StackTraceBeginM();
-		Plugins::PluginMap::const_iterator lIterPluginMap = mPluginMap.find(inLibName);
-		if(lIterPluginMap != mPluginMap.end()) {
-			std::ostringstream lOSS;
-			lOSS << "The type name '" << inLibName;
-			lOSS << "' is already present in the factory's allocator map; ";
-			lOSS << "could not add it.";
-			throw schnaps_RunTimeExceptionM(lOSS.str());
-		}
-		mPluginMap[inLibName] = inPlugin;
+	Plugins::PluginMap::const_iterator lIterPluginMap = mPluginMap.find(inLibName);
+	if(lIterPluginMap != mPluginMap.end()) {
+		std::ostringstream lOSS;
+		lOSS << "The type name '" << inLibName;
+		lOSS << "' is already present in the factory's allocator map; ";
+		lOSS << "could not add it.";
+		throw schnaps_RunTimeExceptionM(lOSS.str());
+	}
+	mPluginMap[inLibName] = inPlugin;
 	schnaps_StackTraceEndM("void SCHNAPS::Core::Plugins::insertPlugin(const std::string&, SCHNAPS::Core::Plugin::Handle)");
 }

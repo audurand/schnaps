@@ -84,9 +84,9 @@ public:
 
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("System");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& System::getName() const");
+		const static std::string lName("System");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Core::System::getName() const");
 	}
 
 	virtual void read(PACC::XML::ConstIterator inIter);

@@ -34,7 +34,6 @@
 #endif
 
 namespace SCHNAPS {
-
 namespace Core {
 
 /*!

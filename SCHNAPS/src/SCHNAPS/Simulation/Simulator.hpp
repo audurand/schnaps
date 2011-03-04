@@ -65,8 +65,8 @@ public:
 
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Simulator");
-			return lName;
+		const static std::string lName("Simulator");
+		return lName;
 		schnaps_StackTraceEndM("const std::string& Simulator::getName() const");
 	}
 
@@ -135,7 +135,7 @@ public:
 private:
 	void init();
 
-	// Sub reads
+	// sub reads
 	void readInput(PACC::XML::ConstIterator inIter);
 	void readSimulation(PACC::XML::ConstIterator inIter);
 	void readOutput(PACC::XML::ConstIterator inIter);
@@ -144,7 +144,7 @@ private:
 	void readEnvironmentOutput(PACC::XML::ConstIterator inIter);
 	void readPopulationOutput(PACC::XML::ConstIterator inIter);
 
-	// Sub writes
+	// sub writes
 	void writeInput(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 	void writeSimulation(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 	void writeOutput(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
@@ -153,37 +153,37 @@ private:
 	void writeEnvironmentOutput(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 	void writePopulationOutput(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
-	// Prints
+	// prints
 	void printInput(std::ostream& ioStream, unsigned int inLowerBound) const;
 	void printOutput(std::ostream& ioStream) const;
 	void printSummary(std::ostream& ioStream) const;
 
 private:
-	// System structures
-	SCHNAPS::Core::System::Handle mSystem;					//!< Handle to system.
-	Clock::Handle mClock;							//!< Handle to clock used for simulation.
+	// system structures
+	SCHNAPS::Core::System::Handle mSystem;				//!< Handle to system.
+	Clock::Handle mClock;								//!< Handle to clock used for simulation.
 
-	// Data structures
-	Environment::Handle mEnvironment;				//!< Handle to environment.
-	PopulationManager::Handle mPopulationManager;	//!< Handle to population manager.
+	// data structures
+	Environment::Handle mEnvironment;					//!< Handle to environment.
+	PopulationManager::Handle mPopulationManager;		//!< Handle to population manager.
 
-	BlackBoard::Handle mBlackBoard;					//!< Handle to blackboard for push tracking.
-	WaitingQMaps::Handle mWaitingQMaps;				//!< Handle to environment and individuals waiting queues.
+	BlackBoard::Handle mBlackBoard;						//!< Handle to blackboard for push tracking.
+	WaitingQMaps::Handle mWaitingQMaps;					//!< Handle to environment and individuals waiting queues.
 
-	SCHNAPS::Core::ULongArray mRandomizerInitSeed;			//!< Init registered seed of random number generators (one per thread).
-	SCHNAPS::Core::StringArray mRandomizerInitState;			//!< Init state of random number generators (one per thread).
-	SCHNAPS::Core::ULongArray mRandomizerCurrentSeed;		//!< Current registered seed of random number generators (one per thread).
-	SCHNAPS::Core::StringArray mRandomizerCurrentState;		//!< Current state of random number generators (one per thread).
+	SCHNAPS::Core::ULongArray mRandomizerInitSeed;		//!< Init registered seed of random number generators (one per thread).
+	SCHNAPS::Core::StringArray mRandomizerInitState;	//!< Init state of random number generators (one per thread).
+	SCHNAPS::Core::ULongArray mRandomizerCurrentSeed;	//!< Current registered seed of random number generators (one per thread).
+	SCHNAPS::Core::StringArray mRandomizerCurrentState;	//!< Current state of random number generators (one per thread).
 
-	SimulationContext::Bag mContext;				//!< All simulation contexts (1 per thread).
+	SimulationContext::Bag mContext;					//!< All simulation contexts (1 per thread).
 
-	// Multi-threads management structures
-	SimulationThread::Bag mSubThreads;				//!< Subthreads used when simulating.
-	PACC::Threading::Condition* mParallel;			//!< Thread condition for triggering parallel execution.
-	PACC::Threading::Semaphore* mSequential;		//!< Thread semaphore for triggering sequential execution.
-	PACC::Threading::Semaphore* mBlackBoardWrt;		//!< Thread semaphore for modifying blackboard.
+	// multi-threads management structures
+	SimulationThread::Bag mSubThreads;					//!< Subthreads used when simulating.
+	PACC::Threading::Condition* mParallel;				//!< Thread condition for triggering parallel execution.
+	PACC::Threading::Semaphore* mSequential;			//!< Thread semaphore for triggering sequential execution.
+	PACC::Threading::Semaphore* mBlackBoardWrt;			//!< Thread semaphore for modifying blackboard.
 
-	OutputParameters mOutputParameters;				//!< Output parameters.
+	OutputParameters mOutputParameters;					//!< Output parameters.
 };
 } // end of Simulation namespace
 } // end of SCHNAPS namespace

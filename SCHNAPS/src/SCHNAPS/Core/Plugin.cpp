@@ -18,7 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 /*!
  *  \brief Class methods for the portable dynamically loadable libraries.
  *  \author Christian Gagne <cgagne@gmail.com>
@@ -35,28 +34,28 @@ using namespace Core;
 
 void Plugin::read(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceBeginM();
-		if (inIter->getType() != PACC::XML::eData) {
-			throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
-		}
-		if (inIter->getValue() != getName()) {
-			std::ostringstream lOSS;
-			lOSS << "tag <" << getName() << "> expected, but ";
-			lOSS << "got tag <" << inIter->getValue() << "> instead!";
-			throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
-		}
+	if (inIter->getType() != PACC::XML::eData) {
+		throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
+	}
+	if (inIter->getValue() != getName()) {
+		std::ostringstream lOSS;
+		lOSS << "tag <" << getName() << "> expected, but ";
+		lOSS << "got tag <" << inIter->getValue() << "> instead!";
+		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
+	}
 
-		// Load plugin
-		std::string lSource = inIter->getAttribute("source");
-		if (lSource.empty()) {
-			throw schnaps_IOExceptionNodeM(*inIter, "source attribute expected!");
-		}
-		load(lSource);
+	// load plugin
+	std::string lSource = inIter->getAttribute("source");
+	if (lSource.empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "source attribute expected!");
+	}
+	load(lSource);
 	schnaps_StackTraceEndM("void SCHNAPS::Core::Plugin::read(PACC::XML::ConstIterator)");
 }
 
 void Plugin::readWithSystem(PACC::XML::ConstIterator inIter, System& ioSystem) {
 	schnaps_StackTraceBeginM();
-		read(inIter);
+	read(inIter);
 	schnaps_StackTraceEndM("void SCHNAPS::Core::Plugin::readWithSystem(PACC::XML::ConstIterator, System&)");
 }
 
@@ -67,9 +66,9 @@ void Plugin::readWithSystem(PACC::XML::ConstIterator inIter, System& ioSystem) {
  */
 void Plugin::write(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-		ioStreamer.openTag(getName(), inIndent);
-		writeContent(ioStreamer, inIndent);
-		ioStreamer.closeTag();
+	ioStreamer.openTag(getName(), inIndent);
+	writeContent(ioStreamer, inIndent);
+	ioStreamer.closeTag();
 	schnaps_StackTraceEndM("void SCHNAPS::Core::Plugin::write(PACC::XML::Streamer&, bool) const");
 }
 
@@ -80,7 +79,7 @@ void Plugin::write(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
  */
 void Plugin::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-		ioStreamer.insertAttribute("source", mSource);
+	ioStreamer.insertAttribute("source", mSource);
 	schnaps_StackTraceEndM("void SCHNAPS::Core::Plugin::writeContent(PACC::XML::Streamer&, bool) const");
 }
 

@@ -62,29 +62,19 @@ public:
 
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			return mName;
-		schnaps_StackTraceEndM("const std::string& Component::getName() const");
+		return mName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Core::Component::getName() const");
 	}
 
 	virtual void setName(const std::string& inName) {
 		schnaps_StackTraceBeginM();
-			mName = inName;
-		schnaps_StackTraceEndM("void Component::setName(const std::string& inName)");
+		mName = inName;
+		schnaps_StackTraceEndM("void SCHNAPS::Core::Component::setName(const std::string&)");
 	}
 
-	//! Return whether this component has been initialized.
-	bool isInitialized() const {
-		return mInitialized;
-	}
-
-	//! Set the state of the initialized flag to value \c inValue.
-	void setInitializedFlag(bool inValue = true) {
-		mInitialized = inValue;
-	}
 
 protected:
 	std::string mName; //!< Name of component.
-	bool mInitialized; //!< Flag that indicates whether this component has been initialized.
 };
 } // end of Core namespace
 } // end of SCHNAPS namespace

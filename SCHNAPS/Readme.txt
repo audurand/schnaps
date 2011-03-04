@@ -66,11 +66,11 @@ To build and install SCHNAPS, follow these easy instructions:
 By default, CMake will compile the sources in release mode 
 (with optimization flags and without debug symbols). If you want 
 to trace your code into SCHNAPS, you need to tell CMake to compile 
-with adequate debug flags using the "CMAKE_BUILD_TYPE=Debug" 
+with adequate debug flags using the "CMAKE_BUILD_TYPE=DEBUG" 
 variable. This variable can be set on the command line, just like 
 the "CMAKE_INSTALL_PREFIX" variable above:
 
-  > cmake -D CMAKE_BUILD_TYPE=Debug ../SCHNAPS
+  > cmake -D CMAKE_BUILD_TYPE=DEBUG ../SCHNAPS
   
  An alternative is to run CMake in interactive mode:
 

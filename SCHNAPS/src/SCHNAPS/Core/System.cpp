@@ -33,79 +33,77 @@ using namespace Core;
  *  \brief Construct a new system with the default basic components.
  */
 System::System() :
-		mFactory(new Factory()),
-		mParameters(new Parameters()),
-		mRandomizers(new RandomizerMulti()),
-		mLoggers(new LoggerMulti()),
-		mTypingManager(new TypingManager()),
-		mPlugins(new Plugins())
+	mFactory(new Factory()),
+	mParameters(new Parameters()),
+	mRandomizers(new RandomizerMulti()),
+	mLoggers(new LoggerMulti()),
+	mTypingManager(new TypingManager()),
+	mPlugins(new Plugins())
 {
     schnaps_StackTraceBeginM();
-		// Install basic components
-		addComponent(mFactory);
-		addComponent(mParameters);
-		addComponent(mRandomizers);
-		addComponent(mLoggers);
-		addComponent(mTypingManager);
-		addComponent(mPlugins);
+	// install basic components
+	addComponent(mFactory);
+	addComponent(mParameters);
+	addComponent(mRandomizers);
+	addComponent(mLoggers);
+	addComponent(mTypingManager);
+	addComponent(mPlugins);
     schnaps_StackTraceEndM("SCHNAPS::Core::System::System()");
 
 }
 
 void System::read(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceBeginM();
-		if ((inIter->getType()!=PACC::XML::eData) || (inIter->getValue()!="System")) {
-			throw schnaps_IOExceptionNodeM(*inIter, "invalid node type or tag name!");
-		}
+	if ((inIter->getType()!=PACC::XML::eData) || (inIter->getValue()!="System")) {
+		throw schnaps_IOExceptionNodeM(*inIter, "invalid node type or tag name!");
+	}
 
-		Component::Alloc::Handle lAlloc;
+	Component::Alloc::Handle lAlloc;
 
-		// Read all components.
-		for (PACC::XML::ConstIterator lChild = inIter->getFirstChild(); lChild; ++lChild) {
-			if (lChild->getType() == PACC::XML::eData) {
-				if (find(lChild->getValue()) == end()) {
-					lAlloc = castHandleT<Component::Alloc>(mFactory->getAllocator(lChild->getValue()));
-					if (lAlloc == NULL) {
-						throw schnaps_ObjectExceptionM("WARNING: unknown component named '" +
-								lChild->getValue() +
-								"'; not read!");
-					}
-					this->addComponent(castHandleT<Component>(lAlloc->allocate()));
+	// read all components.
+	for (PACC::XML::ConstIterator lChild = inIter->getFirstChild(); lChild; ++lChild) {
+		if (lChild->getType() == PACC::XML::eData) {
+			if (find(lChild->getValue()) == end()) {
+				lAlloc = castHandleT<Component::Alloc>(mFactory->getAllocator(lChild->getValue()));
+				if (lAlloc == NULL) {
+					throw schnaps_ObjectExceptionM("WARNING: unknown component named '" + lChild->getValue() + "'; not read!");
 				}
-				(*this)[lChild->getValue()]->readWithSystem(lChild, *this);
+				this->addComponent(castHandleT<Component>(lAlloc->allocate()));
 			}
+			(*this)[lChild->getValue()]->readWithSystem(lChild, *this);
 		}
+	}
 
-		initComponents();
+	initComponents();
 	schnaps_StackTraceEndM("void SCHNAPS::Core::System::read(PACC::XML::ConstIterator)");
 }
 
 void System::writeContent(PACC::XML::Streamer& outStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-		for (System::const_iterator lItr = begin(); lItr != end(); ++lItr) {
-			const Component::Handle lComponent = castHandleT<const Component>(lItr->second);
-			lComponent->write(outStreamer, inIndent);
-		}
+	for (System::const_iterator lItr = begin(); lItr != end(); ++lItr) {
+		const Component::Handle lComponent = castHandleT<const Component>(lItr->second);
+		lComponent->write(outStreamer, inIndent);
+	}
 	schnaps_StackTraceEndM("void SCHNAPS::Core::System::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
 bool System::isEqual(const Object& inRightObj) const {
 	schnaps_StackTraceBeginM();
-		const System& lRightSystem = castObjectT<const System&>(inRightObj);
-		if (this->size() != lRightSystem.size()) {
-			return false;
-		}
-		return std::equal(this->begin(), this->end(), lRightSystem.begin(), IsEqualMapPairPredicate<std::string>());
+	const System& lRightSystem = castObjectT<const System&>(inRightObj);
+	if (this->size() != lRightSystem.size()) {
+		return false;
+	}
+	return std::equal(this->begin(), this->end(), lRightSystem.begin(), IsEqualMapPairPredicate<std::string>());
 	schnaps_StackTraceEndM("bool SCHNAPS::Core::System::isEqual(const Object&) const");
 }
 
 bool System::isLess(const Object& inRightObj) const {
 	schnaps_StackTraceBeginM();
-		const System& lRightSystem = castObjectT<const System&>(inRightObj);
-		if (this->size() < lRightSystem.size()) {
-			return true;
-		}
-		return false;
+	const System& lRightSystem = castObjectT<const System&>(inRightObj);
+	if (this->size() < lRightSystem.size()) {
+		return true;
+	}
+	return false;
 	schnaps_StackTraceEndM("bool SCHNAPS::Core::System::isLess(const Object&) const");
 }
 
@@ -117,16 +115,14 @@ bool System::isLess(const Object& inRightObj) const {
  */
 void System::addComponent(Component::Handle inComponent) {
 	schnaps_StackTraceBeginM();
-		// Check that component is valid and not yet added
-		schnaps_NonNullPointerAssertM(inComponent);
-		if (find(inComponent->getName()) != end()) {
-				throw schnaps_ObjectExceptionM("A component named '" +
-						inComponent->getName() +
-						"' is already installed in the system!");
-		}
+	// check that component is valid and not yet added
+	schnaps_NonNullPointerAssertM(inComponent);
+	if (find(inComponent->getName()) != end()) {
+		throw schnaps_ObjectExceptionM("A component named '" + inComponent->getName() + "' is already installed in the system!");
+	}
 
-		// Add component
-		(*this)[inComponent->getName()] = inComponent;
+	// add component
+	(*this)[inComponent->getName()] = inComponent;
 	schnaps_StackTraceEndM("void SCHNAPS::Core::System::addComponent(SCHNAPS::Core::Component::Handle)");
 }
 
@@ -135,12 +131,9 @@ void System::addComponent(Component::Handle inComponent) {
  */
 void System::initComponents() {
 	schnaps_StackTraceBeginM();
-		for (iterator lItr = begin(); lItr != end(); ++lItr) {
-				Component::Handle lComponent = castHandleT<Component>(lItr->second);
-				if (lComponent->isInitialized() == false) {
-						lComponent->init(*this);
-						lComponent->setInitializedFlag(true);
-				}
-		}
+	for (iterator lItr = begin(); lItr != end(); ++lItr) {
+		Component::Handle lComponent = castHandleT<Component>(lItr->second);
+		lComponent->init(*this);
+	}
 	schnaps_StackTraceEndM("void SCHNAPS::Core::System::initComponents()");
 }

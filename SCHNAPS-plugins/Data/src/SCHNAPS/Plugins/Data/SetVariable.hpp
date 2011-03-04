@@ -47,9 +47,9 @@ public:
 
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("DataSetVariable");
+			const static std::string lName("Data_SetVariable");
 			return lName;
-		schnaps_StackTraceEndM("const std::string& SetVariable::getName() const");
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Data::SetVariable::getName() const");
 	}
 
 	virtual	void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
