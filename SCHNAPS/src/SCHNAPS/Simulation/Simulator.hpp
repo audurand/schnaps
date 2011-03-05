@@ -21,10 +21,6 @@
 #ifndef SCHNAPS_Simulation_Simulator_hpp
 #define SCHNAPS_Simulation_Simulator_hpp
 
-#include <map>
-#include <queue>
-#include <vector>
-
 #include "SCHNAPS/Core/System.hpp"
 #include "SCHNAPS/Simulation/BlackBoard.hpp"
 #include "SCHNAPS/Simulation/Clock.hpp"
@@ -33,6 +29,10 @@
 #include "SCHNAPS/Simulation/SimulationContext.hpp"
 #include "SCHNAPS/Simulation/WaitingQMaps.hpp"
 #include "SCHNAPS/Simulation/SimulationThread.hpp"
+
+#include <map>
+#include <queue>
+#include <vector>
 
 namespace SCHNAPS {
 namespace Simulation {
@@ -78,6 +78,9 @@ public:
 	std::string getConfiguration();
 
 	void simulate(std::string inScenarioLabel);
+	
+	//! Refresh simulator structure with up-to-date parameters.
+	void refresh();
 
 	void clearRandomizer();
 	void resetRandomizer();
@@ -133,8 +136,6 @@ public:
 	static void processSubStep(SimulationThread* inThread);
 
 private:
-	void init();
-
 	// sub reads
 	void readInput(PACC::XML::ConstIterator inIter);
 	void readSimulation(PACC::XML::ConstIterator inIter);

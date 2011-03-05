@@ -25,17 +25,17 @@ using namespace SCHNAPS;
 using namespace Simulation;
 
 SimulationThread::SimulationThread(PACC::Threading::Condition* inParallel,
-		PACC::Threading::Semaphore* inSequential,
-		PACC::Threading::Semaphore* inBlackBoardWrt,
-		SimulationContext::Handle inContext,
-		BlackBoard::Handle inBlackBoard,
-		WaitingQMaps::Handle inWaitingQMaps) :
-			mParallel(inParallel),
-			mSequential(inSequential),
-			mBlackBoardWrt(inBlackBoardWrt),
-			mContext(inContext),
-			mBlackBoard(inBlackBoard),
-			mWaitingQMaps(inWaitingQMaps)
+									PACC::Threading::Semaphore* inSequential,
+									PACC::Threading::Semaphore* inBlackBoardWrt,
+									SimulationContext::Handle inContext,
+									BlackBoard::Handle inBlackBoard,
+									WaitingQMaps::Handle inWaitingQMaps) :
+	mParallel(inParallel),
+	mSequential(inSequential),
+	mBlackBoardWrt(inBlackBoardWrt),
+	mContext(inContext),
+	mBlackBoard(inBlackBoard),
+	mWaitingQMaps(inWaitingQMaps)
 {
 	run();
 }
@@ -85,7 +85,7 @@ void SimulationThread::main() {
 		}
 	} while (!lDone);
 
-	// Ready for deletion
+	// ready for deletion
 	mParallel->lock();
 	mSequential->post();
 	mParallel->unlock();

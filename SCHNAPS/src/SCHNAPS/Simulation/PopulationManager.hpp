@@ -21,11 +21,11 @@
 #ifndef SCHNAPS_Simulation_PopulationManager_hpp
 #define SCHNAPS_Simulation_PopulationManager_hpp
 
-#include <map>
-
 #include "SCHNAPS/Core/Object.hpp"
 #include "SCHNAPS/Simulation/Generator.hpp"
 #include "SCHNAPS/Simulation/Individual.hpp"
+
+#include <map>
 
 namespace SCHNAPS {
 namespace Simulation {
@@ -42,7 +42,7 @@ struct Source {
 };
 
 /*!
- *  \class PopulationManager PopulationManager/include/PopulationManager.hpp "PopulationManager/include/PopulationManager.hpp"
+ *  \class PopulationManager SCHNAPS/Simulation/PopulationManager.hpp "SCHNAPS/Simulation/PopulationManager.hpp"
  *  \brief PopulationManager class. Maps a clock time to a source (profile and size).
  */
 class PopulationManager: public SCHNAPS::Core::Object, public std::multimap<unsigned long, Source> {
@@ -60,8 +60,8 @@ public:
 
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("PopulationManager");
-			return lName;
+		const static std::string lName("PopulationManager");
+		return lName;
 		schnaps_StackTraceEndM("const std::string& PopulationManager::getName() const");
 	}
 
@@ -85,13 +85,13 @@ public:
 		std::string lInput;
 
 		for (PopulationManager::const_iterator lIt = this->begin(); lIt != this->end(); lIt++) {
-			// Write time
+			// write time
 			lSS << "time" << "=" << lIt->first << ";";
 
-			// Write profile name
+			// write profile name
 			lSS << "profile" << "=" << lIt->second.mProfile.c_str() << ";";
 
-			// Write size
+			// write size
 			lSS << "size" << "=" << lIt->second.mSize << ",";
 		}
 
@@ -133,7 +133,7 @@ private:
 		std::string lProfile;
 		unsigned int lSize;
 
-		// Reading time
+		// read time
 		if (lTokenizer.getNextToken(lParam)) {
 			lPos = lParam.find("=");
 
@@ -142,7 +142,7 @@ private:
 			} else {
 				lTime = SCHNAPS::str2uint(lParam.substr(lPos+1));
 
-				// Reading profile name
+				// read profile name
 				if (lTokenizer.getNextToken(lParam)) {
 					lPos = lParam.find("=");
 
@@ -151,7 +151,7 @@ private:
 					} else {
 						lProfile = lParam.substr(lPos+1);
 
-						// Reading size
+						// read size
 						if (lTokenizer.getNextToken(lParam)) {
 							lPos = lParam.find("=");
 

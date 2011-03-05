@@ -43,7 +43,7 @@ namespace SCHNAPS {
 namespace Simulation {
 
 /*!
- *  \class Simulator Simulator/Generator/include/Generator.hpp "Simulator/Generator/include/Generator.hpp"
+ *  \class Simulator SCHNAPS/Simulation/Generator.hpp "SCHNAPS/Simulation/Generator.hpp"
  *  \brief Generator class.
  */
 class Generator: public SCHNAPS::Core::Object {
@@ -54,7 +54,7 @@ protected:
 	typedef __gnu_cxx::hash_map<std::string, GenProfile::Handle, SCHNAPS::Core::HashString> ProfileMap;
 #elif defined(SCHNAPS_HAVE_STDEXT_HASHMAP)
 	typedef stdext::hash_map<std::string, GenProfile::Handle, SCHNAPS::Core::HashString> ProfileMap;
-#else // No hash_map found
+#else // no hash_map found
 	typedef std::map<std::string, GenProfile::Handle> ProfileMap;
 #endif
 
@@ -73,8 +73,8 @@ public:
 
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Generator");
-			return lName;
+		const static std::string lName("Generator");
+		return lName;
 		schnaps_StackTraceEndM("const std::string& SCHNAPS::Simulation::Generator::getName() const");
 	}
 
@@ -84,10 +84,13 @@ public:
 	Individual::Bag::Handle generate(std::string inProfile, unsigned int inSize, std::string inPrefix, unsigned int inStartingIndex);
 	static void buildIndividuals(GenerationThread::Handle inThread);
 
+	//! Refresh generator structure with up-to-date parameters.
+	void refresh();
+	
 	void clearRandomizer();
 	void resetRandomizer();
 
-	const SCHNAPS::Core::System& getSystem() const {
+	const Core::System& getSystem() const {
 		schnaps_NonNullPointerAssertM(mSystem);
 		return *mSystem;
 	}
@@ -103,38 +106,36 @@ public:
 	}
 
 private:
-	void init();
-
-	// Sub reads
+	// sub reads
 	void readRandomizerInfo(PACC::XML::ConstIterator inIter);
 	void readProfiles(PACC::XML::ConstIterator inIter);
 
-	// Sub writes
+	// sub writes
 	void writeRandomizerInfo(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 	void writeProfiles(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
 private:
-	// System structures
-	SCHNAPS::Core::System::Handle mSystem;				//!< Handle to the system.
+	// system structures
+	Core::System::Handle mSystem;				//!< Handle to the system.
 
-	// Reference structures
+	// reference structures
 	Clock::Handle mClock;						//!< Handle to simulation clock.
 	Environment::Handle mEnvironment;			//!< Handle to simulation environment.
 
-	// Randomizers info
-	SCHNAPS::Core::ULongArray mRandomizerInitSeed;		//!< Init registered seed of random number generators (one per thread).
-	SCHNAPS::Core::StringArray mRandomizerInitState;		//!< Init state of random number generators (one per thread).
-	SCHNAPS::Core::ULongArray mRandomizerCurrentSeed;	//!< Current registered seed of random number generators (one per thread).
-	SCHNAPS::Core::StringArray mRandomizerCurrentState;	//!< Current state of random number generators (one per thread).
+	// randomizers info
+	Core::ULongArray mRandomizerInitSeed;		//!< Init registered seed of random number generators (one per thread).
+	Core::StringArray mRandomizerInitState;		//!< Init state of random number generators (one per thread).
+	Core::ULongArray mRandomizerCurrentSeed;	//!< Current registered seed of random number generators (one per thread).
+	Core::StringArray mRandomizerCurrentState;	//!< Current state of random number generators (one per thread).
 
 	GenerationContext::Bag mContext;
 
-	// Multi-threads management structures
+	// multi-threads management structures
 	GenerationThread::Bag mSubThreads;
 	PACC::Threading::Condition* mParallel;
 	PACC::Threading::Semaphore* mSequential;
 
-	// Profiles
+	// profiles
 	ProfileMap mProfiles;						//!< Population profiles (maps profile name to generator profile).
 };
 } // end of Simulation namespace

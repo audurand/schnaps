@@ -46,11 +46,11 @@ public:
 	enum Position {eSTEP, eSUBSTEP, eEND};
 
 	explicit SimulationThread(PACC::Threading::Condition* inParallel,
-					PACC::Threading::Semaphore* inSequential,
-					PACC::Threading::Semaphore* inBlackBoardWrt,
-					SimulationContext::Handle inContext,
-					BlackBoard::Handle inBlackBoard,
-					WaitingQMaps::Handle inWaitingQMaps);
+		PACC::Threading::Semaphore* inSequential,
+		PACC::Threading::Semaphore* inBlackBoardWrt,
+		SimulationContext::Handle inContext,
+		BlackBoard::Handle inBlackBoard,
+		WaitingQMaps::Handle inWaitingQMaps);
 	~SimulationThread();
 
 	void waitBlackBoard() {

@@ -40,29 +40,29 @@ Process::Process(const std::string inLabel, SCHNAPS::Core::PrimitiveTree::Handle
 
 void SCHNAPS::Simulation::Process::readWithSystem(PACC::XML::ConstIterator inIter, SCHNAPS::Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
-		if (inIter->getType() != PACC::XML::eData) {
-			throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
-		}
-		if (inIter->getValue() != getName()) {
-			std::ostringstream lOSS;
-			lOSS << "tag <" << getName() << "> expected, but ";
-			lOSS << "got tag <" << inIter->getValue() << "> instead!";
-			throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
-		}
+	if (inIter->getType() != PACC::XML::eData) {
+		throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
+	}
+	if (inIter->getValue() != getName()) {
+		std::ostringstream lOSS;
+		lOSS << "tag <" << getName() << "> expected, but ";
+		lOSS << "got tag <" << inIter->getValue() << "> instead!";
+		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
+	}
 
-		if (inIter->getAttribute("file").empty()) {
-			if (inIter->getAttribute("label").empty()) {
-				throw schnaps_IOExceptionNodeM(*inIter, "process label attribute expected!");
-			}
-			mLabel = inIter->getAttribute("label");
-			mPrimitiveTree = new SCHNAPS::Core::PrimitiveTree();
-			mPrimitiveTree->readWithSystem(inIter->getFirstChild(), ioSystem);
-		} else {
-			std::ifstream lIFS(inIter->getAttribute("file").c_str(), std::ios::in);
-			PACC::XML::Document lDocument(lIFS);
-			this->readWithSystem(lDocument.getFirstDataTag(), ioSystem);
-			lIFS.close();
+	if (inIter->getAttribute("file").empty()) {
+		if (inIter->getAttribute("label").empty()) {
+			throw schnaps_IOExceptionNodeM(*inIter, "process label attribute expected!");
 		}
+		mLabel = inIter->getAttribute("label");
+		mPrimitiveTree = new SCHNAPS::Core::PrimitiveTree();
+		mPrimitiveTree->readWithSystem(inIter->getFirstChild(), ioSystem);
+	} else {
+		std::ifstream lIFS(inIter->getAttribute("file").c_str(), std::ios::in);
+		PACC::XML::Document lDocument(lIFS);
+		this->readWithSystem(lDocument.getFirstDataTag(), ioSystem);
+		lIFS.close();
+	}
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Process::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
@@ -73,25 +73,25 @@ void SCHNAPS::Simulation::Process::writeContent(PACC::XML::Streamer& ioStreamer,
 
 SCHNAPS::Core::AnyType::Handle Process::execute(SCHNAPS::Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		return mPrimitiveTree->interpret(ioContext);
+	return mPrimitiveTree->interpret(ioContext);
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Simulation::Process::execute(SCHNAPS::Core::ExecutionContext&) const ");
 }
 
 const std::string& Process::getReturnType(SCHNAPS::Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		return mPrimitiveTree->getReturnType(ioContext);
+	return mPrimitiveTree->getReturnType(ioContext);
 	schnaps_StackTraceEndM("const std::string& Process::getReturnType(SCHNAPS::Core::ExecutionContext&) const ");
 }
 
 void Process::validate(SCHNAPS::Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		mPrimitiveTree->validate(ioContext);
-		return;
+	mPrimitiveTree->validate(ioContext);
+	return;
 	schnaps_StackTraceEndM("const std::string& Process::getReturnType(SCHNAPS::Core::ExecutionContext&) const ");
 }
 
 Process::Handle Process::deepCopy(const SCHNAPS::Core::System& ioSystem) const {
 	schnaps_StackTraceBeginM();
-		return new Process(mLabel.c_str(), mPrimitiveTree->deepCopy(ioSystem));
+	return new Process(mLabel.c_str(), mPrimitiveTree->deepCopy(ioSystem));
 	schnaps_StackTraceEndM("SCHNAPS::Simulation::Process::Handle SCHNAPS::Simulation::Process::deepCopy(const SCHNAPS::Core::System&) const ");
 }

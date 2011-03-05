@@ -125,7 +125,6 @@
 #include "SCHNAPS/macros.hpp"
 
 namespace SCHNAPS {
-	
 namespace Core {
 
 // forward declarations
@@ -139,7 +138,6 @@ class System;
  *  \brief Base class for common objects.
  */
 class Object {
-
 public:
 	//! Object allocator type.
 	typedef Allocator Alloc;

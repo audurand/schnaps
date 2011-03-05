@@ -80,8 +80,8 @@ void Simulator::read(PACC::XML::ConstIterator inIter) {
 	// system must be read first
 	mSystem->read(inIter++);
 
-	// initialize simulator
-	init();
+	// initialize simulator with read parameters
+	refresh();
 
 	// read simulation input configuration
 	readInput(inIter++);
@@ -105,8 +105,8 @@ void Simulator::configure(const std::string& inParameters) {
 	schnaps_StackTraceBeginM();
 	mSystem->getParameters().readStr(inParameters);
 
-	// initialize simulator
-	init();
+	// refresh simulator with up-to-date parameters
+	refresh();
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::configure(const std::string&)");
 }
 
@@ -130,15 +130,6 @@ void Simulator::simulate(std::string inScenarioLabel) {
 		mSubThreads[i]->resetIndexes();
 		mContext[i]->reset();
 	}
-
-	// validate scenario
-#ifndef SCHNAPS_NDEBUG
-	if (mContext[0]->getScenarios().find(inScenarioLabel) == mContext[0]->getScenarios().end()) {
-		throw schnaps_InternalExceptionM("Could not find " + inScenarioLabel + " in scenario list!");
-	}
-#else
-	schnaps_AssertM(mContext[0]->getScenarios().find(inScenarioLabel) != mContext[0]->getScenarios().end());
-#endif
 
 	// current position in simulation
 	enum Position {eSTEP, eSUBSTEP};
@@ -359,6 +350,55 @@ void Simulator::simulate(std::string inScenarioLabel) {
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::simulate(std::string, std::string, std::string)");
 }
 
+/*!
+ * \brief Refresh simulator structure with up-to-date parameters.
+ */
+void Simulator::refresh() {
+	schnaps_StackTraceBeginM();
+	unsigned int lNbThreads_new = Core::castHandleT<Core::UInt>(mSystem->getParameters()["threads.simulator"])->getValue();
+	unsigned int lNbThreads_old = mContext.size();
+	
+	// if no threads already, create one + context
+	if (lNbThreads_old == 0) {
+		mContext.push_back(new SimulationContext(mSystem, mClock, mEnvironment));
+		mContext.back()->setThreadNb(0);
+
+		mSubThreads.push_back(new SimulationThread(mParallel, mSequential, mBlackBoardWrt, mContext.back(), mBlackBoard, mWaitingQMaps));
+		mSequential->wait();
+		
+		lNbThreads_old = 1;
+	}
+
+	// create one context per thread + sub threads
+	if (lNbThreads_new > lNbThreads_old) {
+		for (unsigned int i = lNbThreads_old; i < lNbThreads_new; i++) {
+			// create new threads as copies of the first one to copy process map.
+			// TODO: does the simulator should own an original copy of the process map? 
+			mContext.push_back(mContext[0]->deepCopy());
+			mContext.back()->setThreadNb(i);
+
+			mSubThreads.push_back(new SimulationThread(mParallel, mSequential, mBlackBoardWrt, mContext.back(), mBlackBoard, mWaitingQMaps));
+			mSequential->wait();
+		}
+	} else if (lNbThreads_new < lNbThreads_old) {
+		// TODO: remove unused contexts and subthreads
+	}
+	
+	// update simulator randomizers information
+	mRandomizerInitSeed.resize(lNbThreads_new, 0);
+	mRandomizerInitState.resize(lNbThreads_new, "");
+
+	mRandomizerCurrentSeed = mRandomizerInitSeed;
+	mRandomizerCurrentState = mRandomizerInitState;
+	
+	// refresh individual generator
+	mPopulationManager->getGenerator().refresh();
+	
+	// init system components
+	mSystem->initComponents();
+	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::refresh()");
+}
+
 void Simulator::clearRandomizer() {
 	schnaps_StackTraceBeginM();
 	for (unsigned int i = 0; i < mRandomizerCurrentSeed.size(); i++) {
@@ -386,7 +426,7 @@ void Simulator::processScenario(SimulationThread* inThread) {
 			// execute the scenario
 			for (unsigned int i = 0; i < lNewIndexes.size(); i++) {
 				lContext.setIndividual(lContext.getEnvironment().getPopulation()[lNewIndexes[i]]);
-				lContext.getScenarios().find(inThread->getScenarioLabel())->second.mProcessIndividual->execute(lContext);
+				lContext.getScenario(inThread->getScenarioLabel()).mProcessIndividual->execute(lContext);
 				// keep track of processes pushed by individual at index i
 				if (lContext.getPushList().empty() == false) {
 					inThread->waitBlackBoard();
@@ -469,33 +509,6 @@ void Simulator::processSubStep(SimulationThread* inThread) {
 }
 
 // private functions
-
-void Simulator::init() {
-	schnaps_StackTraceBeginM();
-	// create one context per thread + sub threads
-	unsigned int lNbThreads_new = SCHNAPS::Core::castHandleT<SCHNAPS::Core::UInt>(mSystem->getParameters()["threads.simulator"])->getValue();
-	unsigned int lNbThreads_old = mContext.size();
-
-	if (lNbThreads_new > lNbThreads_old) {
-		for (unsigned int i = lNbThreads_old; i < lNbThreads_new; i++) {
-			//if (i == 0) { // TODO: remove?
-				mContext.push_back(new SimulationContext(mSystem, mClock, mEnvironment));
-			//} else {
-				//mContext.push_back(mContext[i-1]->deepCopy());
-			//}
-			mContext.back()->setThreadNb(i);
-
-			mSubThreads.push_back(new SimulationThread(mParallel, mSequential, mBlackBoardWrt, mContext.back(), mBlackBoard, mWaitingQMaps));
-			mSequential->wait();
-		}
-	} else if (lNbThreads_new < lNbThreads_old) {
-		// TODO: remove unused contexts and subthreads
-	}
-	
-	// init system components
-	mSystem->initComponents();
-	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::Init()");
-}
 
 void Simulator::readInput(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceBeginM();

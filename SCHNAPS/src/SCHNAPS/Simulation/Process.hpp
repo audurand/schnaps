@@ -52,8 +52,8 @@ public:
 
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Process");
-			return lName;
+		const static std::string lName("Process");
+		return lName;
 		schnaps_StackTraceEndM("const std::string& Process::getName() const");
 	}
 

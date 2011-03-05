@@ -2,8 +2,7 @@
  * SimulationContext.hpp
  *
  *  Created on: 2009-02-19
- *  Updated on: 2010-10-18
- *      Author: Audrey Durand
+ *  Author: Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,13 +21,13 @@
 #ifndef SCHNAPS_Simulation_SimulationContext_hpp
 #define SCHNAPS_Simulation_SimulationContext_hpp
 
-#include <list>
-
 #include "SCHNAPS/Simulation/ExecutionContext.hpp"
 #include "SCHNAPS/Simulation/Clock.hpp"
 #include "SCHNAPS/Simulation/Environment.hpp"
 #include "SCHNAPS/Simulation/Individual.hpp"
 #include "SCHNAPS/Simulation/Process.hpp"
+
+#include <list>
 
 #if defined(SCHNAPS_HAVE_STD_HASHMAP) | defined(SCHNAPS_HAVE_STDEXT_HASHMAP)
 #include <hash_map>
@@ -76,7 +75,7 @@ protected:
 	typedef stdext::hash_map<std::string, Process::Handle, SCHNAPS::Core::HashString> ProcessMap;
 	typedef stdext::hash_map<std::string, Process::Bag::Handle, SCHNAPS::Core::HashString> ObserverMap;
 	typedef stdext::hash_map<std::string, Scenario, SCHNAPS::Core::HashString> ScenarioMap;
-#else // No hash_map found
+#else // no hash_map found
 	typedef std::map<std::string, Process::Handle> ProcessMap;
 	typedef std::map<std::string, Process::Bag::Handle> ObserverMap;
 	typedef std::map<std::string, Scenario> ScenarioMap;
@@ -92,7 +91,7 @@ public:
 
 	SimulationContext();
 	SimulationContext(const SimulationContext& inOriginal);
-	explicit SimulationContext(const SCHNAPS::Core::System::Handle inSystem, const Clock::Handle inClock, const Environment::Handle inEnvironment);
+	explicit SimulationContext(const Core::System::Handle inSystem, const Clock::Handle inClock, const Environment::Handle inEnvironment);
 	virtual ~SimulationContext() {}
 
 	virtual const std::string& getName() const {
@@ -124,6 +123,20 @@ public:
 	const ScenarioMap& getScenarios() const {
 		return mScenarios;
 	}
+	
+	const Scenario& getScenario(std::string inLabel) {
+		schnaps_StackTraceBeginM();
+		ScenarioMap::const_iterator lIt = mScenarios.find(inLabel);
+#ifndef SCHNAPS_NDEBUG
+		if (lIt == mScenarios.end()) {
+			throw schnaps_InternalExceptionM("Could not find " + inLabel + " in scenario list of simulation context number" + uint2str(mThreadNb) + "!");
+		}
+#else
+		schnaps_AssertM(lIt != mScenarios.end());
+#endif
+		return lIt->second;
+		schnaps_StackTraceEndM("void SCHNAPS::Simulation::SimulationContext::getScenario(std::string&)");
+	}
 
 	const std::list<Push>& getPushList() const {
 		return mPushList;
@@ -134,13 +147,13 @@ public:
 	}
 
 private:
-	// Data structures
-	ProcessMap mProcesses;						//!< Stored processes.
-	ClockObservers mClockObservers;				//!< Clock observers.
-	ScenarioMap mScenarios;						//!< Scenario processes (label to scenario).
+	// data structures
+	ProcessMap mProcesses;			//!< Stored processes.
+	ClockObservers mClockObservers;	//!< Clock observers.
+	ScenarioMap mScenarios;			//!< Scenario processes (label to scenario).
 
-	// Current structures
-	std::list<Push> mPushList;					//!< List of pushes made while executing current individual.
+	// current structures
+	std::list<Push> mPushList;		//!< List of pushes made while executing current individual.
 };
 } // end of Simulation namespace
 } // end of SCHNAPS namespace
