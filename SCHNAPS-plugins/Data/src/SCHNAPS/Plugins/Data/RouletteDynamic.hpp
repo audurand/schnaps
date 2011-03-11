@@ -1,8 +1,8 @@
 /*
  * RouletteDynamic.hpp
  *
- *  Created on: 2010-01-11
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ namespace Data {
 
 /*!
  *  \class RouletteDynamic SCHNAPS/Plugins/Data/RouletteDynamic.hpp "SCHNAPS/Plugins/Data/RouletteDynamic.hpp"
- *  \brief Primitive class that returns the result of a roulette with dynamic weights.
+ *  \brief Return an unsigned int from a roulette with dynamic weights.
  */
 class RouletteDynamic: public Core::Primitive {
 public:
@@ -45,17 +45,25 @@ public:
 	RouletteDynamic(const RouletteDynamic& inOriginal);
 	virtual ~RouletteDynamic() {}
 
-	virtual const std::string& getName() const {
-		schnaps_StackTraceBeginM();
-			const static std::string lName("Data_RouletteDynamic");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& RouletteDynamic::getName() const");
-	}
-
+	//! Copy constructor.
 	RouletteDynamic& operator=(const RouletteDynamic& inOriginal);
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
+	virtual const std::string& getName() const {
+		schnaps_StackTraceBeginM();
+		const static std::string lName("Data_RouletteDynamic");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Data::RouletteDynamic::getName() const");
+	}
+
+	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the nth argument requested return type.
 	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const;
+	//! Return the primitive return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 };
 } // end of Data namespace

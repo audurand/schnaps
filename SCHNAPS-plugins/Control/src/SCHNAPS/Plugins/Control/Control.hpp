@@ -1,8 +1,8 @@
 /*
  * Control.hpp
  *
- *  Created on: 2011-02-14
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,7 @@
 #define Control_hpp
 
 #include "SCHNAPS/Plugins/Control/Branch.hpp"
-#include "SCHNAPS/Plugins/Control/BranchDynamic.hpp"
-#include "SCHNAPS/Plugins/Control/BranchStatic.hpp"
+#include "SCHNAPS/Plugins/Control/BranchMulti.hpp"
 #include "SCHNAPS/Plugins/Control/ChoiceIsBetween.hpp"
 #include "SCHNAPS/Plugins/Control/ChoiceIsEqual.hpp"
 #include "SCHNAPS/Plugins/Control/IfThenElse.hpp"
@@ -33,6 +32,5 @@
 #include "SCHNAPS/Plugins/Control/ProcessPush.hpp"
 #include "SCHNAPS/Plugins/Control/Sequential.hpp"
 #include "SCHNAPS/Plugins/Control/Switch.hpp"
-#include "SCHNAPS/Plugins/Control/SwitchBins.hpp"
 
 #endif /* Control_hpp */

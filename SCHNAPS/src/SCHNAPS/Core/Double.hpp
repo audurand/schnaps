@@ -1,8 +1,8 @@
 /*
  * Double.hpp
  *
- *  Created on: 2009-01-23
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ typedef ArrayT<double> DoubleArray;
 
 /*!
  *  \class Double SCHNAPS/Core/Double.hpp "SCHNAPS/Core/Double.hpp"
- *  \brief Double class, the double implementation as Object.
+ *  \brief The double implementation as Object.
  */
 class Double: public Number {
 public:
@@ -56,58 +56,93 @@ public:
 	Double(const Double& inOriginal);
 	virtual ~Double() {}
 
+	//! Copy operator.
+	Double& operator=(const Double& inOriginal);
+
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Double");
-			return lName;
+		const static std::string lName("Double");
+		return lName;
 		schnaps_StackTraceEndM("const std::string& Double::getName() const");
 	}
 
+	/*!
+	 * \brief  Return a const reference to the type of object.
+	 * \return A const reference to the type of object.
+	 */
 	virtual const std::string& getType() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lType("Double");
-			return lType;
+		const static std::string lType("Double");
+		return lType;
 		schnaps_StackTraceEndM("const std::string& Double::getType() const");
 	}
 
+	//! Write the content of the object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
+	//! Test if an object is equal to another.
 	virtual bool isEqual(const Object& inRightObj) const;
+	//! Test if an object is less than another.
 	virtual bool isLess(const Object& inRightObj) const;
 
-	Double& operator=(const Double& inOriginal);
-
+	//! Read data from string.
 	virtual void readStr(const std::string& inStr);
+	//! Write data to string.
 	virtual std::string writeStr() const;
+
+	//! Return a handle to a clone (deep copy).
 	virtual AnyType::Handle clone() const;
 
+	//! Compute absolute value.
 	virtual Number& abs();
+	//! Adds a number.
 	virtual Number& add(Number& inRightNumber);
+	//! Divide by a number.
 	virtual Number& div(Number& inRightNumber);
+	//! Compute the base-e exponential function, which is the e number raised to the power x.
 	virtual Number& exp();
+	//! Multiply by a number.
 	virtual Number& mult(Number& inRightNumber);
+	//! Raise to the power exponent.
 	virtual Number& pow(Number& inRightNumber);
+	//! Subtract a number.
 	virtual Number& sub(Number& inRightNumber);
 
-	operator Double() const;
-	operator Float() const;
-	operator Int() const;
-	operator Long() const;
-	operator UInt() const;
-	operator ULong() const;
+	//! Casting operator to double.
+	virtual operator Double() const;
+	//! Casting operator to float.
+	virtual operator Float() const;
+	//! Casting operator to integer.
+	virtual operator Int() const;
+	//! Casting operator to long.
+	virtual operator Long() const;
+	//! Casting operator to unsigned integer.
+	virtual operator UInt() const;
+	//! Casting operator to unsigned long.
+	virtual operator ULong() const;
 
-	//! Return the value of double object.
+	/*!
+	 * \brief Return a const reference to the value of double.
+	 * \return A const reference to the value of double.
+	 */
 	const double& getValue() const {
 		return mValue;
 	}
 
-	//! Set the value of double object.
+	/*!
+	 * \brief Set the value of double.
+	 * \param inValue A const reference to the new value.
+	 */
 	void setValue(const double& inValue) {
 		mValue = inValue;
 	}
 
 private:
-	double mValue; //! Value of double object.
+	double mValue; //! Value of double.
 };
 } // end of Core namespace
 } // end of SCHNAPS namespace

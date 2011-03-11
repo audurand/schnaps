@@ -1,8 +1,8 @@
 /*
  * Div.hpp
  *
- *  Created on: 2009-02-26
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ namespace Operators {
 
 /*!
  *  \class Div SCHNAPS/Plugins/Operators/Div.hpp "SCHNAPS/Plugins/Operators/Div.hpp"
- *  \brief Mathematical division operation primitive class.
+ *  \brief Mathematical division operation primitive.
  */
 class Div: public Core::Primitive {
 public:
@@ -45,17 +45,25 @@ public:
 	Div(const Div& inOriginal);
 	virtual ~Div() {}
 
+	//! Copy operator.
+	Div& operator=(const Div& inOriginal);
+
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Operators_Div");
-			return lName;
+		const static std::string lName("Operators_Div");
+		return lName;
 		schnaps_StackTraceEndM("const std::string& Div::getName() const");
 	}
 
-	Div& operator=(const Div& inOriginal);
-
+	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the nth argument requested return type.
 	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const;
+	//! Return the primitive return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 };
 } // end of Operators namespace

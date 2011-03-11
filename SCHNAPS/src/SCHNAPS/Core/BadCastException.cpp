@@ -1,4 +1,9 @@
 /*
+ * BadCastException.cpp
+ *
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -11,13 +16,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-/*!
- *  \file   SCHNAPS/Core/BadCastException.cpp
- *  \brief  Implementation of class BadCastException.
- *  \author Christian Gagne
- *  \author Marc Parizeau
  */
 
 #include "SCHNAPS/Core.hpp"
@@ -34,9 +32,13 @@ using namespace Core;
 BadCastException::BadCastException(std::string inMessage,
                                    std::string inFileName,
                                    unsigned int   inLineNumber) :
-		TargetedException(inMessage,inFileName,inLineNumber)
+	TargetedException(inMessage,inFileName,inLineNumber)
 { }
 
+/*!
+ * \brief Return a const pointer the actual name (char) of the exception.
+ * \return A const pointer to the actual name (char) of the exception.
+ */
 const char* BadCastException::getExceptionName() const throw() {
 	return "Simulator::BadCastException";
 }

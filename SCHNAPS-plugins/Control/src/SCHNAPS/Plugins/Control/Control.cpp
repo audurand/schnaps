@@ -1,8 +1,8 @@
 /*
  * Control.cpp
  *
- *  Created on: 2011-02-14
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,8 +24,7 @@
 SCHNAPS_Plugin_BeginDefinitionM("Control", "1.0");
 
 SCHNAPS_Plugin_AddAllocM("Control_Branch", SCHNAPS::Plugins::Control::Branch::Alloc);
-SCHNAPS_Plugin_AddAllocM("Control_BranchDynamic", SCHNAPS::Plugins::Control::BranchDynamic::Alloc);
-SCHNAPS_Plugin_AddAllocM("Control_BranchStatic", SCHNAPS::Plugins::Control::BranchStatic::Alloc);
+SCHNAPS_Plugin_AddAllocM("Control_BranchMulti", SCHNAPS::Plugins::Control::BranchMulti::Alloc);
 SCHNAPS_Plugin_AddAllocM("Control_ChoiceIsBetween", SCHNAPS::Plugins::Control::ChoiceIsBetween::Alloc);
 SCHNAPS_Plugin_AddAllocM("Control_ChoiceIsEqual", SCHNAPS::Plugins::Control::ChoiceIsEqual::Alloc);
 SCHNAPS_Plugin_AddAllocM("Control_IfThenElse", SCHNAPS::Plugins::Control::IfThenElse::Alloc);
@@ -35,6 +34,5 @@ SCHNAPS_Plugin_AddAllocM("Control_ProcessCall", SCHNAPS::Plugins::Control::Proce
 SCHNAPS_Plugin_AddAllocM("Control_ProcessPush", SCHNAPS::Plugins::Control::ProcessPush::Alloc);
 SCHNAPS_Plugin_AddAllocM("Control_Sequential", SCHNAPS::Plugins::Control::Sequential::Alloc);
 SCHNAPS_Plugin_AddAllocM("Control_Switch", SCHNAPS::Plugins::Control::Switch::Alloc);
-SCHNAPS_Plugin_AddAllocM("Control_SwitchBins", SCHNAPS::Plugins::Control::SwitchBins::Alloc);
 
 SCHNAPS_Plugin_EndDefinitionM();

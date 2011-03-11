@@ -1,8 +1,8 @@
 /*
  * Char.hpp
  *
- *  Created on: 2009-01-23
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ namespace Core {
 
 /*!
  *  \class Char SCHNAPS/Core/Char.hpp "SCHNAPS/Core/Char.hpp"
- *  \brief Char class, the char implementation as Object.
+ *  \brief The char implementation as Object.
  */
 class Char: public Atom {
 public:
@@ -45,43 +45,65 @@ public:
 	Char(const Char& inOriginal);
 	virtual ~Char() {}
 
+	//! Copy operator.
 	Char& operator=(const Char& inOriginal);
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Char");
-			return lName;
+		const static std::string lName("Char");
+		return lName;
 		schnaps_StackTraceEndM("const std::string& Char::getName() const");
 	}
 
+	/*!
+	 * \brief  Return a const reference to the type of object.
+	 * \return A const reference to the type of object.
+	 */
 	virtual const std::string& getType() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lType("Char");
-			return lType;
+		const static std::string lType("Char");
+		return lType;
 		schnaps_StackTraceEndM("const std::string& Char::getType() const");
 	}
 
+	//! Write the content of the object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
+	//! Test if an object is equal to another.
 	virtual bool isEqual(const Object& inRightObj) const;
+	//! Test if an object is less than another.
 	virtual bool isLess(const Object& inRightObj) const;
 
+	//! Read data from string.
 	virtual void readStr(const std::string& inStr);
+	//! Write data to string.
 	virtual std::string writeStr() const;
+
+	//! Return a handle to a clone (deep copy).
 	virtual AnyType::Handle clone() const;
 
-	//! Return the value of char object.
+	/*!
+	 * \brief Return a const reference to the value of char.
+	 * \return A const reference to the value of char.
+	 */
 	const char& getValue() const {
 		return mValue;
 	}
 
-	//! Set the value of char object.
+	/*!
+	 * \brief Set the value of char.
+	 * \param inValue A const reference to the new value.
+	 */
 	void setValue(const char& inValue) {
 		mValue = inValue;
 	}
 
 private:
-	char mValue; //! Value of charobject.
+	char mValue; //! Value of char.
 };
 } // end of Core namespace
 } // end of SCHNAPS namespace

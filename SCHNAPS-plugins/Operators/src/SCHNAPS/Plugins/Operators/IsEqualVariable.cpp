@@ -1,8 +1,8 @@
 /*
  * IsEqualVariable.cpp
  *
- *  Created on: 2010-11-22
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ using namespace Plugins;
 using namespace Operators;
 
 /*!
- *  \brief Construct a new primitive to check if variable equals value.
+ * \brief Default constructor.
  */
 IsEqualVariable::IsEqualVariable() :
 	Core::Primitive(0),
@@ -34,6 +34,10 @@ IsEqualVariable::IsEqualVariable() :
 	mValue(NULL)
 {}
 
+/*!
+ * \brief Construct a comparison operator between a current individual variable and a value as a copy of an original.
+ * \param inOriginal A const reference to the original comparison operator between a current individual variable and a value.
+ */
 IsEqualVariable::IsEqualVariable(const IsEqualVariable& inOriginal) :
 	Core::Primitive(0),
 	mLabel(inOriginal.mLabel.c_str()),
@@ -46,6 +50,15 @@ IsEqualVariable::IsEqualVariable(const IsEqualVariable& inOriginal) :
 	}
 }
 
+/*!
+ * \brief Read object from XML using system.
+ * \param inIter XML iterator of input document.
+ * \param ioSystem A reference to the system.
+ * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
+ * \throw SCHNAPS::Core::IOException if label attribute is missing.
+ * \throw SCHNAPS::Core::IOException if value attribute and value.ref attribute are missing.
+ * \throw SCHNAPS::Core::IOException if value attribute is used and valueType attribute is missing.
+ */
 void IsEqualVariable::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
 	if (inIter->getType() != PACC::XML::eData) {
@@ -73,7 +86,7 @@ void IsEqualVariable::readWithSystem(PACC::XML::ConstIterator inIter, Core::Syst
 
 			std::stringstream lSS;
 			lSS << "ref." << mValue_Ref;
-			mValue = Core::castHandleT<Core::Atom>(ioSystem.getParameters()[lSS.str().c_str()]);
+			mValue = Core::castHandleT<Core::Atom>(ioSystem.getParameters().getParameterHandle(lSS.str().c_str()));
 		}
 	} else { // explicitly given
 		if (inIter->getAttribute("valueType").empty()) {
@@ -82,17 +95,16 @@ void IsEqualVariable::readWithSystem(PACC::XML::ConstIterator inIter, Core::Syst
 
 		Core::Atom::Alloc::Handle lAlloc = Core::castHandleT<Core::Atom::Alloc>(ioSystem.getFactory().getAllocator(inIter->getAttribute("valueType")));
 		mValue =  Core::castHandleT<Core::Atom>(lAlloc->allocate());
-		if (mValue == NULL) {
-			std::ostringstream lOSS;
-			lOSS << "no number named '" <<  inIter->getAttribute("valueType");
-			lOSS << "' found in the factory";
-			throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
-		}
 		mValue->readStr(inIter->getAttribute("value"));
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Operators::IsEqualVariable::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
+/*!
+ * \brief Write object content to XML.
+ * \param ioStreamer XML streamer to output document.
+ * \param inIndent Wether to indent or not.
+ */
 void IsEqualVariable::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
 	ioStreamer.insertAttribute("label", mLabel);
@@ -105,23 +117,27 @@ void IsEqualVariable::writeContent(PACC::XML::Streamer& ioStreamer, bool inInden
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Operators::IsEqualVariable::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
+/*!
+ * \brief  Execute the primitive.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A handle to the execution result.
+ */
 Core::AnyType::Handle IsEqualVariable::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
 
-#ifndef SIMULATOR_NDEBUG
-	if (lContext.getIndividual().getState().find(mLabel) == lContext.getIndividual().getState().end()) {
-		throw schnaps_InternalExceptionM("Could not find variable '" + mLabel + "' in the current individual state!");
-	}
-#else
-	schnaps_AssertM(lContext.getIndividual().getState().find(mLabel) != lContext.getIndividual().getState().end());
-#endif
-
-	Core::Atom::Handle lVariable = Core::castHandleT<Core::Atom>(lContext.getIndividual().getState()[mLabel]);
+	Core::Atom::Handle lVariable = Core::castHandleT<Core::Atom>(lContext.getIndividual().getState().getVariableHandle(mLabel));
 	return new Core::Bool(lVariable->isEqual(*mValue));
-	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Operators::IsEqualVariable::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Operators::IsEqualVariable::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
 }
 
+/*!
+ * \brief  Return the primitive return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the return type.
+ */
 const std::string& IsEqualVariable::getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	const static std::string lType("Bool");

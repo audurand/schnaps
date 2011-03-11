@@ -1,8 +1,8 @@
 /*
  * WaitingQMaps.hpp
  *
- *  Created on: 2010-07-02
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,47 +21,59 @@
 #ifndef SCHNAPS_Simulation_WaitingQMaps_hpp
 #define SCHNAPS_Simulation_WaitingQMaps_hpp
 
+#include "SCHNAPS/Core/Object.hpp"
+#include "SCHNAPS/Simulation/Process.hpp"
+
 #include <map>
 #include <queue>
 #include <vector>
 
-#include "SCHNAPS/Core/Object.hpp"
-#include "SCHNAPS/Simulation/Process.hpp"
-
 namespace SCHNAPS {
 namespace Simulation {
 
-class WaitingQMaps: public SCHNAPS::Core::Object {
+class WaitingQMaps: public Core::Object {
 public:
 	//! WaitingQMap allocator type.
-	typedef SCHNAPS::Core::AllocatorT<WaitingQMaps, SCHNAPS::Core::Object::Alloc> Alloc;
+	typedef Core::AllocatorT<WaitingQMaps, Core::Object::Alloc> Alloc;
 	//! WaitingQMap handle type.
-	typedef SCHNAPS::Core::PointerT<WaitingQMaps, SCHNAPS::Core::Object::Handle> Handle;
+	typedef Core::PointerT<WaitingQMaps, Core::Object::Handle> Handle;
 	//! WaitingQMap bag type.
-	typedef SCHNAPS::Core::ContainerT<WaitingQMaps, SCHNAPS::Core::Object::Bag> Bag;
+	typedef Core::ContainerT<WaitingQMaps, Core::Object::Bag> Bag;
 
 	WaitingQMaps() {}
 	WaitingQMaps(const WaitingQMaps& inOriginal);
 	virtual ~WaitingQMaps() {}
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("WaitingQMaps");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& WaitingQMaps::getName() const");
+		const static std::string lName("WaitingQMaps");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Simulation::WaitingQMaps::getName() const");
 	}
 
+	/*!
+	 * \brief  Return a const reference to the environment FIFOs.
+	 * \return A const reference to the environment FIFOs.
+	 */
 	std::map<unsigned int, std::queue<Process::Handle> >& getEnvironmentWaitingQMap() {
 		return mEnvironment;
 	}
 
+	/*!
+	 * \brief  Return a const reference to all individuals FIFOs.
+	 * \return A const reference to all individuals FIFOs FIFOs.
+	 */
 	std::vector<std::map<unsigned int, std::queue<Process::Handle> > >& getIndividualsWaitingQMaps() {
 		return mIndividuals;
 	}
 
 private:
-	std::map<unsigned int, std::queue<Process::Handle> > mEnvironment;
-	std::vector<std::map<unsigned int, std::queue<Process::Handle> > > mIndividuals;
+	std::map<unsigned int, std::queue<Process::Handle> > mEnvironment;					//!< FIFOs for environment.
+	std::vector<std::map<unsigned int, std::queue<Process::Handle> > > mIndividuals;	//!< FIFOs for each individual.
 };
 } // end of Simulation namespace
 } // end of SCHNAPS namespace

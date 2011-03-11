@@ -1,9 +1,8 @@
 /*
  * ConcatVariable.hpp
  *
- *  Created on: 2010-11-27
- *  Updated on: 2010-11-27
- *      Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,8 +29,8 @@ namespace Plugins {
 namespace Operators {
 
 /*!
- *  \class ConcatVariable EasierPlugin/include/ConcatVariable.hpp "EasierPlugin/include/ConcatVariable.hpp"
- *  \brief Concat a string value to a string variable.
+ *  \class ConcatVariable SCHNAPS/Plugins/Operators/ConcatVariable.hpp "SCHNAPS/Plugins/Operators/ConcatVariable.hpp"
+ *  \brief Concatenate a string value to a string variable of current individual.
  */
 class ConcatVariable: public Core::Primitive {
 public:
@@ -46,23 +45,31 @@ public:
 	ConcatVariable(const ConcatVariable& inOriginal);
 	virtual ~ConcatVariable() {}
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Operators_ConcatVariable");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& ConcatVariable::getName() const");
+		const static std::string lName("Operators_ConcatVariable");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::ConcatVariable::getName() const");
 	}
 
+	//! Read object from XML using system.
 	virtual	void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
+	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the primitive return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
-	std::string mLabel;			//!< label of concerned variable
-	std::string mValue_Ref; 	//!< value to concat (reference)
-	Core::String::Handle mValue;//!< value to concat
+	std::string mLabel;				//!< Label of concerned variable.
+	std::string mValue_Ref; 		//!< Value to concatenate (reference).
+	Core::String::Handle mValue;	//!< A handle to the value to concatenate.
 };
 } // end of Operators namespace
 } // end of Plugins namespace

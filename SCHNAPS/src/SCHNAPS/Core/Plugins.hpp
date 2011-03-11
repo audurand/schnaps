@@ -1,8 +1,8 @@
 /*
  * Plugins.hpp
  *
- *  Created on: 2009-11-21
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,6 @@
 #endif
 
 namespace SCHNAPS {
-	
 namespace Core {
 
 /*!
@@ -59,7 +58,7 @@ protected:
 	typedef __gnu_cxx::hash_map<std::string, Plugin::Handle, HashString> PluginMap;
 #elif defined(SCHNAPS_HAVE_STDEXT_HASHMAP)
 	typedef stdext::hash_map<std::string, Plugin::Handle, HashString> PluginMap;
-#else // No hash_map found
+#else // no hash_map found
 	typedef std::map<std::string, Plugin::Handle> PluginMap;
 #endif
 
@@ -74,24 +73,31 @@ public:
 	Plugins();
 	virtual ~Plugins() {}
 
+	//! Read object from XML using system.
 	virtual void readWithSystem(PACC::XML::ConstIterator inIter, System& ioSystem);
+	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
-	//! Insert new library plugin in object plugins.
-	void insertPlugin(const std::string& inLibName, Plugin::Handle inPlugin);
-
+	//! Insert new plugin.
+	void insertPlugin(const std::string& inLabel, Plugin::Handle inPlugin);
+	
 	/*!
-	 *  \brief Obtain plugin associated to the given library.
-	 *  \param inTypeName Name of the library to obtain the plugin.
-	 *  \return Plugin handle to the library plugin, NULL pointer if the library is unknown.
+	 * \brief Return a handle to the plugin with specific label.
+	 * \param inLabel A const reference to the label of the plugin.
+	 * \return A handle to the plugin.
+	 * \throw SCHNAPS::Core::RunTimeException if the plugin does not exist.
 	 */
-	inline Plugin::Handle getPlugin(const std::string& inLibName) const {
+	Plugin::Handle getPlugin(const std::string& inLabel) const {
 		schnaps_StackTraceBeginM();
-			Plugins::PluginMap::const_iterator lIterPluginMap = mPluginMap.find(inLibName);
-			if (lIterPluginMap == mPluginMap.end())
-				return NULL;
-			return lIterPluginMap->second;
-		schnaps_StackTraceEndM("Plugin::Handle getPlugin(const std::string&) const");
+		Plugins::PluginMap::const_iterator lIterPlugins = mPluginMap.find(inLabel);
+		if(lIterPlugins != mPluginMap.end()) {
+			std::ostringstream lOSS;
+			lOSS << "The plugin '" << inLabel << "' does not exist; ";
+			lOSS << "could not get it.";
+			throw schnaps_RunTimeExceptionM(lOSS.str());
+		}
+		return lIterPlugins->second;
+		schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Core::Parameters::getPlugin(const std::string&) const");
 	}
 
 protected:

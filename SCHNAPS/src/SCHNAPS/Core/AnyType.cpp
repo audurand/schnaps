@@ -1,8 +1,8 @@
 /*
  * AnyType.cpp
  *
- *  Created on: 2009-11-19
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,41 +23,45 @@
 using namespace SCHNAPS;
 using namespace Core;
 
+/*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
 AnyType& AnyType::operator=(const AnyType& inOriginal) {
 	schnaps_StackTraceBeginM();
-		return *this;
+	return *this;
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType& SCHNAPS::Core::AnyType::operator=(const SCHNAPS::Core::AnyType&)");
 }
 
 /*!
  *  \brief Read data from string.
- *  \param inStr Reference to the string to read.
+ *  \param inStr A const reference to the string to read from.
  *  \throw SCHNAPS::Core::InternalException If the method is not overdefined in a subclass.
  */
 void AnyType::readStr(const std::string& inStr) {
 	schnaps_StackTraceBeginM();
-		throw schnaps_UndefinedMethodInternalExceptionM("readStr", "AnyType", getName());
+	throw schnaps_UndefinedMethodInternalExceptionM("readStr", "AnyType", getName());
 	schnaps_StackTraceEndM("void SCHNAPS::Core::AnyType::readStr(std::string&)");
 }
 
 /*!
- *  \brief Write data to string.
- *  \return The string.
+ *  \brief Return data as string.
+ *  \return Data as string.
  *  \throw SCHNAPS::Core::InternalException If the method is not overdefined in a subclass.
  */
 std::string AnyType::writeStr() const {
 	schnaps_StackTraceBeginM();
-		throw schnaps_UndefinedMethodInternalExceptionM("writeStr", "AnyType", getName());
+	throw schnaps_UndefinedMethodInternalExceptionM("writeStr", "AnyType", getName());
 	schnaps_StackTraceEndM("std::string SCHNAPS::Core::AnyType::writeStr() const");
 }
 
 /*!
- * \brief Return a clone (deep copy).
- * \return Handle to a deep copy.
- * \throw InternalException if method undefined in subclasses.
+ * \brief Return a handle to a clone (deep copy).
+ * \return A handle to a clone (deep copy).
+ * \throw SCHNAPS::Core::InternalException If the method is not overdefined in a subclass.
  */
 AnyType::Handle AnyType::clone() const {
 	schnaps_StackTraceBeginM();
-		throw schnaps_UndefinedMethodInternalExceptionM("clone", "AnyType", getName());
+	throw schnaps_UndefinedMethodInternalExceptionM("clone", "AnyType", getName());
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Core::AnyType::clone() const");
 }

@@ -1,8 +1,8 @@
 /*
  * PrimitiveTree.hpp
  *
- *  Created on: 2009-02-19
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,12 +21,11 @@
 #ifndef SCHNAPS_Core_PrimitiveTree_hpp
 #define SCHNAPS_Core_PrimitiveTree_hpp
 
-#include <vector>
-
 #include "SCHNAPS/Core/Primitive.hpp"
 
-namespace SCHNAPS {
+#include <vector>
 
+namespace SCHNAPS {
 namespace Core {
 
 /*!
@@ -34,8 +33,8 @@ namespace Core {
  *  \brief Tree node structure for using in vectors.
  */
 struct Node {
-	Primitive::Handle mPrimitive; //!< Smart pointer to the associated primitive.
-	unsigned int mSubTreeSize; //!< Sub-tree size, including actual node.
+	Primitive::Handle mPrimitive;	//!< Smart pointer to the associated primitive.
+	unsigned int mSubTreeSize;		//!< Sub-tree size, including actual node.
 
 	Node(const Node& inOriginal);
 	explicit Node(Primitive::Handle inPrimitive = NULL, unsigned int inSubTreeSize = 0);
@@ -59,17 +58,27 @@ public:
 	explicit PrimitiveTree(unsigned int inSize = 0);
 	explicit PrimitiveTree(Primitive::Handle inRoot);
 
+	//! Copy operator.
+	PrimitiveTree& operator=(const PrimitiveTree& inOriginal);
+
+	//! Return a handle to a deep copy of the object.
+	Object::Handle deepCopy(const System& inSystem) const;
+
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("PrimitiveTree");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& PrimitiveTree::getName() const");
+		const static std::string lName("PrimitiveTree");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Core::PrimitiveTree::getName() const");
 	}
 
+	//! Read object from XML using system.
 	virtual void readWithSystem(PACC::XML::ConstIterator inIter, System& ioSystem);
+	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
-
-	PrimitiveTree& operator=(const PrimitiveTree& inOriginal);
 
 	//! Interpret the primitive tree.
 	AnyType::Handle interpret(ExecutionContext& ioContext) const;
@@ -77,9 +86,6 @@ public:
 	const std::string& getReturnType(ExecutionContext& ioContext) const;
 	//! Validate the primitive tree.
 	void validate(ExecutionContext& ioContext) const;
-
-	//! Create a clone (deep copy).
-	PrimitiveTree::Handle deepCopy(const System& ioSystem) const;
 
 private:
 	//! Read a primitive subtree from a XML subtree.

@@ -1,8 +1,8 @@
 /*
  * Process.cpp
  *
- *  Created on: 2009-02-26
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,21 +24,51 @@
 using namespace SCHNAPS;
 using namespace Simulation;
 
+/*!
+ * \brief Default constructor.
+ */
 Process::Process() :
 	mPrimitiveTree(NULL)
 {}
 
+/*!
+ * \brief Construct a process as a copy of an original.
+ * \pram inOriginal A const reference to the original process.
+ */
 Process::Process(const Process& inOriginal) :
-	mLabel(inOriginal.mLabel.c_str()),
+	mLabel(inOriginal.mLabel),
 	mPrimitiveTree(inOriginal.mPrimitiveTree)
 {}
 
-Process::Process(const std::string inLabel, SCHNAPS::Core::PrimitiveTree::Handle inPrimitiveTree) :
+/*!
+ * \brief Construct a process with specific label and function tree.
+ * \param inLabel A const reference to the label.
+ * \param inPrimitiveTree A handle to the primitive tree function.
+ */
+Process::Process(const std::string& inLabel, Core::PrimitiveTree::Handle inPrimitiveTree) :
 	mLabel(inLabel.c_str()),
 	mPrimitiveTree(inPrimitiveTree)
 {}
 
-void SCHNAPS::Simulation::Process::readWithSystem(PACC::XML::ConstIterator inIter, SCHNAPS::Core::System& ioSystem) {
+/*!
+ * \brief  Return a handle to a deep copy of the object.
+ * \param  A const reference to the system.
+ * \return A handle to a deep copy of the object.
+ */
+Core::Object::Handle Process::deepCopy(const Core::System& inSystem) const {
+	schnaps_StackTraceBeginM();
+	return new Process(mLabel, Core::castHandleT<Core::PrimitiveTree>(mPrimitiveTree->deepCopy(inSystem)));
+	schnaps_StackTraceEndM("SCHNAPS::Core::Object::Handle SCHNAPS::Simulation::Process::deepCopy(const SCHNAPS::Core::System&) const ");
+}
+
+/*!
+ * \brief Read object from XML using system.
+ * \param inIter XML iterator of input document.
+ * \param ioSystem A reference to the system.
+ * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
+ * \throw SCHNAPS::Core::IOException if a label attribute is missing.
+ */
+void Process::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
 	if (inIter->getType() != PACC::XML::eData) {
 		throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
@@ -55,7 +85,7 @@ void SCHNAPS::Simulation::Process::readWithSystem(PACC::XML::ConstIterator inIte
 			throw schnaps_IOExceptionNodeM(*inIter, "process label attribute expected!");
 		}
 		mLabel = inIter->getAttribute("label");
-		mPrimitiveTree = new SCHNAPS::Core::PrimitiveTree();
+		mPrimitiveTree = new Core::PrimitiveTree();
 		mPrimitiveTree->readWithSystem(inIter->getFirstChild(), ioSystem);
 	} else {
 		std::ifstream lIFS(inIter->getAttribute("file").c_str(), std::ios::in);
@@ -66,32 +96,45 @@ void SCHNAPS::Simulation::Process::readWithSystem(PACC::XML::ConstIterator inIte
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Process::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
+/*!
+ * \brief Write object content to XML.
+ * \param ioStreamer XML streamer to output document.
+ * \param inIndent Wether to indent or not.
+ */
 void SCHNAPS::Simulation::Process::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	ioStreamer.insertAttribute("label", mLabel);
 	mPrimitiveTree->write(ioStreamer, inIndent);
 }
 
-SCHNAPS::Core::AnyType::Handle Process::execute(SCHNAPS::Core::ExecutionContext& ioContext) const {
+/*!
+ * \brief  Return a handle to the result of process execution.
+ * \param  ioContext A reference to the execution context required for primitive tree function execution.
+ * \return A handle to the result of process execution.
+ */
+Core::AnyType::Handle Process::execute(Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	return mPrimitiveTree->interpret(ioContext);
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Simulation::Process::execute(SCHNAPS::Core::ExecutionContext&) const ");
 }
 
+/*!
+ * \brief  Return a const reference to the type of process execution result.
+ * \param  ioContext A reference to the execution context required for getting primitive tree function return type.
+ * \return A const reference to the type of process execution result.
+ */
 const std::string& Process::getReturnType(SCHNAPS::Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	return mPrimitiveTree->getReturnType(ioContext);
 	schnaps_StackTraceEndM("const std::string& Process::getReturnType(SCHNAPS::Core::ExecutionContext&) const ");
 }
 
+/*!
+ * \brief Validate the process.
+ * \param ioContext A reference to the execution context required for the primitive tree function validation.
+ */
 void Process::validate(SCHNAPS::Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	mPrimitiveTree->validate(ioContext);
 	return;
 	schnaps_StackTraceEndM("const std::string& Process::getReturnType(SCHNAPS::Core::ExecutionContext&) const ");
-}
-
-Process::Handle Process::deepCopy(const SCHNAPS::Core::System& ioSystem) const {
-	schnaps_StackTraceBeginM();
-	return new Process(mLabel.c_str(), mPrimitiveTree->deepCopy(ioSystem));
-	schnaps_StackTraceEndM("SCHNAPS::Simulation::Process::Handle SCHNAPS::Simulation::Process::deepCopy(const SCHNAPS::Core::System&) const ");
 }

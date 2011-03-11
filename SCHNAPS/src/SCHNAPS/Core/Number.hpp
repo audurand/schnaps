@@ -1,8 +1,8 @@
 /*
  * Number.hpp
  *
- *  Created on: 2009-02-17
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ class ULong;
 
 /*!
  *  \class Number SCHNAPS/Core/Number.hpp "SCHNAPS/Core/Number.hpp"
- *  \brief Number class, the implementation of any (std) number types as a SCHNAPS object.
+ *  \brief Base class for the implementation of any number types as a Object.
  */
 class Number: public Atom {
 public:
@@ -51,21 +51,30 @@ public:
 	Number(const Number& inOriginal) {}
 	virtual ~Number() {}
 
+	//! Copy operator.
+	Number& operator=(const Number& inOriginal);
+
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Number");
-			return lName;
+		const static std::string lName("Number");
+		return lName;
 		schnaps_StackTraceEndM("const std::string& SCHNAPS::Core::Number::getName() const");
 	}
 
+	/*!
+	 * \brief  Return a const reference to the type of object.
+	 * \return A const reference to the type of object.
+	 */
 	virtual const std::string& getType() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lType("Number");
-			return lType;
+		const static std::string lType("Number");
+		return lType;
 		schnaps_StackTraceEndM("const std::string& SCHNAPS::Core::Number::getType() const");
 	}
-
-	Number& operator=(const Number& inOriginal);
 
 	//! Compute absolute value.
 	virtual Number& abs();
@@ -75,7 +84,7 @@ public:
 	virtual Number& div(Number& inRightNumber);
 	//! Compute the base-e exponential function, which is the e number raised to the power x.
 	virtual Number& exp();
-	//! Compute the modulo by number.
+	//! Compute the modulo by a number.
 	virtual Number& mod(Number& inRightNumber);
 	//! Multiply by a number.
 	virtual Number& mult(Number& inRightNumber);

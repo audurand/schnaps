@@ -1,8 +1,8 @@
 /*
  * Testv2.hpp
  *
- *  Created on: 2009-12-02
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,9 @@
 #ifndef SCHNAPS_Plugins_Meds_Testv2_hpp
 #define SCHNAPS_Plugins_Meds_Testv2_hpp
 
-#include "PACC/XML.hpp"
 #include "SCHNAPS/SCHNAPS.hpp"
+
+#include "PACC/XML.hpp"
 
 namespace SCHNAPS {
 namespace Plugins {
@@ -30,7 +31,7 @@ namespace Meds {
 
 /*!
  *  \class Testv2 SCHNAPS/Plugins/Meds/Testv2.hpp "SCHNAPS/Plugins/Meds/Testv2.hpp"
- *  \brief Primitive that applies a Testv2 over individuals.
+ *  \brief Medical test (second implmentation).
  */
 class Testv2: public Core::Primitive {
 public:
@@ -45,32 +46,43 @@ public:
 	Testv2(const Testv2& inOriginal);
 	virtual ~Testv2() {}
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
 		const static std::string lName("Meds_Testv2");
 		return lName;
-		schnaps_StackTraceEndM("const std::string& Testv2::getName() const");
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Meds::Testv2::getName() const");
 	}
 
+
+	//! Read object from XML using system.
 	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
+
+	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the nth argument requested return type.
 	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const;
+	//! Return the primitive return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
 	std::string mLabel;
-	Core::Double::Handle mCost;
-	Core::Double::Handle mDiscountRate;
-	Core::Double::Handle mSensitivity;
-	Core::Double::Handle mSpecificity;
-	std::string mCost_Ref;
-	std::string mDiscountRate_Ref;
-	std::string mSensitivity_Ref;
-	std::string mSpecificity_Ref;
-	std::string mCostVariableLabel;
-	std::string mStateVariableLabel;
+	Core::Double::Handle mCost;			//!< A handle to the cost value.
+	Core::Double::Handle mDiscountRate;	//!< A handle to the discount rate value.
+	Core::Double::Handle mSensitivity;	//!< A handle to the sensitivity value.
+	Core::Double::Handle mSpecificity;	//!< A handle to the specificity value.
+	std::string mCost_Ref;				//!< Label of the cost parameter.
+	std::string mDiscountRate_Ref;		//!< Label of the discount rate parameter.
+	std::string mSensitivity_Ref;		//!< Label of the sensitivity parameter.
+	std::string mSpecificity_Ref;		//!< Label of the specificity parameter.
+	std::string mCostVariableLabel;		//!< Label of the individual variable for cumulating cost.
+	std::string mStateVariableLabel;	//!< Label of the individual variable that gives its medical state (true/false).
 };
 } // end of Meds namespace
 } // end of Plugins namespace

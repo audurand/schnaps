@@ -1,8 +1,8 @@
 /*
  * ProcessPush.hpp
  *
- *  Created on: 2010-01-11
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,59 +21,81 @@
 #ifndef SCHNAPS_Plugins_Control_ProcessPush_hpp
 #define SCHNAPS_Plugins_Control_ProcessPush_hpp
 
-#include "PACC/XML.hpp"
 #include "SCHNAPS/SCHNAPS.hpp"
+
+#include "PACC/XML.hpp"
 
 namespace SCHNAPS {
 namespace Plugins {
 namespace Control {
 
 /*!
- *  \class ProcessPush SCHNAPS/Basic/ProcessPush.hpp "SCHNAPS/Basic/ProcessPush.hpp"
- *  \brief Token terminal primitive class to add a process to the execution FIFO.
+ *  \class ProcessPush SCHNAPS/Plugins/Control/ProcessPush.hpp "SCHNAPS/Plugins/Control/ProcessPush.hpp"
+ *  \brief Primitive for pushing process.
+ * 		   If the push is for the current time (delay = 0), it will be done at the next substep using the blackboard.
  */
-class ProcessPush: public SCHNAPS::Core::Primitive {
+class ProcessPush: public Core::Primitive {
 public:
 	//! ProcessPush allocator type.
-	typedef SCHNAPS::Core::AllocatorT<ProcessPush, SCHNAPS::Core::Primitive::Alloc> Alloc;
+	typedef Core::AllocatorT<ProcessPush, Core::Primitive::Alloc> Alloc;
 	//! ProcessPush handle type.
-	typedef SCHNAPS::Core::PointerT<ProcessPush, SCHNAPS::Core::Primitive::Handle> Handle;
+	typedef Core::PointerT<ProcessPush, Core::Primitive::Handle> Handle;
 	//! ProcessPush bag type.
-	typedef SCHNAPS::Core::ContainerT<ProcessPush, SCHNAPS::Core::Primitive::Bag> Bag;
+	typedef Core::ContainerT<ProcessPush, Core::Primitive::Bag> Bag;
 
 	ProcessPush();
 	ProcessPush(const ProcessPush& inOriginal);
 	virtual ~ProcessPush() {}
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Control_ProcessPush");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& Simulation::ProcessPush::getName() const");
+		const static std::string lName("Control_ProcessPush");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Control::ProcessPush::getName() const");
 	}
 
-	virtual void readWithSystem(PACC::XML::ConstIterator inIter, SCHNAPS::Core::System& ioSystem);
+	//! Read object from XML using system.
+	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
-	virtual SCHNAPS::Core::AnyType::Handle execute(unsigned int inIndex, SCHNAPS::Core::ExecutionContext& ioContext) const;
-	virtual const std::string& getReturnType(SCHNAPS::Core::ExecutionContext& ioContext) const;
+	//! Execute the primitive.
+	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the nth argument requested return type.
+	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
+	/*!
+	 * \brief  Return a const reference to the label of process to push.
+	 * \return A const reference to the label of process to push.
+	 */
 	const std::string& getLabel() const {
 		return mLabel;
 	}
 
-	const Simulation::Process::Target getTarget() const {
+	/*!
+	 * \brief  Return a const reference to the target of process to push.
+	 * \return A const reference to the target of process to push.
+	 */
+	const Simulation::Process::Target& getTarget() const {
 		return mTarget;
 	}
 
+	/*!
+	 * \brief  Return a const reference to the delay of process to push.
+	 * \return A const reference to the delay of process to push.
+	 */
 	const unsigned long& getDelay() const {
 		return mDelay;
 	}
 
 private:
-	std::string mLabel;					//!< Label of process to push.
+	std::string mLabel;						//!< Label of process to push.
 	Simulation::Process::Target mTarget;	//!< Target of the push.
-	unsigned long mDelay;				//!< Delay before execution.
+	unsigned long mDelay;					//!< Delay before execution.
 };
 } // end of Control namespace
 } // end of Plugins namespace

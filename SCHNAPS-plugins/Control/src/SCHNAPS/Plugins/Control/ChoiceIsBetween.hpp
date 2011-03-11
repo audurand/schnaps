@@ -1,8 +1,8 @@
 /*
  * ChoiceIsBetween.hpp
  *
- *  Created on: 2010-11-20
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,9 +29,9 @@ namespace Plugins {
 namespace Control {
 
 /*!
- *  \class ChoiceIsBetween Simulator/Core/include/ChoiceIsBetween.hpp "Simulator/Core/include/ChoiceIsBetween.hpp"
- *  \brief Primitive class that choses over ranges of values according to an individual variable.
- *  Lower boundaries are given and branches are executing according to LowerBound <= Variable < HigherBound.
+ *  \class ChoiceIsBetween SCHNAPS/Plugins/Control/ChoiceIsBetween.hpp "SCHNAPS/Plugins/Control/ChoiceIsBetween.hpp"
+ *  \brief Branch choice according to the value of an individual variable and choice bounds.
+ *  	   Lower boundaries are given and branches are executed according to LowerBound <= Variable < HigherBound.
  */
 class ChoiceIsBetween: public Core::Primitive {
 public:
@@ -46,26 +46,36 @@ public:
 	ChoiceIsBetween(const ChoiceIsBetween& inOriginal);
 	virtual ~ChoiceIsBetween() {}
 
-	virtual const std::string& getName() const {
-		schnaps_StackTraceBeginM();
-			const static std::string lName("Control_ChoiceIsBetween");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& ChoiceIsBetween::getName() const");
-	}
-
-	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
-	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
-
+	//! Copy operator.
 	ChoiceIsBetween& operator=(const ChoiceIsBetween& inOriginal);
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
+	virtual const std::string& getName() const {
+		schnaps_StackTraceBeginM();
+		const static std::string lName("Control_ChoiceIsBetween");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Control::ChoiceIsBetween::getName() const");
+	}
+
+	//! Read object from XML using system.
+	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Write content of object to XML.
+	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
+
+	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the nth argument requested return type.
 	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const;
+	//! Return the primitive return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
-	std::string mChoiceVariableLabel;	//!< current individual variable label to switch on
-	std::string mChoices_Ref;			//!< reference to choice values
-	Core::Vector::Handle mChoices;		//!< vector of choices (between clusters)
+	std::string mChoiceVariableLabel;	//!< Current individual variable label to switch on.
+	std::string mChoices_Ref;			//!< Reference to choice values.
+	Core::Vector::Handle mChoices;		//!< A Handle to the vector of choice lower bounds.
 };
 } // end of Control namespace  
 } // end of Plugins namespace

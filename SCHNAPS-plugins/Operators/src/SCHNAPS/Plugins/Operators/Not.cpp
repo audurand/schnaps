@@ -1,8 +1,8 @@
 /*
  * Not.cpp
  *
- *  Created on: 2010-02-20
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,60 +25,68 @@ using namespace Plugins;
 using namespace Operators;
 
 /*!
- *  \brief Construct a new boolean NOT primitive.
+ * \brief Default constructor.
  */
 Not::Not() :
-		Primitive(1)
+	Primitive(1)
 {}
 
+/*!
+ * \brief Construct a logical NOT operator as a copy of original.
+ * \param inOriginal A const reference to the original logical NOT operator.
+ */
 Not::Not(const Not& inOriginal) :
-		Primitive(1)
+	Primitive(1)
 {}
 
+/*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
 Not& Not::operator=(const Not& inOriginal) {
 	schnaps_StackTraceBeginM();
-		return *this;
-	schnaps_StackTraceEndM("Core::Not& SCHNAPS::Plugins::Operators::Not::operator=(const Core::Not&)");
+	return *this;
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::Not& SCHNAPS::Plugins::Operators::Not::operator=(const SCHNAPS::Plugins::Operators::Not&)");
 }
 
 /*!
- *  \brief Execute the characteristic operation of NOT on a boolean.
- *  \param ioContext Execution context.
- *  \param inIndex The index of the node in the primitive tree.
- *  \return Result of the execution.
+ * \brief  Execute the primitive.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A handle to the execution result.
  */
 Core::AnyType::Handle Not::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		Core::Bool::Handle lArg1 = Core::castHandleT<Core::Bool>(getArgument(inIndex, 0, ioContext));
-		return new Core::Bool(!lArg1->getValue());
-	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Operators::Not::execute(unsigned int, Core::ExecutionContext&)");
+	Core::Bool::Handle lArg1 = Core::castHandleT<Core::Bool>(getArgument(inIndex, 0, ioContext));
+	return new Core::Bool(!lArg1->getValue());
+	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Operators::Not::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
 }
 
 /*!
- *  \brief  Return the tag of the type of data needed as input for the primitive Not.
- *  \param  inIndex Index of the current primitive.
- *  \param  inN Index of the argument to get the type.
- *  \param  ioContext Execution context.
- *  \return Type of the argument's node type.
+ * \brief  Return the nth argument requested return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  inN Index of the argument to get the type.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the type of the nth argument.
+ * \throw  SCHNAPS::Core::AssertException if the argument index is out of bounds.
  */
 const std::string& Not::getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	schnaps_AssertM(inN<1);
-		const static std::string lType("Core::Bool");
-		return lType;
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Not::getArgType(unsigned int, unsigned int, Core::ExecutionContext&) const");
+	schnaps_UpperBoundCheckAssertM(inN, 0);
+	const static std::string lType("Bool");
+	return lType;
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Not::getArgType(unsigned int, unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 
-
 /*!
- *  \brief  Return the tag of the type of data return by primitive Not.
- *  \param  inIndex Index of the current primitive.
- *  \param  ioContext Execution context.
- *  \return Type of the primitive return type.
+ * \brief  Return the primitive return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the return type.
  */
 const std::string& Not::getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		const static std::string lType("Core::Bool");
-		return lType;
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Not::getReturnType(unsigned int, Core::ExecutionContext&) const");
+	const static std::string lType("Bool");
+	return lType;
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Not::getReturnType(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }

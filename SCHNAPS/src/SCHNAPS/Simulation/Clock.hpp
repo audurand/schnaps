@@ -1,8 +1,8 @@
 /*
  * Clock.hpp
  *
- *  Created on: 2009-03-17
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,56 +30,78 @@ namespace Simulation {
 
 /*!
  *  \class Clock SCHNAPS/Simulation/Clock.hpp "SCHNAPS/Simulation/Clock.hpp"
- *  \brief Switch primitive class that refers to a variable (to make the switch).
+ *  \brief The clock that drives the simulation.
  */
-class Clock: public SCHNAPS::Core::Object {
+class Clock: public Core::Object {
 public:
 	//! Clock allocator type.
-	typedef SCHNAPS::Core::AllocatorT<Clock, SCHNAPS::Core::Object::Alloc> Alloc;
+	typedef Core::AllocatorT<Clock, Core::Object::Alloc> Alloc;
 	//! Clock handle type.
-	typedef SCHNAPS::Core::PointerT<Clock, SCHNAPS::Core::Object::Handle> Handle;
+	typedef Core::PointerT<Clock, Core::Object::Handle> Handle;
 	//! Clock bag type.
-	typedef SCHNAPS::Core::ContainerT<Clock, SCHNAPS::Core::Object::Bag> Bag;
+	typedef Core::ContainerT<Clock, Core::Object::Bag> Bag;
 
 	Clock();
 	Clock(const Clock& inOriginal);
 	virtual ~Clock() {}
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Clock");
-			return lName;
+		const static std::string lName("Clock");
+		return lName;
 		schnaps_StackTraceEndM("const std::string& Clock::getName() const");
 	}
 
-	virtual void readWithSystem(PACC::XML::ConstIterator inIter, SCHNAPS::Core::System& ioSystem);
+	//! Read object from XML using system.
+	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
+	/*!
+	 * \brief Reset the value of clock to zero.
+	 */
 	void reset() {
 		schnaps_StackTraceBeginM();
-			mValue = 0;
+		mValue = 0;
 		schnaps_StackTraceEndM("void SCHNAPS::Simulation::Clock::reset()");
 	}
 
-	bool step(SCHNAPS::Core::ExecutionContext& ioContext) {
+	/*!
+	 * \brief  Have the clock stepping of one time unit.
+	 * \param  ioContext A reference to the execution context.
+	 * \return True if the simulation continues, false if it the stop condition was encountered.
+	 */
+	bool step(Core::ExecutionContext& ioContext) {
 		schnaps_StackTraceBeginM();
 		schnaps_NonNullPointerAssertM(mStop);
-			mValue++;
-			return !SCHNAPS::Core::castHandleT<SCHNAPS::Core::Bool>(mStop->interpret(ioContext))->getValue();
-		schnaps_StackTraceEndM("bool SCHNAPS::Simulation::Clock::step(SCHNAPS::Core::ExecutionContext& ioContext)");
+		mValue++;
+		return !Core::castHandleT<Core::Bool>(mStop->interpret(ioContext))->getValue();
+		schnaps_StackTraceEndM("bool SCHNAPS::Simulation::Clock::step(SCHNAPS::Core::ExecutionContext&)");
 	}
 
-	const unsigned long getValue() const {
+	/*!
+	 * \brief  Return a const reference to the current value.
+	 * \return A const reference to the current value.
+	 */
+	const unsigned long& getValue() const {
 		return mValue;
 	}
 
-	const SCHNAPS::Core::PrimitiveTree::Handle getStop() const {
+	/*!
+	 * \brief  Return a const handle to the stop condition tree.
+	 * \return A const handle to the stop condition tree.
+	 */
+	const Core::PrimitiveTree::Handle getStop() const {
 		return mStop;
 	}
 
 private:
 	unsigned long mValue; 				//!< The clock value.
-	SCHNAPS::Core::PrimitiveTree::Handle mStop;	//!< Stop condition tree.
+	Core::PrimitiveTree::Handle mStop;	//!< A handle to the stop condition tree.
 };
 } // end of Simulation namespace
 } // end of SCHNAPS namespace

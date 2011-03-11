@@ -1,8 +1,8 @@
 /*
  * Plugins.cpp
  *
- *  Created on: 2009-11-21
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,19 +26,19 @@ using namespace SCHNAPS;
 using namespace Core;
 
 /*!
- *  \brief Construct object plugins component.
+ * \brief Construct object plugins component.
  */
 Plugins::Plugins() :
 	Component("Plugins")
-{ }
+{}
 
 /*!
- *  \brief Read the system component.
- *  \param inIter Iterator to XML node to read component from.
- *  \param ioSystem Evolutionary system.
+ * \brief Read object from XML using system.
+ * \param inIter XML iterator of input document.
+ * \param ioSystem A reference to the system.
+ * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
  */
-void Plugins::readWithSystem(PACC::XML::ConstIterator inIter, System& ioSystem)
-{
+void Plugins::readWithSystem(PACC::XML::ConstIterator inIter, System& ioSystem) {
 	schnaps_StackTraceBeginM();
 	if(inIter->getType() != PACC::XML::eData)
 		throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
@@ -70,9 +70,9 @@ void Plugins::readWithSystem(PACC::XML::ConstIterator inIter, System& ioSystem)
 }
 
 /*!
- *  \brief Write plugins component to stream.
- *  \param ioStreamer Output streamer.
- *  \param inIndent Whether markup should be indented.
+ * \brief Write object content to XML.
+ * \param ioStreamer XML streamer to output document.
+ * \param inIndent Wether to indent or not.
  */
 void Plugins::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
@@ -85,21 +85,21 @@ void Plugins::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const
 }
 
 /*!
- *  \brief Insert new library plugin in object plugins.
- *  \param inLibName Name of library inserted.
- *  \param inPlugin Plugin associated to library.
- *  \throw SCHNAPS::Core::RunTimeException If the library name is already in the plugins.
+ * \brief Insert new plugin.
+ * \param inLabel A const reference to the label of plugin.
+ * \param inPlugin A handle to the plugin.
+ * \throw SCHNAPS::Core::RunTimeException if the plugin already exists.
  */
-void Plugins::insertPlugin(const std::string& inLibName, Plugin::Handle inPlugin) {
+void Plugins::insertPlugin(const std::string& inLabel, Plugin::Handle inPlugin) {
 	schnaps_StackTraceBeginM();
-	Plugins::PluginMap::const_iterator lIterPluginMap = mPluginMap.find(inLibName);
+	Plugins::PluginMap::const_iterator lIterPluginMap = mPluginMap.find(inLabel);
 	if(lIterPluginMap != mPluginMap.end()) {
 		std::ostringstream lOSS;
-		lOSS << "The type name '" << inLibName;
-		lOSS << "' is already present in the factory's allocator map; ";
+		lOSS << "The plugin '" << inLabel;
+		lOSS << "' is already present in the map of plugins; ";
 		lOSS << "could not add it.";
 		throw schnaps_RunTimeExceptionM(lOSS.str());
 	}
-	mPluginMap[inLibName] = inPlugin;
+	mPluginMap[inLabel] = inPlugin;
 	schnaps_StackTraceEndM("void SCHNAPS::Core::Plugins::insertPlugin(const std::string&, SCHNAPS::Core::Plugin::Handle)");
 }

@@ -1,8 +1,8 @@
 /*
  * LoggerMulti.hpp
  *
- *  Created on: 2010-05-20
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ namespace Core {
 
 /*!
  *  \class LoggerMulti SCHNAPS/Core/LoggerMulti.hpp "SCHNAPS/Core/LoggerMulti.hpp"
- *  \brief Multiple random number generator class.
+ *  \brief Multiple logger class.
  */
 class LoggerMulti: public Component {
 public:
@@ -43,21 +43,25 @@ public:
 	LoggerMulti();
 	virtual ~LoggerMulti() {}
 
+	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
+	//! Initialize the component.
 	virtual void init(System& ioSystem);
 
 	/*!
-	 *  \brief Get a handle to the logger associated to the index \c inIndex.
-	 *  \param inIndex Index of the logger.
+	 * \brief Return a handle to the logger associated to a specific index.
+	 * \param inIndex Index of the logger.
+	 * \return A handle to the logger associated to a specific index.
 	 */
 	inline Logger::Handle operator[](unsigned int inIndex) {
 		return (*mLoggers)[inIndex];
 	}
 
 	/*!
-	 *  \brief Return a const handle to the logger associated to the index \c inIndex.
-	 *  \param inIndex Index of the logger.
+	 * \brief Return a const handle to the logger associated to a specific index.
+	 * \param inIndex Index of the logger.
+	 * \return A const handle to the logger associated to a specific index.
 	 */
 	inline const Logger::Handle operator[](unsigned int inIndex) const {
 		return (*mLoggers)[inIndex];

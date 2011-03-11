@@ -1,8 +1,8 @@
 /*
  * IsGreaterOrEqual.hpp
  *
- *  Created on: 2010-08-19
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,9 @@
 #ifndef SCHNAPS_Plugins_Operators_IsGreaterOrEqual_hpp
 #define SCHNAPS_Plugins_Operators_IsGreaterOrEqual_hpp
 
-#include "PACC/XML.hpp"
 #include "SCHNAPS/SCHNAPS.hpp"
+
+#include "PACC/XML.hpp"
 
 namespace SCHNAPS {
 namespace Plugins {
@@ -30,7 +31,7 @@ namespace Operators {
 
 /*!
  *  \class IsGreaterOrEqual SCHNAPS/Plugins/Operators/IsGreaterOrEqual.hpp "SCHNAPS/Plugins/Operators/IsGreaterOrEqual.hpp"
- *  \brief Relational IsGreaterOrEqual operator primitive class.
+ *  \brief Comparison operator "is greater or equal".
  */
 class IsGreaterOrEqual: public Core::Primitive {
 public:
@@ -45,17 +46,25 @@ public:
 	IsGreaterOrEqual(const IsGreaterOrEqual& inOriginal);
 	virtual ~IsGreaterOrEqual() {}
 
+	//! Copy operator.
+	IsGreaterOrEqual& operator=(const IsGreaterOrEqual& inOriginal);
+
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Operators_IsGreaterOrEqual");
-			return lName;
+		const static std::string lName("Operators_IsGreaterOrEqual");
+		return lName;
 		schnaps_StackTraceEndM("const std::string& IsGreaterOrEqual::getName() const");
 	}
 
-	IsGreaterOrEqual& operator=(const IsGreaterOrEqual& inOriginal);
-
+	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the nth argument requested return type.
 	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const;
+	//! Return the primitive return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 };
 } // end of Operators namespace

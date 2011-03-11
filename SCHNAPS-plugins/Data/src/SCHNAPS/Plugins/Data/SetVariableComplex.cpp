@@ -1,8 +1,8 @@
 /*
  * SetVariableComplex.cpp
  *
- *  Created on: 2009-02-26
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,81 +25,110 @@ using namespace Plugins;
 using namespace Data;
 
 /*!
- *  \brief Construct a new primitive to set the value of a variable.
+ * \brief Default constructor.
  */
 SetVariableComplex::SetVariableComplex() :
-		Core::Primitive(1)
+	Core::Primitive(1)
 {}
 
+/*!
+ * \brief Construct a primitive for setting complex variable value as a copy of an original.
+ * \param inOriginal The original primitive for setting complex variable value.
+ */
 SetVariableComplex::SetVariableComplex(const SetVariableComplex& inOriginal) :
-		Core::Primitive(1),
-		mLabel(inOriginal.mLabel.c_str())
+	Core::Primitive(1),
+	mLabel(inOriginal.mLabel.c_str())
 {}
 
+/*!
+ * \brief Read object from XML using system.
+ * \param inIter XML iterator of input document.
+ * \param ioSystem A reference to the system.
+ * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
+ * \throw SCHNAPS::Core::IOException if label attribute is missing.
+ */
 void SetVariableComplex::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
-		if (inIter->getType() != PACC::XML::eData) {
-			throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
-		}
-		if (inIter->getValue() != getName()) {
-			std::ostringstream lOSS;
-			lOSS << "tag <" << getName() << "> expected, but ";
-			lOSS << "got tag <" << inIter->getValue() << "> instead!";
-			throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
-		}
-		// retrieve label
-		if (inIter->getAttribute("label").empty()) {
-			throw schnaps_IOExceptionNodeM(*inIter, "label of variable to set expected!");
-		}
-		mLabel = inIter->getAttribute("label");
-	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Data::SetVariableComplex::readWithSystem(PACC::XML::ConstIterator, Core::System&)");
+	if (inIter->getType() != PACC::XML::eData) {
+		throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
+	}
+	if (inIter->getValue() != getName()) {
+		std::ostringstream lOSS;
+		lOSS << "tag <" << getName() << "> expected, but ";
+		lOSS << "got tag <" << inIter->getValue() << "> instead!";
+		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
+	}
+	// retrieve label
+	if (inIter->getAttribute("label").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "label of variable to set expected!");
+	}
+	mLabel = inIter->getAttribute("label");
+	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Data::SetVariableComplex::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
+/*!
+ * \brief Write object content to XML.
+ * \param ioStreamer XML streamer to output document.
+ * \param inIndent Wether to indent or not.
+ */
 void SetVariableComplex::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-		ioStreamer.insertAttribute("label", mLabel);
+	ioStreamer.insertAttribute("label", mLabel);
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Data::SetVariableComplex::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
+/*!
+ * \brief  Execute the primitive.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A handle to the execution result.
+ * \throw  SCHNAPS::Core::RunTimeException if the type of new value does not match the type of variable.
+ */
 Core::AnyType::Handle SetVariableComplex::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
+	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
+	Core::Atom::Handle lArg = Core::castHandleT<Core::Atom>(getArgument(inIndex, 0, ioContext));
 
-#ifdef SCHNAPS_FULL_DEBUG
-		if (lContext.getIndividual().getState().find(mLabel) == lContext.getIndividual().getState().end()) {
-			throw schnaps_InternalExceptionM("Could not find variable '" + mLabel + "' in the current individual state!");
-		}
-#else
-		schnaps_AssertM(lContext.getIndividual().getState().find(mLabel) != lContext.getIndividual().getState().end());
-#endif
-		Core::Atom::Handle lArg = Core::castHandleT<Core::Atom>(getArgument(inIndex, 0, ioContext));
+	std::string lTypeVariable = lContext.getIndividual().getState().getVariable(mLabel).getType();
+	std::string lTypeArg = lArg->getType();
+	if (lTypeVariable != lTypeArg) {
+		std::stringstream lOSS;
+		lOSS << "The type of variable '" << mLabel << "' (" << lTypeVariable << ") ";
+		lOSS << "does not match the type of argument (" << lTypeArg << "); ";
+		lOSS << "could not set the variable.";
+		throw schnaps_RunTimeExceptionM(lOSS.str());
+	}
 
-		std::string lTypeVariable = lContext.getIndividual().getState()[mLabel]->getType();
-		std::string lTypeArg = lArg->getType();
-#ifdef SCHNAPS_FULL_DEBUG
-		if (lTypeVariable != lTypeArg) {
-			throw schnaps_InternalExceptionM("The type of variable '" + mLabel + "' (" + lTypeVariable + ") does not match the type of argument (" + lTypeArg + ")!");
-		}
-#else
-		schnaps_AssertM(lTypeVariable == lTypeArg);
-#endif
-
-		lContext.getIndividual().getState()[mLabel] = lArg;
-		return NULL;
-	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Data::SetVariableComplex::execute(unsigned int, Core::ExecutionContext&)");
+	lContext.getIndividual().getState().setVariable(mLabel, lArg);
+	return NULL;
+	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Data::SetVariableComplex::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
 }
 
+/*!
+ * \brief  Return the nth argument requested return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  inN Index of the argument to get the type.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the type of the nth argument.
+ * \throw  SCHNAPS::Core::AssertException if the argument index is higher than 1.
+ */
 const std::string& SetVariableComplex::getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		schnaps_AssertM(inN<1);
-		const static std::string lType("Atom");
-		return lType;
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Data::SetVariableComplex::getArgType(unsigned int, unsigned int, Core::ExecutionContext&) const");
+	schnaps_AssertM(inN<1);
+	const static std::string lType("Atom");
+	return lType;
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Data::SetVariableComplex::getArgType(unsigned int, unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 
+/*!
+ * \brief  Return the primitive return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the return type.
+ */
 const std::string& SetVariableComplex::getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		const static std::string lType("Void");
-		return lType;
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Data::SetVariableComplex::getReturnType(unsigned int, Core::ExecutionContext&) const");
+	const static std::string lType("Void");
+	return lType;
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Data::SetVariableComplex::getReturnType(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }

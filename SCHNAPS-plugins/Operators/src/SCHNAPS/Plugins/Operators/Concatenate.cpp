@@ -1,8 +1,8 @@
 /*
  * Concatenate.cpp
  *
- *  Created on: 2010-06-24
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,50 +25,80 @@ using namespace Plugins;
 using namespace Operators;
 
 /*!
- *  \brief Construct a new primitive to concatenate strings.
+ * \brief Default constructor.
  */
 Concatenate::Concatenate() :
-		Primitive()	// unknown number of children
+	Primitive()	// unknown number of children
 {}
 
 /*!
- *  \brief Construct a new primitive to concatenate strings.
+ * \brief Construct a string concatenation operator as a copy of an original.
+ * \param inOriginal A const reference to the original string concatenation operator.
  */
 Concatenate::Concatenate(const Concatenate& inOriginal) :
-		Primitive(inOriginal.getNumberArguments())
+	Primitive(inOriginal.getNumberArguments())
 {}
 
+/*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
 Concatenate& Concatenate::operator=(const Concatenate& inOriginal) {
 	schnaps_StackTraceBeginM();
-		setNumberArguments(inOriginal.getNumberArguments());
-		return *this;
-	schnaps_StackTraceEndM("Core::Concatenate& SCHNAPS::Plugins::Operators::Concatenate::operator=(const Core::Concatenate&)");
+	setNumberArguments(inOriginal.getNumberArguments());
+	return *this;
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::Concatenate& SCHNAPS::Plugins::Operators::Concatenate::operator=(const SCHNAPS::Plugins::Operators::Concatenate&)");
 }
 
+/*!
+ * \brief  Execute the primitive.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A handle to the execution result.
+ * \throw  SCHNAPS::Core::RunTimeException if the operator does not have enough arguments.
+ */
 Core::AnyType::Handle Concatenate::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	schnaps_AssertM(getNumberArguments() > 1);
-		std::stringstream lSS;
-		for (unsigned int i = 0; i < getNumberArguments(); i++) {
-			lSS << Core::castHandleT<Core::String>(getArgument(inIndex, i, ioContext))->getValue();
-		}
-		return new Core::String(lSS.str());
-	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Operators::Concatenate::execute(unsigned int, Core::ExecutionContext&)");
+	if (getNumberArguments() < 2) {
+		std::stringstream lOSS;
+		lOSS << "The number of arguments is lower than 2; ";
+		lOSS << "could not perform the string concatenation.";
+		throw schnaps_RunTimeExceptionM(lOSS.str());
+	}
+	std::stringstream lSS;
+	for (unsigned int i = 0; i < getNumberArguments(); i++) {
+		lSS << Core::castHandleT<Core::String>(getArgument(inIndex, i, ioContext))->getValue();
+	}
+	return new Core::String(lSS.str());
+	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Operators::Concatenate::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
 }
 
+/*!
+ * \brief  Return the nth argument requested return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  inN Index of the argument to get the type.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the type of the nth argument.
+ * \throw  SCHNAPS::Core::InternalException if the method is not overdefined is a subclass.
+ */
 const std::string& Concatenate::getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	schnaps_AssertM(inN < getNumberArguments());
-		const static std::string lType("Core::String");
-		return lType;
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Concatenate::getArgType(unsigned int, unsigned int, Core::ExecutionContext&) const");
+	schnaps_UpperBoundCheckAssertM(inN, getNumberArguments()-1);
+	const static std::string lType("String");
+	return lType;
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Concatenate::getArgType(unsigned int, unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 
-
-const std::string& Concatenate::getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const
-{
+/*!
+ * \brief  Return the primitive return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the return type.
+ * \throw  SCHNAPS::Core::InternalException if the method is not overdefined is a subclass.
+ */
+const std::string& Concatenate::getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		const static std::string lType("Core::String");
-		return lType;
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Concatenate::getReturnType(unsigned int, Core::ExecutionContext&) const");
+	const static std::string lType("String");
+	return lType;
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Concatenate::getReturnType(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }

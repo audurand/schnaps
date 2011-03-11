@@ -1,8 +1,8 @@
 /*
  * ExecutionContext.hpp
  *
- *  Created on: 2009-02-19
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,8 +32,8 @@ namespace SCHNAPS {
 namespace Core {
 
 /*!
- *  \class ExecutionContext SCHNAPS/Core/ExecutionContext.hpp "SCHNAPS/Core/ExecutionContext.hpp"
- *  \brief ExecutionContext class, the context for the execution of a primitive tree.
+ * \class ExecutionContext SCHNAPS/Core/ExecutionContext.hpp "SCHNAPS/Core/ExecutionContext.hpp"
+ * \brief The context for the execution of a primitive tree.
  */
 class ExecutionContext : public Object {
 public:
@@ -47,61 +47,116 @@ public:
 	ExecutionContext();
 	ExecutionContext(const ExecutionContext& inExecutionContext);
 	explicit ExecutionContext(const System::Handle inSystem);
-	virtual ~ExecutionContext(){}
+	virtual ~ExecutionContext() {}
 
+	//! Copy operator.
+	ExecutionContext& operator=(const ExecutionContext& inOriginal);
+
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("ExecutionContext");
-			return lName;
+		const static std::string lName("ExecutionContext");
+		return lName;
 		schnaps_StackTraceEndM("const std::string& ExecutionContext::getName() const");
 	}
 
-	ExecutionContext& operator=(const ExecutionContext& inOriginal);
-
+	/*!
+	 * \brief Set the system.
+	 * \param inSystem A handle to the system.
+	 */
 	void setSystem(System::Handle inSystem) {
 		mSystem = inSystem;
 	}
 
+	/*!
+	 * \brief Set the executing primitive tree.
+	 * \param inPrimitiveTree A handle to the executing primitive tree.
+	 */
 	void setPrimitiveTree(PrimitiveTree::Handle inPrimitiveTree) {
 		mPrimitiveTree = inPrimitiveTree;
 	}
 
+	/*!
+	 * \brief Set the associated thread number.
+	 * \param inThreadNb The number of associated thread.
+	 */
+	void setThreadNb(unsigned int inThreadNb) {
+		mThreadNb = inThreadNb;
+	}
+
+	/*!
+	 * \brief Return a const handle to the system.
+	 * \return A const handle to the system.
+	 */
 	const System::Handle getSystemHandle() const {
 		return mSystem;
 	}
 
+	/*!
+	 * \brief Return a const reference to the system.
+	 * \return A const reference to the system.
+	 * \throw SCHNAPS::Core::AssertException if the system is NULL.
+	 */ 
 	const System& getSystem() const {
 		schnaps_NonNullPointerAssertM(mSystem);
 		return *mSystem;
 	}
 
+	/*!
+	 * \brief Return a const handle to the executing primitive tree.
+	 * \return A const handle to the executing primitive tree.
+	 */
 	const PrimitiveTree::Handle getPrimitiveTreeHandle() const {
 		return mPrimitiveTree;
 	}
 
+	/*!
+	 * \brief Return a const reference to the executing primitive tree.
+	 * \return A const reference to the executing primitive tree.
+	 * \throw SCHNAPS::Core::AssertException if the executing primitive is NULL.
+	 */
 	const PrimitiveTree& getPrimitiveTree() const {
 		schnaps_NonNullPointerAssertM(mPrimitiveTree);
 		return *mPrimitiveTree;
-	}
+	} 
 
-	void setThreadNb(unsigned int inThreadNb) {
-		mThreadNb = inThreadNb;
-	}
-
-	const unsigned int getThreadNb() const {
+	/*!
+	 * \brief Return a const reference to the associated thread number.
+	 * \return A const reference to the associated thread number.
+	 */
+	const unsigned int& getThreadNb() const {
 		return mThreadNb;
 	}
 
+	/*!
+	 * \brief Return a reference to the associated randomizer.
+	 * \return A reference to the associated randomizer (through system).
+	 * \throw SCHNAPS::Core::AssertException if the system is NULL.
+	 */
 	Randomizer& getRandomizer() {
 		schnaps_NonNullPointerAssertM(mSystem);
 		return mSystem->getRandomizer(mThreadNb);
 	}
 
+	/*!
+	 * \brief Return a reference to the associated logger.
+	 * \return A reference to the associated logger (through system).
+	 * \throw SCHNAPS::Core::AssertException if the system is NULL.
+	 */
 	Logger& getLogger() {
 		schnaps_NonNullPointerAssertM(mSystem);
 		return mSystem->getLogger(mThreadNb);
 	}
 
+	/*!
+	 * \brief Return a reference to a specific component.
+	 * \param inName The name of the component.
+	 * \return A reference to a specific component (through system).
+	 * \throw SCHNAPS::Core::AssertException if the system is NULL.
+	 */
 	Component& getComponent(std::string inName) {
 		schnaps_NonNullPointerAssertM(mSystem);
 		return mSystem->getComponent(inName);

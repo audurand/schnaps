@@ -1,8 +1,8 @@
 /*
  * Log.hpp
  *
- *  Created on: 2010-02-20
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,25 +41,29 @@ public:
 	//! Log bag type.
 	typedef Core::ContainerT<Log, Core::Primitive::Bag> Bag;
 
-	explicit Log();
+	Log();
 	virtual ~Log() {}
 
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Data_Log");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& Log::getName() const");
+		const static std::string lName("Data_Log");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Data::Log::getName() const");
 	}
 
-	virtual	void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Read object from XML using system.
+	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
+	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the primitive return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
-	std::string mType;		//!< type of log
-	std::string mMessage;	//!< message to log
+	std::string mType;		//!< Type of log.
+	std::string mMessage;	//!< Message to log.
 };
 } // end of Data namespace
 } // end of Plugins namespace

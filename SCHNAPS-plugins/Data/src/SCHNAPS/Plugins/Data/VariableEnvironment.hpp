@@ -1,8 +1,8 @@
 /*
  * VariableEnvironment.hpp
  *
- *  Created on: 2009-03-17
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,8 +29,8 @@ namespace Plugins {
 namespace Data {
 
 /*!
- *  \class VariableEnvironment SCHNAPS-plugins/Data/VariableEnvironment.hpp "SCHNAPS-plugins/Data/VariableEnvironment.hpp"
- *  \brief Token terminal primitive class that refers to a variable from the environment.
+ *  \class VariableEnvironment SCHNAPS/Plugins/Data/VariableEnvironment.hpp "SCHNAPS/Plugins/Data/VariableEnvironment.hpp"
+ *  \brief Access a variable from the environment.
  */
 class VariableEnvironment: public Core::Primitive {
 public:
@@ -45,25 +45,29 @@ public:
 	VariableEnvironment(const VariableEnvironment& inOriginal);
 	virtual ~VariableEnvironment() {}
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Data_VariableEnvironment");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& VariableEnvironment::getName() const");
+		const static std::string lName("Data_VariableEnvironment");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Data::VariableEnvironment::getName() const");
 	}
 
+	//! Read object from XML using system.
 	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
+	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
-	virtual const std::string& getReturnType(Core::ExecutionContext& ioContext) const;
-
-	const std::string& getLabel() const {
-		return mLabel;
-	}
-
+	//! Return the primitive return type.
+	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	
 protected:
-	std::string mLabel; //!< label of environment variable
+	std::string mLabel;	//!< Label of environment variable.
 };
 } // end of Data namespace
 } // end of Plugins namespace

@@ -1,8 +1,8 @@
 /*
  * GenerationContext.hpp
  *
- *  Created on: 2010-01-16
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,42 +31,57 @@ namespace Simulation {
 
 /*!
  *  \class GenerationContext SCHNAPS/Simulation/GenerationContext.hpp "SCHNAPS/Simulation/GenerationContext.hpp"
- *  \brief GenerationContext class, the context for the execution of a primitive tree by generator.
+ *  \brief The context for the execution of a primitive tree by generator.
  */
 class GenerationContext: public ExecutionContext {
 public:
 	//! GenerationContext allocator type.
-	typedef SCHNAPS::Core::AllocatorT<GenerationContext, ExecutionContext::Alloc> Alloc;
+	typedef Core::AllocatorT<GenerationContext, ExecutionContext::Alloc> Alloc;
 	//! GenerationContext handle type.
-	typedef SCHNAPS::Core::PointerT<GenerationContext, ExecutionContext::Handle> Handle;
+	typedef Core::PointerT<GenerationContext, ExecutionContext::Handle> Handle;
 	//! GenerationContext bag type.
-	typedef SCHNAPS::Core::ContainerT<GenerationContext, ExecutionContext::Bag> Bag;
+	typedef Core::ContainerT<GenerationContext, ExecutionContext::Bag> Bag;
 
 	GenerationContext();
 	GenerationContext(const GenerationContext& inOriginal);
-	explicit GenerationContext(SCHNAPS::Core::System::Handle inSystem, Clock::Handle inClock, Environment::Handle inEnvironment);
+	explicit GenerationContext(Core::System::Handle inSystem, Clock::Handle inClock, Environment::Handle inEnvironment);
 	virtual ~GenerationContext() {}
 
+	//! Copy operator.
+	GenerationContext& operator=(const GenerationContext& inOriginal);
+
+	/*!
+	 * \brief  Return a const reference to the name of simulation execution context.
+	 * \return A const reference to the name of simulation execution context.
+	 */
 	virtual const std::string& getName() const {
 		return mName;
 	}
 
-	GenerationContext& operator=(const GenerationContext& inOriginal);
-
+	//! Return a handle to a deep copy of the generation context.
 	GenerationContext::Handle deepCopy() const;
 
+	/*!
+	 * \brief Set the profile from which individuals are created.
+	 * \param inGenProfile A handle to the profile from which individuals are created.
+	 */
 	void setGenProfile(GenProfile::Handle inGenProfile) {
 		mGenProfile = inGenProfile;
 	}
 
+	/*!
+	 * \brief  Return a const reference to the profile from which individuals are created.
+	 * \return A const reference to the profile from which individuals are created.
+	 * \throw  SCHNAPS::Core::AssertException if thr current profile is NULL.
+	 */
 	const GenProfile& getGenProfile() const {
 		schnaps_NonNullPointerAssertM(mGenProfile);
 		return *mGenProfile;
 	}
 
 protected:
-	// Data structures
-	GenProfile::Handle mGenProfile;
+	// data structures
+	GenProfile::Handle mGenProfile;	//!< A handle to the profile from which individuals are created.
 };
 } // end of Simulation namespace
 } // end of SCHNAPS namespace

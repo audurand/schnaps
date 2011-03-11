@@ -1,8 +1,8 @@
 /*
  * LoggerMulti.cpp
  *
- *  Created on: 2010-05-20
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,23 +24,32 @@ using namespace SCHNAPS;
 using namespace Core;
 
 /*!
- *  \brief Construct a component formed of multiple loggers.
+ * \brief Construct a component formed of multiple loggers.
  */
 LoggerMulti::LoggerMulti() :
 	Component("LoggerMulti"),
 	mLoggers(new Logger::Bag())
 {}
 
+/*!
+ * \brief Write object content to XML.
+ * \param ioStreamer XML streamer to output document.
+ * \param inIndent Wether to indent or not.
+ */
 void LoggerMulti::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
 	// TODO: write current state?
 	schnaps_StackTraceEndM("void SCHNAPS::Core::LoggerMulti::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
+/*!
+ * \brief Initialize this component.
+ * \param ioSystem A reference to the system.
+ */
 void LoggerMulti::init(System& ioSystem) {
 	schnaps_StackTraceBeginM();
-	unsigned int lThreads_Simulator = castHandleT<UInt>(ioSystem.getParameters()["threads.simulator"])->getValue();
-	unsigned int lThreads_Generator = castHandleT<UInt>(ioSystem.getParameters()["threads.generator"])->getValue();
+	unsigned int lThreads_Simulator = castObjectT<const UInt&>(ioSystem.getParameters().getParameter("threads.simulator")).getValue();
+	unsigned int lThreads_Generator = castObjectT<const UInt&>(ioSystem.getParameters().getParameter("threads.generator")).getValue();
 	unsigned int lThreads_Max;
 
 	if (lThreads_Simulator >= lThreads_Generator) {

@@ -1,8 +1,8 @@
 /*
  * Environment.hpp
  *
- *  Created on: 2009-03-17
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,46 +29,63 @@ namespace Simulation {
 
 /*!
  *  \class Environment SCHNAPS/Simulation/Environment.hpp "SCHNAPS/Simulation/Environment.hpp"
- *  \brief Environment class.
+ *  \brief Environment where all individuals evolve.
  */
 class Environment: public Individual {
 public:
 	//! Environment allocator type.
-	typedef SCHNAPS::Core::AllocatorT<Environment, Individual::Alloc> Alloc;
+	typedef Core::AllocatorT<Environment, Individual::Alloc> Alloc;
 	//! Environment handle type.
-	typedef SCHNAPS::Core::PointerT<Environment, Individual::Handle> Handle;
+	typedef Core::PointerT<Environment, Individual::Handle> Handle;
 	//! Environment bag type.
-	typedef SCHNAPS::Core::ContainerT<Environment, Individual::Bag> Bag;
+	typedef Core::ContainerT<Environment, Individual::Bag> Bag;
 
 	Environment();
 	Environment(const Environment& inOriginal);
 	virtual ~Environment() {}
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Environment");
-			return lName;
+		const static std::string lName("Environment");
+		return lName;
 		schnaps_StackTraceEndM("const std::string& SCHNAPS::Simulation::Environment::getName() const");
 	}
 
-	virtual void readWithSystem(PACC::XML::ConstIterator inIter, SCHNAPS::Core::System& ioSystem);
+	//! Read object from XML using system.
+	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
+	/*!
+	 * \brief Reset the environment to its initial state and clear the population.
+	 */
 	void reset() {
 		mState = mInitState;
 		mPopulation.clear();
 	}
 
+	/*!
+	 * \brief  Return a const reference to the population.
+	 * \return A const reference to the population.
+	 */
 	const Population& getPopulation() const {
 		return mPopulation;
 	}
 
+	/*!
+	 * \brief  Return a reference to the population.
+	 * \return A reference to the population.
+	 */
 	Population& getPopulation() {
 		return mPopulation;
 	}
 
 private:
-	State mInitState;
+	State mInitState;		//!< Initial state of the environment
 	Population mPopulation; //!< The population
 };
 } // end of Simulation namespace

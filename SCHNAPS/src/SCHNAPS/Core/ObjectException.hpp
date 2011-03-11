@@ -1,27 +1,21 @@
 /*
- *  Open BEAGLE
- *  Copyright (C) 2001-2007 by Christian Gagne and Marc Parizeau
+ * ObjectException.hpp
  *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  Contact:
- *  Laboratoire de Vision et Systemes Numeriques
- *  Departement de genie electrique et de genie informatique
- *  Universite Laval, Quebec, Canada, G1K 7P4
- *  http://vision.gel.ulaval.ca
- *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef SCHNAPS_Core_ObjectException_hpp
@@ -31,7 +25,7 @@
 #include "SCHNAPS/Core/TargetedException.hpp"
 
 /*!
- *  \def   simulator_ObjectExceptionM
+ *  \def   schnaps_ObjectExceptionM
  *  \brief Construct a ObjectException using the message given.
  *  \param MESS Exception message.
  */
@@ -39,7 +33,6 @@
   SCHNAPS::Core::ObjectException((*this),MESS,__FILE__,__LINE__)
 
 namespace SCHNAPS {
-
 namespace Core {
 
 // forward declarations
@@ -48,11 +41,12 @@ template<class T, class BaseType> class PointerT;
 template<class T, class BaseType> class ContainerT;
 
 /*!
- *  \class ObjectException SCHNAPS/Core/ObjectException.hpp "SCHNAPS/Core/ObjectException.hpp"
- *  \brief SCHNAPS exception relative to a erroneous state of an Object.
+ * \class ObjectException SCHNAPS/Core/ObjectException.hpp "SCHNAPS/Core/ObjectException.hpp"
+ * \author Christian Gagne
+ * \author Marc Parizeau
+ * \brief Exception relative to a erroneous state of an Object.
  */
 class ObjectException: public TargetedException {
-
 public:
 	//! ObjectException allocator type.
 	typedef AllocatorT<ObjectException, TargetedException::Alloc> Alloc;
@@ -65,31 +59,36 @@ public:
 			unsigned int inLineNumber = 0);
 	virtual ~ObjectException() throw () {}
 
+	//! Explain the exception throwed in the stream given.
 	virtual void explain(std::ostream& ioES = std::cerr) throw ();
+	
+	//! Return a const pointer to the actual name (char) of the exception.
 	virtual const char* getExceptionName() const throw ();
+	
+	//! Set values of the ObjectException using given object reference.
 	void setObjectState(const Object& inObject);
 
 	/*!
-	 *  \brief Getting the name of the object related to the exception.
-	 *  \return Name of the object related to the exception.
+	 * \brief Return the name of the object related to the exception.
+	 * \return A const reference to the name of the object related to the exception.
 	 */
 	inline const std::string& getObjectName() const throw () {
 		return mObjectName;
 	}
 
 	/*!
-	 *  \brief Getting the value of the reference counter of the object related to the exception.
-	 *  \return Reference counter value of the object related to the exception.
+	 * \brief Return the value of the reference counter of the object related to the exception.
+	 * \return Reference counter value of the object related to the exception.
 	 */
 	inline unsigned int getObjectRefCounter() const throw () {
 		return mObjectRefCounter;
 	}
 
 	/*!
-	 *  \brief Getting the RTTI type name of the object related to the exception.
-	 *  \return RTTI type name of the object related to the exception.
-	 *  \warning The RTTI name of the Object is determined only when the preprocessing flag
-	 *    SCHNAPS_HAVE_RTTI is defined.
+	 * \brief Return the RTTI type name of the object related to the exception.
+	 * \return RTTI type name of the object related to the exception.
+	 * \warning The RTTI name of the Object is determined only when the preprocessing flag
+	 *   SCHNAPS_HAVE_RTTI is defined.
 	 */
 	inline const std::string& getObjectTypeName() const throw () {
 		return mObjectTypeName;
@@ -100,10 +99,9 @@ protected:
 	} //!< Prohibited constructor!
 
 private:
-
-	std::string mObjectName; //!< Name of the erroneous Object.
-	std::string mObjectTypeName; //!< RTTI name of the erroneous Object.
-	unsigned int mObjectRefCounter; //!< Value of the reference counter of the Object.
+	std::string mObjectName;		//!< Name of the erroneous Object.
+	std::string mObjectTypeName;	//!< RTTI name of the erroneous Object.
+	unsigned int mObjectRefCounter;	//!< Value of the reference counter of the Object.
 };
 } // end of Core namespace
 } // end of SCHNAPS namespace

@@ -1,8 +1,8 @@
 /*
  * Simulator.cpp
  *
- *  Created on: 2009-03-12
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,8 +24,11 @@
 using namespace SCHNAPS;
 using namespace Simulation;
 
+/*!
+ * \brief Default constructor.
+ */
 Simulator::Simulator() :
-	mSystem(new SCHNAPS::Core::System()),
+	mSystem(new Core::System()),
 	mClock(new Clock()),
 	mEnvironment(new Environment()),
 	mPopulationManager(new PopulationManager(mSystem, mClock, mEnvironment)),
@@ -35,25 +38,28 @@ Simulator::Simulator() :
 	mSequential(new PACC::Threading::Semaphore(0)),
 	mBlackBoardWrt(new PACC::Threading::Semaphore(1))
 {
-	// initialize factory with elements
-	mSystem->getFactory().insertAllocator("State", new SCHNAPS::Simulation::State::Alloc());
-	mSystem->getFactory().insertAllocator("Individual", new SCHNAPS::Simulation::Individual::Alloc());
-	mSystem->getFactory().insertAllocator("Environment", new SCHNAPS::Simulation::Environment::Alloc());
-	mSystem->getFactory().insertAllocator("Population", new SCHNAPS::Simulation::Population::Alloc());
-	mSystem->getFactory().insertAllocator("Generator", new SCHNAPS::Simulation::Generator::Alloc());
-	mSystem->getFactory().insertAllocator("Process", new SCHNAPS::Simulation::Process::Alloc());
-	mSystem->getFactory().insertAllocator("Clock", new SCHNAPS::Simulation::Clock::Alloc());
+	// initialize factory with simulation elements
+	mSystem->getFactory().insertAllocator("State", new State::Alloc());
+	mSystem->getFactory().insertAllocator("Individual", new Individual::Alloc());
+	mSystem->getFactory().insertAllocator("Environment", new Environment::Alloc());
+	mSystem->getFactory().insertAllocator("Population", new Population::Alloc());
+	mSystem->getFactory().insertAllocator("Generator", new Generator::Alloc());
+	mSystem->getFactory().insertAllocator("Process", new Process::Alloc());
+	mSystem->getFactory().insertAllocator("Clock", new Clock::Alloc());
 
 	// initialize required parameters
-	mSystem->getParameters().addParameter("print.prefix", new SCHNAPS::Core::String(""));
-	mSystem->getParameters().addParameter("print.input", new SCHNAPS::Core::Bool(false));
-	mSystem->getParameters().addParameter("print.output", new SCHNAPS::Core::Bool(true));
-	mSystem->getParameters().addParameter("print.log", new SCHNAPS::Core::Bool(true));
-	mSystem->getParameters().addParameter("print.conf", new SCHNAPS::Core::Bool(false));
-	mSystem->getParameters().addParameter("threads.simulator", new SCHNAPS::Core::UInt(1));
-	mSystem->getParameters().addParameter("threads.generator", new SCHNAPS::Core::UInt(1));
+	mSystem->getParameters().insertParameter("print.prefix", new Core::String(""));
+	mSystem->getParameters().insertParameter("print.input", new Core::Bool(false));
+	mSystem->getParameters().insertParameter("print.output", new Core::Bool(true));
+	mSystem->getParameters().insertParameter("print.log", new Core::Bool(true));
+	mSystem->getParameters().insertParameter("print.conf", new Core::Bool(false));
+	mSystem->getParameters().insertParameter("threads.simulator", new Core::UInt(1));
+	mSystem->getParameters().insertParameter("threads.generator", new Core::UInt(1));
 }
 
+/*!
+ * \brief Destructor.
+ */
 Simulator::~Simulator() {
 	for (unsigned int i = 0; i < mSubThreads.size(); i++) {
 		mSubThreads[i]->setPosition(SimulationThread::eEND);
@@ -63,6 +69,11 @@ Simulator::~Simulator() {
 	mParallel->unlock();
 }
 
+/*!
+ * \brief Read object from XML.
+ * \param inIter XML iterator of input document.
+ * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
+ */
 void Simulator::read(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceBeginM();
 	if (inIter->getType() != PACC::XML::eData) {
@@ -94,6 +105,11 @@ void Simulator::read(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::read(PACC::XML::ConstIterator)");
 }
 
+/*!
+ * \brief Write object content to XML.
+ * \param ioStreamer XML streamer to output document.
+ * \param inIndent Wether to indent or not.
+ */
 void Simulator::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	mSystem->write(ioStreamer, inIndent);
 	writeInput(ioStreamer, inIndent);
@@ -101,6 +117,10 @@ void Simulator::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) con
 	writeOutput(ioStreamer, inIndent);
 }
 
+/*!
+ * \brief Configure the simulator using specific parameters.
+ * \param inParameters A const reference to parameters.
+ */
 void Simulator::configure(const std::string& inParameters) {
 	schnaps_StackTraceBeginM();
 	mSystem->getParameters().readStr(inParameters);
@@ -110,13 +130,21 @@ void Simulator::configure(const std::string& inParameters) {
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::configure(const std::string&)");
 }
 
+/*!
+ * \brief 	Return the current simulator configuration.
+ * \return The current simulator configuration as a string.
+ */
 std::string Simulator::getConfiguration() {
 	schnaps_StackTraceBeginM();
 	return mSystem->getParameters().writeStr();
 	schnaps_StackTraceEndM("std::string SCHNAPS::Simulation::Simulator::getConfiguration()");
 }
 
-void Simulator::simulate(std::string inScenarioLabel) {
+/*!
+ * \brief Execute the simulation of specific scenario.
+ * \param inScenarioLabel A const reference to the label of scenario to simulate.
+ */
+void Simulator::simulate(const std::string& inScenarioLabel) {
 	schnaps_StackTraceBeginM();
 	// reset simulation structures
 	mClock->reset();
@@ -140,8 +168,8 @@ void Simulator::simulate(std::string inScenarioLabel) {
 	unsigned int lNewIndividuals_LowerBound = 0;
 
 	// backup randomizer seeds
-	SCHNAPS::Core::ULongArray lBackupSeed;
-	SCHNAPS::Core::StringArray lBackupState;
+	Core::ULongArray lBackupSeed;
+	Core::StringArray lBackupState;
 
 	for (unsigned int i = 0; i < mSubThreads.size(); i++) {
 		// set subthread on specific scenario
@@ -154,10 +182,10 @@ void Simulator::simulate(std::string inScenarioLabel) {
 	}
 
 	// print info
-	std::string lPrintPrefix = SCHNAPS::Core::castHandleT<SCHNAPS::Core::String>(mSystem->getParameters()["print.prefix"])->getValue();
-	bool lPrintInput = SCHNAPS::Core::castHandleT<SCHNAPS::Core::Bool>(mSystem->getParameters()["print.input"])->getValue();
-	bool lPrintOutput = SCHNAPS::Core::castHandleT<SCHNAPS::Core::Bool>(mSystem->getParameters()["print.output"])->getValue();
-	bool lPrintLog = SCHNAPS::Core::castHandleT<SCHNAPS::Core::Bool>(mSystem->getParameters()["print.log"])->getValue();
+	std::string lPrintPrefix = Core::castObjectT<const Core::String&>(mSystem->getParameters().getParameter("print.prefix")).getValue();
+	bool lPrintInput = Core::castObjectT<const Core::Bool&>(mSystem->getParameters().getParameter("print.input")).getValue();
+	bool lPrintOutput = Core::castObjectT<const Core::Bool&>(mSystem->getParameters().getParameter("print.output")).getValue();
+	bool lPrintLog = Core::castObjectT<const Core::Bool&>(mSystem->getParameters().getParameter("print.log")).getValue();
 	ogzstream lOGZS;
 	std::stringstream lSS;
 
@@ -165,7 +193,7 @@ void Simulator::simulate(std::string inScenarioLabel) {
 		lSS.str("");
 		lSS << lPrintPrefix << "Input.gz";
 		lOGZS.open(lSS.str().c_str(), std::ios::out);
-		mEnvironment->print(lOGZS, mOutputParameters.mEnvironment);
+		printEnvironment(lOGZS);
 	}
 
 	if (lPrintLog) {
@@ -198,7 +226,7 @@ void Simulator::simulate(std::string inScenarioLabel) {
 
 			// print input if asked
 			if (lPrintInput == true) {
-				printInput(lOGZS, lNewIndividuals_LowerBound);
+				printIndividuals(lOGZS, lNewIndividuals_LowerBound, mEnvironment->getPopulation().size()-1);
 			}
 
 			// reset new individuals bounds
@@ -216,8 +244,8 @@ void Simulator::simulate(std::string inScenarioLabel) {
 			case eSTEP:
 				if (mClock->getValue() == 0) {
 					// process environment scenario
-					if (mContext[0]->getScenarios().find(inScenarioLabel)->second.mProcessEnvironment != NULL) {
-						mContext[0]->getScenarios().find(inScenarioLabel)->second.mProcessEnvironment->execute(*mContext[0]);
+					if (mContext[0]->getScenario(inScenarioLabel).mProcessEnvironment != NULL) {
+						mContext[0]->getScenario(inScenarioLabel).mProcessEnvironment->execute(*mContext[0]);
 					}
 				} else {
 					// process clock observers
@@ -335,7 +363,8 @@ void Simulator::simulate(std::string inScenarioLabel) {
 		lSS.str("");
 		lSS << lPrintPrefix << "Output.gz";
 		lOGZS.open(lSS.str().c_str(), std::ios::out);
-		printOutput(lOGZS);
+		printEnvironment(lOGZS);
+		printIndividuals(lOGZS, 0, mEnvironment->getPopulation().size()-1);
 		lOGZS.close();
 	}
 
@@ -355,7 +384,7 @@ void Simulator::simulate(std::string inScenarioLabel) {
  */
 void Simulator::refresh() {
 	schnaps_StackTraceBeginM();
-	unsigned int lNbThreads_new = Core::castHandleT<Core::UInt>(mSystem->getParameters()["threads.simulator"])->getValue();
+	unsigned int lNbThreads_new = Core::castObjectT<const Core::UInt&>(mSystem->getParameters().getParameter("threads.simulator")).getValue();
 	unsigned int lNbThreads_old = mContext.size();
 	
 	// if no threads already, create one + context
@@ -399,6 +428,9 @@ void Simulator::refresh() {
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::refresh()");
 }
 
+/*!
+ * \brief Clear the randomizer values for seeds and states.
+ */
 void Simulator::clearRandomizer() {
 	schnaps_StackTraceBeginM();
 	for (unsigned int i = 0; i < mRandomizerCurrentSeed.size(); i++) {
@@ -408,6 +440,9 @@ void Simulator::clearRandomizer() {
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::clearRandomizer()");
 }
 
+/*!
+ * \brief Reset the randomizer values for seeds and states to initial values.
+ */
 void Simulator::resetRandomizer() {
 	schnaps_StackTraceBeginM();
 	mRandomizerCurrentSeed = mRandomizerInitSeed;
@@ -415,101 +450,105 @@ void Simulator::resetRandomizer() {
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::resetRandomizer()");
 }
 
-void Simulator::processScenario(SimulationThread* inThread) {
+/*!
+ * \brief Scenario processing by a specific thread.
+ * \param inThread A handle to the executing thread.
+ */
+void Simulator::processScenario(SimulationThread::Handle inThread) {
 	schnaps_StackTraceBeginM();
-	try {
-		SimulationContext& lContext = inThread->getContext();
-		const std::vector<unsigned int>& lNewIndexes = inThread->getNewIndexes();
+	SimulationContext& lContext = inThread->getContext();
+	const std::vector<unsigned int>& lNewIndexes = inThread->getNewIndexes();
 
-		// if there is a scenario for individuals
-		if (lContext.getScenarios().find(inThread->getScenarioLabel())->second.mProcessIndividual != NULL) {
-			// execute the scenario
-			for (unsigned int i = 0; i < lNewIndexes.size(); i++) {
-				lContext.setIndividual(lContext.getEnvironment().getPopulation()[lNewIndexes[i]]);
-				lContext.getScenario(inThread->getScenarioLabel()).mProcessIndividual->execute(lContext);
-				// keep track of processes pushed by individual at index i
-				if (lContext.getPushList().empty() == false) {
-					inThread->waitBlackBoard();
-					inThread->getBlackBoard()[lNewIndexes[i]] = lContext.getPushList();
-					inThread->postBlackBoard();
-					lContext.getPushList().clear();
-				}
-			}
-		}
-	} catch (SCHNAPS::Core::AssertException e) {
-		e.explain(std::cout);
-	}
-	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::processScenario(SCHNAPS::Simulation::Thread*)");
-}
-
-void Simulator::processClockStep(SimulationThread* inThread) {
-	schnaps_StackTraceBeginM();
-	try {
-		SimulationContext& lContext = inThread->getContext();
-		const std::vector<unsigned int>& lIndexes = inThread->getIndexes();
-
-		std::vector<std::map<unsigned int, std::queue<Process::Handle> > >& lIndividualWaitingQMaps = inThread->getWaitingQMaps().getIndividualsWaitingQMaps();
-
-		for (unsigned int i = 0; i < lIndexes.size(); i++) {
-			lContext.setIndividual(lContext.getEnvironment().getPopulation()[lIndexes[i]]);
-			// process clock observers
-			for (unsigned int j = 0; j < lContext.getClockObservers().mProcessIndividual.size(); j++) {
-				lContext.getClockObservers().mProcessIndividual[j]->execute(lContext);
-			}
-
-			// process current individual FIFO
-			while (lIndividualWaitingQMaps[lIndexes[i]][lContext.getClock().getValue()].empty() == false) {
-				lIndividualWaitingQMaps[lIndexes[i]][lContext.getClock().getValue()].front()->execute(lContext);
-				lIndividualWaitingQMaps[lIndexes[i]][lContext.getClock().getValue()].pop();
-			}
-			lIndividualWaitingQMaps[lIndexes[i]].erase(lContext.getClock().getValue());
-
+	// if there is a scenario for individuals
+	if (lContext.getScenarios().find(inThread->getScenarioLabel())->second.mProcessIndividual != NULL) {
+		// execute the scenario
+		for (unsigned int i = 0; i < lNewIndexes.size(); i++) {
+			lContext.setIndividual(lContext.getEnvironment().getPopulation()[lNewIndexes[i]]);
+			lContext.getScenario(inThread->getScenarioLabel()).mProcessIndividual->execute(lContext);
 			// keep track of processes pushed by individual at index i
 			if (lContext.getPushList().empty() == false) {
 				inThread->waitBlackBoard();
-				inThread->getBlackBoard()[lIndexes[i]] = lContext.getPushList();
+				inThread->getBlackBoard()[lNewIndexes[i]] = lContext.getPushList();
 				inThread->postBlackBoard();
 				lContext.getPushList().clear();
 			}
 		}
-	} catch (SCHNAPS::Core::AssertException e) {
-		e.explain(std::cout);
 	}
-	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::processClockStep(SCHNAPS::Simulation::Thread*)");
+	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::processScenario(SCHNAPS::Simulation::SimulationThread::Handle)");
 }
 
-void Simulator::processSubStep(SimulationThread* inThread) {
+/*!
+ * \brief Clock step processing by a specific thread.
+ * \param inThread A handle to the executing thread.
+ */
+void Simulator::processClockStep(SimulationThread::Handle inThread) {
 	schnaps_StackTraceBeginM();
-	try {
-		SimulationContext& lContext = inThread->getContext();
-		const std::vector<unsigned int>& lIndexes = inThread->getIndexes();
+	SimulationContext& lContext = inThread->getContext();
+	const std::vector<unsigned int>& lIndexes = inThread->getIndexes();
 
-		std::vector<std::map<unsigned int, std::queue<Process::Handle> > >& lIndividualWaitingQMaps = inThread->getWaitingQMaps().getIndividualsWaitingQMaps();
+	std::vector<std::map<unsigned int, std::queue<Process::Handle> > >& lIndividualWaitingQMaps = inThread->getWaitingQMaps().getIndividualsWaitingQMaps();
 
-		for (unsigned int i = 0; i < lIndexes.size(); i++) {
-			lContext.setIndividual(lContext.getEnvironment().getPopulation()[lIndexes[i]]);
-			// process current individual FIFO
-			while (lIndividualWaitingQMaps[lIndexes[i]][lContext.getClock().getValue()].empty() == false) {
-				lIndividualWaitingQMaps[lIndexes[i]][lContext.getClock().getValue()].front()->execute(lContext);
-				lIndividualWaitingQMaps[lIndexes[i]][lContext.getClock().getValue()].pop();
-			}
-			lIndividualWaitingQMaps[lIndexes[i]].erase(lContext.getClock().getValue());
-			// keep track of processes pushed by individual at index i
-			if (lContext.getPushList().empty() == false) {
-				inThread->waitBlackBoard();
-				inThread->getBlackBoard()[lIndexes[i]] = lContext.getPushList();
-				inThread->postBlackBoard();
-				lContext.getPushList().clear();
-			}
+	for (unsigned int i = 0; i < lIndexes.size(); i++) {
+		lContext.setIndividual(lContext.getEnvironment().getPopulation()[lIndexes[i]]);
+		// process clock observers
+		for (unsigned int j = 0; j < lContext.getClockObservers().mProcessIndividual.size(); j++) {
+			lContext.getClockObservers().mProcessIndividual[j]->execute(lContext);
 		}
-	} catch (SCHNAPS::Core::AssertException e) {
-		e.explain(std::cout);
+
+		// process current individual FIFO
+		while (lIndividualWaitingQMaps[lIndexes[i]][lContext.getClock().getValue()].empty() == false) {
+			lIndividualWaitingQMaps[lIndexes[i]][lContext.getClock().getValue()].front()->execute(lContext);
+			lIndividualWaitingQMaps[lIndexes[i]][lContext.getClock().getValue()].pop();
+		}
+		lIndividualWaitingQMaps[lIndexes[i]].erase(lContext.getClock().getValue());
+
+		// keep track of processes pushed by individual at index i
+		if (lContext.getPushList().empty() == false) {
+			inThread->waitBlackBoard();
+			inThread->getBlackBoard()[lIndexes[i]] = lContext.getPushList();
+			inThread->postBlackBoard();
+			lContext.getPushList().clear();
+		}
 	}
-	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::processSubStep(SCHNAPS::Simulation::Thread*)");
+	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::processClockStep(SCHNAPS::Simulation::SimulationThread::Handle)");
+}
+
+/*!
+ * \brief Sub clock step processing by a specific thread.
+ * \param inThread A handle to the executing thread.
+ */
+void Simulator::processSubStep(SimulationThread::Handle inThread) {
+	schnaps_StackTraceBeginM();
+	SimulationContext& lContext = inThread->getContext();
+	const std::vector<unsigned int>& lIndexes = inThread->getIndexes();
+
+	std::vector<std::map<unsigned int, std::queue<Process::Handle> > >& lIndividualWaitingQMaps = inThread->getWaitingQMaps().getIndividualsWaitingQMaps();
+
+	for (unsigned int i = 0; i < lIndexes.size(); i++) {
+		lContext.setIndividual(lContext.getEnvironment().getPopulation()[lIndexes[i]]);
+		// process current individual FIFO
+		while (lIndividualWaitingQMaps[lIndexes[i]][lContext.getClock().getValue()].empty() == false) {
+			lIndividualWaitingQMaps[lIndexes[i]][lContext.getClock().getValue()].front()->execute(lContext);
+			lIndividualWaitingQMaps[lIndexes[i]][lContext.getClock().getValue()].pop();
+		}
+		lIndividualWaitingQMaps[lIndexes[i]].erase(lContext.getClock().getValue());
+		// keep track of processes pushed by individual at index i
+		if (lContext.getPushList().empty() == false) {
+			inThread->waitBlackBoard();
+			inThread->getBlackBoard()[lIndexes[i]] = lContext.getPushList();
+			inThread->postBlackBoard();
+			lContext.getPushList().clear();
+		}
+	}
+	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::processSubStep(SCHNAPS::Simulation::SimulationThread::Handle)");
 }
 
 // private functions
 
+/*!
+ * \brief Read input section of configuration file.
+ * \throw SCHNAPS::Core::IOException if wrong tag is used.
+ */
 void Simulator::readInput(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceBeginM();
 	schnaps_NonNullPointerAssertM(mSystem);
@@ -536,6 +575,10 @@ void Simulator::readInput(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::readInput(PACC::XML::ConstIterator)");
 }
 
+/*!
+ * \brief Read simulation section of configuration file.
+ * \throw SCHNAPS::Core::IOException if wrong tag is used.
+ */
 void Simulator::readSimulation(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceBeginM();
 	schnaps_NonNullPointerAssertM(mSystem);
@@ -577,6 +620,10 @@ void Simulator::readSimulation(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::readSimulation(PACC::XML::ConstIterator)");
 }
 
+/*!
+ * \brief Read output section of configuration file.
+ * \throw SCHNAPS::Core::IOException if wrong tag is used.
+ */
 void Simulator::readOutput(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceBeginM();
 	schnaps_NonNullPointerAssertM(mSystem);
@@ -599,6 +646,10 @@ void Simulator::readOutput(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::readOutput(PACC::XML::ConstIterator)");
 }
 
+/*!
+ * \brief Read randomizer information in simulation section of configuration file.
+ * \throw SCHNAPS::Core::IOException if wrong tag is used.
+ */
 void Simulator::readRandomizerInfo(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceBeginM();
 	schnaps_NonNullPointerAssertM(mSystem);
@@ -612,7 +663,7 @@ void Simulator::readRandomizerInfo(PACC::XML::ConstIterator inIter) {
 		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
 	}
 
-	unsigned int lThreadsSimulator = SCHNAPS::Core::castHandleT<SCHNAPS::Core::UInt>(mSystem->getParameters()["threads.simulator"])->getValue();
+	unsigned int lThreadsSimulator = Core::castObjectT<const Core::UInt&>(mSystem->getParameters().getParameter("threads.simulator")).getValue();
 	mRandomizerInitSeed.clear();
 	mRandomizerInitState.clear();
 	mRandomizerInitSeed.resize(lThreadsSimulator, 0);
@@ -642,6 +693,10 @@ void Simulator::readRandomizerInfo(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::readRandomizerInfo(PACC::XML::ConstIterator)");
 }
 
+/*!
+ * \brief Read environment information in output section of configuration file.
+ * \throw SCHNAPS::Core::IOException if wrong tag is used.
+ */
 void Simulator::readEnvironmentOutput(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceBeginM();
 	schnaps_NonNullPointerAssertM(mSystem);
@@ -674,6 +729,12 @@ void Simulator::readEnvironmentOutput(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::readEnvironmentOutput(PACC::XML::ConstIterator)");
 }
 
+/*!
+ * \brief Read population information in output section of configuration file.
+ * \throw SCHNAPS::Core::IOException if wrong tag is used.
+ * \throw SCHNAPS::Core::IOException if sub-population profile is missing.
+ * \throw SCHNAPS::Core::IOException if variable label is missing.
+ */
 void Simulator::readPopulationOutput(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceBeginM();
 	schnaps_NonNullPointerAssertM(mSystem);
@@ -720,6 +781,9 @@ void Simulator::readPopulationOutput(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::readPopulationOutput(PACC::XML::ConstIterator)");
 }
 
+/*!
+ * \brief Write input section to configuration file.
+ */
 void Simulator::writeInput(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
 	ioStreamer.openTag("Input");
@@ -729,6 +793,9 @@ void Simulator::writeInput(PACC::XML::Streamer& ioStreamer, bool inIndent) const
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::writeInput(PACC::XML::Streamer&, bool)");
 }
 
+/*!
+ * \brief Write simulation section to configuration file.
+ */
 void Simulator::writeSimulation(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
 	ioStreamer.openTag("Simulation");
@@ -741,6 +808,9 @@ void Simulator::writeSimulation(PACC::XML::Streamer& ioStreamer, bool inIndent) 
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::writeSimulationPACC::XML::Streamer&, bool)");
 }
 
+/*!
+ * \brief Write output section to configuration file.
+ */
 void Simulator::writeOutput(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
 	ioStreamer.openTag("Output");
@@ -750,6 +820,9 @@ void Simulator::writeOutput(PACC::XML::Streamer& ioStreamer, bool inIndent) cons
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::writeOutput(PACC::XML::Streamer&, bool)");
 }
 
+/*!
+ * \brief Write randomizer information in simulation section to configuration file.
+ */
 void Simulator::writeRandomizerInfo(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
 	ioStreamer.openTag("RandomizerInfo");
@@ -763,6 +836,9 @@ void Simulator::writeRandomizerInfo(PACC::XML::Streamer& ioStreamer, bool inInde
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::writeRandomizerInfo(PACC::XML::Streamer&, bool)");
 }
 
+/*!
+ * \brief Write environment information in output section to configuration file.
+ */
 void Simulator::writeEnvironmentOutput(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
 		ioStreamer.openTag("Environment");
@@ -775,6 +851,9 @@ void Simulator::writeEnvironmentOutput(PACC::XML::Streamer& ioStreamer, bool inI
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::writeEvironmentOutput(PACC::XML::Streamer&, bool)");
 }
 
+/*!
+ * \brief Write population information in output section to configuration file.
+ */
 void Simulator::writePopulationOutput(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
 	ioStreamer.openTag("Population");
@@ -792,34 +871,28 @@ void Simulator::writePopulationOutput(PACC::XML::Streamer& ioStreamer, bool inIn
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::writePopulationOutput(PACC::XML::Streamer&, bool)");
 }
 
-void Simulator::printInput(std::ostream& ioStream, unsigned int inLowerBound) const {
+/*!
+ * \brief Print the current state of the environment.
+ */
+void Simulator::printEnvironment(std::ostream& ioStream) const {
 	schnaps_StackTraceBeginM();
-	Individual::Handle lIndividual;
-	std::string lPrefix = "NONE";
-	std::map<std::string, std::vector<std::string> >::const_iterator lSubPopulationIt;
-
-	for (unsigned int i = inLowerBound; i < mEnvironment->getPopulation().size(); i++) {
-		lIndividual = mEnvironment->getPopulation()[i];
-		if (lIndividual->getID().find(lPrefix) == std::string::npos) {
-			lPrefix = lIndividual->getPrefix();
-			lSubPopulationIt = mOutputParameters.mPopulation.find(mPopulationManager->getPrefixes().find(lPrefix)->second.mProfile);
-		}
-		lIndividual->print(ioStream, lSubPopulationIt->second);
-	}
-	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::printInput(std::ostream&, unsigned int) const");
-}
-
-void Simulator::printOutput(std::ostream& ioStream) const {
-	schnaps_StackTraceBeginM();
-	// print environment
 	mEnvironment->print(ioStream, mOutputParameters.mEnvironment);
+	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::printEnvironment(std::ostream&) const");
+}
 
-	// print individuals
+/*!
+ * \brief Print the current state of individuals in population, between specific indexes.
+ * \throw SCHNAPS::Core::AssertException if specified upper index is higher than population size.
+ */
+void Simulator::printIndividuals(std::ostream& ioStream, unsigned int inLowerIndex, unsigned int inUpperIndex) const {
+	schnaps_StackTraceBeginM();
 	Individual::Handle lIndividual;
 	std::string lPrefix = "NONE";
 	std::map<std::string, std::vector<std::string> >::const_iterator lSubPopulationIt;
+	
+	schnaps_UpperBoundCheckAssertM(inUpperIndex, mEnvironment->getPopulation().size()-1);
 
-	for (unsigned int i = 0; i < mEnvironment->getPopulation().size(); i++) {
+	for (unsigned int i = inLowerIndex; i < inUpperIndex+1; i++) {
 		lIndividual = mEnvironment->getPopulation()[i];
 		if (lIndividual->getID().find(lPrefix) == std::string::npos) {
 			lPrefix = lIndividual->getPrefix();
@@ -827,9 +900,12 @@ void Simulator::printOutput(std::ostream& ioStream) const {
 		}
 		lIndividual->print(ioStream, lSubPopulationIt->second);
 	}
-	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::printOutput(std::ostream&) const");
+	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::printIndividuals(std::ostream&, unsigned int, unsigned int) const");
 }
 
+/*!
+ * \brief Print the summary that describes the output variables and order.
+ */
 void Simulator::printSummary(std::ostream& ioStream) const {
 	schnaps_StackTraceBeginM();
 	PACC::XML::Streamer ioStreamer(ioStream);

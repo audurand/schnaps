@@ -1,9 +1,8 @@
 /*
  * And.cpp
  *
- *  Created on: 2009-02-19
- *  Updated on: 2010-12-22
- *      Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,49 +25,80 @@ using namespace Plugins;
 using namespace Operators;
 
 /*!
- *  \brief Construct a new boolean AND primitive.
+ * \brief Default constructor.
  */
 And::And() :
-		Primitive()	// unknown number of children
+	Primitive()	// unknown number of children
 {}
 
 /*!
- *  \brief Construct a new boolean AND primitive.
+ * \brief Construct logical AND primitive as a copy of an original.
+ * \param inOriginal A const reference to the original logical AND primitive.
  */
 And::And(const And& inOriginal) :
-		Primitive(inOriginal.getNumberArguments())
+	Primitive(inOriginal.getNumberArguments())
 {}
 
+/*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
 And& And::operator=(const And& inOriginal) {
 	schnaps_StackTraceBeginM();
-		setNumberArguments(inOriginal.getNumberArguments());
-		return *this;
-	schnaps_StackTraceEndM("Core::And& SCHNAPS::Plugins::Operators::And::operator=(const Core::And&)");
+	setNumberArguments(inOriginal.getNumberArguments());
+	return *this;
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::And& SCHNAPS::Plugins::Operators::And::operator=(const SCHNAPS::Plugins::Operators::And&)");
 }
 
+/*!
+ * \brief  Execute the primitive.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A handle to the execution result.
+ * \throw  SCHNAPS::Core::RunTimeException if the number of arguments is equal to zero.
+ */
 Core::AnyType::Handle And::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	schnaps_AssertM(getNumberArguments() > 0);
-		bool lResult = true;
-		for (unsigned int i = 0; i < getNumberArguments(); i++) {
-			lResult = lResult && Core::castHandleT<Core::Bool>(getArgument(inIndex, i, ioContext))->getValue();
-		}
-		return new Core::Bool(lResult);
-	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Operators::And::execute(unsigned int, Core::ExecutionContext&)");
+	if (getNumberArguments() < 1) {
+		std::stringstream lOSS;
+		lOSS << "The number of arguments is equal to 0; ";
+		lOSS << "could not perform the logical AND.";
+		throw schnaps_RunTimeExceptionM(lOSS.str());
+	}
+	
+	bool lResult = true;
+	for (unsigned int i = 0; i < getNumberArguments(); i++) {
+		lResult = lResult && Core::castHandleT<Core::Bool>(getArgument(inIndex, i, ioContext))->getValue();
+	}
+	return new Core::Bool(lResult);
+	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Operators::And::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
 }
 
+/*!
+ * \brief  Return the nth argument requested return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  inN Index of the argument to get the type.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the type of the nth argument.
+ * \throw  SCHNAPS::Core::AssertException if the argument index is out of bounds.
+ */
 const std::string& And::getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	schnaps_AssertM(inN < getNumberArguments());
-		const static std::string lType("Core::Bool");
-		return lType;
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::And::getArgType(unsigned int, unsigned int, Core::ExecutionContext&) const");
+	schnaps_UpperBoundCheckAssertM(inN, getNumberArguments()-1);
+	const static std::string lType("Core::Bool");
+	return lType;
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::And::getArgType(unsigned int, unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 
-const std::string& And::getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const
-{
+/*!
+ * \brief  Return the primitive return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the return type.
+ */
+const std::string& And::getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		const static std::string lType("Core::Bool");
-		return lType;
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::And::getReturnType(unsigned int, Core::ExecutionContext&) const");
+	const static std::string lType("Core::Bool");
+	return lType;
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::And::getReturnType(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }

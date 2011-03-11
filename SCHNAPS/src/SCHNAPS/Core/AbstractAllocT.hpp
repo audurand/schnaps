@@ -1,27 +1,21 @@
 /*
- *  Open BEAGLE
- *  Copyright (C) 2001-2007 by Christian Gagne and Marc Parizeau
+ * AbstractAllocT.hpp
  *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  Contact:
- *  Laboratoire de Vision et Systemes Numeriques
- *  Departement de genie electrique et de genie informatique
- *  Universite Laval, Quebec, Canada, G1K 7P4
- *  http://vision.gel.ulaval.ca
- *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef SCHNAPS_Core_AbstractAllocT_hpp
@@ -35,11 +29,13 @@ namespace SCHNAPS {
 namespace Core {
 
 /*!
- *  \class AbstractAllocT SCHNAPS/Core/AbstractAllocT.hpp "SCHNAPS/Core/AbstractAllocT.hpp"
- *  \brief Abstract templated allocator class.
- *  \param T Type (abstract) of object allocated.
- *  \param BaseType Base type from which the actual allocator type is derived.
- *  \par Note:
+ * \class AbstractAllocT SCHNAPS/Core/AbstractAllocT.hpp "SCHNAPS/Core/AbstractAllocT.hpp"
+ * \author Christian Gagne
+ * \author Marc Parizeau
+ * \brief Abstract templated allocator class.
+ * \param T Type (abstract) of object allocated.
+ * \param BaseType Base type from which the actual allocator type is derived.
+ * \par Note:
  *    This class is usually used to define the Alloc type of an abstract class.
  */
 template<class T, class BaseType>
@@ -55,24 +51,13 @@ public:
 	AbstractAllocT() {}
 	virtual ~AbstractAllocT() {}
 
-	/*!
-	 *  \brief  Allocate a new object on the heap.
-	 *  \return Pointer to the allocated object.
-	 */
+	//!Allocate a new object on the heap.
 	virtual Object* allocate() const =0;
 
-	/*!
-	 *  \brief  Allocate a new object on the heap that is a clone of an existing object.
-	 *  \param  inOriginal Constant reference to the original object to clone.
-	 *  \return Pointer to the allocated object.
-	 */
+	//! Allocate a new object on the heap that is a clone of an existing object.
 	virtual Object* clone(const Object& inOriginal) const =0;
 
-	/*!
-	 *  \brief Copy an object to another.
-	 *  \param outCopy Constant reference to the original object to copy.
-	 *  \param inOriginal  Reference to the object that is a copy of the original.
-	 */
+	//! Copy an object to another.
 	virtual void copy(Object& outCopy, const Object& inOriginal) const =0;
 };
 } // end of Core namespace

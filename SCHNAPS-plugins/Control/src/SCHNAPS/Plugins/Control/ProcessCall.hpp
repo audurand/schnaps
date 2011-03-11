@@ -1,8 +1,8 @@
 /*
  * ProcessCall.hpp
  *
- *  Created on: 2009-01-11
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,9 @@
 #ifndef SCHNAPS_Plugins_Control_ProcessCall_hpp
 #define SCHNAPS_Plugins_Control_ProcessCall_hpp
 
-#include "PACC/XML.hpp"
 #include "SCHNAPS/SCHNAPS.hpp"
+
+#include "PACC/XML.hpp"
 
 namespace SCHNAPS {
 namespace Plugins {
@@ -43,29 +44,29 @@ public:
 
 	ProcessCall();
 	ProcessCall(const ProcessCall& inOriginal);
-	explicit ProcessCall(std::string inLabel);
+	explicit ProcessCall(const std::string& inLabel);
 	virtual ~ProcessCall() {}
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Control_ProcessCall");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& ProcessCall::getName() const");
+		const static std::string lName("Control_ProcessCall");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Control::ProcessCall::getName() const");
 	}
 
-	virtual void readWithSystem(PACC::XML::ConstIterator inIter, SCHNAPS::Core::System& ioSystem);
+	//! Read object from XML using system.
+	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
-	virtual SCHNAPS::Core::AnyType::Handle execute(unsigned int inIndex, SCHNAPS::Core::ExecutionContext& ioContext) const;
-	virtual const std::string& getReturnType(SCHNAPS::Core::ExecutionContext& ioContext) const;
-
-	/*!
-	 * \brief Get the label of process to call.
-	 * \return Label of process to call.
-	 */
-	const std::string& getLabel() const {
-		return mLabel;
-	}
+	//! Execute the primitive.
+	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the primitive return type.
+	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
 	std::string mLabel; //!< Label of process to call.

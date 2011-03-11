@@ -1,8 +1,8 @@
 /*
  * Data.cpp
  *
- *  Created on: 2011-02-14
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

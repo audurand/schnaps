@@ -1,8 +1,8 @@
 /*
- * Primitive.h
+ * Primitive.hpp
  *
- *  Created on: 2009-02-03
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,24 +21,23 @@
 #ifndef SCHNAPS_Core_Primitive_hpp
 #define SCHNAPS_Core_Primitive_hpp
 
-#include <limits.h>
-
 #include "SCHNAPS/Core/Object.hpp"
 #include "SCHNAPS/Core/AbstractAllocT.hpp"
 #include "SCHNAPS/Core/PointerT.hpp"
 #include "SCHNAPS/Core/ContainerT.hpp"
 #include "SCHNAPS/Core/AnyType.hpp"
 
-namespace SCHNAPS {
+#include <limits.h>
 
+namespace SCHNAPS {
 namespace Core {
 
 // forward declaration
 class ExecutionContext;
 
 /*!
- *  \class Primitive SCHNAPS/Core/Primitive.hpp "SCHNAPS/Core/Primitive.hpp"
- *  \brief Primitive class, the implementation of a primitive as Object.
+ * \class Primitive SCHNAPS/Core/Primitive.hpp "SCHNAPS/Core/Primitive.hpp"
+ * \brief Primitive base class.
  */
 class Primitive: public Object {
 public:
@@ -58,31 +57,39 @@ public:
 	explicit Primitive(unsigned int inNumberArguments = Primitive::eAny);
 	virtual ~Primitive() {}
 
+	//! Copy operator.
+	Primitive& operator=(const Primitive& inOriginal);
+
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Primitive");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& Primitive::getName() const");
+		const static std::string lName("Primitive");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Core::Primitive::getName() const");
 	}
 
+	//! Read object from XML using system.
 	virtual void readWithSystem(PACC::XML::ConstIterator inIter, System& ioSystem);
-	virtual void writeContent(PACC::XML::Streamer& inStreamer, bool inIndent = true) const;
+	//! Write content of object to XML.
+	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
+	//! Test if object is equal to another.
 	virtual bool isEqual(const Object& inRightObj) const;
-
-	Primitive& operator=(const Primitive& inOriginal);
 
 	//! Execute the primitive.
 	virtual AnyType::Handle execute(unsigned int inIndex, ExecutionContext& ioContext) const;
-	//! Return the nth argument requested return type (for STGP).
+	//! Return the nth argument requested return type.
 	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, ExecutionContext& ioContext) const;
-	//! Return the primitive return type (for STGP).
+	//! Return the primitive return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, ExecutionContext& ioContext) const;
 	//! Validate primitive and children recursively.
 	bool isValid(unsigned int inIndex, ExecutionContext& ioContext) const;
 
 	/*!
-	 * \brief Get number of arguments of primitive.
+	 * \brief  Return the number of arguments of primitive.
 	 * \return Number of arguments.
 	 */
 	unsigned int getNumberArguments() const {

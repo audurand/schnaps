@@ -1,8 +1,8 @@
 /*
  * Float.hpp
  *
- *  Created on: 2009-01-23
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ typedef ArrayT<float> FloatArray;
 
 /*!
  *  \class Float SCHNAPS/Core/Float.hpp "SCHNAPS/Core/Float.hpp"
- *  \brief Float class, the float implementation as Object.
+ *  \brief The float implementation as Object.
  */
 class Float: public Number {
 public:
@@ -56,58 +56,93 @@ public:
 	Float(const Float& inOriginal);
 	virtual ~Float() {}
 
+	//! Copy operator.
+	Float& operator=(const Float& inOriginal);
+
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Float");
-			return lName;
+		const static std::string lName("Float");
+		return lName;
 		schnaps_StackTraceEndM("const std::string& Float::getName() const");
 	}
 
+	/*!
+	 * \brief  Return a const reference to the type of object.
+	 * \return A const reference to the type of object.
+	 */
 	virtual const std::string& getType() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lType("Float");
-			return lType;
+		const static std::string lType("Float");
+		return lType;
 		schnaps_StackTraceEndM("const std::string& Float::getType() const");
 	}
 
+	//! Write the content of the object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
+	//! Test if an object is equal to another.
 	virtual bool isEqual(const Object& inRightObj) const;
+	//! Test if an object is less than another.
 	virtual bool isLess(const Object& inRightObj) const;
 
-	Float& operator=(const Float& inOriginal);
-
+	//! Read the object from string.
 	virtual void readStr(std::string& inStr);
+	//! Write the object to string.
 	virtual std::string writeStr() const;
+
+	//! Return a handle to a clone of the current object.
 	virtual AnyType::Handle clone() const;
 
+	//! Compute absolute value.
 	virtual Number& abs();
+	//! Add a number.
 	virtual Number& add(Number& inRightNumber);
+	//! Divide by a number.
 	virtual Number& div(Number& inRightNumber);
+	//! Compute the base-e exponential function, which is the e number raised to the power x.
 	virtual Number& exp();
+	//! Multiply by a number.
 	virtual Number& mult(Number& inRightNumber);
+	//! Raise the current number to the power exponent.
 	virtual Number& pow(Number& inRightNumber);
+	//! Subtract by a number.
 	virtual Number& sub(Number& inRightNumber);
 
-	operator Double();
-	operator Float();
-	operator Int();
-	operator Long();
-	operator UInt();
-	operator ULong();
+	//! Casting operator to double.
+	operator Double() const;
+	//! Casting operator to float.
+	operator Float() const;
+	//! Casting operator to integer.
+	operator Int() const;
+	//! Casting operator to long.
+	operator Long() const;
+	//! Casting operator to unsigned integer.
+	operator UInt() const;
+	//! Casting operator to unsigned long.
+	operator ULong() const;
 
-	//! Return the value of boolean object.
-	inline const float& getValue() const {
+	/*!
+	 * \brief Return a const refernce to the value of float.
+	 * \return A const reference to the value of float.
+	 */
+	const float& getValue() const {
 		return mValue;
 	}
 
-	//! Set the value of boolean object.
-	inline void setValue(const float& inValue) {
+	/*!
+	 * \brief Set the value of float.
+	 * \param inValue A const reference to the new value of float.
+	 */
+	void setValue(const float& inValue) {
 		mValue = inValue;
 	}
 
 private:
-	float mValue; //! Value of float object.
+	float mValue; //! Value of float.
 };
 } // end of Core namespace
 } // end of SCHNAPS namespace

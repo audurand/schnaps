@@ -1,8 +1,8 @@
 /*
  * WaitingQMaps.cpp
  *
- *  Created on: 2010-07-02
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,10 @@
 using namespace SCHNAPS;
 using namespace Simulation;
 
+/*!
+ * \brief Construct a class of waiting FIFOs for environment and individuals as a copy of an original.
+ * \param inOriginal The original class of waiting FIFOs for environment and individuals.
+ */
 WaitingQMaps::WaitingQMaps(const WaitingQMaps& inOriginal) {
 	mEnvironment.clear();
 	for (std::map<unsigned int, std::queue<Process::Handle> >::const_iterator lIt = inOriginal.mEnvironment.begin(); lIt != inOriginal.mEnvironment.end(); lIt++) {

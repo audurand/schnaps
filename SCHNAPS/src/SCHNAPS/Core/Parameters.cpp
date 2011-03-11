@@ -19,12 +19,18 @@ using namespace SCHNAPS;
 using namespace Core;
 
 /*!
- *  \brief Construct object parameters component.
+ * \brief Construct object parameters component.
  */
 Parameters::Parameters() :
 	Component("Parameters")
 {}
 
+/*!
+ * \brief Read object from XML using system.
+ * \param inIter XML iterator of input document.
+ * \param ioSystem A reference to the system.
+ * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
+ */
 void Parameters::readWithSystem(PACC::XML::ConstIterator inIter, System& ioSystem) {
 	schnaps_StackTraceBeginM();
 	if ((inIter->getType() != PACC::XML::eData) || (inIter->getValue() != "Parameters")) {
@@ -43,22 +49,23 @@ void Parameters::readWithSystem(PACC::XML::ConstIterator inIter, System& ioSyste
 			}
 
 			lAlloc = ioSystem.getFactory().getAllocator(lChild->getFirstChild()->getValue());
-			if (lAlloc == NULL) {
-				throw schnaps_InternalExceptionM("Could not find allocator for object '" + lChild->getFirstChild()->getValue() + "'!");
+			lValue = castHandleT<AnyType>(lAlloc->allocate());
+			lValue->readWithSystem(lChild->getFirstChild(), ioSystem);
+			if (mParametersMap.find(lChild->getAttribute("label")) == mParametersMap.end()) {
+				mParametersMap.insert(std::pair<std::string, AnyType::Handle>(lChild->getAttribute("label"), lValue));
 			} else {
-				lValue = castHandleT<AnyType>(lAlloc->allocate());
-				lValue->readWithSystem(lChild->getFirstChild(), ioSystem);
-				if (mParametersMap.find(lChild->getAttribute("label")) == mParametersMap.end()) {
-					mParametersMap.insert(std::pair<std::string, AnyType::Handle>(lChild->getAttribute("label"), lValue));
-				} else {
-					mParametersMap[lChild->getAttribute("label")] = lValue;
-				}
+				mParametersMap[lChild->getAttribute("label")] = lValue;
 			}
 		}
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Core::Parameters::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
+/*!
+ * \brief Write object content to XML.
+ * \param ioStreamer XML streamer to output document.
+ * \param inIndent Wether to indent or not.
+ */
 void Parameters::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
 	for (ParametersMap::const_iterator lIt = mParametersMap.begin(); lIt != mParametersMap.end(); lIt++){
@@ -68,4 +75,87 @@ void Parameters::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) co
 		ioStreamer.closeTag();
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Core::Parameters::writeContent(PACC::XML::Streamer&, bool) const");
+}
+
+/*!
+ * \brief Read data from string.
+ * \param inStr A const reference to read data from.
+ */
+void Parameters::readStr(const std::string& inStr) {
+	schnaps_StackTraceBeginM();
+	std::stringstream lISS(inStr);
+	PACC::Tokenizer lTokenizer(lISS);
+	lTokenizer.setDelimiters(",", "");
+
+	std::string lOption;
+	std::string::size_type lPos;
+
+	while (lTokenizer.getNextToken(lOption)) {
+		lPos = lOption.find("=");
+
+		if (lPos == std::string::npos) {
+			printf("Expected value of option %s!\n", lOption.c_str());
+		} else {
+			mParametersMap[lOption.substr(0, lPos)]->readStr(lOption.substr(lPos+1));
+		}
+	}
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Parameters::readStr(const std::string&)");
+}
+
+/*!
+ * \brief Write data to string.
+ * \return A string of parameters.
+ */
+std::string Parameters::writeStr() const {
+	schnaps_StackTraceBeginM();
+	std::stringstream lSS;
+	std::string lParameters;
+
+	for (ParametersMap::const_iterator lIt = mParametersMap.begin(); lIt != mParametersMap.end(); lIt++) {
+		lSS << lIt->first.c_str() << "=" << lIt->second->writeStr().c_str() << ",";
+	}
+	lParameters = lSS.str();
+	lParameters.erase(lParameters.end()-1);
+	return lParameters;
+	schnaps_StackTraceEndM("std::string SCHNAPS::Core::Parameters::writeStr() const");
+}
+
+/*!
+ * \brief Insert a new parameter with specific value.
+ * \param inLabel A const reference to the label of the parameter.
+ * \param inValue A handle to the the parameter.
+ * \throw SCHNAPS::Core::RunTimeException if the parameter already exists.
+ */
+void Parameters::insertParameter(const std::string& inLabel, AnyType::Handle inValue) {
+	schnaps_StackTraceBeginM();
+	if(mParametersMap.find(inLabel) != mParametersMap.end()) {
+		std::ostringstream lOSS;
+		lOSS << "The parameter '" << inLabel;
+		lOSS << "' is already present in the map of parameters; ";
+		lOSS << "could not insert it.";
+		throw schnaps_RunTimeExceptionM(lOSS.str());
+	}
+	mParametersMap.insert(std::pair<std::string, AnyType::Handle>(inLabel.c_str(), inValue));
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Parameters::insertParameter(const std::string&, SCHNAPS::Core::AnyType::Handle)");
+}
+
+/*!
+ * \brief Set parameter value.
+ * \param inLabel A const reference to the label of the parameter.
+ * \param inValue A const handle to the new value.
+ * \throw SCHNAPS::Core::RunTimeException if the parameter does not exist.
+ * \throw  SCHNAPS::Core::AssertException if the parameter is NULL.
+ */
+void Parameters::setParameter(const std::string& inLabel, const AnyType::Handle inValue) {
+	schnaps_StackTraceBeginM();
+	ParametersMap::iterator lIterParameters = mParametersMap.find(inLabel);
+	if (lIterParameters != mParametersMap.end()) {
+		std::ostringstream lOSS;
+		lOSS << "The parameter '" << inLabel << "' does not exist; ";
+		lOSS << "could not read its value.";
+		throw schnaps_RunTimeExceptionM(lOSS.str());
+	}
+	schnaps_NonNullPointerAssertM(lIterParameters->second);
+	lIterParameters->second->readStr(inValue->writeStr());
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Parameters::setParameterValue(const std::string&, const AnyType::Handle)");
 }

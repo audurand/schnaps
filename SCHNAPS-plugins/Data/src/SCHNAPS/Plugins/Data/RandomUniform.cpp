@@ -1,8 +1,8 @@
 /*
  * RandomUniform.cpp
  *
- *  Created on: 2009-02-12
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,31 +25,51 @@ using namespace Plugins;
 using namespace Data;
 
 /*!
- *  \brief Construct a new primitive that returns a random number from uniform distribution [0,1].
+ * \brief Default constructor.
  */
 RandomUniform::RandomUniform() :
-		Primitive(0)
+	Primitive(0)
 {}
 
+/*!
+ * \brief Constructor a random number primitive as a copy of an original.
+ * \param inOriginal A const reference to the orginial random number primitive.
+ */
 RandomUniform::RandomUniform(const RandomUniform& inOriginal) :
-		Primitive(0)
+	Primitive(0)
 {}
 
+/*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
 RandomUniform& RandomUniform::operator=(const RandomUniform& inOriginal) {
 	schnaps_StackTraceBeginM();
-		return *this;
-	schnaps_StackTraceEndM("Core::RandomUniform& SCHNAPS::Plugins::Data::RandomUniform::operator=(const Core::RandomUniform&)");
+	return *this;
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Data::RandomUniform& SCHNAPS::Plugins::Data::RandomUniform::operator=(const SCHNAPS::Plugins::Data::RandomUniform&)");
 }
 
+/*!
+ * \brief  Execute the primitive.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A handle to the execution result.
+ */
 Core::AnyType::Handle RandomUniform::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		return new Core::Double(ioContext.getRandomizer().rollUniform());
-	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Data::RandomUniform::execute(unsigned int, Core::ExecutionContext&) const");
+	return new Core::Double(ioContext.getRandomizer().rollUniform());
+	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Data::RandomUniform::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 
+/*!
+ * \brief  Return the primitive return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the return type.
+ */
 const std::string& RandomUniform::getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		const static std::string lType("Core::Double");
-		return lType;
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Data::RandomUniform::getReturnType(unsigned int, Core::ExecutionContext&) const");
+	const static std::string lType("Core::Double");
+	return lType;
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Data::RandomUniform::getReturnType(unsigned int, CSCHNAPS::ore::ExecutionContext&) const");
 }

@@ -1,27 +1,21 @@
 /*
- *  Open BEAGLE
- *  Copyright (C) 2001-2007 by Christian Gagne and Marc Parizeau
+ * AllocatorT.hpp
  *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  Contact:
- *  Laboratoire de Vision et Systemes Numeriques
- *  Departement de genie electrique et de genie informatique
- *  Universite Laval, Quebec, Canada, G1K 7P4
- *  http://vision.gel.ulaval.ca
- *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef SCHNAPS_Core_AllocatorT_hpp
@@ -41,10 +35,12 @@ template<class T, class BaseType> class AllocatorT;
 template<class T, class BaseType> class PointerT;
 
 /*!
- *  \class AllocatorTSCHNAPS/Core/Allocator.hpp "SCHNAPS/Core/Allocator.hpp"
- *  \brief Templated class defining a T-type allocator.
- *  \param T Type of object allocated.
- *  \param BaseType Base type from which the actual allocator type is derived.
+ * \class AllocatorTSCHNAPS/Core/Allocator.hpp "SCHNAPS/Core/Allocator.hpp"
+ * \author Christian Gagne
+ * \author Marc Parizeau
+ * \brief Templated class defining a T-type allocator.
+ * \param T Type of object allocated.
+ * \param BaseType Base type from which the actual allocator type is derived.
  */
 template<class T, class BaseType>
 class AllocatorT: public BaseType {
@@ -72,57 +68,57 @@ public:
 } // end of SCHNAPS namespace
 
 /*!
- *  \brief  Allocate a new T-type object and the heap.
- *  \return Pointer to the allocated T-type object.
+ * \brief  Allocate a new T-type object on the heap.
+ * \return Pointer to the allocated T-type object.
  */
 template<class T, class BaseType>
 SCHNAPS::Core::Object* SCHNAPS::Core::AllocatorT<T, BaseType>::allocate() const {
 	schnaps_StackTraceBeginM();
 #ifndef SCHNAPS_NDEBUG
-		T* lT = new T;
-		if (!lT)
-			throw schnaps_InternalExceptionM("Out of memory!");
-		return lT;
+	T* lT = new T;
+	if (!lT)
+		throw schnaps_InternalExceptionM("Out of memory!");
+	return lT;
 #else // SCHNAPS_NDEBUG
-		return new T;
+	return new T;
 #endif // SCHNAPS_NDEBUG
 	schnaps_StackTraceEndM("Object* AllocatorT<T,BaseType>::allocate() const");
 }
 
 /*!
- *  \brief  Allocate a new T-type object on the heap that is a clone of an existing object.
- *  \param  inOriginal Constant reference to the original T-type object to clone.
- *  \return Pointer to the allocated T-type object.
- *  \throw  BasCastException If the type of the parameter is not as specified.
+ * \brief  Allocate a new T-type object on the heap that is a clone of an existing object.
+ * \param  inOriginal Constant reference to the original T-type object to clone.
+ * \return Pointer to the allocated T-type object.
+ * \throw  BasCastException If the type of the parameter is not as specified.
  */
 template<class T, class BaseType>
 SCHNAPS::Core::Object* SCHNAPS::Core::AllocatorT<T, BaseType>::clone(const SCHNAPS::Core::Object& inOriginal) const {
 	schnaps_StackTraceBeginM();
 #ifndef SCHNAPS_NDEBUG
-		const T& lOrigT = castObjectT<const T&> (inOriginal);
-		T* lCopy = new T(lOrigT);
-		if (!lCopy)
-			throw schnaps_InternalExceptionM("Out of memory!");
-		return lCopy;
+	const T& lOrigT = castObjectT<const T&> (inOriginal);
+	T* lCopy = new T(lOrigT);
+	if (!lCopy)
+		throw schnaps_InternalExceptionM("Out of memory!");
+	return lCopy;
 #else // SCHNAPS_NDEBUG
-		const T& lOrigT = castObjectT<const T&>(inOriginal);
-		return new T(lOrigT);
+	const T& lOrigT = castObjectT<const T&>(inOriginal);
+	return new T(lOrigT);
 #endif // SCHNAPS_NDEBUG
 	schnaps_StackTraceEndM("Object* AllocatorT<T,BaseType>::clone(const Object&) const");
 }
 
 /*!
- *  \brief Copy a T-type object into another.
- *  \param outCopy Reference to the object that is a copy of the original.
- *  \param inOriginal Constant reference to the original object to copy.
- *  \throw BasCastException If the types of the parameters are not as specified.
+ * \brief Copy a T-type object into another.
+ * \param outCopy Reference to the object that is a copy of the original.
+ * \param inOriginal Constant reference to the original object to copy.
+ * \throw BasCastException If the types of the parameters are not as specified.
  */
 template<class T, class BaseType>
 void SCHNAPS::Core::AllocatorT<T, BaseType>::copy(SCHNAPS::Core::Object& outCopy, const SCHNAPS::Core::Object& inOriginal) const {
 	schnaps_StackTraceBeginM();
-		T& lCopyT = castObjectT<T&> (outCopy);
-		const T& lOriginalT = castObjectT<const T&> (inOriginal);
-		lCopyT = lOriginalT;
+	T& lCopyT = castObjectT<T&> (outCopy);
+	const T& lOriginalT = castObjectT<const T&> (inOriginal);
+	lCopyT = lOriginalT;
 	schnaps_StackTraceEndM("void AllocatorT<T,BaseType>::copy(Object&, const Object&) const");
 }
 

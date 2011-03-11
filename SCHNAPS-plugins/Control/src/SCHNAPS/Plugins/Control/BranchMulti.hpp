@@ -1,5 +1,5 @@
 /*
- * AddVariable.hpp
+ * BranchMulti.hpp
  *
  * SCHNAPS
  * Copyright (C) 2009-2011 by Audrey Durand
@@ -18,33 +18,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SCHNAPS_Plugins_Operators_AddVariable_hpp
-#define SCHNAPS_Plugins_Operators_AddVariable_hpp
-
-#include "SCHNAPS/SCHNAPS.hpp"
+#ifndef SCHNAPS_Plugins_Control_BranchMulti_hpp
+#define SCHNAPS_Plugins_Control_BranchMulti_hpp
 
 #include "PACC/XML.hpp"
+#include "SCHNAPS/SCHNAPS.hpp"
 
 namespace SCHNAPS {
 namespace Plugins {
-namespace Operators {
+namespace Control {
 
 /*!
- *  \class AddVariable SCHNAPS/Plugins/Operators/AddVariable.hpp "SCHNAPS/Plugins/Operators/AddVariable.hpp"
- *  \brief Add a value to a variable current value.
+ *  \class BranchMulti SCHNAPS/Plugins/Control/BranchMulti.hpp "SCHNAPS/Plugins/Control/BranchMulti.hpp"
+ *  \brief Executes branches with different probabilities.
  */
-class AddVariable: public Core::Primitive {
+class BranchMulti: public Core::Primitive {
 public:
-	//! AddVariable allocator type.
-	typedef Core::AllocatorT<AddVariable, Core::Primitive::Alloc> Alloc;
-	//! AddVariable handle type.
-	typedef Core::PointerT<AddVariable, Core::Primitive::Handle> Handle;
-	//! AddVariable bag type.
-	typedef Core::ContainerT<AddVariable, Core::Primitive::Bag> Bag;
+	//! BranchMulti allocator type.
+	typedef Core::AllocatorT<BranchMulti, Core::Primitive::Alloc> Alloc;
+	//! BranchMulti handle type.
+	typedef Core::PointerT<BranchMulti, Core::Primitive::Handle> Handle;
+	//! BranchMulti bag type.
+	typedef Core::ContainerT<BranchMulti, Core::Primitive::Bag> Bag;
 
-	AddVariable();
-	AddVariable(const AddVariable& inOriginal);
-	virtual ~AddVariable() {}
+	BranchMulti();
+	BranchMulti(const BranchMulti& inOriginal);
+	virtual ~BranchMulti() {}
+
+	//! Copy operator.
+	BranchMulti& operator=(const BranchMulti& inOriginal);
 
 	/*!
 	 * \brief  Return a const reference to the name of object.
@@ -52,28 +54,29 @@ public:
 	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-		const static std::string lName("Operators_AddVariable");
+		const static std::string lName("Control_BranchMulti");
 		return lName;
-		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::AddVariable::getName() const");
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Control::BranchMulti::getName() const");
 	}
 
 	//! Read object from XML using system.
-	virtual	void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
 	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
 	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the nth argument requested return type.
+	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const;
 	//! Return the primitive return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
-	std::string mLabel;				//!< Label of concerned variable.
-	std::string mValue_Ref; 		//!< Value to add (reference).
-	Core::Number::Handle mValue;	//!< A handle to the value to add.
+	std::string mProbabilities_Ref;			//!< Label probabilities parameter.
+	Core::Vector::Handle mProbabilities;	//!< A handle to the probabilities of taking each branch.
 };
-} // end of Operators namespace
+} // end of Control namespace
 } // end of Plugins namespace
 } // end of SCHNAPS namespace
 
-#endif /* SCHNAPS_Plugins_Operators_AddVariable_hpp */
+#endif /* SCHNAPS_Plugins_Control_BranchMulti_hpp */

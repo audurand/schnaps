@@ -1,8 +1,8 @@
 /*
  * Environment.cpp
  *
- *  Created on: 2009-02-26
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,54 +24,72 @@
 using namespace SCHNAPS;
 using namespace Simulation;
 
+/*!
+ * \brief Default constructor.
+ */
 Environment::Environment() :
 	Individual("E")
 {}
 
+/*!
+ * \brief Construct an environment as a copy of an original.
+ * \param inOriginal A const reference to the original environment.
+ */
 Environment::Environment(const Environment& inOriginal) :
-		Individual(inOriginal.mID)
+	Individual(inOriginal.mID)
 {
 	mState = inOriginal.mState;
 	mInitState = inOriginal.mInitState;
 	mPopulation = inOriginal.mPopulation;
 }
 
-void Environment::readWithSystem(PACC::XML::ConstIterator inIter, SCHNAPS::Core::System& ioSystem) {
+/*!
+ * \brief Read object from XML using system.
+ * \param inIter XML iterator of input document.
+ * \param ioSystem A reference to the system.
+ * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
+ */
+void Environment::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
-		if (inIter->getType() != PACC::XML::eData) {
-			throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
-		}
-		if (inIter->getValue() != getName()) {
-			std::ostringstream lOSS;
-			lOSS << "tag <" << getName() << "> expected, but ";
-			lOSS << "got tag <" << inIter->getValue() << "> instead!";
-			throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
-		}
+	if (inIter->getType() != PACC::XML::eData) {
+		throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
+	}
+	if (inIter->getValue() != getName()) {
+		std::ostringstream lOSS;
+		lOSS << "tag <" << getName() << "> expected, but ";
+		lOSS << "got tag <" << inIter->getValue() << "> instead!";
+		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
+	}
 
-		std::string lFile = inIter->getAttribute("file");
-		PACC::XML::ConstIterator lChild = inIter->getFirstChild();
+	std::string lFile = inIter->getAttribute("file");
+	PACC::XML::ConstIterator lChild = inIter->getFirstChild();
 
-		// Read state
-		if (lFile.empty()) {
+	// read state
+	if (lFile.empty()) {
 #ifdef SCHNAPS_FULL_DEBUG
-		printf("Reading environment\n");
+	printf("Reading environment\n");
 #endif
-			// Local description of state
-			mInitState.readWithSystem(lChild, ioSystem);
-			mState = mInitState;
-			lChild++;
-		} else {
+		// local description of state
+		mInitState.readWithSystem(lChild, ioSystem);
+		mState = mInitState;
+		lChild++;
+	} else {
 #ifdef SCHNAPS_FULL_DEBUG
-			printf("Opening file: %s\n", lFile.c_str());
+		printf("Opening file: %s\n", lFile.c_str());
 #endif
-			PACC::XML::Document* lDocument = new PACC::XML::Document();
-			lDocument->parse(lFile);
-			readWithSystem(lDocument->getFirstDataTag(), ioSystem);
-			delete lDocument;
-		}
+		PACC::XML::Document* lDocument = new PACC::XML::Document();
+		lDocument->parse(lFile);
+		readWithSystem(lDocument->getFirstDataTag(), ioSystem);
+		delete lDocument;
+	}
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Environment::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
+/*!
+ * \brief Write object content to XML.
+ * \param ioStreamer XML streamer to output document.
+ * \param inIndent Wether to indent or not.
+ */
 void Environment::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	mState.write(ioStreamer, inIndent);
 }

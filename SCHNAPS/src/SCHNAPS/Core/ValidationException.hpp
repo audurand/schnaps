@@ -1,44 +1,38 @@
 /*
- *  Open BEAGLE
- *  Copyright (C) 2001-2007 by Christian Gagne and Marc Parizeau
+ * ValidationException.hpp
  *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  Contact:
- *  Laboratoire de Vision et Systemes Numeriques
- *  Departement de genie electrique et de genie informatique
- *  Universite Laval, Quebec, Canada, G1K 7P4
- *  http://vision.gel.ulaval.ca
- *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef SCHNAPS_Core_ValidationException_hpp
 #define SCHNAPS_Core_ValidationException_hpp
 
-#include <string>
-
 #include "SCHNAPS/Core/Object.hpp"
 #include "SCHNAPS/Core/Exception.hpp"
 
+#include <string>
+
 /*!
- *  \def   schnaps_ValidateParameterM
- *  \brief Assert that a parameter is valid, following a given condition.
- *  \param COND Condition to test.
- *  \param PARAM String containing the name of the parameter.
- *  \param MESS String explaining the condition.
- *  \throw ValidationException When the condition is false.
+ * \def   schnaps_ValidateParameterM
+ * \brief Assert that a parameter is valid, following a given condition.
+ * \param COND Condition to test.
+ * \param PARAM String containing the name of the parameter.
+ * \param MESS String explaining the condition.
+ * \throw ValidationException When the condition is false.
  */
 #ifndef SCHNAPS_NDEBUG
 #define schnaps_ValidateParameterM(COND,PARAM,MESS) \
@@ -49,7 +43,6 @@
 #endif // SCHNAPS_NDEBUG
 
 namespace SCHNAPS {
-
 namespace Core {
 
 // forward declarations
@@ -58,8 +51,10 @@ template<class T, class BaseType> class PointerT;
 template<class T, class BaseType> class ContainerT;
 
 /*!
- *  \class ValidationException SCHNAPS/Core/ValidationException.hpp "SCHNAPS/Core/ValidationException.hpp"
- *  \brief Beagle exception indicating that a parameter, or such, is invalid.
+ * \class ValidationException SCHNAPS/Core/ValidationException.hpp "SCHNAPS/Core/ValidationException.hpp"
+ * \author Christian Gagne
+ * \author Marc Parizeau
+ * \brief Exception indicating that a parameter, or such, is invalid.
  */
 class ValidationException: public Exception {
 public:
@@ -73,6 +68,7 @@ public:
 	explicit ValidationException(std::string inMessage = "");
 	virtual ~ValidationException() throw () {}
 
+	//! Return a const pointer to the actual name (char) of the exception.
 	virtual const char* getExceptionName() const throw ();
 };
 } // end of Core namespace

@@ -1,8 +1,8 @@
 /*
  * RandomUniform.hpp
  *
- *  Created on: 2009-02-19
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ namespace Data {
 
 /*!
  *  \class RandomUniform SCHNAPS/Plugins/Data/RandomUniform.hpp "SCHNAPS/Plugins/Data/RandomUniform.hpp"
- *  \brief Token terminal primitive class that returns a random generated number.
+ *  \brief Get a random number according to a uniform distribution [0,1[.
  */
 class RandomUniform: public Core::Primitive {
 public:
@@ -45,16 +45,23 @@ public:
 	RandomUniform(const RandomUniform& inOriginal);
 	virtual ~RandomUniform() {}
 
-	virtual const std::string& getName() const {
-		schnaps_StackTraceBeginM();
-			const static std::string lName("Data_RandomUniform");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& RandomUniform::getName() const");
-	}
-
+	//! Copy operator.
 	RandomUniform& operator=(const RandomUniform& inOriginal);
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
+	virtual const std::string& getName() const {
+		schnaps_StackTraceBeginM();
+		const static std::string lName("Data_RandomUniform");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Data::RandomUniform::getName() const");
+	}
+
+	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the primitive return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 };
 } // end of Data namespace

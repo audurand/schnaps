@@ -1,8 +1,8 @@
 /*
  * Branch.hpp
  *
- *  Created on: 2010-11-21
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ namespace Plugins {
 namespace Control {
 
 /*!
- *  \class Branch SCHNAPS-plugins/Easier/Branch.hpp "SCHNAPS-plugins/Easier/Branch.hpp"
+ *  \class Branch SCHNAPS/Plugins/Easier/Branch.hpp "SCHNAPS/Plugins/Easier/Branch.hpp"
  *  \brief Executes the first branch with some probability, else second branch.
  */
 class Branch: public Core::Primitive {
@@ -45,25 +45,35 @@ public:
 	Branch(const Branch& inOriginal);
 	virtual ~Branch() {}
 
-	virtual const std::string& getName() const {
-		schnaps_StackTraceBeginM();
-			const static std::string lName("Control_Branch");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& Branch::getName() const");
-	}
-
-	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
-	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
-
+	//! Copy operator.
 	Branch& operator=(const Branch& inOriginal);
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
+	virtual const std::string& getName() const {
+		schnaps_StackTraceBeginM();
+		const static std::string lName("Control_Branch");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Control::Branch::getName() const");
+	}
+
+	//! Read object from XML using system.
+	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Write content of object to XML.
+	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
+
+	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the nth argument requested return type.
 	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const;
+	//! Return the primitive return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
-	std::string mProbability_Ref;
-	Core::Double::Handle mProbability;
+	std::string mProbability_Ref;		//!< Label of parameter than represents the probability.
+	Core::Double::Handle mProbability;	//!< A handle to the probability.
 };
 } // end of Control namespace
 } // end of Plugins namespace

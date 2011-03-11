@@ -1,8 +1,8 @@
 /*
  * MapT.hpp
  *
- *  Created on: 2009-01-23
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,6 @@
 #ifndef SCHNAPS_Core_MapT_hpp
 #define SCHNAPS_Core_MapT_hpp
 
-#include <map>
-
 #include "SCHNAPS/Core/Object.hpp"
 #include "SCHNAPS/Core/castObjectT.hpp"
 #include "SCHNAPS/Core/AllocatorT.hpp"
@@ -31,20 +29,24 @@
 #include "SCHNAPS/Core/Exception.hpp"
 #include "SCHNAPS/Core/IOException.hpp"
 
+#include <map>
+
 namespace SCHNAPS {
 namespace Core {
 
 /*!
- *  \class MapT SCHNAPS/Core/MapT.hpp "SCHNAPS/Core/MapT.hpp"
- *  \brief Template of an MapT that adapt an map type (std::vector of the parametrized type)
- *     to the SCHNAPS Object interface.
- *  \param T The map-ed type.
+ * \class MapT SCHNAPS/Core/MapT.hpp "SCHNAPS/Core/MapT.hpp"
+ * \author Christian Gagne
+ * \author Marc Parizeau
+ * \brief Template of an MapT that adapt an map type (std::vector of the parametrized type)
+ *    to the SCHNAPS Object interface.
+ * \param T The map-ed type.
  *
- *  The map-ed type that is wrapped must have the following operator predefined:
- *  \li bool operator<(const T&, const T&); to compare strict weak ordering two maps.
- *  \li bool operator==(const T&, const T&); to compare equality of two maps.
- *  \li std::ostream& operator<<(std::ostream&, const T&); to output the map.
- *  \li std::istream& operator>>(std::istream&, T&); to input value the map.
+ * The map-ed type that is wrapped must have the following operator predefined:
+ * \li bool operator<(const T&, const T&); to compare strict weak ordering two maps.
+ * \li bool operator==(const T&, const T&); to compare equality of two maps.
+ * \li std::ostream& operator<<(std::ostream&, const T&); to output the map.
+ * \li std::istream& operator>>(std::istream&, T&); to input value the map.
  */
 template<class Key, class T>
 class MapT: public Object, public std::map<Key, T> {
@@ -60,15 +62,16 @@ public:
 	explicit MapT(unsigned int inSize, const T& inModel);
 	virtual ~MapT() {}
 
+	//! Test if object is equal to another.
 	virtual bool isEqual(const Object& inRightObj) const;
+	//! Test if object is less than another.
 	virtual bool isLess(const Object& inRightObj) const;
-
 };
 
 
 /*!
- *  \brief Constructor an map of the given size.
- *  \param inSize Size of the map.
+ * \brief Constructor an map of the given size.
+ * \param inSize Size of the map.
  */
 template<class Key, class T>
 MapT<Key, T>::MapT(unsigned int inSize) :
@@ -76,9 +79,9 @@ MapT<Key, T>::MapT(unsigned int inSize) :
 }
 
 /*!
- *  \brief Constructor an map of the given size and model.
- *  \param inSize Size of the map.
- *  \param inModel Model to use to build the map.
+ * \brief Constructor an map of the given size and model.
+ * \param inSize Size of the map.
+ * \param inModel Model to use to build the map.
  */
 template<class Key, class T>
 MapT<Key, T>::MapT(unsigned int inSize, const T& inModel) :
@@ -86,35 +89,35 @@ MapT<Key, T>::MapT(unsigned int inSize, const T& inModel) :
 }
 
 /*!
- *  \brief Compare the equality of two map of a given type.
- *  \param inRightObj Object reference to the right object to compare.
- *  \return True if maps are equal, false if not.
+ * \brief Compare the equality of two map of a given type.
+ * \param inRightObj Object reference to the right object to compare.
+ * \return True if maps are equal, false if not.
  */
 template<class Key, class T>
 bool MapT<Key, T>::isEqual(const SCHNAPS::Core::Object& inRightObj) const {
 	schnaps_StackTraceBeginM();
-		const SCHNAPS::Core::MapT<Key, T>& lLeftArray = castObjectT<const SCHNAPS::Core::MapT<Key, T>&> (*this);
-		const std::map<Key, T>& lLeftVector = lLeftArray;
-		const SCHNAPS::Core::MapT<Key, T>& lRightArray = castObjectT<const SCHNAPS::Core::MapT<Key, T>&> (inRightObj);
-		const std::map<Key, T>& lRightVector = lRightArray;
-		return (lLeftVector == lRightVector);
-	schnaps_StackTraceEndM("bool MapT<Key, T>::isEqual(const Object& inRightObj) const");
+	const SCHNAPS::Core::MapT<Key, T>& lLeftArray = castObjectT<const SCHNAPS::Core::MapT<Key, T>&> (*this);
+	const std::map<Key, T>& lLeftVector = lLeftArray;
+	const SCHNAPS::Core::MapT<Key, T>& lRightArray = castObjectT<const SCHNAPS::Core::MapT<Key, T>&> (inRightObj);
+	const std::map<Key, T>& lRightVector = lRightArray;
+	return (lLeftVector == lRightVector);
+	schnaps_StackTraceEndM("bool SCHNAPS::Core::MapT<Key, T>::isEqual(const SCHNAPS::Core::Object&) const");
 }
 
 /*!
- *  \brief Get the strict weak order of two wrapper of a given type.
- *  \param inRightObj Object reference to the right object from which we get the order.
- *  \return True if left (this) map is less than the right one, false if not.
+ * \brief Get the strict weak order of two wrapper of a given type.
+ * \param inRightObj Object reference to the right object from which we get the order.
+ * \return True if left (this) map is less than the right one, false if not.
  */
 template<class Key, class T>
 bool MapT<Key, T>::isLess(const SCHNAPS::Core::Object& inRightObj) const {
 	schnaps_StackTraceBeginM();
-		const SCHNAPS::Core::MapT<Key, T>& lLeftArray = castObjectT<const SCHNAPS::Core::MapT<Key, T>&> (*this);
-		const std::map<Key, T>& lLeftVector = lLeftArray;
-		const SCHNAPS::Core::MapT<Key, T>& lRightArray = castObjectT<const SCHNAPS::Core::MapT<Key, T>&> (inRightObj);
-		const std::map<Key, T>& lRightVector = lRightArray;
-		return (lLeftVector < lRightVector);
-	schnaps_StackTraceEndM("bool MapT<Key, T>::isLess(const Object& inRightObj) const");
+	const SCHNAPS::Core::MapT<Key, T>& lLeftArray = castObjectT<const SCHNAPS::Core::MapT<Key, T>&> (*this);
+	const std::map<Key, T>& lLeftVector = lLeftArray;
+	const SCHNAPS::Core::MapT<Key, T>& lRightArray = castObjectT<const SCHNAPS::Core::MapT<Key, T>&> (inRightObj);
+	const std::map<Key, T>& lRightVector = lRightArray;
+	return (lLeftVector < lRightVector);
+	schnaps_StackTraceEndM("bool SCHNAPS::Core::MapT<Key, T>::isLess(const SCHNAPS::Core::Object&) const");
 }
 } // end of Core namespace
 } // end of SCHNAPS namespace

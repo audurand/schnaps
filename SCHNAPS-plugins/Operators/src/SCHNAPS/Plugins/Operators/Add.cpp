@@ -1,9 +1,8 @@
 /*
  * Add.cpp
  *
- *  Created on: 2009-02-26
- *  Updated on: 2010-04-06
- *      Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,46 +25,74 @@ using namespace Plugins;
 using namespace Operators;
 
 /*!
- *  \brief Construct a new addition primitive.
+ * \brief Default constructor.
  */
 Add::Add() :
-		Primitive(2)
+	Primitive(2)
 {}
 
+/*!
+ * \brief Construct an addition primitive as a copy of an original.
+ * \param inOriginal A const reference to the original addition primitive.
+ */
 Add::Add(const Add& inOriginal) :
-		Primitive(2)
+	Primitive(2)
 {}
 
+/*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
 Add& Add::operator=(const Add& inOriginal) {
 	schnaps_StackTraceBeginM();
-		return *this;
-	schnaps_StackTraceEndM("Core::Add& SCHNAPS::Plugins::Operators::Add::operator=(const Core::Add&)");
+	return *this;
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::Add& SCHNAPS::Plugins::Operators::Add::operator=(const SCHNAPS::Plugins::Operators::Add&)");
 }
 
+/*!
+ * \brief  Execute the primitive.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A handle to the execution result.
+ */
 Core::AnyType::Handle Add::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		Core::Number::Handle lArg1 = Core::castHandleT<Core::Number>(getArgument(inIndex, 0, ioContext));
-		Core::Number::Handle lArg2 = Core::castHandleT<Core::Number>(getArgument(inIndex, 1, ioContext));
-		lArg1->add(*lArg2);
-		return lArg1;
-	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Operators::Add::execute(unsigned int, Core::ExecutionContext&) const");
+	Core::Number::Handle lArg1 = Core::castHandleT<Core::Number>(getArgument(inIndex, 0, ioContext));
+	Core::Number::Handle lArg2 = Core::castHandleT<Core::Number>(getArgument(inIndex, 1, ioContext));
+	lArg1->add(*lArg2);
+	return lArg1;
+	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Operators::Add::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 
+/*!
+ * \brief  Return the nth argument requested return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  inN Index of the argument to get the type.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the type of the nth argument.
+ * \throw  SCHNAPS::Core::AssertException if the argument index is out of bounds.
+ */
 const std::string& Add::getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	schnaps_AssertM(inN<2);
-		if (inN == 0) {
-			const static std::string lType("Number");
-			return lType;
-		}
-		unsigned int lNodeIndex = getArgumentIndex(inIndex, 0, ioContext);
-		return ioContext.getPrimitiveTree()[lNodeIndex].mPrimitive->getReturnType(inIndex, ioContext);
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Add::getArgType(unsigned int, unsigned int, Core::ExecutionContext&) const");
+	schnaps_UpperBoundCheckAssertM(inN, 1);
+	if (inN == 0) {
+		const static std::string lType("Number");
+		return lType;
+	}
+	unsigned int lNodeIndex = getArgumentIndex(inIndex, 0, ioContext);
+	return ioContext.getPrimitiveTree()[lNodeIndex].mPrimitive->getReturnType(inIndex, ioContext);
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Add::getArgType(unsigned int, unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 
+/*!
+ * \brief  Return the primitive return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the return type.
+ */
 const std::string& Add::getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		unsigned int lNodeIndex = getArgumentIndex(inIndex, 0, ioContext);
-		return ioContext.getPrimitiveTree()[lNodeIndex].mPrimitive->getReturnType(inIndex, ioContext);
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Add::getReturnType(unsigned int, Core::ExecutionContext&) const");
+	unsigned int lNodeIndex = getArgumentIndex(inIndex, 0, ioContext);
+	return ioContext.getPrimitiveTree()[lNodeIndex].mPrimitive->getReturnType(inIndex, ioContext);
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Add::getReturnType(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }

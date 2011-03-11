@@ -1,8 +1,8 @@
 /*
  * AnyType.hpp
  *
- *  Created on: 2009-11-19
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ namespace Core {
 
 /*!
  *  \class AnyType SCHNAPS/Core/AnyType.hpp "SCHNAPS/Core/AnyType.hpp"
- *  \brief AnyType class, the implementation of any (std) base types as Object.
+ *  \brief The implementation of any (std) base types as Object.
  */
 class AnyType: public Object {
 public:
@@ -46,19 +46,28 @@ public:
 	AnyType(const AnyType& inOriginal) {}
 	virtual ~AnyType() {}
 
+	//! Copy operator.
 	AnyType& operator=(const AnyType& inOriginal);
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("AnyType");
-			return lName;
+		const static std::string lName("AnyType");
+		return lName;
 		schnaps_StackTraceEndM("const std::string& SCHNAPS::Core::AnyType::getName() const");
 	}
 
+	/*!
+	 * \brief  Return a const reference to the type of object.
+	 * \return A const reference to the type of object.
+	 */
 	virtual const std::string& getType() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lType("AnyType");
-			return lType;
+		const static std::string lType("AnyType");
+		return lType;
 		schnaps_StackTraceEndM("const std::string& SCHNAPS::Core::AnyType::getType() const");
 	}
 
@@ -66,7 +75,8 @@ public:
 	virtual void readStr(const std::string& inStr);
 	//! Write data to string.
 	virtual std::string writeStr() const;
-	//! Return a clone (deep copy).
+	
+	//! Return a handle to a clone (deep copy).
 	virtual AnyType::Handle clone() const;
 };
 } // end of Core namespace

@@ -1,8 +1,8 @@
 /*
- * NPV.h
+ * NPV.hpp
  *
- *  Created on: 2010-04-20
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,9 @@
 #ifndef SCHNAPS_Plugins_Operators_NPV_hpp
 #define SCHNAPS_Plugins_Operators_NPV_hpp
 
-#include "PACC/XML.hpp"
 #include "SCHNAPS/SCHNAPS.hpp"
+
+#include "PACC/XML.hpp"
 
 namespace SCHNAPS {
 namespace Plugins {
@@ -30,7 +31,7 @@ namespace Operators {
 
 /*!
  *  \class NPV SCHNAPS/Plugins/Operators/NPV.hpp "SCHNAPS/Plugins/Operators/NPV.hpp"
- *  \brief Primitive class that actualizes a value to a specific rate according to current time unit.
+ *  \brief Nearest present value operator with specific rate to compute actualisation relative to the simulation time.
  */
 class NPV: public Core::Primitive {
 public:
@@ -45,25 +46,35 @@ public:
 	NPV(const NPV& inOriginal);
 	virtual ~NPV() {}
 
-	virtual const std::string& getName() const {
-		schnaps_StackTraceBeginM();
-			const static std::string lName("Operators_NPV");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& NPV::getName() const");
-	}
-
-	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
-	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const;
-
+	//! Copy operator.
 	NPV& operator=(const NPV& inOriginal);
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
+	virtual const std::string& getName() const {
+		schnaps_StackTraceBeginM();
+		const static std::string lName("Operators_NPV");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::NPV::getName() const");
+	}
+
+	//! Read object from XML using system.
+	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Write content of object to XML.
+	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const;
+
+	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the nth argument requested return type.
 	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const;
+	//! Return the primitive return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
-	std::string mRate_Ref;
-	Core::Double::Handle mRate; //!< rate of actualization
+	std::string mRate_Ref;		//!< Label of actualization rate parameter.
+	Core::Double::Handle mRate;	//!< A handle to the actualization rate.
 };
 } // end of Operators namespace
 } // end of Plugins namespace

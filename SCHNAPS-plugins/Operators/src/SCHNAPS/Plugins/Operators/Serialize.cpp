@@ -1,8 +1,8 @@
 /*
  * Serialize.cpp
  *
- *  Created on: 2010-02-01
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,61 +25,67 @@ using namespace Plugins;
 using namespace Operators;
 
 /*!
- *  \brief Construct a new absolute value primitive.
+ * \brief Default constructor.
  */
 Serialize::Serialize() :
-		Primitive(1)
+	Primitive(1)
 {}
 
 /*!
- *  \brief Construct a new absolute value primitive.
+ * \brief Construct an operator to serialize atoms to strings as a copy of an original.
+ * \param inOriginal A const reference to the original operator to serialize atoms to strings.
  */
 Serialize::Serialize(const Serialize& inOriginal) :
-		Primitive(1)
+	Primitive(1)
 {}
 
+/*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
 Serialize& Serialize::operator=(const Serialize& inOriginal) {
 	schnaps_StackTraceBeginM();
-		return *this;
-	schnaps_StackTraceEndM("Core::Serialize& SCHNAPS::Plugins::Operators::Serialize::operator=(const Core::Serialize&)");
+	return *this;
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::Serialize& SCHNAPS::Plugins::Operators::Serialize::operator=(const SCHNAPS::Plugins::Operators::Serialize&)");
 }
 
 /*!
- *  \brief Execute the characteristic primitive operation.
- *  \param ioContext Execution context.
- *  \param inIndex The index of the node in the primitive tree.
- *  \return Result of the execution.
+ * \brief  Execute the primitive.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A handle to the execution result.
  */
 Core::AnyType::Handle Serialize::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		return new Core::String(getArgument(inIndex, 0, ioContext)->writeStr().c_str());
-	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Operators::Serialize::execute(unsigned int, Core::ExecutionContext&) const");
+	return new Core::String(getArgument(inIndex, 0, ioContext)->writeStr().c_str());
+	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Operators::Serialize::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 
 /*!
- *  \brief  Return the tag of the type of data needed as input for the primitive Serialize.
- *  \param  inIndex Index of the current primitive.
- *  \param  inN Index of the argument to get the type.
- *  \param  ioContext Execution context.
- *  \return Type of the argument's node type.
+ * \brief  Return the nth argument requested return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  inN Index of the argument to get the type.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the type of the nth argument.
+ * \throw  SCHNAPS::Core::AssertException if the argument index is out of bounds.
  */
 const std::string& Serialize::getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	schnaps_AssertM(inN<1);
-		const static std::string lType("Any");
-		return lType;
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Serialize::getArgType(unsigned int, unsigned int, Core::ExecutionContext&) const");
+	schnaps_UpperBoundCheckAssertM(inN, 0);
+	const static std::string lType("Any");
+	return lType;
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Serialize::getArgType(unsigned int, unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 
 /*!
- *  \brief  Return the tag of the type of data return by primitive Serialize.
- *  \param  inIndex Index of the current primitive.
- *  \param  ioContext Execution context.
- *  \return Type of the primitive return type.
+ * \brief  Return the primitive return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the return type.
  */
 const std::string& Serialize::getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-			const static std::string lType("String");
-			return lType;
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Serialize::getReturnType(unsigned int, Core::ExecutionContext&) const");
+		const static std::string lType("String");
+		return lType;
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Serialize::getReturnType(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }

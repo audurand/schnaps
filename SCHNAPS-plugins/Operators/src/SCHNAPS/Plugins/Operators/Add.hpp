@@ -1,8 +1,8 @@
 /*
  * Add.hpp
  *
- *  Created on: 2009-02-26
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ namespace Operators {
 
 /*!
  *  \class Add SCHNAPS/Plugins/Operators/Add.hpp "SCHNAPS/Plugins/Operators/Add.hpp"
- *  \brief Mathematical addition operation primitive class.
+ *  \brief Mathematical addition operation primitive.
  */
 class Add: public Core::Primitive {
 public:
@@ -45,17 +45,25 @@ public:
 	Add(const Add& inOriginal);
 	virtual ~Add() {}
 
-	virtual const std::string& getName() const {
-		schnaps_StackTraceBeginM();
-			const static std::string lName("Operators_Add");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& Add::getName() const");
-	}
-
+	//! Copy operator.
 	Add& operator=(const Add& inOriginal);
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
+	virtual const std::string& getName() const {
+		schnaps_StackTraceBeginM();
+		const static std::string lName("Operators_Add");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Add::getName() const");
+	}
+
+	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the nth argument requested return type.
 	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const;
+	//! Return the primitive return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 };
 } // end of Operators namespace

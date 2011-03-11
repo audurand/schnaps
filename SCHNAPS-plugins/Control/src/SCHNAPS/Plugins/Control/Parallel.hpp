@@ -1,8 +1,8 @@
 /*
  * Parallel.hpp
  *
- *  Created on: 2010-08-27
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,42 +21,53 @@
 #ifndef SCHNAPS_Plugins_Control_Parallel_hpp
 #define SCHNAPS_Plugins_Control_Parallel_hpp
 
-#include "PACC/XML.hpp"
 #include "SCHNAPS/SCHNAPS.hpp"
+
+#include "PACC/XML.hpp"
 
 namespace SCHNAPS {
 namespace Plugins {
 namespace Control {
 
 /*!
- *  \class Parallel SCHNAPS/Basic/Parallel.hpp "SCHNAPS/Basic/Parallel.hpp"
- *  \brief Primitive class that executes sequentially its children but returns a vector containing the result of each one (as if executed in parallel).
+ *  \class Parallel SCHNAPS/Plugins/Control/Parallel.hpp "SCHNAPS/Plugins/Control/Parallel.hpp"
+ *  \brief Execute branches "in parallel" thus returning nothing.
+ * 		   In reality branches are executed sequentially so if multiple branches modify the same variable,
+ * 		   the final result will be the one stored by the last child.
  */
-class Parallel: public SCHNAPS::Core::Primitive {
+class Parallel: public Core::Primitive {
 public:
 	//! Parallel allocator type.
-	typedef SCHNAPS::Core::AllocatorT<Parallel, SCHNAPS::Core::Primitive::Alloc> Alloc;
+	typedef Core::AllocatorT<Parallel, Core::Primitive::Alloc> Alloc;
 	//! Parallel handle type.
-	typedef SCHNAPS::Core::PointerT<Parallel, SCHNAPS::Core::Primitive::Handle> Handle;
+	typedef Core::PointerT<Parallel, Core::Primitive::Handle> Handle;
 	//! Parallel bag type.
-	typedef SCHNAPS::Core::ContainerT<Parallel, SCHNAPS::Core::Primitive::Bag> Bag;
+	typedef Core::ContainerT<Parallel, Core::Primitive::Bag> Bag;
 
 	Parallel();
 	Parallel(const Parallel& inOriginal);
 	virtual ~Parallel() {}
 
-	virtual const std::string& getName() const {
-		schnaps_StackTraceBeginM();
-			const static std::string lName("Control_Parallel");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& Parallel::getName() const");
-	}
-
+	//! Copy operator.
 	Parallel& operator=(const Parallel& inOriginal);
 
-	virtual SCHNAPS::Core::AnyType::Handle execute(unsigned int inIndex, SCHNAPS::Core::ExecutionContext& ioContext) const;
-	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, SCHNAPS::Core::ExecutionContext& ioContext) const;
-	virtual const std::string& getReturnType(unsigned int inIndex, SCHNAPS::Core::ExecutionContext& ioContext) const;
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
+	virtual const std::string& getName() const {
+		schnaps_StackTraceBeginM();
+		const static std::string lName("Control_Parallel");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Control::Parallel::getName() const");
+	}
+
+	//! Execute the primitive.
+	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the nth argument requested return type.
+	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const;
+	//! Return the primitive return type.
+	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 };
 } // end of Control namespace
 } // end of Plugins namespace

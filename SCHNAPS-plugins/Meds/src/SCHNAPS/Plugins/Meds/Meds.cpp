@@ -1,8 +1,8 @@
 /*
  * Meds.cpp
  *
- *  Created on: 2011-02-15
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,8 +24,7 @@
 SCHNAPS_Plugin_BeginDefinitionM("Meds", "0.1");
 
 SCHNAPS_Plugin_AddAllocM("Meds_Event", SCHNAPS::Plugins::Meds::Event::Alloc);
-SCHNAPS_Plugin_AddAllocM("Meds_Eventv2", SCHNAPS::Plugins::Meds::Eventv2::Alloc);
-SCHNAPS_Plugin_AddAllocM("Meds_PreventionCampain", SCHNAPS::Plugins::Meds::PreventionCampain::Alloc);
+SCHNAPS_Plugin_AddAllocM("Meds_PreventionCampaign", SCHNAPS::Plugins::Meds::PreventionCampaign::Alloc);
 SCHNAPS_Plugin_AddAllocM("Meds_Test", SCHNAPS::Plugins::Meds::Test::Alloc);
 SCHNAPS_Plugin_AddAllocM("Meds_Testv2", SCHNAPS::Plugins::Meds::Testv2::Alloc);
 SCHNAPS_Plugin_AddAllocM("Meds_Treatment", SCHNAPS::Plugins::Meds::Treatment::Alloc);

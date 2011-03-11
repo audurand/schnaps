@@ -1,9 +1,8 @@
 /*
  * ULong.hpp
  *
- *  Created on: 2009-01-23
- *  Updated on: 2011-01-12
- *      Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +26,6 @@
 #include "SCHNAPS/Core/AllocatorT.hpp"
 
 namespace SCHNAPS {
-
 namespace Core {
 
 // forward declaration
@@ -42,7 +40,7 @@ typedef ArrayT<unsigned long> ULongArray;
 
 /*!
  *  \class ULong SCHNAPS/Core/ULong.hpp "SCHNAPS/Core/ULong.hpp"
- *  \brief ULong class, the unsigned long implementation as Object.
+ *  \brief The unsigned long implementation as Object.
  */
 class ULong: public Number {
 public:
@@ -58,57 +56,91 @@ public:
 	ULong(const ULong& inOriginal);
 	virtual ~ULong() {}
 
+	//! Copy operator.
+	ULong& operator=(const ULong& inOriginal);
+
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("ULong");
-			return lName;
+		const static std::string lName("ULong");
+		return lName;
 		schnaps_StackTraceEndM("const std::string& ULong::getName() const");
 	}
 
+	/*!
+	 * \brief  Return a const reference to the type of object.
+	 * \return A const reference to the type of object.
+	 */
 	virtual const std::string& getType() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lType("ULong");
-			return lType;
+		const static std::string lType("ULong");
+		return lType;
 		schnaps_StackTraceEndM("const std::string& ULong::getType() const");
 	}
 
+	//! Write the content of the object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
+	//! Test if an object is equal to another.
 	virtual bool isEqual(const Object& inRightObj) const;
+	//! Test if an object is less than another.
 	virtual bool isLess(const Object& inRightObj) const;
 
-	ULong& operator=(const ULong& inOriginal);
-
+	//! Read the object from string.
 	virtual void readStr(const std::string& inStr);
+	//! Write the object to string.
 	virtual std::string writeStr() const;
+
+	//! Return a handle to a clone of the current object.
 	virtual AnyType::Handle clone() const;
 
+	//! Compute absolute value.
 	virtual Number& abs();
+	//! Add a number.
 	virtual Number& add(Number& inRightNumber);
+	//! Divide by a number.
 	virtual Number& div(Number& inRightNumber);
+	//! Comute the modulo by a number.
 	virtual Number& mod(Number& inRightNumber);
+	//! Multiply by a number.
 	virtual Number& mult(Number& inRightNumber);
+	//! Subtract a number.
 	virtual Number& sub(Number& inRightNumber);
 
+	//! Casting operator to double.
 	operator Double() const;
+	//! Casting operator to float.
 	operator Float() const;
+	//! Casting operator to integer.
 	operator Int() const;
+	//! Casting operator to long.
 	operator Long() const;
+	//! Casting operator to unsigned integer.
 	operator UInt() const;
+	//! Casting operator to unsigned long.
 	operator ULong() const;
 
-	//! Return the value of unsigned long object.
+	/*!
+	 * \brief Return a const refernce to the value of unsigned long.
+	 * \return A const reference to the value of unsigned long.
+	 */
 	const unsigned long& getValue() const {
 		return mValue;
 	}
 
-	//! Set the value of unsigned long object.
+	/*!
+	 * \brief Set the value of unsigned long.
+	 * \param inValue A const reference to the new value of unsigned long.
+	 */
 	void setValue(const unsigned long& inValue) {
 		mValue = inValue;
 	}
 
 private:
-	unsigned long mValue; //! Value of unsigned long object.
+	unsigned long mValue; //! Value of unsigned long.
 };
 } // end of Core namespace
 } // end of SCHNAPS namespace

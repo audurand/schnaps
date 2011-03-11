@@ -1,8 +1,8 @@
 /*
  * Logger.cpp
  *
- *  Created on: 2010-05-19
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,40 +23,46 @@
 using namespace SCHNAPS;
 using namespace Core;
 
+/*!
+ * \brief Construct a new logger.
+ */
 Logger::Logger() :
-		mEnabled(false)
+	mEnabled(false)
 {}
 
-void Logger::open(const std::string& inLogFile) {
+/*!
+ * \brief Open logger file and enable logger.
+ * \param inFileName A const reference to the logger file name.
+ */
+void Logger::open(const std::string& inFileName) {
 	schnaps_StackTraceBeginM();
-		mOGZS = new ogzstream(inLogFile.c_str());
-		mEnabled = true;
+	mOGZS = new ogzstream(inFileName.c_str());
+	mEnabled = true;
 	schnaps_StackTraceEndM("void SCHNAPS::Core::Logger::init(const std::string&)");
 }
 
 /*!
- * \brief Output log in log file.
- * \param inLog Log to output.
+ * \brief Log message to file.
+ * \param inLog A const refernce to the message to log.
  */
-void Logger::log(const std::string& inLog) {
+void Logger::log(const std::string& inMessage) {
 	schnaps_StackTraceBeginM();
-		if (mEnabled) {
-			(*mOGZS) << inLog.c_str() << "\n";
-		}
+	if (mEnabled) {
+		(*mOGZS) << inMessage.c_str() << "\n";
+	}
 	schnaps_StackTraceEndM("void SCHNAPS::Core::Logger::log(std::string)");
 }
 
 /*!
  * \brief Close logger file.
- *
- * This MUST be call before ending.
+ * \note This MUST be call before ending.
  */
 void Logger::close() {
 	schnaps_StackTraceBeginM();
-		if (mEnabled) {
-			mOGZS->close();
-			mEnabled = false;
-			delete mOGZS;
-		}
+	if (mEnabled) {
+		mOGZS->close();
+		mEnabled = false;
+		delete mOGZS;
+	}
 	schnaps_StackTraceEndM("void SCHNAPS::Core::Logger::close()");
 }

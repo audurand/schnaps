@@ -1,8 +1,8 @@
 /*
- * Variable.cpp
+ * Clock.cpp
  *
- *  Created on: 2009-03-17
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,27 +25,34 @@ using namespace Plugins;
 using namespace Data;
 
 /*!
- *  \brief Construct a new token terminal primitive that refers to the clock.
+ * \brief Default constructor.
  */
 Clock::Clock() :
 	Primitive(0) {
 }
 
+/*!
+ * \brief  Execute the primitive.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A handle to the execution result.
+ */
 Core::AnyType::Handle Clock::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
-		return new Core::ULong(lContext.getClock().getValue());
-	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Data::Clock::execute(unsigned int, Core::ExecutionContext&)");
+	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
+	return new Core::ULong(lContext.getClock().getValue());
+	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Data::Clock::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
 }
 
 /*!
- *  \brief  Return the tag of the type of data return by primitive TokenT.
- *  \param  ioContext Execution context.
- *  \return Hierarchical typing tagging the data type returned.
+ * \brief  Return the primitive return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the return type.
  */
-const std::string& Clock::getReturnType(Core::ExecutionContext& ioContext) const {
+const std::string& Clock::getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		const static std::string lType("ULong");
-		return lType;
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Data::Clock::getReturnType(Core::ExecutionContext&) const");
+	const static std::string lType("ULong");
+	return lType;
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Data::Clock::getReturnType(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }

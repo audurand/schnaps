@@ -1,8 +1,8 @@
 /*
  * Atom.cpp
  *
- *  Created on: 2009-02-17
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,27 +23,37 @@
 using namespace SCHNAPS;
 using namespace Core;
 
+/*!
+ * \brief Read object from XML.
+ * \param inIter XML iterator of input document.
+ * \throw SCHNAPS::Core::IOException if wrong tag is encountered.
+ */
 void Atom::read(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceBeginM();
-		if (inIter) {
-			if (inIter->getType() != PACC::XML::eData) {
-				throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
-			}
-			if (inIter->getValue() != getName()) {
-				std::ostringstream lOSS;
-				lOSS << "tag <" << getName() << "> expected, but ";
-				lOSS << "got tag <" << inIter->getValue() << "> instead!";
-				throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
-			}
-			if (!inIter->getAttribute("value").empty()) {
-				readStr(inIter->getAttribute("value"));
-			}
+	if (inIter) {
+		if (inIter->getType() != PACC::XML::eData) {
+			throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
 		}
+		if (inIter->getValue() != getName()) {
+			std::ostringstream lOSS;
+			lOSS << "tag <" << getName() << "> expected, but ";
+			lOSS << "got tag <" << inIter->getValue() << "> instead!";
+			throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
+		}
+		if (!inIter->getAttribute("value").empty()) {
+			readStr(inIter->getAttribute("value"));
+		}
+	}
 	schnaps_StackTraceEndM("void SCHNAPS::Core::Atom::read(PACC::XML::ConstIterator inIter)");
 }
 
+/*!
+ * \brief Read object from XML using system.
+ * \param inIter XML iterator of input document.
+ * \param ioSystem A reference to the system.
+ */
 void Atom::readWithSystem(PACC::XML::ConstIterator inIter, System& ioSystem) {
 	schnaps_StackTraceBeginM();
-		this->read(inIter);
+	this->read(inIter);
 	schnaps_StackTraceEndM("void SCHNAPS::Core::Atom::read(PACC::XML::ConstIterator inIter, SCHNAPS::Core::System&)");
 }

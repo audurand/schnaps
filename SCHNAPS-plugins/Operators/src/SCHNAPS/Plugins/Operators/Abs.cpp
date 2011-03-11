@@ -1,9 +1,8 @@
 /*
  * Abs.cpp
  *
- *  Created on: 2009-02-24
- *  Updated on: 2010-04-06
- *      Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,41 +25,70 @@ using namespace Plugins;
 using namespace Operators;
 
 /*!
- *  \brief Construct a new absolute value primitive.
+ * \brief Default constructor.
  */
 Abs::Abs() :
-		Primitive(1)
+	Primitive(1)
 {}
 
+/*!
+ * \brief Construct an absolute value primitive as a copy of an original.
+ * \param inOriginal A const reference to the original absolute value primitive.
+ */
 Abs::Abs(const Abs& inOriginal) :
-		Primitive(1)
+	Primitive(1)
 {}
 
+/*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
 Abs& Abs::operator=(const Abs& inOriginal) {
 	schnaps_StackTraceBeginM();
-		return *this;
-	schnaps_StackTraceEndM("Core::Abs& SCHNAPS::Plugins::Operators::Abs::operator=(const Core::Abs&)");
+	return *this;
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::Abs& SCHNAPS::Plugins::Operators::Abs::operator=(const SCHNAPS::Plugins::Operators::Abs&)");
 }
 
+/*!
+ * \brief  Execute the primitive.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A handle to the execution result.
+ */
 Core::AnyType::Handle Abs::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) {
 	schnaps_StackTraceBeginM();
-		Core::Number::Handle lArg1 = Core::castHandleT<Core::Number>(getArgument(inIndex, 0, ioContext));
-		lArg1->abs();
-		return lArg1;
-	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Operators::Abs::execute(unsigned int, Core::ExecutionContext&)");
+	Core::Number::Handle lArg1 = Core::castHandleT<Core::Number>(getArgument(inIndex, 0, ioContext));
+	lArg1->abs();
+	return lArg1;
+	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Operators::Abs::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
 }
 
+/*!
+ * \brief  Return the nth argument requested return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  inN Index of the argument to get the type.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the type of the nth argument.
+ * \throw  SCHNAPS::Core::AssertException if the argument index is out of bounds.
+ */
 const std::string& Abs::getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	schnaps_AssertM(inN<1);
-		const static std::string lType("Number");
-		return lType;
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Abs::getArgType(unsigned int, unsigned int, Core::ExecutionContext&) const");
+	schnaps_UpperBoundCheckAssertM(inN, 0);
+	const static std::string lType("Number");
+	return lType;
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Abs::getArgType(unsigned int, unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 
+
+/*!
+ * \brief  Return the primitive return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the return type.
+ */
 const std::string& Abs::getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		unsigned int lNodeIndex = getArgumentIndex(inIndex, 0, ioContext);
-		return ioContext.getPrimitiveTree()[lNodeIndex].mPrimitive->getReturnType(inIndex, ioContext);
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Abs::getReturnType(unsigned int, Core::ExecutionContext&) const");
+	unsigned int lNodeIndex = getArgumentIndex(inIndex, 0, ioContext);
+	return ioContext.getPrimitiveTree()[lNodeIndex].mPrimitive->getReturnType(inIndex, ioContext);
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Abs::getReturnType(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }

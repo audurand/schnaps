@@ -1,8 +1,8 @@
 /*
  * Variable.hpp
  *
- *  Created on: 2009-03-17
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,16 +21,17 @@
 #ifndef SCHNAPS_Plugins_Data_Variable_hpp
 #define SCHNAPS_Plugins_Data_Variable_hpp
 
-#include "PACC/XML.hpp"
 #include "SCHNAPS/SCHNAPS.hpp"
+
+#include "PACC/XML.hpp"
 
 namespace SCHNAPS {
 namespace Plugins {
 namespace Data {
 
 /*!
- *  \class Variable SCHNAPS-plugins/Data/Variable.hpp "SCHNAPS-plugins/Data/Variable.hpp"
- *  \brief Token terminal primitive class that refers to a variable from individuals.
+ *  \class Variable SCHNAPS/Plugins/Data/Variable.hpp "SCHNAPS/Plugins/Data/Variable.hpp"
+ *  \brief Access a variable from the current individual.
  */
 class Variable: public Core::Primitive {
 public:
@@ -45,21 +46,29 @@ public:
 	Variable(const Variable& inOriginal);
 	virtual ~Variable() {}
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Data_Variable");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& Variable::getName() const");
+		const static std::string lName("Data_Variable");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Data::Variable::getName() const");
 	}
 
+	//! Read object from XML using system.
 	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
+	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the primitive return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 protected:
-	std::string mLabel; //!< label of individuals variable
+	std::string mLabel; //!< Label of individual variable.
 };
 } // end of Data namespace
 } // end of Plugins namespace

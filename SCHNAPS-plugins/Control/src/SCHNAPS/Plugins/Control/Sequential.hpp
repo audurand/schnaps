@@ -1,8 +1,8 @@
 /*
  * Sequential.hpp
  *
- *  Created on: 2009-11-20
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,9 @@
 #ifndef SCHNAPS_Plugins_Control_Sequential_hpp
 #define SCHNAPS_Plugins_Control_Sequential_hpp
 
-#include "PACC/XML.hpp"
 #include "SCHNAPS/SCHNAPS.hpp"
+
+#include "PACC/XML.hpp"
 
 namespace SCHNAPS {
 namespace Plugins {
@@ -30,33 +31,41 @@ namespace Control {
 
 /*!
  *  \class Sequential SCHNAPS/Basic/Sequential.hpp "SCHNAPS/Basic/Sequential.hpp"
- *  \brief Primitive class that executes sequentially its children and returns the result of the last one.
+ *  \brief Primitive class for sequentially executing branches and return the result of the last one.
  */
-class Sequential: public SCHNAPS::Core::Primitive {
+class Sequential: public Core::Primitive {
 public:
 	//! Sequential allocator type.
-	typedef SCHNAPS::Core::AllocatorT<Sequential, SCHNAPS::Core::Primitive::Alloc> Alloc;
+	typedef Core::AllocatorT<Sequential, Core::Primitive::Alloc> Alloc;
 	//! Sequential handle type.
-	typedef SCHNAPS::Core::PointerT<Sequential, SCHNAPS::Core::Primitive::Handle> Handle;
+	typedef Core::PointerT<Sequential, Core::Primitive::Handle> Handle;
 	//! Sequential bag type.
-	typedef SCHNAPS::Core::ContainerT<Sequential, SCHNAPS::Core::Primitive::Bag> Bag;
+	typedef Core::ContainerT<Sequential, Core::Primitive::Bag> Bag;
 
 	Sequential();
 	Sequential(const Sequential& inOriginal);
 	virtual ~Sequential() {}
 
-	virtual const std::string& getName() const {
-		schnaps_StackTraceBeginM();
-			const static std::string lName("Control_Sequential");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& Sequential::getName() const");
-	}
-
+	//! Copy operator.
 	Sequential& operator=(const Sequential& inOriginal);
 
-	virtual SCHNAPS::Core::AnyType::Handle execute(unsigned int inIndex, SCHNAPS::Core::ExecutionContext& ioContext) const;
-	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, SCHNAPS::Core::ExecutionContext& ioContext) const;
-	virtual const std::string& getReturnType(unsigned int inIndex, SCHNAPS::Core::ExecutionContext& ioContext) const;
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
+	virtual const std::string& getName() const {
+		schnaps_StackTraceBeginM();
+		const static std::string lName("Control_Sequential");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Control::Sequential::getName() const");
+	}
+
+	//! Execute the primitive.
+	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the nth argument requested return type.
+	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const;
+	//! Return the primitive return type.
+	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 };
 } // end of Control namespace
 } // end of Plugins namespace

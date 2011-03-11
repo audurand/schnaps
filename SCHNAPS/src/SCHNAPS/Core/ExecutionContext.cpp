@@ -1,8 +1,8 @@
 /*
  * ExecutionContext.cpp
  *
- *  Created on: 2010-03-31
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,29 +23,44 @@
 using namespace SCHNAPS;
 using namespace Core;
 
+/*!
+ * \brief Default constructor.
+ */
 ExecutionContext::ExecutionContext() :
-		mSystem(NULL),
-		mPrimitiveTree(NULL),
-		mThreadNb(0)
+	mSystem(NULL),
+	mPrimitiveTree(NULL),
+	mThreadNb(0)
 {}
 
+/*!
+ * \brief Copy constructor.
+ */
 ExecutionContext::ExecutionContext(const ExecutionContext& inExecutionContext) :
-		mSystem(inExecutionContext.mSystem),
-		mPrimitiveTree(inExecutionContext.mPrimitiveTree),
-		mThreadNb(0)
+	mSystem(inExecutionContext.mSystem),
+	mPrimitiveTree(inExecutionContext.mPrimitiveTree),
+	mThreadNb(0)
 {}
 
+/*!
+ * \brief Construct an execution context with specific system.
+ * \param inSystem A const handle to the system to set.
+ */
 ExecutionContext::ExecutionContext(const System::Handle inSystem) :
-		mSystem(inSystem),
-		mPrimitiveTree(NULL),
-		mThreadNb(0)
+	mSystem(inSystem),
+	mPrimitiveTree(NULL),
+	mThreadNb(0)
 {}
 
+/*!
+ * \brief Copy operator.
+ * \param inOriginal Source of copy.
+ * \return A reference to the current object.
+ */
 ExecutionContext& ExecutionContext::operator=(const ExecutionContext& inOriginal) {
 	schnaps_StackTraceBeginM();
-		mSystem = inOriginal.mSystem;
-		mPrimitiveTree = inOriginal.mPrimitiveTree;
-		mThreadNb = inOriginal.mThreadNb;
-		return *this;
+	mSystem = inOriginal.mSystem;
+	mPrimitiveTree = inOriginal.mPrimitiveTree;
+	mThreadNb = inOriginal.mThreadNb;
+	return *this;
 	schnaps_StackTraceEndM("SCHNAPS::Core::ExecutionContext& SCHNAPS::Core::ExecutionContext::operator=(const SCHNAPS::Core::ExecutionContext&)");
 }

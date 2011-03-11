@@ -1,8 +1,8 @@
 /*
  * ChoiceIsEqual.hpp
  *
- *  Created on: 2010-11-20
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,18 +21,20 @@
 #ifndef SCHNAPS_Plugins_Control_ChoiceIsEqual_hpp
 #define SCHNAPS_Plugins_Control_ChoiceIsEqual_hpp
 
-#include <map>
+#include "SCHNAPS/SCHNAPS.hpp"
 
 #include "PACC/XML.hpp"
-#include "SCHNAPS/SCHNAPS.hpp"
+
+#include <map>
 
 namespace SCHNAPS {
 namespace Plugins {
 namespace Control {
 
 /*!
- *  \class ChoiceIsEqual Simulator/Core/include/ChoiceIsEqual.hpp "Simulator/Core/include/ChoiceIsEqual.hpp"
- *  \brief Primitive class that choses over some values.
+ *  \class ChoiceIsEqual SCHNAPS/Plugins/Control/ChoiceIsEqual.hpp "SCHNAPS/Plugins/Control/ChoiceIsEqual.hpp"
+ *  \brief Execute node branch according to the value of an individual variable over a set of possibilities (choices).
+ * 		   WARNING: There is no default choice so the variable MUST BE in choices. 
  */
 class ChoiceIsEqual: public Core::Primitive {
 protected:
@@ -50,27 +52,36 @@ public:
 	ChoiceIsEqual(const ChoiceIsEqual& inOriginal);
 	virtual ~ChoiceIsEqual() {}
 
-	virtual const std::string& getName() const {
-		schnaps_StackTraceBeginM();
-			const static std::string lName("Control_ChoiceIsEqual");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& ChoiceIsEqual::getName() const");
-	}
-
-	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
-	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
-
+	//! Copy operator.
 	ChoiceIsEqual& operator=(const ChoiceIsEqual& inOriginal);
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
+	virtual const std::string& getName() const {
+		schnaps_StackTraceBeginM();
+		const static std::string lName("Control_ChoiceIsEqual");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Control::ChoiceIsEqual::getName() const");
+	}
+
+	//! Read object from XML using system.
+	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Write content of object to XML.
+	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
+
+	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the nth argument requested return type.
 	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const;
+	//! Return the primitive return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
-	std::string mChoiceVariableLabel;	//!< current individual variable label to switch on
-	std::string mChoices_Ref;			//!< reference to choice values
-	ChoiceMap mChoices;					//!< map of values to children index associated
-	bool mCatchError;					//!< catch error if variable not in choices
+	std::string mChoiceVariableLabel;	//!< Current individual variable label to switch on.
+	std::string mChoices_Ref;			//!< Reference to choice values.
+	ChoiceMap mChoices;					//!< Map of values to children index associated.
 };
 } // end of Control namespace
 } // end of Plugins namespace

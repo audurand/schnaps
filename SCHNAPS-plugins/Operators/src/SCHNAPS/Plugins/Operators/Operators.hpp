@@ -1,8 +1,8 @@
 /*
  * Operators.hpp
  *
- *  Created on: 2011-02-14
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 #ifndef Operators_hpp
 #define Operators_hpp
 
-// Math operators
+// mathematical operators
 #include "SCHNAPS/Plugins/Operators/Abs.hpp"
 #include "SCHNAPS/Plugins/Operators/Add.hpp"
 #include "SCHNAPS/Plugins/Operators/AddVariable.hpp"
@@ -34,7 +34,7 @@
 #include "SCHNAPS/Plugins/Operators/Sub.hpp"
 #include "SCHNAPS/Plugins/Operators/SubVariable.hpp"
 
-// Relational operators
+// relational operators (comparison)
 #include "SCHNAPS/Plugins/Operators/IsBetween.hpp"
 #include "SCHNAPS/Plugins/Operators/IsBetweenVariable.hpp"
 #include "SCHNAPS/Plugins/Operators/IsEqual.hpp"
@@ -47,11 +47,11 @@
 #include "SCHNAPS/Plugins/Operators/IsLessOrEqual.hpp"
 #include "SCHNAPS/Plugins/Operators/Not.hpp"
 
-// Logical operators
+// logical operators
 #include "SCHNAPS/Plugins/Operators/And.hpp"
 #include "SCHNAPS/Plugins/Operators/Or.hpp"
 
-// Other
+// other
 #include "SCHNAPS/Plugins/Operators/Concatenate.hpp"
 #include "SCHNAPS/Plugins/Operators/ConcatVariable.hpp"
 #include "SCHNAPS/Plugins/Operators/NPV.hpp"

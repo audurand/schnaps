@@ -1,8 +1,8 @@
 /*
  * Nothing.cpp
  *
- *  Created on: 2009-11-20
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,40 +25,51 @@ using namespace Plugins;
 using namespace Control;
 
 /*!
- *  \brief Construct a new nothing terminal primitive.
+ * \brief Default constructor.
  */
 Nothing::Nothing() :
-		Primitive(0)
+	Primitive(0)
 {}
 
 /*!
- *  \brief Construct a new nothing terminal primitive.
+ * \brief Construct a nothing primitive as a copy of an original.
+ * \param inOriginal A const reference to the original nothing primitive.
  */
 Nothing::Nothing(const Nothing& inOriginal) :
-		Primitive(0)
+	Primitive(0)
 {}
 
+/*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
 Nothing& Nothing::operator=(const Nothing& inOriginal) {
 	schnaps_StackTraceBeginM();
-		return *this;
-	schnaps_StackTraceEndM("SSCHNAPS::Plugins::Control::Nothing& SSCHNAPS::Plugins::Control::Nothing::operator=(const SSCHNAPS::Plugins::Control::Nothing&)");
+	return *this;
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Control::Nothing& SCHNAPS::Plugins::Control::Nothing::operator=(const SCHNAPS::Plugins::Control::Nothing&)");
 }
 
+/*!
+ * \brief  Execute the primitive.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A handle to the execution result.
+ */
 SCHNAPS::Core::AnyType::Handle Nothing::execute(unsigned int inIndex, SCHNAPS::Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		return NULL;
+	return NULL;
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SSCHNAPS::Plugins::Control::Nothing::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
 }
 
 /*!
- *  \brief  Return the tag of the type of data return by primitive Nothing.
- *  \param  inIndex Index of the current primitive.
- *  \param  ioContext Execution context.
- *  \return Type of the primitive return type.
+ * \brief  Return the primitive return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the return type.
  */
 const std::string& Nothing::getReturnType(unsigned int inIndex, SCHNAPS::Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		const static std::string lType("Void");
-		return lType;
+	const static std::string lType("Void");
+	return lType;
 	schnaps_StackTraceEndM("const std::string& SSCHNAPS::Plugins::Control::Nothing::getReturnType(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }

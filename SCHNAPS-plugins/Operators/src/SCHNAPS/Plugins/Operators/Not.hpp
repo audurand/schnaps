@@ -1,8 +1,8 @@
 /*
  * Not.hpp
  *
- *  Created on: 2010-02-20
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,9 @@
 #ifndef SCHNAPS_Plugins_Operators_Not_hpp
 #define SCHNAPS_Plugins_Operators_Not_hpp
 
-#include "PACC/XML.hpp"
 #include "SCHNAPS/SCHNAPS.hpp"
+
+#include "PACC/XML.hpp"
 
 namespace SCHNAPS {
 namespace Plugins {
@@ -30,7 +31,7 @@ namespace Operators {
 
 /*!
  *  \class Not SCHNAPS/Plugins/Operators/Not.hpp "SCHNAPS/Plugins/Operators/Not.hpp"
- *  \brief Logical NOT primitive class.
+ *  \brief Logical NOT operator.
  */
 class Not: public Core::Primitive {
 public:
@@ -45,17 +46,25 @@ public:
 	Not(const Not& inOriginal);
 	virtual ~Not() {}
 
-	virtual const std::string& getName() const {
-		schnaps_StackTraceBeginM();
-			const static std::string lName("Operators_Not");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& Not::getName() const");
-	}
-
+	//! Copy operator.
 	Not& operator=(const Not& inOriginal);
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
+	virtual const std::string& getName() const {
+		schnaps_StackTraceBeginM();
+		const static std::string lName("Operators_Not");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Not::getName() const");
+	}
+
+	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the nth argument requested return type.
 	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const;
+	//! Return the primitive return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 };
 } // end of Operators namespace

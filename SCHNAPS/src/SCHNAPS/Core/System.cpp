@@ -1,27 +1,21 @@
 /*
- *  Open BEAGLE
- *  Copyright (C) 2001-2007 by Christian Gagne and Marc Parizeau
+ * System.cpp
  *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  Contact:
- *  Laboratoire de Vision et Systemes Numeriques
- *  Departement de genie electrique et de genie informatique
- *  Universite Laval, Quebec, Canada, G1K 7P4
- *  http://vision.gel.ulaval.ca
- *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "SCHNAPS/Core.hpp"
@@ -52,6 +46,11 @@ System::System() :
 
 }
 
+/*!
+ * \brief Read object from XML.
+ * \param inIter XML iterator of input document.
+ * \throw SCHNAPS::Core::IOException if trying to read unknown components.
+ */
 void System::read(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceBeginM();
 	if ((inIter->getType()!=PACC::XML::eData) || (inIter->getValue()!="System")) {
@@ -66,7 +65,7 @@ void System::read(PACC::XML::ConstIterator inIter) {
 			if (find(lChild->getValue()) == end()) {
 				lAlloc = castHandleT<Component::Alloc>(mFactory->getAllocator(lChild->getValue()));
 				if (lAlloc == NULL) {
-					throw schnaps_ObjectExceptionM("WARNING: unknown component named '" + lChild->getValue() + "'; not read!");
+					throw schnaps_IOExceptionNodeM(*lChild, "WARNING: unknown component named '" + lChild->getValue() + "'; not read!");
 				}
 				this->addComponent(castHandleT<Component>(lAlloc->allocate()));
 			}
@@ -78,6 +77,11 @@ void System::read(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceEndM("void SCHNAPS::Core::System::read(PACC::XML::ConstIterator)");
 }
 
+/*!
+ * \brief Write object content to XML.
+ * \param ioStreamer XML streamer to output document.
+ * \param inIndent Wether to indent or not.
+ */
 void System::writeContent(PACC::XML::Streamer& outStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
 	for (System::const_iterator lItr = begin(); lItr != end(); ++lItr) {
@@ -87,6 +91,11 @@ void System::writeContent(PACC::XML::Streamer& outStreamer, bool inIndent) const
 	schnaps_StackTraceEndM("void SCHNAPS::Core::System::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
+/*!
+ * \brief  Test if an object is equal to another.
+ * \param inRightObject A reference to the object to compare with.
+ * \return True if actual object is equal to right object, false if not.
+ */
 bool System::isEqual(const Object& inRightObj) const {
 	schnaps_StackTraceBeginM();
 	const System& lRightSystem = castObjectT<const System&>(inRightObj);
@@ -97,6 +106,11 @@ bool System::isEqual(const Object& inRightObj) const {
 	schnaps_StackTraceEndM("bool SCHNAPS::Core::System::isEqual(const Object&) const");
 }
 
+/*!
+ * \brief  Test if an object is less than another.
+ * \param inRightObject A reference to the object to compare with.
+ * \return True if actual object is less than right object, false if not.
+ */
 bool System::isLess(const Object& inRightObj) const {
 	schnaps_StackTraceBeginM();
 	const System& lRightSystem = castObjectT<const System&>(inRightObj);
@@ -108,10 +122,9 @@ bool System::isLess(const Object& inRightObj) const {
 }
 
 /*!
- *  \brief Add a new component to the system.
- *  \param inComponent The component to add.
- *
- *  To be initialized, components need to be added to the system.
+ * \brief Add a new component to the system.
+ * \param inComponent A handle to the component to add.
+ * \throw SCHNAPS::Core::ObjectException if component is already in system.
  */
 void System::addComponent(Component::Handle inComponent) {
 	schnaps_StackTraceBeginM();
@@ -127,7 +140,7 @@ void System::addComponent(Component::Handle inComponent) {
 }
 
 /*!
-*  \brief Initialize the components of this system.
+*  \brief Initialize the components of system.
  */
 void System::initComponents() {
 	schnaps_StackTraceBeginM();

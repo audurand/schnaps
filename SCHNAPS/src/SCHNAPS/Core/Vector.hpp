@@ -1,9 +1,8 @@
 /*
  * Vector.hpp
  *
- *  Created on: 2010-03-22
- *  Updated on: 2010-08-26
- *      Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,19 +21,17 @@
 #ifndef SCHNAPS_Core_Vector_hpp
 #define SCHNAPS_Core_Vector_hpp
 
-#include <vector>
-
 #include "SCHNAPS/Core/AnyType.hpp"
 #include "SCHNAPS/Core/AllocatorT.hpp"
 
+#include <vector>
 
 namespace SCHNAPS {
-
 namespace Core {
 
 /*!
- *  \class Vector SCHNAPS/Core/Vector.hpp "SCHNAPS/Core/Vector.hpp"
- *  \brief Vector class, the implementation of a std vector as a type.
+ * \class Vector SCHNAPS/Core/Vector.hpp "SCHNAPS/Core/Vector.hpp"
+ * \brief The implementation of a (std) vector as a type.
  */
 class Vector: public AnyType, public std::vector<AnyType::Handle> {
 public:
@@ -49,30 +46,48 @@ public:
 	Vector(const Vector& inOriginal);
 	virtual ~Vector() {}
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Vector");
-			return lName;
+		const static std::string lName("Vector");
+		return lName;
 		schnaps_StackTraceEndM("const std::string& Vector::getName() const");
 	}
 
+	/*!
+	 * \brief  Return a const reference to the type of object.
+	 * \return A const reference to the type of object.
+	 */
 	virtual const std::string& getType() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lType("Vector");
-			return lType;
+		const static std::string lType("Vector");
+		return lType;
 		schnaps_StackTraceEndM("const std::string& Vector::getType() const");
 	}
 
-	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
-	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
-
+	//! Copy operator.
 	Vector& operator=(const Vector& inOriginal);
 
-	virtual void readStr(const std::string& inStr);
-	virtual std::string writeStr() const;
+	//! Read the object from XML using System.
+	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Write the content of the object to XML.
+	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
+	//! Test if an object is equal to another.
 	virtual bool isEqual(const Object& inRightObj) const;
+	//! Test if an object is less than another.
 	virtual bool isLess(const Object& inRightObj) const;
+
+	//! Read data from string.
+	virtual void readStr(const std::string& inStr);
+	//! Write data to string.
+	virtual std::string writeStr() const;
+	
+	//! Return a handle to a clone (deep copy).
+	virtual AnyType::Handle clone() const;
 };
 } // end of Core namespace
 } // end of SCHNAPS namespace

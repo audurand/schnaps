@@ -1,8 +1,8 @@
 /*
  * SubVariable.hpp
  *
- *  Created on: 2010-11-20
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,9 @@
 #ifndef SCHNAPS_Plugins_Operators_SubVariable_hpp
 #define SCHNAPS_Plugins_Operators_SubVariable_hpp
 
-#include "PACC/XML.hpp"
 #include "SCHNAPS/SCHNAPS.hpp"
+
+#include "PACC/XML.hpp"
 
 namespace SCHNAPS {
 namespace Plugins {
@@ -45,23 +46,31 @@ public:
 	SubVariable(const SubVariable& inOriginal);
 	virtual ~SubVariable() {}
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Operators_SubVariable");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& SubVariable::getName() const");
+		const static std::string lName("Operators_SubVariable");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::SubVariable::getName() const");
 	}
 
+	//! Read object from XML using system.
 	virtual	void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
+	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the primitive return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
-	std::string mLabel;			//!< label of concerned variable
-	std::string mValue_Ref;		//!< value to substract (reference)
-	Core::Number::Handle mValue;//!< value to substract
+	std::string mLabel;				//!< Label of concerned variable
+	std::string mValue_Ref;			//!< Label of value to substract as parameter.
+	Core::Number::Handle mValue;	//!< A handle to the value to substract.
 };
 } // end of Operators namespace
 } // end of Plugins namespace

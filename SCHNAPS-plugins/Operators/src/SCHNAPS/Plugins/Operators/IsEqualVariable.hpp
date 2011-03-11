@@ -1,8 +1,8 @@
 /*
  * IsEqualVariable.hpp
  *
- *  Created on: 2010-11-22
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,9 @@
 #ifndef SCHNAPS_Plugins_Operators_IsEqualVariable_hpp
 #define SCHNAPS_Plugins_Operators_IsEqualVariable_hpp
 
-#include "PACC/XML.hpp"
 #include "SCHNAPS/SCHNAPS.hpp"
+
+#include "PACC/XML.hpp"
 
 namespace SCHNAPS {
 namespace Plugins {
@@ -30,7 +31,7 @@ namespace Operators {
 
 /*!
  *  \class IsEqualVariable SCHNAPS/Plugins/Operators/IsEqualVariable.hpp "SCHNAPS/Plugins/Operators/IsEqualVariable.hpp"
- *  \brief Check if variable equals value.
+ *  \brief Equality comparison operator between a current individual variable and a value.
  */
 class IsEqualVariable: public Core::Primitive {
 public:
@@ -45,23 +46,31 @@ public:
 	IsEqualVariable(const IsEqualVariable& inOriginal);
 	virtual ~IsEqualVariable() {}
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Operators_IsEqualVariable");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& IsEqualVariable::getName() const");
+		const static std::string lName("Operators_IsEqualVariable");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::IsEqualVariable::getName() const");
 	}
 
+	//! Read object from XML using system.
 	virtual	void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
+	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the primitive return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
-	std::string mLabel; 		//!< label of concerned variable
-	std::string mValue_Ref; 	//!< value for comparison (reference)
-	Core::Atom::Handle mValue;	//!< value for comparison
+	std::string mLabel; 		//!< Label of concerned variable.
+	std::string mValue_Ref; 	//!< Value for comparison (reference).
+	Core::Atom::Handle mValue;	//!< A handle to the value for comparison.
 };
 } // end of Operators namespace
 } // end of Plugins namespace

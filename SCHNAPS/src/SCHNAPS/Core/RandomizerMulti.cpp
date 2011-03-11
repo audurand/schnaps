@@ -40,8 +40,8 @@ void RandomizerMulti::writeContent(PACC::XML::Streamer& ioStreamer, bool inInden
 
 void RandomizerMulti::init(System& ioSystem) {
 	schnaps_StackTraceBeginM();
-	unsigned int lThreads_Simulator = castHandleT<UInt>(ioSystem.getParameters()["threads.simulator"])->getValue();
-	unsigned int lThreads_Generator = castHandleT<UInt>(ioSystem.getParameters()["threads.generator"])->getValue();
+	unsigned int lThreads_Simulator = castObjectT<const UInt&>(ioSystem.getParameters().getParameter("threads.simulator")).getValue();
+	unsigned int lThreads_Generator = castObjectT<const UInt&>(ioSystem.getParameters().getParameter("threads.generator")).getValue();
 	unsigned int lThreads_Max;
 
 	if (lThreads_Simulator >= lThreads_Generator) {

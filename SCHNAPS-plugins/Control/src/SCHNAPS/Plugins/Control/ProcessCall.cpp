@@ -1,8 +1,8 @@
 /*
  * ProcessCall.cpp
  *
- *  Created on: 2010-01-11
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,84 +24,103 @@ using namespace SCHNAPS;
 using namespace Plugins;
 using namespace Control;
 
+/*!
+ * \brief Default constructor.
+ */
 ProcessCall::ProcessCall() :
-		Primitive(0)
+	Primitive(0)
 {}
 
-
+/*!
+ * \brief Construct a primitive for calling process as a copy of an original.
+ * \param inOriginal A const reference to the original primitive for calling process.
+ */
 ProcessCall::ProcessCall(const ProcessCall& inOriginal) :
-		Primitive(0)
+	Primitive(0)
 {
-	mLabel = inOriginal.getLabel().c_str();
+	mLabel = inOriginal.mLabel.c_str();
 }
 
-ProcessCall::ProcessCall(std::string inLabel) :
-		Primitive(0),
-		mLabel(inLabel.c_str())
+/*!
+ * \brief Construct a primitive for calling specific process.
+ * \param inLabel A const reference to the label of process to call.
+ */
+ProcessCall::ProcessCall(const std::string& inLabel) :
+	Primitive(0),
+	mLabel(inLabel.c_str())
 {}
 
-void ProcessCall::readWithSystem(PACC::XML::ConstIterator inIter, SCHNAPS::Core::System& ioSystem) {
+/*!
+ * \brief Read object from XML using system.
+ * \param inIter XML iterator of input document.
+ * \param ioSystem A reference to the system.
+ * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
+ * \throw SCHNAPS::Core::IOException if label attribute is missing.
+ */
+void ProcessCall::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
-		if (inIter->getType() != PACC::XML::eData) {
-			throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
-		}
-		if (inIter->getValue() != getName()) {
-			std::ostringstream lOSS;
-			lOSS << "tag <" << getName() << "> expected, but ";
-			lOSS << "got tag <" << inIter->getValue() << "> instead!";
-			throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
-		}
-		if (inIter->getAttribute("label").empty()) {
-			throw schnaps_IOExceptionNodeM(*inIter, "label of called process expected!");
-		}
+	if (inIter->getType() != PACC::XML::eData) {
+		throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
+	}
+	if (inIter->getValue() != getName()) {
+		std::ostringstream lOSS;
+		lOSS << "tag <" << getName() << "> expected, but ";
+		lOSS << "got tag <" << inIter->getValue() << "> instead!";
+		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
+	}
+	if (inIter->getAttribute("label").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "label of called process expected!");
+	}
 
-		mLabel = inIter->getAttribute("label");
+	mLabel = inIter->getAttribute("label");
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Control::ProcessCall::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
+/*!
+ * \brief Write object content to XML.
+ * \param ioStreamer XML streamer to output document.
+ * \param inIndent Wether to indent or not.
+ */
 void ProcessCall::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-		ioStreamer.insertAttribute("label", mLabel);
+	ioStreamer.insertAttribute("label", mLabel);
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Control::ProcessCall::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
-SCHNAPS::Core::AnyType::Handle ProcessCall::execute(unsigned int inIndex, SCHNAPS::Core::ExecutionContext& ioContext) const {
+/*!
+ * \brief  Execute the primitive.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A handle to the execution result.
+ */
+Core::AnyType::Handle ProcessCall::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		SCHNAPS::Core::AnyType::Handle lResult;
-		SCHNAPS::Core::PrimitiveTree::Handle lCurrentPrimitiveTree;
-		Simulation::SimulationContext& lContext = SCHNAPS::Core::castObjectT<Simulation::SimulationContext&>(ioContext);
+	Core::AnyType::Handle lResult;
+	Core::PrimitiveTree::Handle lCurrentPrimitiveTree;
+	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
 
-#ifdef SCHNAPS_Plugins_FULL_DEBUG
-		if (lContext.getProcesses().find(mLabel) == lContext.getProcesses().end()) {
-			throw SCHNAPS_Plugins_InternalExceptionM("Could not find process '" + mLabel + "' in the process database!");
-		}
-#else
-		schnaps_AssertM(lContext.getProcesses().find(mLabel) != lContext.getProcesses().end());
-#endif
+	// save current primitive tree
+	lCurrentPrimitiveTree = lContext.getPrimitiveTreeHandle();
 
-		// Save current primitive tree
-		lCurrentPrimitiveTree = lContext.getPrimitiveTreeHandle();
+	// process called primitive tree
+	lResult = lContext.getProcessHandle(mLabel)->execute(ioContext);
 
-		// Process called primitive tree
-		lResult = lContext.getProcesses().find(mLabel)->second->execute(ioContext);
+	// restore current primitive tree
+	lContext.setPrimitiveTree(lCurrentPrimitiveTree);
 
-		// Restore current primitive tree
-		lContext.setPrimitiveTree(lCurrentPrimitiveTree);
-
-		return lResult;
+	return lResult;
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Control::ProcessCall::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
 }
 
-const std::string& ProcessCall::getReturnType(SCHNAPS::Core::ExecutionContext& ioContext) const {
+/*!
+ * \brief  Return the primitive return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the return type.
+ */
+const std::string& ProcessCall::getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	Simulation::SimulationContext& lContext = SCHNAPS::Core::castObjectT<Simulation::SimulationContext&>(ioContext);
-#ifdef SCHNAPS_Plugins_FULL_DEBUG
-		if (lContext.getProcesses().find(mLabel) == lContext.getProcesses().end()) {
-			throw SCHNAPS_Plugins_InternalExceptionM("Could not find process '" + mLabel + "' in the process database!");
-		}
-#else
-		schnaps_AssertM(lContext.getProcesses().find(mLabel) != lContext.getProcesses().end());
-#endif
-		return lContext.getProcesses().find(mLabel)->second->getReturnType(ioContext);
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Control::ProcessCall::getReturnType(SCHNAPS::Core::ExecutionContext&) const");
+	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
+	return lContext.getProcessHandle(mLabel)->getReturnType(ioContext);
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Control::ProcessCall::getReturnType(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }

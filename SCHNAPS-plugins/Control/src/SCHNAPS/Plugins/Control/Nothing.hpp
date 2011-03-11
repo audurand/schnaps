@@ -1,8 +1,8 @@
 /*
  * Nothing.hpp
  *
- *  Created on: 2009-11-20
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,41 +21,49 @@
 #ifndef SCHNAPS_Plugins_Control_Nothing_hpp
 #define SCHNAPS_Plugins_Control_Nothing_hpp
 
-#include "PACC/XML.hpp"
 #include "SCHNAPS/SCHNAPS.hpp"
+
+#include "PACC/XML.hpp"
 
 namespace SCHNAPS {
 namespace Plugins {
 namespace Control {
 
 /*!
- *  \class Nothing SCHNAPS/Basic/Nothing.hpp "SCHNAPS/Basic/Nothing.hpp"
- *  \brief Empty token terminal primitive class.
+ *  \class Nothing SCHNAPS/Plugins/Control/Nothing.hpp "SCHNAPS/Plugins/Control/Nothing.hpp"
+ *  \brief Nothing primitive class.
  */
-class Nothing: public SCHNAPS::Core::Primitive {
+class Nothing: public Core::Primitive {
 public:
 	//! Nothing allocator type.
-	typedef SCHNAPS::Core::AllocatorT<Nothing, SCHNAPS::Core::Primitive::Alloc> Alloc;
+	typedef Core::AllocatorT<Nothing, Core::Primitive::Alloc> Alloc;
 	//! Nothing handle type.
-	typedef SCHNAPS::Core::PointerT<Nothing, SCHNAPS::Core::Primitive::Handle> Handle;
+	typedef Core::PointerT<Nothing, Core::Primitive::Handle> Handle;
 	//! Nothing bag type.
-	typedef SCHNAPS::Core::ContainerT<Nothing, SCHNAPS::Core::Primitive::Bag> Bag;
+	typedef Core::ContainerT<Nothing, Core::Primitive::Bag> Bag;
 
 	Nothing();
 	Nothing(const Nothing& inOriginal);
 	virtual ~Nothing() {}
 
-	virtual const std::string& getName() const {
-		schnaps_StackTraceBeginM();
-			const static std::string lName("Control_Nothing");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& Nothing::getName() const");
-	}
-
+	//! Copy operator.
 	Nothing& operator=(const Nothing& inOriginal);
 
-	virtual SCHNAPS::Core::AnyType::Handle execute(unsigned int inIndex, SCHNAPS::Core::ExecutionContext& ioContext) const;
-	virtual const std::string& getReturnType(unsigned int inIndex, SCHNAPS::Core::ExecutionContext& ioContext) const;
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
+	virtual const std::string& getName() const {
+		schnaps_StackTraceBeginM();
+		const static std::string lName("Control_Nothing");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Control::Nothing::getName() const");
+	}
+
+	//! Execute the primitive.
+	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the primitive return type.
+	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 };
 } // end of Control namespace
 } // end of Plugins namespace

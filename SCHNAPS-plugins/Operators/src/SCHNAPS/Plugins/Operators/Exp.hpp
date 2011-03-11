@@ -1,8 +1,8 @@
 /*
- * Exp.h
+ * Exp.hpp
  *
- *  Created on: 2009-03-10
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,9 @@
 #ifndef SCHNAPS_Plugins_Operators_Exp_hpp
 #define SCHNAPS_Plugins_Operators_Exp_hpp
 
-#include "PACC/XML.hpp"
 #include "SCHNAPS/SCHNAPS.hpp"
+
+#include "PACC/XML.hpp"
 
 namespace SCHNAPS {
 namespace Plugins {
@@ -30,7 +31,7 @@ namespace Operators {
 
 /*!
  *  \class Exp SCHNAPS/Plugins/Operators/Exp.hpp "SCHNAPS/Plugins/Operators/Exp.hpp"
- *  \brief Mathematical exponent operation primitive class.
+ *  \brief Mathematical exponent (e) operation primitive.
  */
 class Exp: public Core::Primitive {
 public:
@@ -45,17 +46,25 @@ public:
 	Exp(const Exp& inOriginal);
 	virtual ~Exp() {}
 
-	virtual const std::string& getName() const {
-		schnaps_StackTraceBeginM();
-			const static std::string lName("Operators_Exp");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& Exp::getName() const");
-	}
-
+	//! Copy operator.
 	Exp& operator=(const Exp& inOriginal);
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
+	virtual const std::string& getName() const {
+		schnaps_StackTraceBeginM();
+		const static std::string lName("Operators_Exp");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Exp::getName() const");
+	}
+
+	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the nth argument requested return type.
 	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const;
+	//! Return the primitive return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 };
 } // end of Operators namespace

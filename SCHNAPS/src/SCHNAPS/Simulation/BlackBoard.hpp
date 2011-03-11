@@ -1,8 +1,8 @@
 /*
  * BlackBoard.hpp
  *
- *  Created on: 2010-03-31
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,50 +21,73 @@
 #ifndef SCHNAPS_Simulation_BlackBoard_hpp
 #define SCHNAPS_Simulation_BlackBoard_hpp
 
-#include <list>
-#include <map>
-
 #include "SCHNAPS/Core/Object.hpp"
 #include "SCHNAPS/Simulation/Process.hpp"
+
+#include <list>
+#include <map>
 
 namespace SCHNAPS {
 namespace Simulation {
 
+/*!
+ * \struct Push SCHNAPS/Simulation/BlackBoard.hpp "SCHNAPS/Simulation/BlackBoard.hpp"
+ * \brief  The encapsulation of a process pushed at a specific time toward a specific target.
+ */
 struct Push {
-	std::string mProcess;
-	Process::Target mTarget;
-	unsigned long mTime;
+	std::string mProcess;		//!< The name of the process pushed.
+	Process::Target mTarget;	//!< The target of the push.
+	unsigned long mTime;		//!< The time step of process execution.
 
+	/*!
+	 * \brief Construct a push as a copy of an original.
+	 * \param inOriginal A const reference to the original push.
+	 */
 	Push(const Push& inOriginal) :
 		mProcess(inOriginal.mProcess.c_str()),
 		mTarget(inOriginal.mTarget),
 		mTime(inOriginal.mTime)
 	{}
-	Push(std::string inProcess, Process::Target inTarget, unsigned long inTime) :
+	/*!
+	 * \brief Construct a push with specific process, target and time.
+	 * \param inProcess A const reference to the name of the process pushed.
+	 * \param inTarget The target of the push.
+	 * \param inTime The time step of process execution.
+	 */
+	Push(const std::string& inProcess, Process::Target inTarget, unsigned long inTime) :
 		mProcess(inProcess.c_str()),
 		mTarget(inTarget),
 		mTime(inTime)
 	{}
 };
 
-class BlackBoard: public SCHNAPS::Core::Object, public std::map<unsigned int, std::list<Push> > {
+/*!
+ * \class BlackBoard SCHNAPS/Simulation/BlackBoard.hpp "SCHNAPS/Simulation/BlackBoard.hpp"
+ * \brief A blackboard where each threads indicates that a push of process must be done.
+ * 		  It is necessary to ensure that threads do not access simultaneously to the same FIFOs.
+ */
+class BlackBoard: public Core::Object, public std::map<unsigned int, std::list<Push> > {
 public:
 	//! BlackBoard allocator type.
-	typedef SCHNAPS::Core::AllocatorT<BlackBoard, SCHNAPS::Core::Object::Alloc> Alloc;
+	typedef Core::AllocatorT<BlackBoard, Core::Object::Alloc> Alloc;
 	//! BlackBoard handle type.
-	typedef SCHNAPS::Core::PointerT<BlackBoard, SCHNAPS::Core::Object::Handle> Handle;
+	typedef Core::PointerT<BlackBoard, Core::Object::Handle> Handle;
 	//! BlackBoard bag type.
-	typedef SCHNAPS::Core::ContainerT<BlackBoard, SCHNAPS::Core::Object::Bag> Bag;
+	typedef Core::ContainerT<BlackBoard, Core::Object::Bag> Bag;
 
 	BlackBoard() {}
 	BlackBoard(const BlackBoard& inOriginal);
 	virtual ~BlackBoard() {}
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("BlackBoard");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& BlackBoard::getName() const");
+		const static std::string lName("BlackBoard");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Simulation::BlackBoard::getName() const");
 	}
 };
 } // end of Simulation namespace

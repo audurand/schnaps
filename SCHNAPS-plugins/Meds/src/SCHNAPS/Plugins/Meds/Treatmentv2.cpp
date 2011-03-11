@@ -1,8 +1,8 @@
 /*
  * Treatmentv2.cpp
  *
- *  Created on: 2010-12-02
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,9 @@ using namespace SCHNAPS;
 using namespace Plugins;
 using namespace Meds;
 
+/*!
+ * \brief Default constructor.
+ */
 Treatmentv2::Treatmentv2() :
 	Primitive(2),
 	mLabel(""),
@@ -36,6 +39,10 @@ Treatmentv2::Treatmentv2() :
 	mCostVariableLabel("")
 {}
 
+/*!
+ * \brief Construct a medical treatment (second implementation) as a copy of an original.
+ * \param inOriginal A const reference to the original medical treatment (second implementation).
+ */
 Treatmentv2::Treatmentv2(const Treatmentv2& inOriginal) :
 	mLabel(inOriginal.mLabel.c_str()),
 	mCompliance_Ref(inOriginal.mCompliance_Ref.c_str()),
@@ -48,6 +55,17 @@ Treatmentv2::Treatmentv2(const Treatmentv2& inOriginal) :
 	mDiscountRate = Core::castHandleT<Core::Double>(inOriginal.mDiscountRate->clone());
 }
 
+/*!
+ * \brief Read object from XML using system.
+ * \param inIter XML iterator of input document.
+ * \param ioSystem A reference to the system.
+ * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
+ * \throw SCHNAPS::Core::IOException if label attribute is missing.
+ * \throw SCHNAPS::Core::IOException if compliance attribute and compliance.ref attribute are missing.
+ * \throw SCHNAPS::Core::IOException if cost attribute and cost.ref attribute are missing.
+ * \throw SCHNAPS::Core::IOException if discountRate attribute and discountRate.ref attribute are missing.
+ * \throw SCHNAPS::Core::IOException if costVariableLabel attribute is missing.
+ */
 void Treatmentv2::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
 	if (inIter->getType() != PACC::XML::eData) {
@@ -75,7 +93,7 @@ void Treatmentv2::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
 			mCompliance_Ref = inIter->getAttribute("ref.compliance");
 			std::stringstream lSS;
 			lSS << "ref." << mCompliance_Ref;
-			mCompliance = Core::castHandleT<Core::Double>(ioSystem.getParameters()[lSS.str().c_str()]);
+			mCompliance = Core::castHandleT<Core::Double>(ioSystem.getParameters().getParameterHandle(lSS.str().c_str()));
 		}
 	} else {
 		mCompliance = new Core::Double(str2dbl(inIter->getAttribute("compliance")));
@@ -89,7 +107,7 @@ void Treatmentv2::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
 			mCost_Ref = inIter->getAttribute("cost.ref");
 			std::stringstream lSS;
 			lSS << "ref." << mCost_Ref;
-			mCost = Core::castHandleT<Core::Double>(ioSystem.getParameters()[lSS.str().c_str()]);
+			mCost = Core::castHandleT<Core::Double>(ioSystem.getParameters().getParameterHandle(lSS.str().c_str()));
 		}
 	} else {
 		mCost = new Core::Double(str2dbl(inIter->getAttribute("cost")));
@@ -103,7 +121,7 @@ void Treatmentv2::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
 			mDiscountRate_Ref = inIter->getAttribute("discountRate.ref");
 			std::stringstream lSS;
 			lSS << "ref." << mDiscountRate_Ref;
-			mDiscountRate = Core::castHandleT<Core::Double>(ioSystem.getParameters()[lSS.str().c_str()]);
+			mDiscountRate = Core::castHandleT<Core::Double>(ioSystem.getParameters().getParameterHandle(lSS.str().c_str()));
 		}
 	} else {
 		mDiscountRate = new Core::Double(str2dbl(inIter->getAttribute("discountRate")));
@@ -114,9 +132,14 @@ void Treatmentv2::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
 		throw schnaps_IOExceptionNodeM(*inIter, "label of cost variable to refer expected!");
 	}
 	mCostVariableLabel = inIter->getAttribute("costVariableLabel");
-	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Meds::Treatmentv2::readWithSystem(PACC::XML::ConstIterator, Core::System&)");
+	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Meds::Treatmentv2::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
+/*!
+ * \brief Write object content to XML.
+ * \param ioStreamer XML streamer to output document.
+ * \param inIndent Wether to indent or not.
+ */
 void Treatmentv2::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
 	ioStreamer.insertAttribute("label", mLabel);
@@ -142,6 +165,13 @@ void Treatmentv2::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) c
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Meds::Treatmentv2::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
+/*!
+ * \brief  Execute the primitive.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A handle to the execution result.
+ * \throw  SCHNAPS::Core::RunTimeException if the primitive is not defined for the specific context.
+ */
 Core::AnyType::Handle Treatmentv2::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	if (ioContext.getName() == "SimulationContext") {
@@ -154,11 +184,9 @@ Core::AnyType::Handle Treatmentv2::execute(unsigned int inIndex, Core::Execution
 		lCost->div(lDenum);
 
 		// set cost
-		Simulation::State::iterator lStateIt = lContext.getIndividual().getState().find(mCostVariableLabel);
-		if (lStateIt == lContext.getIndividual().getState().end()) {
-			throw schnaps_InternalExceptionM("Cost variable '" + mCostVariableLabel + "' does not refer to a state variable.");
-		}
-		Core::castHandleT<Core::Double>(lStateIt->second)->add(*lCost);
+		Core::Double::Handle lNewValue = Core::castHandleT<Core::Double>(lContext.getIndividual().getState().getVariableHandle(mCostVariableLabel)->clone());
+		lNewValue->add(*lCost);
+		lContext.getIndividual().getState().setVariable(mCostVariableLabel, lNewValue);
 
 		if (ioContext.getRandomizer().rollUniform() < mCompliance->getValue()) {
 			// apply treatment effects
@@ -167,23 +195,37 @@ Core::AnyType::Handle Treatmentv2::execute(unsigned int inIndex, Core::Execution
 			getArgument(inIndex, 1, ioContext);
 		}
 	} else {
-		throw schnaps_InternalExceptionM("Primitive is not defined for context '" + ioContext.getName() + "'!");
+		throw schnaps_RunTimeExceptionM("Primitive is not defined for context '" + ioContext.getName() + "'!");
 	}
 	return NULL;
-	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Meds::Treatmentv2::execute(unsigned int, Core::ExecutionContext&) const");
+	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Meds::Treatmentv2::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 
+/*!
+ * \brief  Return the nth argument requested return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  inN Index of the argument to get the type.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the type of the nth argument.
+ * \throw  SCHNAPS::Core::RunTimeException if the argument index is out of bounds.
+ */
 const std::string& Treatmentv2::getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	schnaps_AssertM(inN<getNumberArguments());
+	schnaps_UpperBoundCheckAssertM(inN, 1);
 	const static std::string lType("Any");
 	return lType;
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Meds::Treatmentv2::getArgType(unsigned int, unsigned int, Core::ExecutionContext&) const");
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Meds::Treatmentv2::getArgType(unsigned int, unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 
+/*!
+ * \brief  Return the primitive return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the return type.
+ */
 const std::string& Treatmentv2::getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	const static std::string lType("Void");
 	return lType;
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Meds::Treatmentv2::getReturnType(unsigned int, Core::ExecutionContext&) const");
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Meds::Treatmentv2::getReturnType(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }

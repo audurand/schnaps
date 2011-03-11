@@ -1,8 +1,8 @@
 /*
  * VariableEnvironment.cpp
  *
- *  Created on: 2009-03-17
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,61 +25,80 @@ using namespace Plugins;
 using namespace Data;
 
 /*!
- *  \brief Construct a new token terminal primitive that refers to a variable from the environment.
+ * \brief Default constructor.
  */
 VariableEnvironment::VariableEnvironment() :
-		Core::Primitive(0)
+	Core::Primitive(0)
 {}
 
+/*!
+ * \brief Construct a primitive for accessing an environment variable as a copy of an original.
+ * \param inOriginal A const reference to the original primitive for accessing an environment variable.
+ */
 VariableEnvironment::VariableEnvironment(const VariableEnvironment& inOriginal) :
-		Core::Primitive(0),
-		mLabel(inOriginal.getLabel().c_str())
+	Core::Primitive(0),
+	mLabel(inOriginal.mLabel.c_str())
 {}
 
+/*!
+ * \brief Read object from XML using system.
+ * \param inIter XML iterator of input document.
+ * \param ioSystem A reference to the system.
+ * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
+ * \throw SCHNAPS::Core::IOException if label attribute is missing.
+ */
 void VariableEnvironment::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
-		if (inIter->getType() != PACC::XML::eData) {
-			throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
-		}
-		if (inIter->getValue() != getName()) {
-			std::ostringstream lOSS;
-			lOSS << "tag <" << getName() << "> expected, but ";
-			lOSS << "got tag <" << inIter->getValue() << "> instead!";
-			throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
-		}
+	if (inIter->getType() != PACC::XML::eData) {
+		throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
+	}
+	if (inIter->getValue() != getName()) {
+		std::ostringstream lOSS;
+		lOSS << "tag <" << getName() << "> expected, but ";
+		lOSS << "got tag <" << inIter->getValue() << "> instead!";
+		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
+	}
 
-		if (inIter->getAttribute("label").empty()) {
-			throw schnaps_IOExceptionNodeM(*inIter, "label of the referenced environment variable expected!");
-		}
-		mLabel = inIter->getAttribute("label");
-	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Data::VariableEnvironment::readWithSystem(PACC::XML::ConstIterator, Core::System&)");
-}
-
-void VariableEnvironment::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
-	schnaps_StackTraceBeginM();
-		ioStreamer.insertAttribute("label", mLabel);
-	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Data::VariableEnvironment::writeContent(PACC::XML::Streamer&, bool) const");
-}
-
-Core::AnyType::Handle VariableEnvironment::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
-	schnaps_StackTraceBeginM();
-		Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
-	schnaps_AssertM(lContext.getEnvironment().getState().find(mLabel) != lContext.getEnvironment().getState().end());
-	schnaps_AssertM(lContext.getEnvironment().getState().find(mLabel)->second != NULL);
-		return lContext.getEnvironment().getState().find(mLabel)->second->clone();
-	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Data::VariableEnvironment::execute(unsigned int, Core::ExecutionContext&)");
+	if (inIter->getAttribute("label").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "label of the referenced environment variable expected!");
+	}
+	mLabel = inIter->getAttribute("label");
+	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Data::VariableEnvironment::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
 /*!
- *  \brief  Return the tag of the type of data return by primitive VariableEnvironment.
- *  \param  ioContext Execution context.
- *  \return Hierarchical typing tagging the data type returned.
+ * \brief Write object content to XML.
+ * \param ioStreamer XML streamer to output document.
+ * \param inIndent Wether to indent or not.
  */
-const std::string& VariableEnvironment::getReturnType(Core::ExecutionContext& ioContext) const {
+void VariableEnvironment::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-		Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
-	schnaps_AssertM(lContext.getEnvironment().getState().find(mLabel) != lContext.getEnvironment().getState().end());
-	schnaps_AssertM(lContext.getEnvironment().getState().find(mLabel)->second != NULL);
-		return lContext.getEnvironment().getState().find(mLabel)->second->getType();
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Data::VariableEnvironment::getReturnType(Core::ExecutionContext&) const");
+	ioStreamer.insertAttribute("label", mLabel);
+	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Data::VariableEnvironment::writeContent(PACC::XML::Streamer&, bool) const");
+}
+
+/*!
+ * \brief  Execute the primitive.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A handle to the execution result.
+ */
+Core::AnyType::Handle VariableEnvironment::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
+	schnaps_StackTraceBeginM();
+	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
+	return lContext.getEnvironment().getState().getVariable(mLabel).clone();
+	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Data::VariableEnvironment::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
+}
+
+/*!
+ * \brief  Return the primitive return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the return type.
+ */
+const std::string& VariableEnvironment::getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
+	schnaps_StackTraceBeginM();
+	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
+	return lContext.getEnvironment().getState().getVariable(mLabel).getType();
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Data::VariableEnvironment::getReturnType(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }

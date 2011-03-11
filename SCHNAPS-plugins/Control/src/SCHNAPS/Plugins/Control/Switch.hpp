@@ -1,8 +1,8 @@
 /*
  * Switch.hpp
  *
- *  Created on: 2009-10-15
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,55 +21,66 @@
 #ifndef SCHNAPS_Plugins_Control_Switch_hpp
 #define SCHNAPS_Plugins_Control_Switch_hpp
 
-#include <map>
+#include "SCHNAPS/SCHNAPS.hpp"
 
 #include "PACC/XML.hpp"
-#include "SCHNAPS/SCHNAPS.hpp"
+
+#include <map>
 
 namespace SCHNAPS {
 namespace Plugins {
 namespace Control {
 
 /*!
- *  \class Switch SCHNAPS/Basic/Switch.hpp "SCHNAPS/Basic/Switch.hpp"
- *  \brief Primitive class that switches over some values.
+ *  \class Switch SCHNAPS/Plugins/Control/Switch.hpp "SCHNAPS/Plugins/Control/Switch.hpp"
+ *  \brief Switch case over a value with default case available.
  */
-class Switch: public SCHNAPS::Core::Primitive {
+class Switch: public Core::Primitive {
 protected:
-	typedef std::map<SCHNAPS::Core::Atom::Handle, unsigned int, SCHNAPS::Core::IsLessPointerPredicate> SwitchMap;
+	typedef std::map<Core::Atom::Handle, unsigned int, Core::IsLessPointerPredicate> SwitchMap;
 
 public:
 	//! Switch allocator type.
-	typedef SCHNAPS::Core::AllocatorT<Switch, SCHNAPS::Core::Primitive::Alloc> Alloc;
+	typedef Core::AllocatorT<Switch, Core::Primitive::Alloc> Alloc;
 	//! Switch handle type.
-	typedef SCHNAPS::Core::PointerT<Switch, SCHNAPS::Core::Primitive::Handle> Handle;
+	typedef Core::PointerT<Switch, Core::Primitive::Handle> Handle;
 	//! Switch bag type.
-	typedef SCHNAPS::Core::ContainerT<Switch, SCHNAPS::Core::Primitive::Bag> Bag;
+	typedef Core::ContainerT<Switch, Core::Primitive::Bag> Bag;
 
 	Switch();
 	Switch(const Switch& inOriginal);
 	virtual ~Switch() {}
 
-	virtual const std::string& getName() const {
-		schnaps_StackTraceBeginM();
-			const static std::string lName("Control_Switch");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& Switch::getName() const");
-	}
-
-	virtual void readWithSystem(PACC::XML::ConstIterator inIter, SCHNAPS::Core::System& ioSystem);
-	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
-
+	//! Copy operator.
 	Switch& operator=(const Switch& inOriginal);
 
-	virtual SCHNAPS::Core::AnyType::Handle execute(unsigned int inIndex, SCHNAPS::Core::ExecutionContext& ioContext) const;
-	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, SCHNAPS::Core::ExecutionContext& ioContext) const;
-	virtual const std::string& getReturnType(unsigned int inIndex, SCHNAPS::Core::ExecutionContext& ioContext) const;
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
+	virtual const std::string& getName() const {
+		schnaps_StackTraceBeginM();
+		const static std::string lName("Control_Switch");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Control::Switch::getName() const");
+	}
+
+	//! Read object from XML using system.
+	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Write content of object to XML.
+	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
+
+	//! Execute the primitive.
+	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the nth argument requested return type.
+	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const;
+	//! Return the primitive return type.
+	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
 	std::string mKeys_Ref;	//!< Reference to switch keys.
-	std::string mKeyType;	//!< Type of switch values.
-	SwitchMap mSwitchMap;	//!< Map of values to children index associated.
+	std::string mKeyType;	//!< Type of switch keys.
+	SwitchMap mSwitchMap;	//!< Map of keys to associated argument index.
 };
 } // end of Control namespace
 } // end of Plugins namespace

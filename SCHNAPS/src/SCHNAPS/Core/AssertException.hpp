@@ -1,27 +1,21 @@
 /*
- *  Open BEAGLE
- *  Copyright (C) 2001-2007 by Christian Gagne and Marc Parizeau
+ * AssertException.hpp
  *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  Contact:
- *  Laboratoire de Vision et Systemes Numeriques
- *  Departement de genie electrique et de genie informatique
- *  Universite Laval, Quebec, Canada, G1K 7P4
- *  http://vision.gel.ulaval.ca
- *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef SCHNAPS_Core_AssertException_hpp
@@ -31,10 +25,10 @@
 #include "SCHNAPS/Core/TargetedException.hpp"
 
 /*!
- *  \def   schnaps_AssertM
- *  \brief Assert that the condition is true. If not, throw a SCHNAPS::Core::AssertException.
- *  \param COND Condition to test, to assert.
- *  \throw AssertException The condition is false.
+ * \def   schnaps_AssertM
+ * \brief Assert that the condition is true. If not, throw a SCHNAPS::Core::AssertException.
+ * \param COND Condition to test, to assert.
+ * \throw AssertException The condition is false.
  */
 #ifndef SCHNAPS_NDEBUG
 #define schnaps_AssertM(COND) \
@@ -42,11 +36,12 @@
 #else // SCHNAPS_NDEBUG
 #define schnaps_AssertM(COND)
 #endif // SCHNAPS_NDEBUG
+
 /*!
- *  \def   schnaps_NonNullPointerAssertM
- *  \brief Assert that the pointer is non null. If not, throw a SCHNAPS::Core::AssertException.
- *  \param PTR Pointer to test.
- *  \throw AssertException If the pointer is NULL.
+ * \def   schnaps_NonNullPointerAssertM
+ * \brief Assert that the pointer is non null. If not, throw a SCHNAPS::Core::AssertException.
+ * \param PTR Pointer to test.
+ * \throw AssertException If the pointer is NULL.
  */
 #ifndef SCHNAPS_NDEBUG
 #define schnaps_NonNullPointerAssertM(PTR) \
@@ -54,13 +49,14 @@
 #else  // SCHNAPS_NDEBUG
 #define schnaps_NonNullPointerAssertM(PTR)
 #endif // SCHNAPS_NDEBUG
+
 /*!
- *  \def   schnaps_BoundCheckAssertM
- *  \brief Assert the bounds of an index.
- *  \param INDEX Index value to test.
- *  \param LOWBOUND Lower bound.
- *  \param UPBOUND Upper bound.
- *  \throw AssertException If the value is out of bound.
+ * \def   schnaps_BoundCheckAssertM
+ * \brief Assert the bounds of an index.
+ * \param INDEX Index value to test.
+ * \param LOWBOUND Lower bound.
+ * \param UPBOUND Upper bound.
+ * \throw AssertException If the value is out of bound.
  */
 #ifndef SCHNAPS_NDEBUG
 #define schnaps_BoundCheckAssertM(INDEX,LOWBOUND,UPBOUND) \
@@ -81,12 +77,13 @@
 #else  // SCHNAPS_NDEBUG
 #define schnaps_BoundCheckAssertM(INDEX,LOWBOUND,UPBOUND)
 #endif // SCHNAPS_NDEBUG
+
 /*!
- *  \def   schnaps_UpperBoundCheckAssertM
- *  \brief Assert the upper bound of an index value.
- *  \param INDEX Index value to test.
- *  \param UPBOUND Upper bound.
- *  \throw AssertException If the value is out of bound.
+ * \def   schnaps_UpperBoundCheckAssertM
+ * \brief Assert the upper bound of an index value.
+ * \param INDEX Index value to test.
+ * \param UPBOUND Upper bound.
+ * \throw AssertException If the value is out of bound.
  */
 #ifndef SCHNAPS_NDEBUG
 #define schnaps_UpperBoundCheckAssertM(INDEX,UPBOUND) \
@@ -110,13 +107,13 @@ template<class T, class BaseType> class PointerT;
 template<class T, class BaseType> class ContainerT;
 
 /*!
- *  \class AssertException SCHNAPS/Core/AssertException.hpp "SCHNAPS/Core/AssertException.hpp"
- *  \brief SCHNAPS exception indicating an badly asserted condition.
+ * \class AssertException SCHNAPS/Core/AssertException.hpp "SCHNAPS/Core/AssertException.hpp"
+ * \author Christian Gagne
+ * \author Marc Parizeau
+ * \brief Exception indicating an badly asserted condition.
  */
 class AssertException: public TargetedException {
-
 public:
-
 	//! AssertException allocator type.
 	typedef AllocatorT<AssertException, TargetedException::Alloc> Alloc;
 	//! AssertException handle type.
@@ -127,6 +124,7 @@ public:
 	explicit AssertException(std::string inMessage = "", std::string inFileName = "", unsigned int inLineNumber = 0);
 	virtual ~AssertException() throw () {}
 
+	//! Return a const pointer to the actual name (char) of the exception.
 	virtual const char* getExceptionName() const throw ();
 };
 } // end of Core namespace

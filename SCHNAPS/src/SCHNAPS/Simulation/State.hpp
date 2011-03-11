@@ -1,8 +1,8 @@
 /*
  * State.hpp
  *
- *  Created on: 2009-03-12
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,59 +38,125 @@ namespace Simulation {
 
 /*!
  *  \class State SCHNAPS/Simulation/State.hpp "SCHNAPS/Simulation/State.hpp"
- *  \brief State class.
+ *  \brief Individual state made of variables.
  */
+class State: public Core::Object {
+protected:
 #if defined(SCHNAPS_HAVE_STD_HASHMAP)
-	class State: public SCHNAPS::Core::Object, public std::hash_map<std::string, SCHNAPS::Core::Atom::Handle, SCHNAPS::Core::HashString>
+	typedef std::hash_map<std::string, Core::Atom::Handle, Core::HashString> VariablesMap;
 #elif defined(SCHNAPS_HAVE_GNUCXX_HASHMAP)
-	class State: public SCHNAPS::Core::Object, public __gnu_cxx::hash_map<std::string, SCHNAPS::Core::Atom::Handle, SCHNAPS::Core::HashString>
+	typedef __gnu_cxx::hash_map<std::string, Core::Atom::Handle, Core::HashString> VariablesMap;
 #elif defined(SCHNAPS_HAVE_STDEXT_HASHMAP)
-	class State: public SCHNAPS::Core::Object, public stdext::hash_map<std::string, SCHNAPS::Core::Atom::Handle, SCHNAPS::Core::HashString>
+	typedef stdext::hash_map<std::string, Core::Atom::Handle, Core::HashString> VariablesMap;
 #else // No hash_map found
-	class State: public SCHNAPS::Core::Object, public std::map<std::string, SCHNAPS::Core::Atom::Handle>
+	typedef std::map<std::string, Core::Atom::Handle> VariablesMap;
 #endif
-{
+
 public:
 	//! State allocator type.
-	typedef SCHNAPS::Core::AllocatorT<State, SCHNAPS::Core::Object::Alloc> Alloc;
+	typedef Core::AllocatorT<State, Core::Object::Alloc> Alloc;
 	//! State handle type.
-	typedef SCHNAPS::Core::PointerT<State, SCHNAPS::Core::Object::Handle> Handle;
+	typedef Core::PointerT<State, Core::Object::Handle> Handle;
 	//! State bag type.
-	typedef SCHNAPS::Core::ContainerT<State, SCHNAPS::Core::Object::Bag> Bag;
+	typedef Core::ContainerT<State, Core::Object::Bag> Bag;
 
 	State() {}
 	State(const State& inOriginal);
 	virtual ~State() {}
 
+	//! Copy operator.
 	State& operator=(const State& inOriginal);
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("State");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& State::getName() const");
+		const static std::string lName("State");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Simulation::State::getName() const");
 	}
 
-	virtual void readWithSystem(PACC::XML::ConstIterator inIter, SCHNAPS::Core::System& ioSystem);
+	//! Read object from XML using system.
+	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
-	void print(std::ostream& ioStream, const std::vector<std::string> inVariables) const;
+	//! Print state to file stream.
+	void print(std::ostream& ioStream, const std::vector<std::string>& inVariables) const;
+	
+	//! Erase all variables.
+	void clear();
 
-	const SCHNAPS::Core::Atom& getVariable(std::string inLabel) {
-		State::iterator lIt =  find(inLabel);
-		if (lIt == end()) {
-			throw schnaps_InternalExceptionM("Cannot get the variable " + inLabel + ": it does not exists in the current individual state!");
+	//! Insert a variable.
+	void insertVariable(const std::string& inLabel, Core::Atom::Handle inValue);
+	//! Remove a variable.
+	void removeVariable(const std::string& inLabel);
+	//! Check if the state contains a variable.
+	bool hasVariable(const std::string& inLabel) const;
+
+	/*!
+	 * \brief  Return a const reference to the value of a variable.
+	 * \param  inLabel A const reference to the label of the variable.
+	 * \return A const reference to the value of the variable.
+	 * \throw  SCHNAPS::Core::RunTimeException if the variable does not exist.
+	 * \throw  SCHNAPS::Core::AssertException if the variable is NULL.
+	 */
+	const Core::Atom& getVariable(const std::string& inLabel) const {
+		schnaps_StackTraceBeginM();
+		VariablesMap::const_iterator lIterVariables = mVariablesMap.find(inLabel);
+		if (lIterVariables == mVariablesMap.end()) {
+			std::ostringstream lOSS;
+			lOSS << "The variable '" << inLabel << "' does not exist; ";
+			lOSS << "could not get it.";
+			throw schnaps_RunTimeExceptionM(lOSS.str());
 		}
-		return *lIt->second;
+		schnaps_NonNullPointerAssertM(lIterVariables->second);
+		return *lIterVariables->second;
+		schnaps_StackTraceEndM("const SCHNAPS::Core::Atom& SCHNAPS::Simulation::State::getVariable(const std::string&) const");
 	}
 
-	void setVariable(std::string inLabel, SCHNAPS::Core::Atom::Handle inValue) {
-		State::iterator lIt = find(inLabel);
-		if (lIt == end()) {
-			throw schnaps_InternalExceptionM("Cannot set the variable " + inLabel + ": it does not exists in the current individual state!");
+	/*!
+	 * \brief  Return a const reference to the value of a variable.
+	 * \param  inLabel A const reference to the label of the variable.
+	 * \return A const reference to the value of the variable.
+	 * \throw  SCHNAPS::Core::RunTimeException if the variable does not exist.
+	 */
+	const Core::Atom::Handle getVariableHandle(const std::string& inLabel) const {
+		schnaps_StackTraceBeginM();
+		VariablesMap::const_iterator lIterVariables = mVariablesMap.find(inLabel);
+		if (lIterVariables == mVariablesMap.end()) {
+			std::ostringstream lOSS;
+			lOSS << "The variable '" << inLabel << "' does not exist; ";
+			lOSS << "could not get it.";
+			throw schnaps_RunTimeExceptionM(lOSS.str());
 		}
-		lIt->second = inValue;
+		return lIterVariables->second;
+		schnaps_StackTraceEndM("const SCHNAPS::Core::Atom::Handle SCHNAPS::Simulation::State::getVariableHandle(const std::string&) const");
 	}
+
+	/*!
+	 * \brief Set a variable to a specific value.
+	 * \param inLabel A const reference to the label of the variable.
+	 * \param inValue A handle to the new value of the variable.
+	 * \throw SCHNAPS::Core::RunTimeException if the variable does not exist.
+	 */
+	void setVariable(const std::string& inLabel, Core::Atom::Handle inValue) {
+		schnaps_StackTraceBeginM();
+		VariablesMap::iterator lIterVariables = mVariablesMap.find(inLabel);
+		if (lIterVariables == mVariablesMap.end()) {
+			std::ostringstream lOSS;
+			lOSS << "The variable '" << inLabel << "' does not exist; ";
+			lOSS << "could not set it.";
+			throw schnaps_RunTimeExceptionM(lOSS.str());
+		}
+		lIterVariables->second = inValue;
+		schnaps_StackTraceEndM("void SCHNAPS::Simulation::State::setVariable(const std::string&, SCHNAPS::Core::Atom::Handle) const");
+	}
+
+private:
+	VariablesMap mVariablesMap; //!< The map of variable labels to values.
 };
 } // end of Simulation namespace
 } // end of SCHNAPS namespace

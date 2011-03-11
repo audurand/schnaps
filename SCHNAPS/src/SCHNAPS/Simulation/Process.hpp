@@ -1,8 +1,8 @@
 /*
  * Process.hpp
  *
- *  Created on: 2009-03-17
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,45 +29,56 @@ namespace Simulation {
 
 /*!
  *  \class Process SCHNAPS/Simulation/Process.hpp "SCHNAPS/Simulation/Process.hpp"
- *  \brief Class that describes a process applied to individuals.
+ *  \brief Process that constitute a simulation.
  */
-class Process: public SCHNAPS::Core::Object {
+class Process: public Core::Object {
 public:
-	//! Specify a process target.
+	//! Process target.
 	enum Target {
 		eCurrent, eEnvironment, eIndividuals,
 	};
 
 	//! Process allocator type.
-	typedef SCHNAPS::Core::AllocatorT<Process, SCHNAPS::Core::Object::Alloc> Alloc;
+	typedef Core::AllocatorT<Process, Core::Object::Alloc> Alloc;
 	//! Process handle type.
-	typedef SCHNAPS::Core::PointerT<Process, SCHNAPS::Core::Object::Handle> Handle;
+	typedef Core::PointerT<Process, Core::Object::Handle> Handle;
 	//! Process bag type.
-	typedef SCHNAPS::Core::ContainerT<Process, SCHNAPS::Core::Object::Bag> Bag;
+	typedef Core::ContainerT<Process, Core::Object::Bag> Bag;
 
 	Process();
 	Process(const Process& inOriginal);
-	explicit Process(const std::string inLabel, SCHNAPS::Core::PrimitiveTree::Handle inPrimitiveTree);
+	Process(const std::string& inLabel, Core::PrimitiveTree::Handle inPrimitiveTree);
 	virtual ~Process() {}
 
+	//! Return a handle to a deep copy of the object.
+	virtual Core::Object::Handle deepCopy(const Core::System& inSystem) const;
+
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
 		const static std::string lName("Process");
 		return lName;
-		schnaps_StackTraceEndM("const std::string& Process::getName() const");
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Simulation::Process::getName() const");
 	}
 
-	virtual void readWithSystem(PACC::XML::ConstIterator inIter, SCHNAPS::Core::System& ioSystem);
+	//! Read object from XML using system.
+	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
-	virtual SCHNAPS::Core::AnyType::Handle execute(SCHNAPS::Core::ExecutionContext& ioContext) const;
+	//! Return a handle to the result of process execution.
+	virtual Core::AnyType::Handle execute(Core::ExecutionContext& ioContext) const;
 
-	const std::string& getReturnType(SCHNAPS::Core::ExecutionContext& ioContext) const;
+	//! Return a const reference to the type of process execution result.
+	const std::string& getReturnType(Core::ExecutionContext& ioContext) const;
 
-	void validate(SCHNAPS::Core::ExecutionContext& ioContext) const;
+	//! Validate the process.
+	void validate(Core::ExecutionContext& ioContext) const;
 
-	Process::Handle deepCopy(const SCHNAPS::Core::System& ioSystem) const;
-
+	//! Return a const reference to the process label.
 	const std::string& getLabel() const {
 		return mLabel;
 	}

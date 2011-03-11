@@ -1,8 +1,8 @@
 /*
  * GenerationContext.cpp
  *
- *  Created on: 2010-03-29
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,9 @@
 using namespace SCHNAPS;
 using namespace Simulation;
 
+/*!
+ * \brief Default constructor.
+ */
 GenerationContext::GenerationContext() :
 	ExecutionContext(),
 	mGenProfile(NULL)
@@ -31,6 +34,10 @@ GenerationContext::GenerationContext() :
 	mName = "GenerationContext";
 }
 
+/*!
+ * \brief Construct a generation context as a copy of an original.
+ * \param inOriginal A const reference to the original generation context.
+ */
 GenerationContext::GenerationContext(const GenerationContext& inOriginal) :
 	ExecutionContext(inOriginal),
 	mGenProfile(inOriginal.mGenProfile)
@@ -38,31 +45,43 @@ GenerationContext::GenerationContext(const GenerationContext& inOriginal) :
 	mName = "GenerationContext";
 }
 
-GenerationContext::GenerationContext(SCHNAPS::Core::System::Handle inSystem, Clock::Handle inClock, Environment::Handle inEnvironment) :
+/*!
+ * \brief Construct a generation context with specific system, clock, and environment.
+ * \param inSystem A handle to the system.
+ * \param inClock A handle to the clock.
+ * \param inEnvironment A handle to the environment.
+ */
+GenerationContext::GenerationContext(Core::System::Handle inSystem, Clock::Handle inClock, Environment::Handle inEnvironment) :
 	ExecutionContext(inSystem, inClock, inEnvironment),
 	mGenProfile(NULL)
 {
 	mName = "GenerationContext";
 }
 
+/*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
 GenerationContext& GenerationContext::operator=(const GenerationContext& inOriginal) {
-	schnaps_StackTraceBeginM();
-		mSystem = inOriginal.mSystem;
-		mClock = inOriginal.mClock;
-		mEnvironment = inOriginal.mEnvironment;
-		mGenProfile = inOriginal.mGenProfile;
-		mIndividual = inOriginal.mIndividual;
-		return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Simulation::GenerationContext& SCHNAPS::Simulation::GenerationContext::operator=(const SCHNAPS::Simulation::GenerationContext&)");
+	mSystem = inOriginal.mSystem;
+	mClock = inOriginal.mClock;
+	mEnvironment = inOriginal.mEnvironment;
+	mGenProfile = inOriginal.mGenProfile;
+	mIndividual = inOriginal.mIndividual;
+	return *this;
 }
 
+/*!
+ * \brief  Return a handle to a deep copy of the generation context.
+ * \return A handle to a deep copy of the generation context.
+ */
 GenerationContext::Handle GenerationContext::deepCopy() const {
 	schnaps_StackTraceBeginM();
-		GenerationContext::Handle lGenerationContext = new GenerationContext(mSystem, mClock, mEnvironment);
+	GenerationContext::Handle lCopy = new GenerationContext(mSystem, mClock, mEnvironment);
 
-		// Set profile as a copy of the current one
-		lGenerationContext->setGenProfile(mGenProfile->deepCopy(*mSystem));
+	// set profile as a copy of the current one
+	lCopy->setGenProfile(Core::castHandleT<GenProfile>(mGenProfile->deepCopy(*mSystem)));
 
-		return lGenerationContext;
+	return lCopy;
 	schnaps_StackTraceEndM("SCHNAPS::Simulation::GenerationContext& SCHNAPS::Simulation::GenerationContext::operator=(const SCHNAPS::Simulation::GenerationContext&)");
 }

@@ -1,8 +1,8 @@
 /*
  * Component.cpp
  *
- *  Created on: 2009-01-23
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,22 +24,25 @@ using namespace SCHNAPS;
 using namespace Core;
 
 /*!
- *  \brief Component class constructor.
- *  \param inName Name of the component.
+ * \brief Component class constructor.
+ * \param inName Name of the component.
  */
 Component::Component(std::string inName) :
 	mName(inName)
 {}
 
 /*!
- *  \brief Initialize this component.
+ * \brief Initialize this component.
+ * \param ioSystem A reference to the system.
  */
-void Component::init(System&) {}
+void Component::init(System& ioSystem)
+{}
 
 /*!
- *  \brief Read the system component.
- *  \param inIter Iterator to XML node to read component from.
- *  \param ioSystem Evolutionary system.
+ * \brief Read object from XML using system.
+ * \param inIter XML iterator of input document.
+ * \param ioSystem A reference to the system.
+ * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
  */
 void Component::readWithSystem(PACC::XML::ConstIterator inIter, System& ioSystem) {
 	schnaps_StackTraceBeginM();

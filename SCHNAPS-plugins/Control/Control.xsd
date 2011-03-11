@@ -18,7 +18,7 @@
 	<xsd:element name="Control_Branch" substitutionGroup="_conditionOp">
 		<xsd:annotation>
 			<xsd:appinfo>
-				<pmt:info lang="en">Executes the first branch with some probability, else second branch.</pmt:info>
+				<pmt:info lang="en">Execute the first branch with some probability, else second branch.</pmt:info>
 				<pmt:mappedName lang="en">Branch</pmt:mappedName>
 				<pmt:returnType definedBy="commonType">0,1</pmt:returnType>
 			</xsd:appinfo>
@@ -68,41 +68,39 @@
 		</xsd:complexType>
 	</xsd:element>
 	
-	<xsd:element name="Control_BranchStatic" substitutionGroup="_multiBranchesConditionOp">
+	<xsd:element name="Control_BranchMulti" substitutionGroup="_conditionOp">
 		<xsd:annotation>
 			<xsd:appinfo>
-				<pmt:info lang="en">Branching with static weights.</pmt:info>
-				<pmt:mappedName lang="en">Branch (static)</pmt:mappedName>
-				<pmt:returnType definedBy="commonType">0:-1</pmt:returnType>
+				<pmt:info lang="en">Execute a branch with some probability.</pmt:info>
+				<pmt:mappedName lang="en">Branch (multiple)</pmt:mappedName>
+				<pmt:returnType definedBy="commonType">0,-1</pmt:returnType>
 			</xsd:appinfo>
 		</xsd:annotation>
 		<xsd:complexType>
-			<xsd:sequence minOccurs="1" maxOccurs="1" >
-				<xsd:sequence minOccurs="0" maxOccurs="unbounded">
-					<xsd:choice>
-						<xsd:annotation>
-							<xsd:appinfo>
-								<pmt:childType definedBy="staticType">Any</pmt:childType>
-							</xsd:appinfo>
-						</xsd:annotation>
-						<xsd:element ref="_primitive"/>
-					</xsd:choice>
-				</xsd:sequence>
+			<xsd:sequence minOccurs="1" maxOccurs="unbounded">
+				<xsd:choice>
+					<xsd:annotation>
+						<xsd:appinfo>
+							<pmt:childType definedBy="staticType">Any</pmt:childType>
+						</xsd:appinfo>
+					</xsd:annotation>
+					<xsd:element ref="_primitive"/>
+				</xsd:choice>
 			</xsd:sequence>
-			<xsd:attribute name="weights" type="xsd:string" use="optional">
+			<xsd:attribute name="probabilities" type="xsd:double" use="optional">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:mapToBranches regexp="|" startIndex="0" endIndex="-1" editable="true" displayAttribute="true">
+							<gui:mapToBranches regexp="|" startIndex="0" endIndex="-1" editable="false" displayAttribute="true">
 								<gui:individualType definedBy="xsdType">xsd:double</gui:individualType>
 								<gui:sum>1</gui:sum>
 							</gui:mapToBranches>
 						</gui:attributeBehavior>
-						<pmt:attributeMappedName lang="en">Branches weights</pmt:attributeMappedName>
+						<pmt:attributeMappedName lang="en">Probability of each branch</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="weights.ref" type="xsd:string" use="required">
+			<xsd:attribute name="probabilities.ref" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
@@ -112,41 +110,6 @@
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-		</xsd:complexType>
-	</xsd:element>
-	
-	<xsd:element name="Control_BranchDynamic" substitutionGroup="_multiBranchesConditionOp">
-		<xsd:annotation>
-			<xsd:appinfo>
-				<pmt:info lang="en">Branching with dynamic weights.</pmt:info>
-				<pmt:mappedName lang="en">Branch (dynamic)</pmt:mappedName>
-				<pmt:returnType definedBy="commonType">1:-1</pmt:returnType>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexType>
-			<xsd:sequence minOccurs="1" maxOccurs="1" >
-				<xsd:choice>
-					<xsd:annotation>
-						<xsd:appinfo>
-							<pmt:childType definedBy="staticType">UInt</pmt:childType>
-							<pmt:childBranchTag lang="en">Branches weights</pmt:childBranchTag>
-						</xsd:appinfo>
-					</xsd:annotation>
-					<xsd:element ref="Data_RouletteDynamic"/>
-				</xsd:choice>
-				<xsd:sequence minOccurs="0" maxOccurs="unbounded">
-					<xsd:choice>
-						<xsd:annotation>
-							<xsd:appinfo>
-								<pmt:childType definedBy="staticType">Any</pmt:childType>
-								<pmt:childBranchTag lang="en">Branch</pmt:childBranchTag>
-							</xsd:appinfo>
-						</xsd:annotation>
-						<xsd:element ref="_operator"/>
-						<xsd:element ref="_tokenBase"/>
-					</xsd:choice>
-				</xsd:sequence>
-			</xsd:sequence>
 		</xsd:complexType>
 	</xsd:element>
 	
@@ -581,94 +544,4 @@
 		</xsd:complexType>
 	</xsd:element>
 	
-	<xsd:element name="Control_SwitchBins" substitutionGroup="_multiBranchesConditionOp">
-		<xsd:annotation>
-			<xsd:appinfo>
-				<pmt:info lang="en">Switch between bins of data (instead of discrete values).</pmt:info>
-				<pmt:mappedName lang="en">Switch (bins)</pmt:mappedName>
-				<pmt:returnType definedBy="commonType">1:-1</pmt:returnType>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexType>
-			<xsd:sequence minOccurs="1" maxOccurs="1">
-				<xsd:choice> <!-- Condition -->
-					<xsd:annotation>
-						<xsd:appinfo>
-							<pmt:childType definedBy="staticType">Number</pmt:childType>
-							<pmt:childBranchTag lang="en">Condition</pmt:childBranchTag>
-						</xsd:appinfo>
-					</xsd:annotation>
-					<xsd:element ref="_operator"/>
-					<xsd:element ref="_tokenBase"/>
-				</xsd:choice>
-				<xsd:choice> <!-- Default -->
-					<xsd:annotation>
-						<xsd:appinfo>
-							<pmt:childType definedBy="staticType">Any</pmt:childType>
-							<pmt:childBranchTag lang="en">Default choice</pmt:childBranchTag>
-						</xsd:appinfo>
-					</xsd:annotation>
-					<xsd:element ref="_operator"/>
-					<xsd:element ref="_tokenBase"/>
-					<xsd:element ref="Control_Nothing"/>
-				</xsd:choice>
-				<xsd:sequence minOccurs="0" maxOccurs="unbounded"> <!-- Children associated to keys -->
-					<xsd:choice>
-						<xsd:annotation>
-							<xsd:appinfo>
-								<pmt:childType definedBy="staticType">Any</pmt:childType>
-							</xsd:appinfo>
-						</xsd:annotation>
-						<xsd:element ref="_operator"/>
-						<xsd:element ref="_tokenBase"/>
-						<xsd:element ref="Control_Nothing"/>
-					</xsd:choice>
-				</xsd:sequence>
-			</xsd:sequence>
-			<xsd:attribute name="binsType" type="xsd:string" use="optional">
-				<xsd:annotation>
-					<xsd:appinfo>
-						<gui:attributeBehavior>
-							<gui:list type="numericTypes" allowEdition="False"/>
-						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en">WARNING: this must be the same type as switch condition!</pmt:attributeInfo>
-						<pmt:attributeMappedName lang="en">Switch type</pmt:attributeMappedName>
-					</xsd:appinfo>
-				</xsd:annotation>
-				<xsd:simpleType>
-					<xsd:restriction base="xsd:string">
-						<xsd:enumeration value="Int"/>
-						<xsd:enumeration value="UInt"/>
-						<xsd:enumeration value="Long"/>
-						<xsd:enumeration value="ULong"/>
-						<xsd:enumeration value="Double"/>
-						<xsd:enumeration value="Float"/>
-					</xsd:restriction>
-				</xsd:simpleType>
-			</xsd:attribute>
-			<xsd:attribute name="boundaries" type="xsd:string" use="optional">
-				<xsd:annotation>
-					<xsd:appinfo>
-						<gui:attributeBehavior>
-							<gui:mapToBranches regexp="|" startIndex="2" endIndex="-1" defaultAtomValue="0" editable="true" displayAttribute="true">
-								<gui:individualType definedBy="attributeValue">binsType</gui:individualType>
-							</gui:mapToBranches>
-						</gui:attributeBehavior>
-						<pmt:attributeMappedName lang="en">Switch bounds</pmt:attributeMappedName>
-						<pmt:attributeInfo pairedAttr="binsType"/>
-					</xsd:appinfo>
-				</xsd:annotation>
-			</xsd:attribute>
-			<xsd:attribute name="boundaries.ref" type="xsd:string" use="required">
-				<xsd:annotation>
-					<xsd:appinfo>
-						<gui:attributeBehavior>
-							<gui:list type="allParameters"/>
-						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en" reference="true"/>
-					</xsd:appinfo>
-				</xsd:annotation>
-			</xsd:attribute>
-		</xsd:complexType>
-	</xsd:element>
 </xsd:schema>

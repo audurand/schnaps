@@ -1,8 +1,8 @@
 /*
  * Individual.hpp
  *
- *  Created on: 2009-03-12
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,16 +32,16 @@ namespace Simulation {
 
 /*!
  *  \class Individual Simulator/Simulation/include/Individual.hpp "Simulator/Simulation/include/Individual.hpp"
- *  \brief Individual class.
+ *  \brief Population individual.
  */
-class Individual: public SCHNAPS::Core::Object {
+class Individual: public Core::Object {
 public:
 	//! Individual allocator type.
-	typedef SCHNAPS::Core::AllocatorT<Individual, SCHNAPS::Core::Object::Alloc> Alloc;
+	typedef Core::AllocatorT<Individual, Core::Object::Alloc> Alloc;
 	//! Individual handle type.
-	typedef SCHNAPS::Core::PointerT<Individual, SCHNAPS::Core::Object::Handle> Handle;
+	typedef Core::PointerT<Individual, Core::Object::Handle> Handle;
 	//! Individual bag type.
-	typedef SCHNAPS::Core::ContainerT<Individual, SCHNAPS::Core::Object::Bag> Bag;
+	typedef Core::ContainerT<Individual, Core::Object::Bag> Bag;
 
 	explicit Individual(std::string inID = "");
 	Individual(const Individual& inOriginal);
@@ -49,9 +49,9 @@ public:
 
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Individual");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& Individual::getName() const");
+		const static std::string lName("Individual");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Simulation::Individual::getName() const");
 	}
 
 	virtual void readWithSystem(PACC::XML::ConstIterator inIter, SCHNAPS::Core::System& ioSystem);

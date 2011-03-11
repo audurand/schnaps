@@ -1,34 +1,21 @@
 /*
- *  Open BEAGLE
- *  Copyright (C) 2001-2007 by Christian Gagne and Marc Parizeau
+ * AssertException.cpp
  *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  Contact:
- *  Laboratoire de Vision et Systemes Numeriques
- *  Departement de genie electrique et de genie informatique
- *  Universite Laval, Quebec, Canada, G1K 7P4
- *  http://vision.gel.ulaval.ca
- *
- */
-
-/*!
- *  \file   SCHNAPS/Core/RunTimeException.cpp
- *  \brief  Implementation of class RunTimeException.
- *  \author Christian Gagne
- *  \author Marc Parizeau
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "SCHNAPS/Core.hpp"
@@ -36,26 +23,22 @@
 using namespace SCHNAPS;
 using namespace Core;
 
-
 /*!
- *  \brief Construct the RunTimeException using given values.
- *  \param inMessage     Message explaining the exception.
- *  \param inFileName    Name of the file where the error state had been detected.
- *  \param inLineNumber  Line number in the filename.
+ * \brief Construct the exception using given values.
+ * \param inMessage     Message explaining the exception.
+ * \param inFileName    Name of the file where the error state had been detected.
+ * \param inLineNumber  Line number in the filename.
  */
 RunTimeException::RunTimeException(std::string  inMessage,
                                    std::string  inFileName,
                                    unsigned int    inLineNumber) :
-		TargetedException(inMessage,inFileName,inLineNumber)
-{ }
-
+	TargetedException(inMessage,inFileName,inLineNumber)
+{}
 
 /*!
- *  \brief  Get the name of the exception.
- *  \return Name of the exception.
+ * \brief Return a const pointer the actual name (char) of the exception.
+ * \return A const pointer to the actual name (char) of the exception.
  */
-const char* RunTimeException::getExceptionName() const throw()
-{
-	return "Simulator::RunTimeException";
+const char* RunTimeException::getExceptionName() const throw() {
+	return "SCHNAPS::Core::RunTimeException";
 }
-

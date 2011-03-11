@@ -1,8 +1,8 @@
 /*
  * SimulationContext.hpp
  *
- *  Created on: 2009-02-19
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,9 +40,13 @@
 namespace SCHNAPS {
 namespace Simulation {
 
+/*!
+ * \struct Scenario SCHNAPS/Simulation/SimulationContext.hpp "SCHNAPS/Simulation/SimulationContext.hpp"
+ * \brief  Simulation scenario made of a process for the environment and a process for the individuals.
+ */
 struct Scenario {
-	Process::Handle mProcessEnvironment;
-	Process::Handle mProcessIndividual;
+	Process::Handle mProcessEnvironment;	//!< A handle to a process for the environment.
+	Process::Handle mProcessIndividual;		//!< A handle to a process for the individuals.
 
 	Scenario() :
 		mProcessEnvironment(NULL),
@@ -50,9 +54,13 @@ struct Scenario {
 	{}
 };
 
+/*!
+ * \struct ClockObservers SCHNAPS/Simulation/SimulationContext.hpp "SCHNAPS/Simulation/SimulationContext.hpp"
+ * \brief  Processes automaticaly triggered on clock steps.
+ */
 struct ClockObservers {
-	Process::Bag mProcessEnvironment;
-	Process::Bag mProcessIndividual;
+	Process::Bag mProcessEnvironment;	//!< A bag of processes for the environment.
+	Process::Bag mProcessIndividual;	//!< A bag of processes for the individuals.
 
 	ClockObservers() {}
 };
@@ -64,30 +72,26 @@ struct ClockObservers {
 class SimulationContext: public ExecutionContext {
 protected:
 #if defined(SCHNAPS_HAVE_STD_HASHMAP)
-	typedef std::hash_map<std::string, Process::Handle, SCHNAPS::Core::HashString> ProcessMap;
-	typedef std::hash_map<std::string, Process::Bag::Handle, SCHNAPS::Core::HashString> ObserverMap;
-	typedef std::hash_map<std::string, Scenario, SCHNAPS::Core::HashString> ScenarioMap;
+	typedef std::hash_map<std::string, Process::Handle, Core::HashString> ProcessMap;
+	typedef std::hash_map<std::string, Scenario, Core::HashString> ScenarioMap;
 #elif defined(SCHNAPS_HAVE_GNUCXX_HASHMAP)
-	typedef __gnu_cxx::hash_map<std::string, Process::Handle, SCHNAPS::Core::HashString> ProcessMap;
-	typedef __gnu_cxx::hash_map<std::string, Process::Bag::Handle, SCHNAPS::Core::HashString> ObserverMap;
-	typedef __gnu_cxx::hash_map<std::string, Scenario, SCHNAPS::Core::HashString> ScenarioMap;
+	typedef __gnu_cxx::hash_map<std::string, Process::Handle, Core::HashString> ProcessMap;
+	typedef __gnu_cxx::hash_map<std::string, Scenario, Core::HashString> ScenarioMap;
 #elif defined(SCHNAPS_HAVE_STDEXT_HASHMAP)
-	typedef stdext::hash_map<std::string, Process::Handle, SCHNAPS::Core::HashString> ProcessMap;
-	typedef stdext::hash_map<std::string, Process::Bag::Handle, SCHNAPS::Core::HashString> ObserverMap;
-	typedef stdext::hash_map<std::string, Scenario, SCHNAPS::Core::HashString> ScenarioMap;
+	typedef stdext::hash_map<std::string, Process::Handle, Core::HashString> ProcessMap;
+	typedef stdext::hash_map<std::string, Scenario, Core::HashString> ScenarioMap;
 #else // no hash_map found
 	typedef std::map<std::string, Process::Handle> ProcessMap;
-	typedef std::map<std::string, Process::Bag::Handle> ObserverMap;
 	typedef std::map<std::string, Scenario> ScenarioMap;
 #endif
 
 public:
 	//! SimulationContext allocator type.
-	typedef SCHNAPS::Core::AllocatorT<SimulationContext, ExecutionContext::Alloc> Alloc;
+	typedef Core::AllocatorT<SimulationContext, ExecutionContext::Alloc> Alloc;
 	//! SimulationContext handle type.
-	typedef SCHNAPS::Core::PointerT<SimulationContext, ExecutionContext::Handle> Handle;
+	typedef Core::PointerT<SimulationContext, ExecutionContext::Handle> Handle;
 	//! SimulationContext bag type.
-	typedef SCHNAPS::Core::ContainerT<SimulationContext, ExecutionContext::Bag> Bag;
+	typedef Core::ContainerT<SimulationContext, ExecutionContext::Bag> Bag;
 
 	SimulationContext();
 	SimulationContext(const SimulationContext& inOriginal);
@@ -98,6 +102,7 @@ public:
 		return mName;
 	}
 
+	//! Read processes from XML.
 	void readProcesses(PACC::XML::ConstIterator inIter);
 	void readObservers(PACC::XML::ConstIterator inIter);
 	void readScenarios(PACC::XML::ConstIterator inIter);
@@ -107,41 +112,88 @@ public:
 
 	SimulationContext::Handle deepCopy() const;
 
+	/*!
+	 * \brief Reset to a null individual and clears the list of push processes.
+	 */
 	void reset() {
 		mIndividual = NULL;
 		mPushList.clear();
 	}
 
+	/*!
+	 * \brief  Return a const reference to all processes.
+	 * \return A const reference to all processes.
+	 */
 	const ProcessMap& getProcesses() const {
 		return mProcesses;
 	}
+	
+	/*!
+	 * \brief  Return a const handle to a specific process.
+	 * \param  inLabel A const reference to the process label.
+	 * \return A const handle to a specific process.
+	 * \throw  SCHNAPS::Core::RunTimeException if the process does not exist.
+	 */
+	const Process::Handle getProcessHandle(const std::string& inLabel) const {
+		schnaps_StackTraceBeginM();
+		ProcessMap::const_iterator lIterProcess = mProcesses.find(inLabel);
+		if (lIterProcess == mProcesses.end()) {
+			std::ostringstream lOSS;
+			lOSS << "The process '" << inLabel << "' does not exist; ";
+			lOSS << "could not get it.";
+			throw schnaps_RunTimeExceptionM(lOSS.str());
+		}
+		return lIterProcess->second;
+		schnaps_StackTraceEndM("const SCHNAPS::Simulation::Process::Handle SCHNAPS::Simulation::SimulationContext::getProcessHandle(const std::string&) const");
+	}
 
+	/*!
+	 * \brief  Return a const reference to all clock observers.
+	 * \return A const reference to all clock observers.
+	 */
 	const ClockObservers& getClockObservers() const {
 		return mClockObservers;
 	}
 
+	/*!
+	 * \brief  Return a const reference to all scenarios.
+	 * \return A const reference to all scenarios.
+	 */
 	const ScenarioMap& getScenarios() const {
 		return mScenarios;
 	}
 	
-	const Scenario& getScenario(std::string inLabel) {
+	/*!
+	 * \brief  Return a const reference to a specific scenario.
+	 * \param  inLabel A const reference to the scenario label.
+	 * \return A const reference to a specific scenario.
+	 * \throw  SCHNAPS::Core::RunTimeException if the scenario does not exist.
+	 */
+	const Scenario& getScenario(const std::string& inLabel) const {
 		schnaps_StackTraceBeginM();
-		ScenarioMap::const_iterator lIt = mScenarios.find(inLabel);
-#ifndef SCHNAPS_NDEBUG
-		if (lIt == mScenarios.end()) {
-			throw schnaps_InternalExceptionM("Could not find " + inLabel + " in scenario list of simulation context number" + uint2str(mThreadNb) + "!");
+		ScenarioMap::const_iterator lIterScenario = mScenarios.find(inLabel);
+		if (lIterScenario == mScenarios.end()) {
+			std::ostringstream lOSS;
+			lOSS << "The scenario '" << inLabel << "' does not exist; ";
+			lOSS << "could not get it.";
+			throw schnaps_RunTimeExceptionM(lOSS.str());
 		}
-#else
-		schnaps_AssertM(lIt != mScenarios.end());
-#endif
-		return lIt->second;
-		schnaps_StackTraceEndM("void SCHNAPS::Simulation::SimulationContext::getScenario(std::string&)");
+		return lIterScenario->second;
+		schnaps_StackTraceEndM("const SCHNAPS::Simulation::Scenario& SCHNAPS::Simulation::SimulationContext::getScenario(const std::string&) const");
 	}
 
+	/*!
+	 * \brief  Return a const reference to the list of push processes.
+	 * \return A const reference to the list of push processes.
+	 */
 	const std::list<Push>& getPushList() const {
 		return mPushList;
 	}
 
+	/*!
+	 * \brief  Return a reference to the list of push processes.
+	 * \return A reference to the list of push processes.
+	 */
 	std::list<Push>& getPushList() {
 		return mPushList;
 	}

@@ -1,8 +1,8 @@
 /*
  * Concatenate.hpp
  *
- *  Created on: 2010-06-24
- *  Author: Audrey DurConcatenate
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it Concatenate/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,9 @@
 #ifndef SCHNAPS_Plugins_Operators_Concatenate_hpp
 #define SCHNAPS_Plugins_Operators_Concatenate_hpp
 
-#include "PACC/XML.hpp"
 #include "SCHNAPS/SCHNAPS.hpp"
+
+#include "PACC/XML.hpp"
 
 namespace SCHNAPS {
 namespace Plugins {
@@ -30,7 +31,7 @@ namespace Operators {
 
 /*!
  *  \class Concatenate SCHNAPS/Plugins/Operators/Concatenate.hpp "SCHNAPS/Plugins/Operators/Concatenate.hpp"
- *  \brief Logical Concatenate primitive class.
+ *  \brief String concatenation operator primitive.
  */
 class Concatenate: public Core::Primitive {
 public:
@@ -45,17 +46,25 @@ public:
 	Concatenate(const Concatenate& inOriginal);
 	virtual ~Concatenate() {}
 
-	virtual const std::string& getName() const {
-		schnaps_StackTraceBeginM();
-			const static std::string lName("Operators_Concatenate");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& Concatenate::getName() const");
-	}
-
+	//! Copy operator.
 	Concatenate& operator=(const Concatenate& inOriginal);
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
+	virtual const std::string& getName() const {
+		schnaps_StackTraceBeginM();
+		const static std::string lName("Operators_Concatenate");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Concatenate::getName() const");
+	}
+
+	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the nth argument requested return type.
 	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const;
+	//! Return the primitive return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 };
 } // end of Operators namespace

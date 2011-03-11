@@ -1,8 +1,8 @@
 /*
  * Int.hpp
  *
- *  Created on: 2009-01-23
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ typedef ArrayT<int> IntArray;
 
 /*!
  *  \class Int SCHNAPS/Core/Int.hpp "SCHNAPS/Core/Int.hpp"
- *  \brief Int class, the double implementation as Object.
+ *  \brief The integer implementation as Object.
  */
 class Int: public Number {
 public:
@@ -56,58 +56,91 @@ public:
 	Int(const Int& inOriginal);
 	virtual ~Int() {}
 
+	//! Copy operator.
+	Int& operator=(const Int& inOriginal);
+
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Int");
-			return lName;
+		const static std::string lName("Int");
+		return lName;
 		schnaps_StackTraceEndM("const std::string& Int::getName() const");
 	}
 
+	/*!
+	 * \brief  Return a const reference to the type of object.
+	 * \return A const reference to the type of object.
+	 */
 	virtual const std::string& getType() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lType("Int");
-			return lType;
+		const static std::string lType("Int");
+		return lType;
 		schnaps_StackTraceEndM("const std::string& Int::getType() const");
 	}
 
+	//! Write the content of the object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
+	//! Test if an object is equal to another.
 	virtual bool isEqual(const Object& inRightObj) const;
+	//! Test if an object is less than another.
 	virtual bool isLess(const Object& inRightObj) const;
 
-	Int& operator=(const Int& inOriginal);
-
+	//! Read the object from string.
 	virtual void readStr(const std::string& inStr);
+	//! Write the object to string.
 	virtual std::string writeStr() const;
 
+	//! Return a handle to a clone of the current object.
 	virtual AnyType::Handle clone() const;
 
+	//! Compute absolute value.
 	virtual Number& abs();
+	//! Add a number.
 	virtual Number& add(Number& inRightNumber);
+	//! Divide by a number.
 	virtual Number& div(Number& inRightNumber);
+	//! Compute the modulo by a number.
 	virtual Number& mod(Number& inRightNumber);
+	//! Multiply by a number.
 	virtual Number& mult(Number& inRightNumber);
+	//! Subtract a number.
 	virtual Number& sub(Number& inRightNumber);
 
+	//! Casting operator to double.
 	operator Double() const;
+	//! Casting operator to float.
 	operator Float() const;
+	//! Casting operator to integer.
 	operator Int() const;
+	//! Casting operator to long.
 	operator Long() const;
+	//! Casting operator to unsigned integer.
 	operator UInt() const;
+	//! Casting operator to unsigned long.
 	operator ULong() const;
 
-	//! Return the value of integer object.
+	/*!
+	 * \brief Return a const reference to the value of integer.
+	 * \return A const reference to the value of integer.
+	 */
 	const int& getValue() const {
 		return mValue;
 	}
 
-	//! Set the value of integer object.
+	/*!
+	 * \brief Set the value of integer.
+	 * \param inValue A const reference to the new value of integer.
+	 */
 	void setValue(const int& inValue) {
 		mValue = inValue;
 	}
 
 private:
-	int mValue; //! Value of integer object.
+	int mValue; //! Value of integer.
 };
 } // end of Core namespace
 } // end of SCHNAPS namespace

@@ -1,8 +1,8 @@
 /*
  * Generator.hpp
  *
- *  Created on: 2009-03-12
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,34 +43,38 @@ namespace SCHNAPS {
 namespace Simulation {
 
 /*!
- *  \class Simulator SCHNAPS/Simulation/Generator.hpp "SCHNAPS/Simulation/Generator.hpp"
- *  \brief Generator class.
+ *  \class Generator SCHNAPS/Simulation/Generator.hpp "SCHNAPS/Simulation/Generator.hpp"
+ *  \brief Individual generator.
  */
-class Generator: public SCHNAPS::Core::Object {
+class Generator: public Core::Object {
 protected:
 #if defined(SCHNAPS_HAVE_STD_HASHMAP)
-	typedef std::hash_map<std::string, GenProfile, SCHNAPS::Core::HashString> ProfileMap;
+	typedef std::hash_map<std::string, GenProfile, Core::HashString> ProfileMap;
 #elif defined(SCHNAPS_HAVE_GNUCXX_HASHMAP)
-	typedef __gnu_cxx::hash_map<std::string, GenProfile::Handle, SCHNAPS::Core::HashString> ProfileMap;
+	typedef __gnu_cxx::hash_map<std::string, GenProfile::Handle, Core::HashString> ProfileMap;
 #elif defined(SCHNAPS_HAVE_STDEXT_HASHMAP)
-	typedef stdext::hash_map<std::string, GenProfile::Handle, SCHNAPS::Core::HashString> ProfileMap;
+	typedef stdext::hash_map<std::string, GenProfile::Handle, Core::HashString> ProfileMap;
 #else // no hash_map found
 	typedef std::map<std::string, GenProfile::Handle> ProfileMap;
 #endif
 
 public:
 	//! Generator allocator type.
-	typedef SCHNAPS::Core::AllocatorT<Generator, SCHNAPS::Core::Object::Alloc> Alloc;
+	typedef Core::AllocatorT<Generator, Core::Object::Alloc> Alloc;
 	//! Generator handle type.
-	typedef SCHNAPS::Core::PointerT<Generator, SCHNAPS::Core::Object::Handle> Handle;
+	typedef Core::PointerT<Generator, Core::Object::Handle> Handle;
 	//! Generator bag type.
-	typedef SCHNAPS::Core::ContainerT<Generator, SCHNAPS::Core::Object::Bag> Bag;
+	typedef Core::ContainerT<Generator, Core::Object::Bag> Bag;
 
 	Generator();
 	Generator(const Generator& inOriginal);
-	explicit Generator(SCHNAPS::Core::System::Handle inSystem, Clock::Handle inClock, Environment::Handle inEnvironment);
+	explicit Generator(Core::System::Handle inSystem, Clock::Handle inClock, Environment::Handle inEnvironment);
 	virtual ~Generator();
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
 		const static std::string lName("Generator");
@@ -78,28 +82,50 @@ public:
 		schnaps_StackTraceEndM("const std::string& SCHNAPS::Simulation::Generator::getName() const");
 	}
 
+	//! Read object from XML.
 	virtual void read(PACC::XML::ConstIterator inIter);
+	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
-	Individual::Bag::Handle generate(std::string inProfile, unsigned int inSize, std::string inPrefix, unsigned int inStartingIndex);
+	//! Generate a quantity of individuals from a specific profile using specific prefix and start index.
+	Individual::Bag::Handle generate(const std::string& inProfile, unsigned int inSize, const std::string& inPrefix, unsigned int inStartingIndex);
+	
+	//! Build individuals using specific thread.
 	static void buildIndividuals(GenerationThread::Handle inThread);
 
 	//! Refresh generator structure with up-to-date parameters.
 	void refresh();
 	
+	//! Clear randomizer (seed to zero, empty state).
 	void clearRandomizer();
+	//! Reset randomizer to intial seed and state.
 	void resetRandomizer();
 
+	/*!
+	 * \brief  Return a const reference to the system.
+	 * \return A const reference to the system.
+	 * \throw  SCHNAPS::Core::AssertException if system is NULL.
+	 */
 	const Core::System& getSystem() const {
 		schnaps_NonNullPointerAssertM(mSystem);
 		return *mSystem;
 	}
 
+	/*!
+	 * \brief  Return a const reference to the clock.
+	 * \return A const reference to the clock.
+	 * \throw  SCHNAPS::Core::AssertException if clock is NULL.
+	 */
 	const Clock& getClock() const {
 		schnaps_NonNullPointerAssertM(mClock);
 		return *mClock;
 	}
 
+	/*!
+	 * \brief  Return a const reference to the environment.
+	 * \return A const reference to the environment.
+	 * \throw  SCHNAPS::Core::AssertException if environment is NULL.
+	 */
 	const Environment& getEnvironment() const {
 		schnaps_NonNullPointerAssertM(mEnvironment);
 		return *mEnvironment;

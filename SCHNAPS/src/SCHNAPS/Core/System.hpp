@@ -1,27 +1,21 @@
 /*
- *  Open BEAGLE
- *  Copyright (C) 2001-2007 by Christian Gagne and Marc Parizeau
+ * System.hpp
  *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  Contact:
- *  Laboratoire de Vision et Systemes Numeriques
- *  Departement de genie electrique et de genie informatique
- *  Universite Laval, Quebec, Canada, G1K 7P4
- *  http://vision.gel.ulaval.ca
- *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef SCHNAPS_Core_System_hpp
@@ -46,12 +40,11 @@
 #endif
 
 namespace SCHNAPS {
-
 namespace Core {
 
 /*!
  *  \class System SCHNAPS/Core/System.hpp "SCHNAPS/Core/System.hpp"
- *  \brief Core system.
+ *  \brief System class.
  *
  *  A system is a container for the following basic components:
  *   - Factory
@@ -82,6 +75,10 @@ public:
 	System();
 	virtual ~System() {}
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
 		const static std::string lName("System");
@@ -89,10 +86,14 @@ public:
 		schnaps_StackTraceEndM("const std::string& SCHNAPS::Core::System::getName() const");
 	}
 
+	//! Read object from XML.
 	virtual void read(PACC::XML::ConstIterator inIter);
+	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
+	//! Test if object is equal to another.
 	virtual bool isEqual(const Object& inRightObj) const;
+	//! Test if object is less than another.
 	virtual bool isLess(const Object& inRightObj) const;
 
 	//! Add a new component to the system.
@@ -100,93 +101,152 @@ public:
 	//! Initialize the components of this system.
 	void initComponents();
 
-	//! Return a const reference to the factory.
-	inline const Factory& getFactory() const {
+	/*!
+	 * \brief Return a const reference to the factory.
+	 * \return A const reference to the factory.
+	 * \throw SCHNAPS::Core::AssertException if factory is not instanciated. 
+	 */
+	const Factory& getFactory() const {
 		schnaps_NonNullPointerAssertM(mFactory);
 		return *mFactory;
 	}
 
-	//! Return a reference to the factory.
+	/*!
+	 * \brief Return a reference to the factory.
+	 * \return A reference to the factory.
+	 * \throw SCHNAPS::Core::AssertException if factory is not instanciated. 
+	 */
 	inline Factory& getFactory() {
 		schnaps_NonNullPointerAssertM(mFactory);
 		return *mFactory;
 	}
 
-	//! Return a const reference to the parameters.
-	inline const Parameters& getParameters() const {
+	/*!
+	 * \brief Return a const reference to the parameters.
+	 * \return A const reference to the parameters.
+	 * \throw SCHNAPS::Core::AssertException if parameters are not instanciated. 
+	 */
+	const Parameters& getParameters() const {
 		schnaps_NonNullPointerAssertM(mParameters);
 		return *mParameters;
 	}
 
-	//! Return a reference to the parameters.
-	inline Parameters& getParameters() {
+	/*!
+	 * \brief Return a reference to the parameters.
+	 * \return A reference to the parameters.
+	 * \throw SCHNAPS::Core::AssertException if parameters are not instanciated. 
+	 */
+	Parameters& getParameters() {
 		schnaps_NonNullPointerAssertM(mParameters);
 		return *mParameters;
 	}
 
-	//! Return a const reference to the randomizer.
-	inline const Randomizer& getRandomizer(unsigned int inThreadNb) const {
+	/*!
+	 * \brief Return a const reference to the randomizer associated to a thread.
+	 * \param inThreadNb The thread number of randomizer to return.
+	 * \return A const reference to the randomizer.
+	 * \throw SCHNAPS::Core::AssertException if randomizers are not instanciated. 
+	 */
+	const Randomizer& getRandomizer(unsigned int inThreadNb) const {
 		schnaps_NonNullPointerAssertM(mRandomizers);
 		return *((*mRandomizers)[inThreadNb]);
 	}
 
-	//! Return a reference to the randomizer.
-	inline Randomizer& getRandomizer(unsigned int inThreadNb) {
+	/*!
+	 * \brief Return a reference to the randomizer.
+	 * \param inThreadNb The thread number of randomizer to return.
+	 * \return A reference to the randomizer.
+	 * \throw SCHNAPS::Core::AssertException if randomizers are not instanciated. 
+	 */
+	Randomizer& getRandomizer(unsigned int inThreadNb) {
 		schnaps_NonNullPointerAssertM(mRandomizers);
 		return *((*mRandomizers)[inThreadNb]);
 	}
 
-	//! Return a const reference to the logger.
-	inline const Logger& getLogger(unsigned int inThreadNb) const {
+	/*!
+	 * \brief Return a const reference to the logger.
+	 * \param inThreadNb The thread number of logger to return.
+	 * \return A const reference to the logger.
+	 * \throw SCHNAPS::Core::AssertException if loggers are not instanciated.
+	 */
+	const Logger& getLogger(unsigned int inThreadNb) const {
 		schnaps_NonNullPointerAssertM(mLoggers);
 		return *((*mLoggers)[inThreadNb]);
 	}
 
-	//! Return a reference to the logger.
-	inline Logger& getLogger(unsigned int inThreadNb) {
+	/*!
+	 * \brief Return a reference to the logger.
+	 * \param inThreadNb The thread number of logger to return.
+	 * \return A reference to the logger.
+	 * \throw SCHNAPS::Core::AssertException if loggers are not instanciated.
+	 */
+	Logger& getLogger(unsigned int inThreadNb) {
 		schnaps_NonNullPointerAssertM(mLoggers);
 		return *((*mLoggers)[inThreadNb]);
 	}
 
-	//! Return a const reference to the typing manager.
-	inline const TypingManager& getTypingManager() const {
+	/*!
+	 * \brief Return a const reference to the typing manager.
+	 * \return A const reference to the typing manager.
+	 * \throw SCHNAPS::Core::AssertException if typing manager is not instanciated. 
+	 */
+	const TypingManager& getTypingManager() const {
 		schnaps_NonNullPointerAssertM(mTypingManager);
 		return *mTypingManager;
 	}
 
-	//! Return a const reference to the plugins.
-	inline const Plugins& getPlugins() const {
-		schnaps_AssertM(mPlugins != NULL);
+	/*!
+	 * \brief Return a const reference to the plugins.
+	 * \return A const reference to the plugins.
+	 * \throw SCHNAPS::Core::AssertException if plugins are not instanciate.
+	 */
+	const Plugins& getPlugins() const {
+		schnaps_NonNullPointerAssertM(mPlugins);
 		return *mPlugins;
 	}
 
-	//! Return a const handle to the specified component.
-	inline const Component::Handle getComponentHandle(std::string inName) const {
+	/*!
+	 * \brief Return a const handle to a specific component.
+	 * \param inName The name of the component to return.
+	 * \return A const handle to the specific component.
+	 * \throw SCHNAPS::Core::AssertException if specific component does not exist.
+	 */
+	const Component::Handle getComponentHandle(std::string inName) const {
 		schnaps_AssertM(this->find(inName) != this->end());
 		return this->find(inName)->second;
 	}
 
-	//! Return a const reference to the specified component.
-	inline const Component& getComponent(std::string inName) const {
+	/*!
+	 * \brief Return a const reference to a specific component.
+	 * \param inName The name of the component to return.
+	 * \return A const reference to the specific component.
+	 * \throw SCHNAPS::Core::AssertException if specific component does not exist.
+	 */
+	const Component& getComponent(std::string inName) const {
 		schnaps_AssertM(this->find(inName) != this->end());
 		return *(this->find(inName)->second);
 	}
 
-	//! Return a reference to the specified component.
-	inline Component& getComponent(std::string inName) {
+	/*!
+	 * \brief Return a reference to a specific component.
+	 * \param inName The name of the component to return.
+	 * \return A reference to the specific component.
+	 * \throw SCHNAPS::Core::AssertException if specific component does not exist.
+	 */
+	Component& getComponent(std::string inName) {
 		schnaps_AssertM(this->find(inName) != this->end());
 		return *(this->find(inName)->second);
 	}
 
 private:
-	Factory::Handle mFactory;				//!< Factory system component.
-	Parameters::Handle mParameters;
+	Factory::Handle mFactory;				//!< Factory for allocating different objects.
+	Parameters::Handle mParameters;			//!< Parameters of system.
 
-	RandomizerMulti::Handle mRandomizers;	//!< Randomizer system component (one randomizer per thread).
-	LoggerMulti::Handle mLoggers;			//!< Logger system component (one logger per thread).
+	RandomizerMulti::Handle mRandomizers;	//!< Random number generators (one per thread).
+	LoggerMulti::Handle mLoggers;			//!< Loggers (one per thread).
 
-	TypingManager::Handle mTypingManager;	//!< Typing manager system component.
-	Plugins::Handle mPlugins;				//!< Plugins system component.
+	TypingManager::Handle mTypingManager;	//!< Typing manager for types verification.
+	Plugins::Handle mPlugins;				//!< Plugins (dynamically loaded at runtime.
 };
 } // end of Core namespace
 } // end of SCHNAPS namespace

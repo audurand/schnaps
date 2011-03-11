@@ -1,8 +1,8 @@
 /*
  * IfThenElse.hpp
  *
- *  Created on: 2009-03-10
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,34 +29,42 @@ namespace Plugins {
 namespace Control {
 
 /*!
- *  \class IfThenElse SCHNAPS/Basic/IfThenElse.hpp "SCHNAPS/Basic/IfThenElse.hpp"
- *  \brief Branching IfThenElse primitive class.
+ *  \class IfThenElse SCHNAPS/Plugins/Control/IfThenElse.hpp "SCHNAPS/Plugins/Control/IfThenElse.hpp"
+ *  \brief Branching If...Then...Else primitive class.
  */
-class IfThenElse: public SCHNAPS::Core::Primitive {
+class IfThenElse: public Core::Primitive {
 public:
 	//! IfThenElse allocator type.
-	typedef SCHNAPS::Core::AllocatorT<IfThenElse, SCHNAPS::Core::Primitive::Alloc> Alloc;
+	typedef Core::AllocatorT<IfThenElse, Core::Primitive::Alloc> Alloc;
 	//! IfThenElse handle type.
-	typedef SCHNAPS::Core::PointerT<IfThenElse, SCHNAPS::Core::Primitive::Handle> Handle;
+	typedef Core::PointerT<IfThenElse, Core::Primitive::Handle> Handle;
 	//! IfThenElse bag type.
-	typedef SCHNAPS::Core::ContainerT<IfThenElse, SCHNAPS::Core::Primitive::Bag> Bag;
+	typedef Core::ContainerT<IfThenElse, Core::Primitive::Bag> Bag;
 
 	IfThenElse();
 	IfThenElse(const IfThenElse& inOriginal);
 	virtual ~IfThenElse() {}
 
+	//! Copy operator.
+	IfThenElse& operator=(const IfThenElse& inOriginal);
+
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Control_IfThenElse");
-			return lName;
+		const static std::string lName("Control_IfThenElse");
+		return lName;
 		schnaps_StackTraceEndM("const std::string& IfThenElse::getName() const");
 	}
 
-	IfThenElse& operator=(const IfThenElse& inOriginal);
-
-	virtual SCHNAPS::Core::AnyType::Handle execute(unsigned int inIndex, SCHNAPS::Core::ExecutionContext& ioContext) const;
-	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, SCHNAPS::Core::ExecutionContext& ioContext) const;
-	virtual const std::string& getReturnType(unsigned int inIndex, SCHNAPS::Core::ExecutionContext& ioContext) const;
+	//! Execute the primitive.
+	virtual SCHNAPS::Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the nth argument requested return type.
+	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const;
+	//! Return the primitive return type.
+	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 };
 } // end of Control namespace
 } // end of Plugins namespace

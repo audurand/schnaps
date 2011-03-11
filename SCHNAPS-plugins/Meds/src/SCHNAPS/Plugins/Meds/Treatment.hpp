@@ -1,8 +1,8 @@
 /*
  * Treatment.hpp
  *
- *  Created on: 2010-11-02
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,9 @@
 #ifndef SCHNAPS_Plugins_Meds_Treatment_hpp
 #define SCHNAPS_Plugins_Meds_Treatment_hpp
 
-#include "PACC/XML.hpp"
 #include "SCHNAPS/SCHNAPS.hpp"
+
+#include "PACC/XML.hpp"
 
 namespace SCHNAPS {
 namespace Plugins {
@@ -30,7 +31,7 @@ namespace Meds {
 
 /*!
  *  \class Treatment SCHNAPS/Plugins/Meds/Treatment.hpp "SCHNAPS/Plugins/Meds/Treatment.hpp"
- *  \brief Primitive that implements a medical treatment (or intervention) over an individual.
+ *  \brief Medical treatment (or intervention) over an individual.
  */
 class Treatment: public Core::Primitive {
 public:
@@ -45,29 +46,38 @@ public:
 	Treatment(const Treatment& inOriginal);
 	virtual ~Treatment() {}
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Osteo_Treatment");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& Treatment::getName() const");
+		const static std::string lName("Osteo_Treatment");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Meds::Treatment::getName() const");
 	}
 
+	//! Read object from XML using system.
 	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
+	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the nth argument requested return type.
 	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const;
+	//! Return the primitive return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
 	std::string mLabel;
-	Core::Double::Handle mCompliance;
-	Core::Double::Handle mCost;
-	Core::Double::Handle mDiscountRate;
-	std::string mCompliance_Ref;
-	std::string mCost_Ref;
-	std::string mDiscountRate_Ref;
-	std::string mCostVariableLabel;
+	Core::Double::Handle mCompliance;	//!< A handle to the compliance value.
+	Core::Double::Handle mCost;			//!< A handle to the cost value.
+	Core::Double::Handle mDiscountRate;	//!< A handle to the discount rate value.
+	std::string mCompliance_Ref;		//!< Label of compliance parameter.
+	std::string mCost_Ref;				//!< Label of cost parameter.
+	std::string mDiscountRate_Ref;		//!< Label of discount rate parameter.
+	std::string mCostVariableLabel;		//!< Label of individual variable for cumulating cost.
 };
 } // end of Meds namespace
 } // end of Plugins namespace

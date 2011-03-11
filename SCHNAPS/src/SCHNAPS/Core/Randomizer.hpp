@@ -45,7 +45,7 @@ class System;
 /*!
  *  \class Randomizer SCHNAPS/Core/Randomizer.hpp "SCHNAPS/Core/Randomizer.hpp"
  *  \brief Random number generator class.
- *  \note The operator() allow compliance with the STL random number generator interface.
+ *  \note  The operator() allow compliance with the STL random number generator interface.
  */
 class Randomizer: public Object, public PACC::Randomizer {
 public:

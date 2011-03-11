@@ -1,8 +1,8 @@
 /*
  * SubVariable.cpp
  *
- *  Created on: 2010-11-20
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,18 +25,22 @@ using namespace Plugins;
 using namespace Operators;
 
 /*!
- *  \brief Construct a new primitive to substract a value from a variable.
+ * \brief Default constructor.
  */
 SubVariable::SubVariable() :
-		Core::Primitive(0),
-		mValue_Ref(""),
-		mValue(NULL)
+	Core::Primitive(0),
+	mValue_Ref(""),
+	mValue(NULL)
 {}
 
+/*!
+ * \brief Construct an operator to subtract a value to a current individual variable as a copy of an original.
+ * \param inOriginal A const reference to the original operator to subtract a value to a current individual variable.
+ */
 SubVariable::SubVariable(const SubVariable& inOriginal) :
-		Core::Primitive(0),
-		mLabel(inOriginal.mLabel.c_str()),
-		mValue_Ref(inOriginal.mValue_Ref.c_str())
+	Core::Primitive(0),
+	mLabel(inOriginal.mLabel.c_str()),
+	mValue_Ref(inOriginal.mValue_Ref.c_str())
 {
 	if (mValue_Ref.empty()) {
 		mValue = Core::castHandleT<Core::Number>(inOriginal.mValue->clone());
@@ -45,87 +49,104 @@ SubVariable::SubVariable(const SubVariable& inOriginal) :
 	}
 }
 
+/*!
+ * \brief Read object from XML using system.
+ * \param inIter XML iterator of input document.
+ * \param ioSystem A reference to the system.
+ * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
+ * \throw SCHNAPS::Core::IOException if label attribute is missing.
+ * \throw SCHNAPS::Core::IOException if value attribute and value.ref attribute are missing.
+ * \throw SCHNAPS::Core::IOException if value attribute is used and valueType attribute is missing.
+ */
 void SubVariable::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
-		if (inIter->getType() != PACC::XML::eData) {
-			throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
+	if (inIter->getType() != PACC::XML::eData) {
+		throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
+	}
+	if (inIter->getValue() != getName()) {
+		std::ostringstream lOSS;
+		lOSS << "tag <" << getName() << "> expected, but ";
+		lOSS << "got tag <" << inIter->getValue() << "> instead!";
+		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
+	}
+
+	// retrieve label
+	if (inIter->getAttribute("label").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "label of variable to subtract (from) expected!");
+	}
+	mLabel = inIter->getAttribute("label");
+
+	// retrieve value
+	if (inIter->getAttribute("value").empty()) {
+		if (inIter->getAttribute("value.ref").empty()) {
+			throw schnaps_IOExceptionNodeM(*inIter, "value to subtract expected!");
+		} else { // from parameter
+			mValue_Ref = inIter->getAttribute("value.ref");
+
+			std::stringstream lSS;
+			lSS << "ref." << mValue_Ref;
+			mValue = Core::castHandleT<Core::Number>(ioSystem.getParameters().getParameterHandle(lSS.str().c_str()));
 		}
-		if (inIter->getValue() != getName()) {
-			std::ostringstream lOSS;
-			lOSS << "tag <" << getName() << "> expected, but ";
-			lOSS << "got tag <" << inIter->getValue() << "> instead!";
-			throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
+	} else { // explicitly given
+		if (inIter->getAttribute("valueType").empty()) {
+			throw schnaps_IOExceptionNodeM(*inIter, "type of value expected!");
 		}
 
-		// Retrieve label
-		if (inIter->getAttribute("label").empty()) {
-			throw schnaps_IOExceptionNodeM(*inIter, "label of variable to subtract (from) expected!");
-		}
-		mLabel = inIter->getAttribute("label");
-
-		// Retrieve value
-		if (inIter->getAttribute("value").empty()) {
-			if (inIter->getAttribute("value.ref").empty()) {
-				throw schnaps_IOExceptionNodeM(*inIter, "value to subtract expected!");
-			} else { // From parameter
-				mValue_Ref = inIter->getAttribute("value.ref");
-
-				std::stringstream lSS;
-				lSS << "ref." << mValue_Ref;
-				mValue = Core::castHandleT<Core::Number>(ioSystem.getParameters()[lSS.str().c_str()]);
-			}
-		} else { // Explicitly given
-			if (inIter->getAttribute("valueType").empty()) {
-				throw schnaps_IOExceptionNodeM(*inIter, "type of value expected!");
-			}
-
-			Core::Number::Alloc::Handle lAlloc = Core::castHandleT<Core::Number::Alloc>(ioSystem.getFactory().getAllocator(inIter->getAttribute("valueType")));
-			mValue =  Core::castHandleT<Core::Number>(lAlloc->allocate());
-			if (mValue == NULL) {
-				std::ostringstream lOSS;
-				lOSS << "no number named '" <<  inIter->getAttribute("valueType");
-				lOSS << "' found in the factory";
-				throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
-			}
-			mValue->readStr(inIter->getAttribute("value"));
-		}
-	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Operators::SubVariable::readWithSystem(PACC::XML::ConstIterator, Core::System&)");
+		Core::Number::Alloc::Handle lAlloc = Core::castHandleT<Core::Number::Alloc>(ioSystem.getFactory().getAllocator(inIter->getAttribute("valueType")));
+		mValue =  Core::castHandleT<Core::Number>(lAlloc->allocate());
+		mValue->readStr(inIter->getAttribute("value"));
+	}
+	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Operators::SubVariable::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
+/*!
+ * \brief Write object content to XML.
+ * \param ioStreamer XML streamer to output document.
+ * \param inIndent Wether to indent or not.
+ */
 void SubVariable::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-		ioStreamer.insertAttribute("label", mLabel);
-		if (mValue_Ref.empty()) {
-			ioStreamer.insertAttribute("valueType", mValue->getName());
-			ioStreamer.insertAttribute("value", mValue->writeStr());
-		} else {
-			ioStreamer.insertAttribute("value.ref", mValue_Ref);
-		}
+	ioStreamer.insertAttribute("label", mLabel);
+	if (mValue_Ref.empty()) {
+		ioStreamer.insertAttribute("valueType", mValue->getName());
+		ioStreamer.insertAttribute("value", mValue->writeStr());
+	} else {
+		ioStreamer.insertAttribute("value.ref", mValue_Ref);
+	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Operators::SubVariable::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
+/*!
+ * \brief  Execute the primitive.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A handle to the execution result.
+ * \throw  SCHNAPS::Core::RunTimeException if the method is not defined for the specific execution context.
+ */
 Core::AnyType::Handle SubVariable::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		SCHNAPS::Simulation::ExecutionContext& lContext = Core::castObjectT<SCHNAPS::Simulation::ExecutionContext&>(ioContext);
-
-#ifndef SIMULATOR_NDEBUG
-		if (lContext.getIndividual().getState().find(mLabel) == lContext.getIndividual().getState().end()) {
-			throw schnaps_InternalExceptionM("Could not find variable '" + mLabel + "' in the current individual state!");
+		if (ioContext.getName() == "GenerationContext") {
+			throw schnaps_RunTimeExceptionM("The method is not defined for context 'GenerationContext'.");
 		}
-#else
-		schnaps_AssertM(lContext.getIndividual().getState().find(mLabel) != lContext.getIndividual().getState().end());
-#endif
+		Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
 
-		Core::Number::Handle lVariable = Core::castHandleT<Core::Number>(lContext.getIndividual().getState()[mLabel]);
-		Core::Number::Handle lTempValue = Core::castHandleT<Core::Number>(mValue->clone());
-		lVariable->sub(*lTempValue);
+		Core::Number::Handle lVariable = Core::castHandleT<Core::Number>(lContext.getIndividual().getState().getVariableHandle(mLabel));
+		Core::Number::Handle lNewValue = Core::castHandleT<Core::Number>(mValue->clone());
+		lNewValue->sub(*lVariable);
+		lContext.getIndividual().getState().setVariable(mLabel, lNewValue);
 		return NULL;
-	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Operators::SubVariable::execute(unsigned int, Core::ExecutionContext&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Operators::SubVariable::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
 }
 
+/*!
+ * \brief  Return the primitive return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the return type.
+ */
 const std::string& SubVariable::getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		const static std::string lType("Void");
-		return lType;
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::SubVariable::getReturnType(unsigned int, Core::ExecutionContext&) const");
+	const static std::string lType("Void");
+	return lType;
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::SubVariable::getReturnType(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }

@@ -1,8 +1,8 @@
 /*
  * Generator.cpp
  *
- *  Created on: 2010-03-29
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <vector>
-
 #include "SCHNAPS/Core.hpp"
 #include "SCHNAPS/Simulation.hpp"
+
+#include <vector>
 
 using namespace SCHNAPS;
 using namespace Simulation;
 
+/*!
+ * \brief Default constructor.
+ */
 Generator::Generator() :
 	mSystem(NULL),
 	mClock(NULL),
@@ -34,6 +37,10 @@ Generator::Generator() :
 	mSequential(new PACC::Threading::Semaphore(0))
 {}
 
+/*!
+ * \brief Construct a generator as a copy of an original.
+ * \param inOriginal A const reference to the original.
+ */
 Generator::Generator(const Generator& inOriginal) :
 	mSystem(inOriginal.mSystem),
 	mClock(inOriginal.mClock),
@@ -49,7 +56,13 @@ Generator::Generator(const Generator& inOriginal) :
 	mProfiles(inOriginal.mProfiles)
 {}
 
-Generator::Generator(SCHNAPS::Core::System::Handle inSystem, Clock::Handle inClock, Environment::Handle inEnvironment) :
+/*!
+ * \brief Construct a generator with specific system, clock and environment.
+ * \param inSystem A handle to the system.
+ * \param inClock A handle to the clock.
+ * \param inEnvironment A handle to the environment.
+ */
+Generator::Generator(Core::System::Handle inSystem, Clock::Handle inClock, Environment::Handle inEnvironment) :
 	mSystem(inSystem),
 	mClock(inClock),
 	mEnvironment(inEnvironment),
@@ -57,6 +70,9 @@ Generator::Generator(SCHNAPS::Core::System::Handle inSystem, Clock::Handle inClo
 	mSequential(new PACC::Threading::Semaphore(0))
 {}
 
+/*!
+ * \brief Destructor.
+ */
 Generator::~Generator() {
 	for (unsigned int i = 0; i < mSubThreads.size(); i++) {
 		mSubThreads[i]->setPosition(GenerationThread::eEND);
@@ -66,6 +82,11 @@ Generator::~Generator() {
 	mParallel->unlock();
 }
 
+/*!
+ * \brief Read object from XML.
+ * \param inIter XML iterator of input document.
+ * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
+ */
 void Generator::read(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceBeginM();
 	if (inIter->getType() != PACC::XML::eData) {
@@ -94,6 +115,11 @@ void Generator::read(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Generator::read(PACC::XML::ConstIterator)");
 }
 
+/*!
+ * \brief Write object content to XML.
+ * \param ioStreamer XML streamer to output document.
+ * \param inIndent Wether to indent or not.
+ */
 void Generator::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	// write the seeds of randomizers
 	this->writeRandomizerInfo(ioStreamer, inIndent);
@@ -102,30 +128,40 @@ void Generator::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) con
 	this->writeProfiles(ioStreamer, inIndent);
 }
 
-Individual::Bag::Handle Generator::generate(std::string inProfile, unsigned int inSize, std::string inPrefix, unsigned int inStartingIndex) {
+/*!
+ * \brief  Generate a quantity of individuals from a specific profile using specific prefix and start index.
+ * \param  inProfile A const reference to the profile name.
+ * \param  inSize The size of sub-population to generate.
+ * \param  inPrefix A const reference to the ID prefix of new individuals.
+ * \param  inStartingIndex The start index of individuals.
+ * \return A handle to a bag of newly generated individuals.
+ * \throw  SCHNAPS::Core::RunTimeException if specific profile does not exist.
+ */
+Individual::Bag::Handle Generator::generate(const std::string& inProfile, unsigned int inSize, const std::string& inPrefix, unsigned int inStartingIndex) {
 	schnaps_StackTraceBeginM();
-#ifndef SCHNAPS_NDEBUG
-	if (mProfiles.find(inProfile) == mProfiles.end()) {
-		throw schnaps_InternalExceptionM("Could not find profile '" + inProfile + "' in generator!");
+	ProfileMap::iterator lIterProfiles = mProfiles.find(inProfile);
+	if (lIterProfiles == mProfiles.end()) {
+		std::ostringstream lOSS;
+		lOSS << "The profile '" << inProfile << "' does not exist; ";
+		lOSS << "could not generate individuals.";
+		throw schnaps_RunTimeExceptionM(lOSS.str());
 	}
-#else
-	schnaps_AssertM(mProfiles.find(inProfile) != mProfiles.end());
-#endif
 
-	GenProfile::Handle lProfile = mProfiles.find(inProfile)->second;
+	GenProfile::Handle lProfile = lIterProfiles->second;
 
 	// compute variables to erase
-	SCHNAPS::Core::StringArray::Handle lEraseVariable = new SCHNAPS::Core::StringArray();
-	for (Demography::const_iterator lIt = lProfile->getDemography().begin(); lIt != lProfile->getDemography().end(); lIt++) {
-		if (lProfile->getIndividualModel().find(lIt->first) == lProfile->getIndividualModel().end()) {
-			// if variable not in individual model, thrash
-			lEraseVariable->push_back(lIt->first);
+	Core::StringArray::Handle lEraseVariable = new Core::StringArray();
+	std::vector<std::string> lVariables = lProfile->getDemography().getVariableList();
+	for (unsigned int i = 0; i < lVariables.size(); i++) {
+		if (lProfile->getIndividualModel().find(lVariables[i]) == lProfile->getIndividualModel().end()) {
+			// if variable not in individual model, add to variable list for thrash
+			lEraseVariable->push_back(lVariables[i]);
 		}
 	}
 
 	// backup randomizer seeds
-	SCHNAPS::Core::ULongArray lBackupSeed;
-	SCHNAPS::Core::StringArray lBackupState;
+	Core::ULongArray lBackupSeed;
+	Core::StringArray lBackupState;
 
 	// for computing threads sub-size to generate
 	unsigned int lQuotient = inSize / mSubThreads.size();
@@ -134,7 +170,7 @@ Individual::Bag::Handle Generator::generate(std::string inProfile, unsigned int 
 
 	// init Threads
 	for (unsigned int i = 0; i < mSubThreads.size(); i++) {
-		mContext[i]->setGenProfile(lProfile->deepCopy(*mSystem));
+		mContext[i]->setGenProfile(Core::castHandleT<GenProfile>(lProfile->deepCopy(*mSystem)));
 
 		// compute sub-size
 		lSubSize = lQuotient;
@@ -175,9 +211,13 @@ Individual::Bag::Handle Generator::generate(std::string inProfile, unsigned int 
 	}
 
 	return lIndividuals;
-	schnaps_StackTraceEndM("SCHNAPS::Simulation::Individual::Bag::Handle SCHNAPS::Simulation::Generator::generate(std::string, unsigned int, std::string, unsigned int)");
+	schnaps_StackTraceEndM("SCHNAPS::Simulation::Individual::Bag::Handle SCHNAPS::Simulation::Generator::generate(const std::string&, unsigned int, const std::string&, unsigned int)");
 }
 
+/*!
+ * \brief Build individuals using specific thread.
+ * \param inThread A handle to the executing thread.
+ */
 void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 	schnaps_StackTraceBeginM();
 	GenerationContext::Handle lContext = inThread->getContextHandle();
@@ -186,6 +226,9 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 
 	inThread->getIndividuals().clear();
 	inThread->getIndividuals().reserve(inThread->getSize());
+	
+	std::vector<std::string> lDemographyVariables = lContext->getGenProfile().getDemography().getVariableList();
+	std::vector<std::string> lSimulationVariables = lContext->getGenProfile().getSimulationVariables().getVariableList();
 
 	for (unsigned int i = 0; i < inThread->getSize(); i++) {
 		lID.str("");
@@ -196,28 +239,34 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 
 		do {
 			lContext->getIndividual().getState().clear();
-
-			for (unsigned int j = 0; j < lContext->getGenProfile().getDemography().size(); j++) {
-				lContext->getIndividual().getState().insert(std::pair<std::string, SCHNAPS::Core::Atom::Handle>(
-						lContext->getGenProfile().getDemography()[j].first,
-						SCHNAPS::Core::castHandleT<SCHNAPS::Core::Atom>(lContext->getGenProfile().getDemography()[j].second->interpret(*lContext))));
+			
+			for (unsigned int j = 0; j < lDemographyVariables.size(); j++) {
+				if (lContext->getIndividual().getState().hasVariable(lDemographyVariables[j]) == false) {
+					// the variable has not been computed yet for this individual
+					lContext->getIndividual().getState().insertVariable(
+						lDemographyVariables[j],
+						Core::castHandleT<Core::Atom>(lContext->getGenProfile().getDemography().getVariableInitTree(lDemographyVariables[j]).interpret(*lContext)));
+				}
 			}
 			// retry until a valid individual is created
-		} while (SCHNAPS::Core::castHandleT<SCHNAPS::Core::Bool>(lContext->getGenProfile().getAcceptFunction().interpret(*lContext))->getValue() == false);
+		} while (Core::castHandleT<Core::Bool>(lContext->getGenProfile().getAcceptFunction().interpret(*lContext))->getValue() == false);
 
 		// add simulation variables
-		for (unsigned int j = 0; j < lContext->getGenProfile().getSimulationVariables().size(); j++) {
-			lContext->getIndividual().getState().insert(std::pair<std::string, SCHNAPS::Core::Atom::Handle>(
-					lContext->getGenProfile().getSimulationVariables()[j].first,
-					SCHNAPS::Core::castHandleT<SCHNAPS::Core::Atom>(lContext->getGenProfile().getSimulationVariables()[j].second->interpret(*lContext))));
+		for (unsigned int j = 0; j < lSimulationVariables.size(); j++) {
+			if (lContext->getIndividual().getState().hasVariable(lSimulationVariables[j]) == false) {
+				// the variable has not been computed yet for this individual
+				lContext->getIndividual().getState().insertVariable(
+					lSimulationVariables[j],
+					Core::castHandleT<Core::Atom>(lContext->getGenProfile().getSimulationVariables().getVariableInitTree(lSimulationVariables[j]).interpret(*lContext)));
+			}
 		}
 
 		// erase non-wanted demographic variables
 		for (unsigned int j = 0; j < inThread->getEraseVariables().size(); j++) {
-			lContext->getIndividual().getState().erase(inThread->getEraseVariables()[j]);
+			lContext->getIndividual().getState().removeVariable(inThread->getEraseVariables()[j]);
 		}
 	}
-	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Generator::buildIndividuals(SCHNAPS::Simulation::GenerationThread*)");
+	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Generator::buildIndividuals(SCHNAPS::Simulation::GenerationThread::Handle)");
 }
 
 /*!
@@ -226,7 +275,7 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 void Generator::refresh() {
 	schnaps_StackTraceBeginM();
 	// create one context per thread + sub threads
-	unsigned int lNbThreads_new = SCHNAPS::Core::castHandleT<SCHNAPS::Core::UInt>(mSystem->getParameters()["threads.generator"])->getValue();
+	unsigned int lNbThreads_new = Core::castObjectT<const Core::UInt&>(mSystem->getParameters().getParameter("threads.generator")).getValue();
 	unsigned int lNbThreads_old = mContext.size();
 
 	if (lNbThreads_old < lNbThreads_new) {
@@ -285,7 +334,7 @@ void Generator::readRandomizerInfo(PACC::XML::ConstIterator inIter) {
 printf("Reading randomizer info\n");
 #endif
 
-	unsigned int lThreadsGenerator = SCHNAPS::Core::castHandleT<SCHNAPS::Core::UInt>(mSystem->getParameters()["threads.generator"])->getValue();
+	unsigned int lThreadsGenerator = Core::castObjectT<const Core::UInt&>(mSystem->getParameters().getParameter("threads.generator")).getValue();
 	mRandomizerInitSeed.clear();
 	mRandomizerInitState.clear();
 	mRandomizerInitSeed.resize(lThreadsGenerator, 0);

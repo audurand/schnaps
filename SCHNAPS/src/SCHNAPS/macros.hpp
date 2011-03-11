@@ -81,7 +81,6 @@ namespace SCHNAPS {
 	 *  \brief Test if a floating-point number is in a not-a-number state.
 	 *  \param inValue Value to evaluate not-a-number state.
 	 *  \return True if the floating-point value is not-a-number, otherwise false.
-	 *  \ingroup Utils
 	 */
 	template<class T>
 	inline bool isNaN(const T& inValue) {
@@ -92,7 +91,6 @@ namespace SCHNAPS {
 	 *  \brief Test if a floating-point number is infinite.
 	 *  \param inValue Value to evaluate finiteness.
 	 *  \return True if the floating-point value is equal to infinity, otherwise false.
-	 *  \ingroup Utils
 	 */
 	template<class T>
 	inline bool isInfinity(const T& inValue) {
@@ -111,7 +109,6 @@ namespace SCHNAPS {
 	 *  \brief Test if a floating-point number is finite, that is not NaN or infinite.
 	 *  \param inValue Value to evaluate finiteness.
 	 *  \return True if the floating-point value is finite, otherwise false.
-	 *  \ingroup Utils
 	 */
 	template<class T>
 	inline bool isFinite(const T& inValue) {
@@ -123,7 +120,6 @@ namespace SCHNAPS {
 	 *  \param inValue1 First value from which we want the maximum.
 	 *  \param inValue2 Second value from which we want the maximum.
 	 *  \return Maximum value between inValue1 and inValue2.
-	 *  \ingroup Utils
 	 */
 	template<class T>
 	inline T maxOf(const T& inValue1, const T& inValue2) {
@@ -139,7 +135,6 @@ namespace SCHNAPS {
 	 *  \param inValue1 First value from which we want the minimum.
 	 *  \param inValue2 Second value from which we want the minimum.
 	 *  \return Minimum value between inValue1 and inValue2.
-	 *  \ingroup Utils
 	 */
 	template<class T>
 	inline T minOf(const T& inValue1, const T& inValue2) {
@@ -154,7 +149,6 @@ namespace SCHNAPS {
 	 *  \brief Evaluate square of a number (X^2).
 	 *  \param inValue Value to evaluate the square.
 	 *  \return Square of the value.
-	 *  \ingroup Utils
 	 */
 	template<class T>
 	inline T pow2Of(const T& inValue) {
@@ -165,7 +159,6 @@ namespace SCHNAPS {
 	 *  \brief Evaluate absolute value of a number.
 	 *  \param inValue Value to evaluate the absolute value.
 	 *  \return Absolute value of the input.
-	 *  \ingroup Utils
 	 */
 	template<class T>
 	inline T absolute(const T& inValue) {
@@ -176,7 +169,6 @@ namespace SCHNAPS {
 	 *  \brief Evaluate absolute value of a double.
 	 *  \param inValue Double to evaluate the absolute value.
 	 *  \return Absolute value of the input.
-	 *  \ingroup Utils
 	 */
 	template<>
 	inline double absolute(const double& inValue) {
@@ -187,7 +179,6 @@ namespace SCHNAPS {
 	 *  \brief Evaluate absolute value of a float.
 	 *  \param inValue Float to evaluate the absolute value.
 	 *  \return Absolute value of the input.
-	 *  \ingroup Utils
 	 */
 	template<>
 	inline float absolute(const float& inValue) {
@@ -198,7 +189,6 @@ namespace SCHNAPS {
 	 *  \brief Evaluate absolute value of a long integer.
 	 *  \param inValue Long integer to evaluate the absolute value.
 	 *  \return Absolute value of the input.
-	 *  \ingroup Utils
 	 */
 	template<>
 	inline long absolute(const long& inValue) {
@@ -209,7 +199,6 @@ namespace SCHNAPS {
 	 *  \brief Evaluate absolute value of a int.
 	 *  \param inValue Integer to evaluate the absolute value.
 	 *  \return Absolute value of the input.
-	 *  \ingroup Utils
 	 */
 	template<>
 	inline int absolute(const int& inValue) {
@@ -220,7 +209,6 @@ namespace SCHNAPS {
 	 *  \brief Round double to the nearest integer, rounding half-way cases away from 0.
 	 *  \param inValue Value to round
 	 *  \return Rounded values to nearest integer.
-	 *  \ingroup Utils
 	 */
 	inline double round(double inValue) {
 		return (inValue < 0.0) ? std::ceil(inValue - 0.5) : std::floor(inValue
@@ -231,7 +219,6 @@ namespace SCHNAPS {
 	 *  \brief  Convert an integer into a string.
 	 *  \param  inInteger Integer to convert into a string.
 	 *  \return string containing conversion of the integer.
-	 *  \ingroup Utils
 	 */
 	inline std::string int2str(long inInteger) {
 		std::ostringstream lStringOS;
@@ -244,7 +231,6 @@ namespace SCHNAPS {
 	 *  \brief  Convert a string into a integer.
 	 *  \param  inString String to convert into an integer.
 	 *  \return Long containing the conversion of the string.
-	 *  \ingroup Utils
 	 */
 	inline long str2int(const std::string& inString) {
 		std::string lStr(inString);
@@ -258,7 +244,6 @@ namespace SCHNAPS {
 	 *  \brief  Convert an unsigned integer into a string.
 	 *  \param  inInteger Integer to convert into a string.
 	 *  \return string containing conversion of the integer.
-	 *  \ingroup Utils
 	 */
 	inline std::string uint2str(unsigned long inInteger) {
 		std::ostringstream lStringOS;
@@ -271,7 +256,6 @@ namespace SCHNAPS {
 	 *  \brief  Convert a string into an unsigned integer.
 	 *  \param  inString String to convert into an integer.
 	 *  \return Unsigned long containing the conversion of the string.
-	 *  \ingroup Utils
 	 */
 	inline unsigned long str2uint(const std::string& inString) {
 		std::istringstream lStringIS(inString);
@@ -285,7 +269,6 @@ namespace SCHNAPS {
 	 *  \param  inDouble Double to convert into a string.
 	 *  \param  inPrecision Precision of the conversion.
 	 *  \return String containing conversion of the double.
-	 *  \ingroup Utils
 	 */
 	inline std::string dbl2str(double inDouble, unsigned int inPrecision = 12) {
 		std::ostringstream lStringOS;
@@ -307,7 +290,6 @@ namespace SCHNAPS {
 	 *  \brief  Convert a string into a double.
 	 *  \param  inString String to convert into a double.
 	 *  \return Double containing the conversion of the string.
-	 *  \ingroup Utils
 	 */
 	inline double str2dbl(const std::string& inString) {
 		if (inString == "nan") {
@@ -342,14 +324,13 @@ namespace SCHNAPS {
 	 *  \return Ordinal form of the number.
 	 *  \author Matthew Walker
 	 *  \author Christian Gagne
-	 *  \ingroup Utils
 	 */
 	inline std::string uint2ordinal(unsigned int inNumber) {
-		// Write number to string
+		// write number to string
 		std::ostringstream outStream;
 		outStream << inNumber;
 		std::string lString = outStream.str();
-		// Insert commas for easier reading
+		// insert commas for easier reading
 		if (inNumber > 9999) {
 			unsigned int lCount = 0;
 			for (unsigned int i = lString.length(); i > 1; --i) {
@@ -360,7 +341,7 @@ namespace SCHNAPS {
 				}
 			}
 		}
-		// Choose appropriate suffix
+		// choose appropriate suffix
 		std::string lSuffix = "th";
 		switch (inNumber % 10) {
 		case 1: {
@@ -392,10 +373,9 @@ namespace SCHNAPS {
 	 *  \brief Wrap a string to fit a given line witdh.
 	 *  \param ioString String to wrap.
 	 *  \param inLineWidth Line width of the converted string.
-	 *  \ingroup Utils
 	 */
 	inline void wrapString(std::string& ioString, unsigned int inLineWidth = 80) {
-		// Can't do a line width of zero.  (Setting to zero equates to turning off this algorithm.)
+		// can't do a line width of zero (setting to zero equates to turning off this algorithm)
 		if (inLineWidth == 0)
 			return;
 
@@ -404,38 +384,38 @@ namespace SCHNAPS {
 		unsigned int lBestBreakPoint = 0;
 		unsigned int lFixed = 0;
 
-		// Loop through all the characters in the string
+		// loop through all the characters in the string
 		for (unsigned int i = 0; i < ioString.size(); ++i) {
 
-			// Find next character if this is a new line
+			// find next character if this is a new line
 			if (lNewLine) {
-				// Find the next non-whitespace character to start the line.
+				// find the next non-whitespace character to start the line.
 				std::string::size_type lNextChar = ioString.find_first_not_of(
 						" \t", i);
 				if (lNextChar == std::string::npos) {
-					// The rest of the string is just whitespace. Dump it.
+					// the rest of the string is just whitespace. Dump it.
 					ioString.erase(i - 1);
 					return;
 				}
-				// Swallow one newline.
+				// swallow one newline.
 				if (ioString[lNextChar] == '\n') {
 					++lNextChar;
 				}
-				// Remove the whitespace.
+				// remove the whitespace.
 				if (lNextChar > i) {
 					ioString.erase(i, lNextChar - i);
 				}
 				lNewLine = false;
 			}
 
-			// Check if i has gone over line width (this shouldn't happen).
+			// check if i has gone over line width (this shouldn't happen)
 			if (i > lFixed + inLineWidth)
 				return;
 
-			// Check if i is at line width
+			// check if i is at line width
 			if (i == lFixed + inLineWidth) {
 				if (!lBreakPointValid) {
-					// Breaking in the middle of a word.
+					// breaking in the middle of a word
 					ioString.insert(i, "\n");
 					lFixed = i + 1;
 					i = lFixed - 1; // because at the continue i will be incremented
@@ -443,7 +423,7 @@ namespace SCHNAPS {
 					lNewLine = true;
 					continue;
 				} else {
-					// Breakpoint valid
+					// breakpoint valid
 					if (ioString[lBestBreakPoint] == ' '
 							|| ioString[lBestBreakPoint] == '\t') {
 						ioString[lBestBreakPoint] = '\n';
@@ -456,7 +436,7 @@ namespace SCHNAPS {
 				}
 			}
 
-			// Check if current char is a newline
+			// check if current char is a newline
 			const char lCurrentChar = ioString[i];
 			if (lCurrentChar == '\n') {
 				lFixed = i + 1;
@@ -465,7 +445,7 @@ namespace SCHNAPS {
 				continue;
 			}
 
-			// Look for whitespace to set breakpoints
+			// look for whitespace to set breakpoints
 			if (lCurrentChar == ' ' || lCurrentChar == '\t') {
 				lBestBreakPoint = i;
 				lBreakPointValid = true;

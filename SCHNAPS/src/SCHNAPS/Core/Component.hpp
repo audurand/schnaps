@@ -1,27 +1,21 @@
 /*
- *  Open BEAGLE
- *  Copyright (C) 2001-2007 by Christian Gagne and Marc Parizeau
+ * Component.hpp
  *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  Contact:
- *  Laboratoire de Vision et Systemes Numeriques
- *  Departement de genie electrique et de genie informatique
- *  Universite Laval, Quebec, Canada, G1K 7P4
- *  http://vision.gel.ulaval.ca
- *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef SCHNAPS_Core_Component_hpp
@@ -39,8 +33,10 @@ namespace Core {
 class System;
 
 /*!
- *  \class Component SCHNAPS/Core/Component.hpp "SCHNAPS/Core/Component.hpp"
- *  \brief System component base class.
+ * \class Component SCHNAPS/Core/Component.hpp "SCHNAPS/Core/Component.hpp"
+ * \author Christian Gagne
+ * \author Marc Parizeau
+ * \brief System component base class.
  */
 class Component: public Object {
 public:
@@ -55,17 +51,26 @@ public:
 	explicit Component(std::string inName = "Unnamed component");
 	virtual ~Component() {}
 
+	//! Read the object from XML using System.
 	virtual void readWithSystem(PACC::XML::ConstIterator inIter, System& ioSystem);
 
 	//! Initialize the component.
 	virtual void init(System& ioSystem);
 
+	/*!
+	 * \brief Return a const reference to the name of the component.
+	 * \return A const reference to the name of the component.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
 		return mName;
 		schnaps_StackTraceEndM("const std::string& SCHNAPS::Core::Component::getName() const");
 	}
 
+	/*!
+	 * \brief Set the name of the component.
+	 * \param inName A const reference to the new name.
+	 */
 	virtual void setName(const std::string& inName) {
 		schnaps_StackTraceBeginM();
 		mName = inName;
@@ -74,7 +79,7 @@ public:
 
 
 protected:
-	std::string mName; //!< Name of component.
+	std::string mName; //!< Name of the component.
 };
 } // end of Core namespace
 } // end of SCHNAPS namespace

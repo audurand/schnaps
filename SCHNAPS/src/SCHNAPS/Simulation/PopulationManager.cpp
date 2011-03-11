@@ -1,8 +1,8 @@
 /*
  * PopulationManager.cpp
  *
- *  Created on: 2010-04-15
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -106,6 +106,9 @@ void PopulationManager::writeContent(PACC::XML::Streamer& ioStreamer, bool inInd
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::PopulationManager::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
+/*!
+ * \brief Return a pointer to a vector of newly created individuals.
+ */
 Individual::Bag::Handle SCHNAPS::Simulation::PopulationManager::getIndividuals() {
 	schnaps_StackTraceBeginM();
 	schnaps_NonNullPointerAssertM(mGenerator);

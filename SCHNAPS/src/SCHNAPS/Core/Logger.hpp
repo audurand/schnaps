@@ -1,8 +1,8 @@
 /*
  * Logger.hpp
  *
- *  Created on: 2010-05-19
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ namespace Core {
 
 /*!
  *  \class Logger SCHNAPS/Core/Logger.hpp "SCHNAPS/Core/Logger.hpp"
- *  \brief Logs writer.
+ *  \brief Logger class for writing logs to file.
  */
 class Logger: public Object {
 public:
@@ -43,18 +43,18 @@ public:
 	Logger();
 	virtual ~Logger() {}
 
-	//! Open logger file.
-	void open(const std::string& inLogFile);
+	//! Open logger file and enable logger.
+	void open(const std::string& inFileName);
 
-	//! Output log in log file.
-	void log(const std::string& inLog);
+	//! Log message to file.
+	void log(const std::string& inMessage);
 
-	//! Close logger file.
+	//! Close logger file and disable logger.
 	void close();
 
 private:
-	bool mEnabled;			//!< True if log is enabled.
-	ogzstream* mOGZS; 		//!< Output pointer.
+	bool mEnabled;		//!< True if log is enabled.
+	ogzstream* mOGZS; 	//!< Output pointer.
 };
 } // end of Core namespace
 } // end of SCHNAPS namespace

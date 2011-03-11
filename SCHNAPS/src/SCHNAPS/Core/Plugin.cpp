@@ -1,8 +1,8 @@
 /*
  * Plugin.cpp
  *
- *  Created on: 2009-11-21
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*!
- *  \brief Class methods for the portable dynamically loadable libraries.
- *  \author Christian Gagne <cgagne@gmail.com>
- *  \author Alexandre Devert <devert@lri.fr>
- */
-
 #include "SCHNAPS/Core.hpp"
 
 #include <sstream>
@@ -32,6 +26,13 @@
 using namespace SCHNAPS;
 using namespace Core;
 
+/*!
+ * \brief Read object from XML using system.
+ * \param inIter XML iterator of input document.
+ * \param ioSystem A reference to the system.
+ * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
+ * \throw SCHNAPS::Core::IOException if source attribute missing.
+ */
 void Plugin::read(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceBeginM();
 	if (inIter->getType() != PACC::XML::eData) {
@@ -53,16 +54,21 @@ void Plugin::read(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceEndM("void SCHNAPS::Core::Plugin::read(PACC::XML::ConstIterator)");
 }
 
+/*!
+ * \brief Read object from XML using system.
+ * \param inIter XML iterator of input document.
+ * \param ioSystem A reference to the system.
+ */
 void Plugin::readWithSystem(PACC::XML::ConstIterator inIter, System& ioSystem) {
 	schnaps_StackTraceBeginM();
 	read(inIter);
-	schnaps_StackTraceEndM("void SCHNAPS::Core::Plugin::readWithSystem(PACC::XML::ConstIterator, System&)");
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Plugin::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
 /*!
- *  \brief Write a plugin into a XML streamer.
- *  \param ioStreamer XML streamer into which the string is written.
- *  \param inIndent Whether output should be indented.
+ * \brief Write a plugin into a XML streamer.
+ * \param ioStreamer XML streamer into which the string is written.
+ * \param inIndent Whether output should be indented.
  */
 void Plugin::write(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
@@ -73,9 +79,9 @@ void Plugin::write(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 }
 
 /*!
- *  \brief Write plugin content into XML streamer, without opening/closing tags.
- *  \param ioStreamer XML streamer to write the tree into.
- *  \param inIndent Whether XML output should be indented.
+ * \brief Write plugin content into XML streamer, without opening/closing tags.
+ * \param ioStreamer XML streamer to write the tree into.
+ * \param inIndent Whether XML output should be indented.
  */
 void Plugin::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
@@ -84,11 +90,11 @@ void Plugin::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const 
 }
 
 /*!
- *  \brief Bind to a function of a dynamically loaded library.
- *  \param inDynLib Handle to the loaded dynamic library.
- *  \param inFunctionName Name of the function to bind on.
- *  \return Opaque pointer to the desired function.
- *  \throw std::runtime_error If it is impossible to bind on the function.
+ * \brief Bind to a function of a dynamically loaded library.
+ * \param inDynLib Handle to the loaded dynamic library.
+ * \param inFunctionName Name of the function to bind on.
+ * \return Opaque pointer to the desired function.
+ * \throw std::runtime_error if it is impossible to bind on the function.
  */
 void* Plugin::bindDynLibFunction(void* inDynLib, std::string inFunctionName) {
 	if (inDynLib == NULL) {
@@ -136,20 +142,20 @@ void* Plugin::bindDynLibFunction(void* inDynLib, std::string inFunctionName) {
 }
 
 /*!
- *  \brief Load a dynamic library into memory.
- *  \param inFilename Filename of the library to load in memory.
- *  \return Opaque pointer loaded dynamic library.
- *  \throw std::runtime_error If it is impossible to load the library.
+ * \brief Load a dynamic library into memory.
+ * \param inFilename Filename of the library to load in memory.
+ * \return Opaque pointer loaded dynamic library.
+ * \throw std::runtime_error if it is impossible to load the library.
  *
- *  The filename used is pretty fragile depending on the platform.
+ * The filename used is pretty fragile depending on the platform.
  *
- *  On Unices systems, if a simple filename without slash is provided, the command will
- *  search for files in usual dynamic libraries directories. To load a library in current
- *  directory, the filename must be prefixed by "./" in order to specified to look into the
- *  current directory. For more details, see the ldopen manual ("man dlopen").
+ * On Unices systems, if a simple filename without slash is provided, the command will
+ * search for files in usual dynamic libraries directories. To load a library in current
+ * directory, the filename must be prefixed by "./" in order to specified to look into the
+ * current directory. For more details, see the ldopen manual ("man dlopen").
  *
- *  On Windows, user must be cautious to use backslashes instead of slashes to separate
- *  directories and binaries in the filename paths.
+ * On Windows, user must be cautious to use backslashes instead of slashes to separate
+ * directories and binaries in the filename paths.
  */
 void* Plugin::loadDynLib(std::string inSource) {
 #ifdef SCHNAPS_IS_WINDOWS
@@ -213,10 +219,10 @@ void Plugin::listFactories(std::vector<std::string>& outAllocators) const {
 }
 
 /*!
- * \brief Get allocator of specified name.
- * \param inAllocName The name of allocator to retrieve.
+ * \brief  Get allocator of specified name.
+ * \param  inAllocName The name of allocator to retrieve.
  * \return Handle to allocator.
- * \throw std::runtime_error If no library loaded, no allocator found or NULL allocator.
+ * \throw  std::runtime_error if no library loaded, no allocator found or NULL allocator.
  */
 Allocator::Handle Plugin::getAllocator(std::string inAllocName) const {
 	if (mDynLib == NULL) {
@@ -242,19 +248,19 @@ Allocator::Handle Plugin::getAllocator(std::string inAllocName) const {
 }
 
 /*!
- *  \brief Load the dynamic library given by the filename in memory.
- *  \param inFilename Name of the dynamic library to load in memory.
- *  \throw std::runtime_error If it is impossible to load the library.
+ * \brief Load the dynamic library given by the filename in memory.
+ * \param inFilename Name of the dynamic library to load in memory.
+ * \throw std::runtime_error if it is impossible to load the library.
  *
- *  The filename used is pretty fragile depending on the platform.
+ * The filename used is pretty fragile depending on the platform.
  *
- *  On Unices, if a simple filename without slash is provided, the command will
- *  search for files in usual dynamic libraries directories. To load a library in current
- *  directory, the filename must be prefixed by "./" in order to specified to look into the
- *  current directory. For more details, see the ldopen manual ("man dlopen").
+ * On Unices, if a simple filename without slash is provided, the command will
+ * search for files in usual dynamic libraries directories. To load a library in current
+ * directory, the filename must be prefixed by "./" in order to specified to look into the
+ * current directory. For more details, see the ldopen manual ("man dlopen").
  *
- *  On Windows, user must be cautious to use backslashes instead of slashes to separate
- *  directories and binaries in the filename paths.
+ * On Windows, user must be cautious to use backslashes instead of slashes to separate
+ * directories and binaries in the filename paths.
  */
 void Plugin::load(std::string inSource) {
 	typedef void (*PluginSpecFctPtr)(std::string&, std::string&, AllocatorMap&);

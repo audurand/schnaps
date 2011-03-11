@@ -1,8 +1,8 @@
 /*
  * Clock.hpp
  *
- *  Created on: 2009-03-17
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,9 @@
 #ifndef SCHNAPS_Plugins_Data_Clock_hpp
 #define SCHNAPS_Plugins_Data_Clock_hpp
 
-#include "PACC/XML.hpp"
 #include "SCHNAPS/SCHNAPS.hpp"
+
+#include "PACC/XML.hpp"
 
 namespace SCHNAPS {
 namespace Plugins {
@@ -30,7 +31,7 @@ namespace Data {
 
 /*!
  *  \class Clock SCHNAPS/Plugins/Data/Clock.hpp "SCHNAPS/Plugins/Data/Clock.hpp"
- *  \brief Token terminal primitive class that refers to a variable.
+ *  \brief Access the clock value.
  */
 class Clock: public Core::Primitive {
 public:
@@ -44,15 +45,21 @@ public:
 	Clock();
 	virtual ~Clock() {}
 
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Data_Clock");
-			return lName;
-		schnaps_StackTraceEndM("const std::string& Clock::getName() const");
+		const static std::string lName("Data_Clock");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Data::Clock::getName() const");
 	}
 
+	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
-	virtual const std::string& getReturnType(Core::ExecutionContext& ioContext) const;
+	//! Return the primitive return type.
+	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 };
 } // end of Data namespace
 } // end of Plugins namespace

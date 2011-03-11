@@ -1,8 +1,8 @@
 /*
  * Parallel.cpp
  *
- *  Created on: 2010-08-27
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,29 +25,40 @@ using namespace Plugins;
 using namespace Control;
 
 /*!
- *  \brief Construct a new primitive that executes sequentially its children but returns a vector containing the result of each one (as if executed in parallel).
+ * \brief Default constructor.
  */
 Parallel::Parallel() :
-		Primitive()	// unknown number of children
+	Primitive()	// unknown number of children
 {}
 
 /*!
- *  \brief Construct a new primitive that returns the result of a Parallel.
+ * \brief Construct a primitive for executing branches "in parallel" as a copy of an original.
+ * \param inOriginal A const reference to the original primitive for executing branches "in parallel".
  */
 Parallel::Parallel(const Parallel& inOriginal) :
-		Primitive(inOriginal.getNumberArguments())
+	Primitive(inOriginal.getNumberArguments())
 {}
 
+/*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
 Parallel& Parallel::operator=(const Parallel& inOriginal) {
 	schnaps_StackTraceBeginM();
-		this->setNumberArguments(inOriginal.getNumberArguments());
-		return *this;
+	this->setNumberArguments(inOriginal.getNumberArguments());
+	return *this;
 	schnaps_StackTraceEndM("SCHNAPS::Plugins::Control::Parallel& SCHNAPS::Plugins::Control::Parallel::operator=(const SCHNAPS::Plugins::Control::Parallel&)");
 }
 
-SCHNAPS::Core::AnyType::Handle Parallel::execute(unsigned int inIndex, SCHNAPS::Core::ExecutionContext& ioContext) const {
+/*!
+ * \brief  Execute the primitive.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A handle to the execution result.
+ */
+Core::AnyType::Handle Parallel::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		SCHNAPS::Core::Vector::Handle lResults = new SCHNAPS::Core::Vector();
+		Core::Vector::Handle lResults = new Core::Vector();
 		for (unsigned int i = 0; i < getNumberArguments(); i++) {
 			lResults->push_back(getArgument(inIndex, i, ioContext));
 		}
@@ -55,17 +66,30 @@ SCHNAPS::Core::AnyType::Handle Parallel::execute(unsigned int inIndex, SCHNAPS::
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Control::Parallel::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
 }
 
-const std::string& Parallel::getArgType(unsigned int inIndex, unsigned int inN, SCHNAPS::Core::ExecutionContext& ioContext) const {
+/*!
+ * \brief  Return the primitive return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the return type.
+ * \throw  SCHNAPS::Core::AssertException if the argument index is out of bounds.
+ */
+const std::string& Parallel::getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	schnaps_AssertM(inN<getNumberArguments());
-		const static std::string lType("Any");
-		return lType;
+	schnaps_UpperBoundCheckAssertM(inN, getNumberArguments()-1);
+	const static std::string lType("Any");
+	return lType;
 	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Control::Parallel::getArgType(unsigned int, unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 
-const std::string& Parallel::getReturnType(unsigned int inIndex, SCHNAPS::Core::ExecutionContext& ioContext) const {
+/*!
+ * \brief  Return the primitive return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the return type.
+ */
+const std::string& Parallel::getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		const static std::string lType("Vector");
-		return lType;
+	const static std::string lType("Vector");
+	return lType;
 	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Control::Parallel::getReturnType(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }

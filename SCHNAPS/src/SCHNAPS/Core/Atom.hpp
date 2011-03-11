@@ -1,8 +1,8 @@
 /*
  * Atom.hpp
  *
- *  Created on: 2009-02-17
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ namespace Core {
 
 /*!
  *  \class Atom SCHNAPS/Core/Atom.hpp "SCHNAPS/Core/Atom.hpp"
- *  \brief Atom class, the implementation of any (std) base types as a SCHNAPS Object.
+ *  \brief The implementation of any (std) base types as a SCHNAPS Object.
  */
 class Atom: public AnyType {
 public:
@@ -43,23 +43,31 @@ public:
 	Atom(const Atom& inOriginal) {}
 	virtual ~Atom() {}
 
-	//! Return the name of object.
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Atom");
-			return lName;
+		const static std::string lName("Atom");
+		return lName;
 		schnaps_StackTraceEndM("const std::string& SCHNAPS::Core::Atom::getName() const");
 	}
 
-	//! Return the type of data (for use with type manager).
+	/*!
+	 * \brief  Return a const reference to the type of object.
+	 * \return A const reference to the type of object.
+	 */
 	virtual const std::string& getType() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lType("Atom");
-			return lType;
+		const static std::string lType("Atom");
+		return lType;
 		schnaps_StackTraceEndM("const std::string& SCHNAPS::Core::Atom::getType() const");
 	}
 
+	//! Read the object from XML.
 	virtual void read(PACC::XML::ConstIterator inIter);
+	//! Read the object from XML using System.
 	virtual void readWithSystem(PACC::XML::ConstIterator inIter, System& ioSystem);
 };
 } // end of Core namespace

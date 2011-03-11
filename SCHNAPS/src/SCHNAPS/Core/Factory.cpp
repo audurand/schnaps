@@ -1,4 +1,9 @@
 /*
+ * Factory.cpp
+ *
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -21,7 +26,7 @@ using namespace SCHNAPS;
 using namespace Core;
 
 /*!
- *  \brief Construct object factory component.
+ * \brief Default constructor.
  */
 Factory::Factory() :
 	Component("Factory")
@@ -46,6 +51,11 @@ Factory::Factory() :
 	insertAllocator("PrimitiveTree", new PrimitiveTree::Alloc());
 }
 
+/*!
+ * \brief Write object content to XML.
+ * \param ioStreamer XML streamer to output document.
+ * \param inIndent Wether to indent or not.
+ */
 void Factory::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
 	// TODO: write current state?
@@ -53,11 +63,11 @@ void Factory::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const
 }
 
 /*!
- *  \brief Alias a type name to an already existing one in object factory.
- *  \param inTypeName Original name of type.
- *  \param inAlias Alias name of that type.
- *  \throw RunTimeException If the original type name is not in the factory
- *     or if the alias is already in the factory.
+ * \brief Alias a type name to an already existing one in object factory.
+ * \param inTypeName Original name of type.
+ * \param inAlias Alias name of that type.
+ * \throw SCHNAPS::Core::RunTimeException if the original type name is not in the factory
+ *    or if the alias is already in the factory.
  */
 void Factory::aliasAllocator(const std::string& inTypeName, const std::string& inAlias) {
 	schnaps_StackTraceBeginM();
@@ -82,15 +92,14 @@ void Factory::aliasAllocator(const std::string& inTypeName, const std::string& i
 }
 
 /*!
- *  \brief Insert new allocator in object factory.
- *  \param inTypeName Name of type inserted.
- *  \param inAllocator Allocator associated to type.
- *  \throw LSD::RunTimeException If the type name is already in the factory.
+ * \brief Insert new allocator in object factory.
+ * \param inTypeName Name of type inserted.
+ * \param inAllocator Allocator associated to type.
+ * \throw SCHNAPS::Core::RunTimeException if the type name is already in the factory.
  */
 void Factory::insertAllocator(const std::string& inTypeName, Allocator::Handle inAllocator) {
 	schnaps_StackTraceBeginM();
 	Factory::AllocatorMap::const_iterator lIterAllocMap = mAllocatorMap.find(inTypeName);
-	
 	if(lIterAllocMap != mAllocatorMap.end()) {
 		std::ostringstream lOSS;
 		lOSS << "The type name '" << inTypeName;
@@ -103,15 +112,22 @@ void Factory::insertAllocator(const std::string& inTypeName, Allocator::Handle i
 }
 
 /*!
- *  \brief Remove allocator from the factory.
- *  \param inTypeName Type name of the allocator to remove.
- *  \return Allocator associated to the removed type name, NULL handle if unknown type.
+ * \brief Remove allocator from the factory.
+ * \param inTypeName Type name of the allocator to remove.
+ * \return Allocator associated to the removed type name.
+ * \throw SCHNAPS::Core::RunTimeException if the type name does not exist in the factory.
  */
 Allocator::Handle Factory::removeAllocator(const std::string& inTypeName) {
 	schnaps_StackTraceBeginM();
 	Factory::AllocatorMap::iterator lIterAllocMap = mAllocatorMap.find(inTypeName);
+	if(lIterAllocMap == mAllocatorMap.end()) {
+		std::ostringstream lOSS;
+		lOSS << "The allocator of type '" << inTypeName;
+		lOSS << "' does not exist; ";
+		lOSS << "could not remove it.";
+		throw schnaps_RunTimeExceptionM(lOSS.str());
+	}
 	
-	if(lIterAllocMap == mAllocatorMap.end()) return NULL;
 	Allocator::Handle lAlloc = lIterAllocMap->second;
 	mAllocatorMap.erase(lIterAllocMap);
 	return lAlloc;

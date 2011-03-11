@@ -1,8 +1,8 @@
 /*
  * Long.hpp
  *
- *  Created on: 2009-01-23
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ typedef ArrayT<long> LongArray;
 
 /*!
  *  \class Long SCHNAPS/Core/Long.hpp "SCHNAPS/Core/Long.hpp"
- *  \brief Long class, the long implementation as Object.
+ *  \brief The long implementation as Object.
  */
 class Long: public Number {
 public:
@@ -56,57 +56,91 @@ public:
 	Long(const Long& inOriginal);
 	virtual ~Long() {}
 
+	//! Copy operator.
+	Long& operator=(const Long& inOriginal);
+
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lName("Long");
-			return lName;
+		const static std::string lName("Long");
+		return lName;
 		schnaps_StackTraceEndM("const std::string& Long::getName() const");
 	}
 
+	/*!
+	 * \brief  Return a const reference to the type of object.
+	 * \return A const reference to the type of object.
+	 */
 	virtual const std::string& getType() const {
 		schnaps_StackTraceBeginM();
-			const static std::string lType("Long");
-			return lType;
+		const static std::string lType("Long");
+		return lType;
 		schnaps_StackTraceEndM("const std::string& Long::getType() const");
 	}
 
+	//! Write the content of the object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
+	//! Test if an object is equal to another.
 	virtual bool isEqual(const Object& inRightObj) const;
+	//! Test if an object is less than another.
 	virtual bool isLess(const Object& inRightObj) const;
 
-	Long& operator=(const Long& inOriginal);
-
+	//! Read the object from string.
 	virtual void readStr(const std::string& inStr);
+	//! Write the object to string.
 	virtual std::string writeStr() const;
+
+	//! Return a handle to a clone of the current object.
 	virtual AnyType::Handle clone() const;
 
+	//! Compute absolute value.
 	virtual Number& abs();
+	//! Add a number.
 	virtual Number& add(Number& inRightNumber);
+	//! Divide by a number.
 	virtual Number& div(Number& inRightNumber);
+	//! Compute the modulo by a number.
 	virtual Number& mod(Number& inRightNumber);
+	//! Multiply by a number.
 	virtual Number& mult(Number& inRightNumber);
+	//! Subtract by a number.
 	virtual Number& sub(Number& inRightNumber);
 
+	//! Casting operator to double.
 	operator Double() const;
+	//! Casting operator to float.
 	operator Float() const;
+	//! Casting operator to integer.
 	operator Int() const;
+	//! Casting operator to long.
 	operator Long() const;
+	//! Casting operator to unsigned integer.
 	operator UInt() const;
+	//! Casting operator to unsigned long.
 	operator ULong() const;
 
-	//! Return the value of long object.
+	/*!
+	 * \brief Return a const refernce to the value of long.
+	 * \return A const reference to the value of long.
+	 */
 	const long& getValue() const {
 		return mValue;
 	}
 
-	//! Set the value of long object.
-	void setValue(const long& inValue) {
+	/*!
+	 * \brief Set the value of long.
+	 * \param inValue A const reference to the new value of long.
+	 */
+	void setValue(const float& inValue) {
 		mValue = inValue;
 	}
 
 private:
-	long mValue; //! Value of long object.
+	long mValue; //! Value of long.
 };
 } // end of Core namespace
 } // end of SCHNAPS namespace

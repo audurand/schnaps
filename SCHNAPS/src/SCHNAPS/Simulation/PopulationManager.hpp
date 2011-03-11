@@ -1,8 +1,8 @@
 /*
  * PopulationManager.hpp
  *
- *  Created on: 2010-04-15
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,9 +30,13 @@
 namespace SCHNAPS {
 namespace Simulation {
 
+/*!
+ * \struct Source SCHNAPS/Simulation/PopulationManager.hpp "SCHNAPS/Simulation/PopulationManager.hpp"
+ * \brief Source for generating individuals.
+ */
 struct Source {
-	std::string mProfile;
-	unsigned int mSize;
+	std::string mProfile;	//!< Name of the source profile.
+	unsigned int mSize;		//!< Quantity of individuals to generate.
 
 	Source() {}
 	explicit Source(std::string inProfile, unsigned int inSize) :
@@ -42,8 +46,8 @@ struct Source {
 };
 
 /*!
- *  \class PopulationManager SCHNAPS/Simulation/PopulationManager.hpp "SCHNAPS/Simulation/PopulationManager.hpp"
- *  \brief PopulationManager class. Maps a clock time to a source (profile and size).
+ * \class PopulationManager SCHNAPS/Simulation/PopulationManager.hpp "SCHNAPS/Simulation/PopulationManager.hpp"
+ * \brief In charge of creating new individuals when needed. Maps a clock time to a source (profile and size).
  */
 class PopulationManager: public SCHNAPS::Core::Object, public std::multimap<unsigned long, Source> {
 public:
@@ -68,6 +72,7 @@ public:
 	virtual void readWithSystem(PACC::XML::ConstIterator inIter, SCHNAPS::Core::System& ioSystem);
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
+	//! Read the population manager from string.
 	void readStr(const std::string& inStr) {
 		std::stringstream lISS(inStr);
 		PACC::Tokenizer lTokenizer(lISS);
@@ -80,6 +85,7 @@ public:
 		}
 	}
 
+	//! Return the content of the population manager as a string.
 	std::string writeStr() const {
 		std::stringstream lSS;
 		std::string lInput;
@@ -100,27 +106,33 @@ public:
 		return lInput;
 	}
 
+	//! Return a pointer to a vector of newly created individuals.
 	Individual::Bag::Handle getIndividuals();
 
+	//! Return a const reference to the map of available prefixes.
 	const std::map<std::string, Source>& getPrefixes() const {
 		return mPrefixes;
 	}
 
+	//! Return a reference to the map of available prefixes.
 	std::map<std::string, Source>& getPrefixes() {
 		return mPrefixes;
 	}
 
+	//! Return a const reference to the individual generator.
 	const Generator& getGenerator() const {
 		schnaps_NonNullPointerAssertM(mGenerator);
 		return *mGenerator;
 	}
 
+	//! Return a reference to the individual generator.
 	Generator& getGenerator() {
 		schnaps_NonNullPointerAssertM(mGenerator);
 		return *mGenerator;
 	}
 
 private:
+	//! Read one population manager entry from string.
 	void readEntryStr(const std::string& inStr) {
 		std::stringstream lISS(inStr);
 		PACC::Tokenizer lTokenizer(lISS);

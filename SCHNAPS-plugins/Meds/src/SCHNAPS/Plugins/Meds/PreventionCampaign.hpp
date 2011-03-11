@@ -1,5 +1,5 @@
 /*
- * AddVariable.hpp
+ * PreventionCampaign.hpp
  *
  * SCHNAPS
  * Copyright (C) 2009-2011 by Audrey Durand
@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SCHNAPS_Plugins_Operators_AddVariable_hpp
-#define SCHNAPS_Plugins_Operators_AddVariable_hpp
+#ifndef SCHNAPS_Plugins_Meds_PreventionCampaign_hpp
+#define SCHNAPS_Plugins_Meds_PreventionCampaign_hpp
 
 #include "SCHNAPS/SCHNAPS.hpp"
 
@@ -27,24 +27,24 @@
 
 namespace SCHNAPS {
 namespace Plugins {
-namespace Operators {
+namespace Meds {
 
 /*!
- *  \class AddVariable SCHNAPS/Plugins/Operators/AddVariable.hpp "SCHNAPS/Plugins/Operators/AddVariable.hpp"
- *  \brief Add a value to a variable current value.
+ *  \class PreventionCampaign SCHNAPS/Plugins/Meds/PreventionCampaign.hpp "SCHNAPS/Plugins/Meds/PreventionCampaign.hpp"
+ *  \brief Implements of a medical prevention campain on the population.
  */
-class AddVariable: public Core::Primitive {
+class PreventionCampaign: public Core::Primitive {
 public:
-	//! AddVariable allocator type.
-	typedef Core::AllocatorT<AddVariable, Core::Primitive::Alloc> Alloc;
-	//! AddVariable handle type.
-	typedef Core::PointerT<AddVariable, Core::Primitive::Handle> Handle;
-	//! AddVariable bag type.
-	typedef Core::ContainerT<AddVariable, Core::Primitive::Bag> Bag;
+	//! PreventionCampaign allocator type.
+	typedef Core::AllocatorT<PreventionCampaign, Core::Primitive::Alloc> Alloc;
+	//! PreventionCampaign handle type.
+	typedef Core::PointerT<PreventionCampaign, Core::Primitive::Handle> Handle;
+	//! PreventionCampaign bag type.
+	typedef Core::ContainerT<PreventionCampaign, Core::Primitive::Bag> Bag;
 
-	AddVariable();
-	AddVariable(const AddVariable& inOriginal);
-	virtual ~AddVariable() {}
+	PreventionCampaign();
+	PreventionCampaign(const PreventionCampaign& inOriginal);
+	virtual ~PreventionCampaign() {}
 
 	/*!
 	 * \brief  Return a const reference to the name of object.
@@ -52,13 +52,13 @@ public:
 	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-		const static std::string lName("Operators_AddVariable");
+		const static std::string lName("Osteo_PreventionCampaign");
 		return lName;
-		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::AddVariable::getName() const");
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Meds::PreventionCampaign::getName() const");
 	}
 
 	//! Read object from XML using system.
-	virtual	void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
 	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
@@ -68,12 +68,14 @@ public:
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
-	std::string mLabel;				//!< Label of concerned variable.
-	std::string mValue_Ref; 		//!< Value to add (reference).
-	Core::Number::Handle mValue;	//!< A handle to the value to add.
+	Core::Double::Handle mCost;			//!< A handle to the cost value.
+	Core::Double::Handle mDiscountRate;	//!< A handle to the discount rate.
+	std::string mCost_Ref;				//!< Label of cost value parameter.
+	std::string mDiscountRate_Ref;		//!< Label of discount rate parameter.
+	std::string mCostVariableLabel;		//!< Label of individual variable for cumulating cost.
 };
-} // end of Operators namespace
+} // end of Meds namespace
 } // end of Plugins namespace
 } // end of SCHNAPS namespace
 
-#endif /* SCHNAPS_Plugins_Operators_AddVariable_hpp */
+#endif /* SCHNAPS_Plugins_Meds_PreventionCampaign_hpp */

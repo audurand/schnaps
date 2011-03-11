@@ -65,59 +65,8 @@
 			</xsd:attribute>
 		</xsd:complexType>
 	</xsd:element>
-	
-	<xsd:element name="Meds_Eventv2" substitutionGroup="_primitive">
-                <xsd:annotation>
-                        <xsd:appinfo>
-                                <pmt:info lang="en">Second version of medical event.</pmt:info>
-                                <pmt:mappedName lang="en">Event (v2)</pmt:mappedName>
-                                <pmt:returnType definedBy="staticType">Void</pmt:returnType>
-                        </xsd:appinfo>
-                </xsd:annotation>
-                <xsd:complexType>
-                        <xsd:sequence minOccurs="1" maxOccurs="1">
-                                <xsd:choice>
-                                        <xsd:annotation>
-                                                <xsd:appinfo>
-                                                        <pmt:childType definedBy="staticType">Any</pmt:childType>
-                                                        <pmt:childBranchTag lang="en">Event</pmt:childBranchTag>
-                                                </xsd:appinfo>
-                                        </xsd:annotation>
-                                        <xsd:element ref="_primitive"/>
-                                </xsd:choice>
-                                <xsd:choice>
-                                        <xsd:annotation>
-                                                <xsd:appinfo>
-                                                        <pmt:childType definedBy="staticType">Any</pmt:childType>
-                                                        <pmt:childBranchTag lang="en">No event</pmt:childBranchTag>
-                                                </xsd:appinfo>
-                                        </xsd:annotation>
-                                        <xsd:element ref="_primitive"/>
-                                </xsd:choice>
-                        </xsd:sequence>
-                        <xsd:attribute name="label" type="xsd:string" use="required">
-                                <xsd:annotation>
-                                        <xsd:appinfo>
-                                                <gui:attributeBehavior>
-                                                        <gui:displayValue/>
-                                                </gui:attributeBehavior>
-                                                <pmt:attributeMappedName lang="en">Name</pmt:attributeMappedName>
-                                        </xsd:appinfo>
-                                </xsd:annotation>
-                        </xsd:attribute>
-                        <xsd:attribute name="probabilityVariableLabel" type="xsd:string" use="required">
-                                <xsd:annotation>
-                                        <xsd:appinfo>
-                                                <gui:attributeBehavior><gui:list type="allVariables" allowEdition="false"/></gui:attributeBehavior>
-                                                <pmt:attributeMappedName lang="en">Probability variable</pmt:attributeMappedName>
-                                                <pmt:attributeInfo lang="en">Individual variable giving event probability.</pmt:attributeInfo>
-                                        </xsd:appinfo>
-                                </xsd:annotation>
-                        </xsd:attribute>
-                </xsd:complexType>
-        </xsd:element>
-	
-	<xsd:element name="Meds_PreventionCampain" substitutionGroup="_primitive">
+		
+	<xsd:element name="Meds_PreventionCampaign" substitutionGroup="_primitive">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<pmt:info lang="en"></pmt:info>

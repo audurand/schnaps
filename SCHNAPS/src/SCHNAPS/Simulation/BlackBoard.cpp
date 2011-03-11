@@ -1,8 +1,8 @@
 /*
  * BlackBoard.cpp
  *
- *  Created on: 2010-03-31
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,10 @@
 using namespace SCHNAPS;
 using namespace Simulation;
 
+/*!
+ * \brief Construct a blackboard as a copy of an original.
+ * \param inOriginal A const reference to the original blackboard.
+ */
 BlackBoard::BlackBoard(const BlackBoard& inOriginal) {
 	this->clear();
 	for (BlackBoard::const_iterator lIt = inOriginal.begin(); lIt != inOriginal.end(); lIt++) {

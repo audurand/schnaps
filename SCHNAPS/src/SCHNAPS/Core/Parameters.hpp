@@ -1,8 +1,8 @@
 /*
  * Parameters.hpp
  *
- *  Created on: 2010-04-10
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,10 +38,10 @@ namespace Core {
 
 /*!
  *  \class Parameters SCHNAPS/Core/Parameters.hpp "SCHNAPS/Core/Parameters.hpp"
- *  \brief System component to handle simulator parameters.
+ *  \brief Parameters class to handle simulator parameters.
  */
 class Parameters: public Component {
-protected:
+private:
 #if defined(SCHNAPS_HAVE_STD_HASHMAP)
 	typedef std::hash_map<std::string, AnyType::Handle, HashString> ParametersMap;
 #elif defined(SCHNAPS_HAVE_GNUCXX_HASHMAP)
@@ -63,75 +63,66 @@ public:
 	Parameters();
 	virtual ~Parameters() {}
 
+	//! Read object from XML using system.
 	virtual void readWithSystem(PACC::XML::ConstIterator inIter, System& ioSystem);
+	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
-	void readStr(const std::string& inStr) {
-		std::stringstream lISS(inStr);
-		PACC::Tokenizer lTokenizer(lISS);
-		lTokenizer.setDelimiters(",", "");
+	//! Read data from string.
+	void readStr(const std::string& inStr);
+	//! Write data to string.
+	std::string writeStr() const;
 
-		std::string lOption;
-		std::string::size_type lPos;
-
-		while (lTokenizer.getNextToken(lOption)) {
-			lPos = lOption.find("=");
-
-			if (lPos == std::string::npos) {
-				printf("Expected value of option %s!\n", lOption.c_str());
-			} else {
-				(*this)[lOption.substr(0, lPos)]->readStr(lOption.substr(lPos+1));
-			}
+	//! Insert a new parameter with specific value.
+	void insertParameter(const std::string& inLabel, AnyType::Handle inValue);
+	
+	//! Set parameter value.
+	void setParameter(const std::string& inLabel, const AnyType::Handle inValue);
+	
+	/*!
+	 * \brief  Return a const reference to the parameter with specific label.
+	 * \param  inLabel A const reference to the label of the parameter.
+	 * \return A const reference to the parameter.
+	 * \throw  SCHNAPS::Core::RunTimeException if the parameter does not exist.
+	 * \throw  SCHNAPS::Core::AssertException if the parameter is NULL.
+	 */
+	const AnyType& getParameter(const std::string& inLabel) const {
+		schnaps_StackTraceBeginM();
+		ParametersMap::const_iterator lIterParameters = mParametersMap.find(inLabel);
+		if(lIterParameters == mParametersMap.end()) {
+			std::ostringstream lOSS;
+			lOSS << "The parameter '" << inLabel << "' does not exist; ";
+			lOSS << "could not get it.";
+			throw schnaps_RunTimeExceptionM(lOSS.str());
 		}
+		schnaps_NonNullPointerAssertM(lIterParameters->second);
+		return *lIterParameters->second;
+		schnaps_StackTraceEndM("const SCHNAPS::Core::AnyType& SCHNAPS::Core::Parameters::getParameter(const std::string&) const");
 	}
-
-	std::string writeStr() const {
-		std::stringstream lSS;
-		std::string lParameters;
-
-		for (ParametersMap::const_iterator lIt = mParametersMap.begin(); lIt != mParametersMap.end(); lIt++) {
-			lSS << lIt->first.c_str() << "=" << lIt->second->writeStr().c_str() << ",";
+	
+	/*!
+	 * \brief  Return a const handle to the parameter with specific label.
+	 * \param  inLabel A const reference to the label of the parameter.
+	 * \return A const handle to the parameter.
+	 * \throw  SCHNAPS::Core::RunTimeException if the parameter does not exist.
+	 * \throw  SCHNAPS::Core::AssertException if the parameter is NULL.
+	 */
+	const AnyType::Handle getParameterHandle(const std::string& inLabel) const {
+		schnaps_StackTraceBeginM();
+		ParametersMap::const_iterator lIterParameters = mParametersMap.find(inLabel);
+		if(lIterParameters == mParametersMap.end()) {
+			std::ostringstream lOSS;
+			lOSS << "The parameter '" << inLabel << "' does not exist; ";
+			lOSS << "could not get it.";
+			throw schnaps_RunTimeExceptionM(lOSS.str());
 		}
-		lParameters = lSS.str();
-		lParameters.erase(lParameters.end()-1);
-		return lParameters;
-	}
-
-	void addParameter(std::string inLabel, AnyType::Handle inValue) {
-#ifndef SCHNAPS_NDEBUG
-		if (mParametersMap.find(inLabel) != mParametersMap.end()) {
-			throw schnaps_InternalExceptionM("Parameter " + inLabel + " is already in parameters database!");
-		}
-#else
-		schnaps_AssertM(mParametersMap.find(inLabel) == mParametersMap.end());
-#endif
-		mParametersMap.insert(std::pair<std::string, AnyType::Handle>(inLabel.c_str(), inValue));
-	}
-
-	AnyType::Handle operator[](std::string inLabel) {
-#ifndef SCHNAPS_NDEBUG
-		if (mParametersMap.find(inLabel) == mParametersMap.end()) {
-			throw schnaps_InternalExceptionM("Could not find parameter " + inLabel + " in parameters database!");
-		}
-#else
-		schnaps_AssertM(mParametersMap.find(inLabel) != mParametersMap.end());
-#endif
-		return mParametersMap.find(inLabel)->second;
-	}
-
-	const AnyType::Handle operator[](std::string inLabel) const {
-#ifndef SCHNAPS_NDEBUG
-		if (mParametersMap.find(inLabel) == mParametersMap.end()) {
-			throw schnaps_InternalExceptionM("Could not find parameter " + inLabel + " in parameters database!");
-		}
-#else
-		schnaps_AssertM(mParametersMap.find(inLabel) != mParametersMap.end());
-#endif
-		return mParametersMap.find(inLabel)->second->clone();
+		schnaps_NonNullPointerAssertM(lIterParameters->second);
+		return lIterParameters->second;
+		schnaps_StackTraceEndM("const SCHNAPS::Core::AnyType::Handle SCHNAPS::Core::Parameters::getParameter(const std::string&) const");
 	}
 
 private:
-	ParametersMap mParametersMap;
+	ParametersMap mParametersMap;	//!< The map of parameter labels to values.
 };
 } // end of Core namespace
 } // end of SCHNAPS namespace
