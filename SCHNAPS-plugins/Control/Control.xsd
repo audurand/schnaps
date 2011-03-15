@@ -87,12 +87,12 @@
 					<xsd:element ref="_primitive"/>
 				</xsd:choice>
 			</xsd:sequence>
-			<xsd:attribute name="probabilities" type="xsd:double" use="optional">
+			<xsd:attribute name="probabilities" type="xsd:string" use="optional">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
 							<gui:mapToBranches regexp="|" startIndex="0" endIndex="-1" editable="false" displayAttribute="true">
-								<gui:individualType definedBy="xsdType">xsd:string</gui:individualType>
+								<gui:individualType definedBy="xsdType">xsd:double</gui:individualType>
 								<gui:sum>1</gui:sum>
 							</gui:mapToBranches>
 						</gui:attributeBehavior>
