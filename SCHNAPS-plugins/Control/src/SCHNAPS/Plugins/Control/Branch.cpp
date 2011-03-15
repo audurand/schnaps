@@ -1,0 +1,164 @@
+/*
+ * Branch.cpp
+ *
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "SCHNAPS/Plugins/Control/Control.hpp"
+
+using namespace SCHNAPS;
+using namespace Plugins;
+using namespace Control;
+
+/*!
+ * \brief Default constructor.
+ */
+Branch::Branch() :
+	Primitive(2),
+	mProbability_Ref(""),
+	mProbability(NULL)
+{}
+
+/*!
+ * \brief Construct a branching primitive as a copy of an original.
+ * \param inOriginal A const reference to the original branching primitive.
+ */
+Branch::Branch(const Branch& inOriginal) :
+		mProbability_Ref(inOriginal.mProbability_Ref.c_str())
+{
+	if (mProbability_Ref.empty()) {
+		mProbability = Core::castHandleT<Core::Double>(inOriginal.mProbability->clone());
+	} else {
+		mProbability = inOriginal.mProbability;
+	}
+}
+
+/*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
+Branch& Branch::operator=(const Branch& inOriginal) {
+	schnaps_StackTraceBeginM();
+	mProbability_Ref = inOriginal.mProbability_Ref.c_str();
+
+	if (mProbability_Ref.empty()) {
+		mProbability = Core::castHandleT<Core::Double>(inOriginal.mProbability->clone());
+	} else {
+		mProbability = inOriginal.mProbability;
+	}
+
+	return *this;
+	schnaps_StackTraceEndM("Core::Branch& SCHNAPS::Plugins::Control::Branch::operator=(const SCHNAPS::Core::Branch&)");
+}
+
+/*!
+ * \brief Read object from XML using system.
+ * \param inIter XML iterator of input document.
+ * \param ioSystem A reference to the system.
+ * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
+ * \throw SCHNAPS::Core::IOException if probability attribute and probability.ref attribute are empty.
+ */
+void Branch::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
+	schnaps_StackTraceBeginM();
+	if (inIter->getType() != PACC::XML::eData) {
+		throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
+	}
+	if (inIter->getValue() != getName()) {
+		std::ostringstream lOSS;
+		lOSS << "tag <" << getName() << "> expected, but ";
+		lOSS << "got tag <" << inIter->getValue() << "> instead!";
+		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
+	}
+
+	// retrieve probability of executing the first branch
+	if (inIter->getAttribute("probability").empty()) {
+		if (inIter->getAttribute("probability.ref").empty()) {
+			throw schnaps_IOExceptionNodeM(*inIter, "probability of executing first branch expected!");
+		} else { // retrieve from parameter
+			mProbability_Ref = inIter->getAttribute("probability.ref");
+			std::stringstream lSS;
+			lSS << "ref." << mProbability_Ref;
+			mProbability = Core::castHandleT<Core::Double>(ioSystem.getParameters().getParameterHandle(lSS.str().c_str()));
+		}
+	} else { // retrieve from attribute
+		mProbability = new Core::Double(SCHNAPS::str2dbl(inIter->getAttribute("probability")));
+	}
+	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Control::Branch::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
+}
+
+/*!
+ * \brief Write object content to XML.
+ * \param ioStreamer XML streamer to output document.
+ * \param inIndent Wether to indent or not.
+ */
+void Branch::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
+	schnaps_StackTraceBeginM();
+	if (mProbability_Ref.empty()) {
+		ioStreamer.insertAttribute("probability", mProbability->writeStr());
+	} else {
+		ioStreamer.insertAttribute("probability.ref", mProbability_Ref);
+	}
+	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Control::Branch::writeContent(PACC::XML::Streamer&, bool) const");
+}
+
+/*!
+ * \brief  Execute the primitive.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A handle to the execution result.
+ */
+Core::AnyType::Handle Branch::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
+	schnaps_StackTraceBeginM();
+	double lRandom = ioContext.getRandomizer().rollUniform();
+	if (lRandom < mProbability->getValue()) {
+		// first branch
+		return getArgument(inIndex, 0, ioContext);
+	} else {
+		// second branch
+		return getArgument(inIndex, 1, ioContext);
+	}
+	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Control::Branch::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
+}
+
+/*!
+ * \brief  Return the nth argument requested return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  inN Index of the argument to get the type.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the type of the nth argument.
+ * \throw  SCHNAPS::Core::AssertException if the index of argument is out of bounds.
+ */
+const std::string& Branch::getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const {
+	schnaps_StackTraceBeginM();
+	schnaps_UpperBoundCheckAssertM(inN, getNumberArguments()-1);
+	const static std::string lType("Any");
+	return lType;
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Control::Branch::getArgType(unsigned int, unsigned int, SCHNAPS::Core::ExecutionContext&) const");
+}
+
+/*!
+ * \brief  Return the primitive return type.
+ * \param  inIndex Index of the current primitive.
+ * \param  ioContext A reference to the execution context.
+ * \return A const reference to the return type.
+ */
+const std::string& Branch::getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
+	schnaps_StackTraceBeginM();
+	const static std::string lCommonType = ioContext.getSystem().getTypingManager().commonType(getArgType(inIndex, 0, ioContext), getArgType(inIndex, 1, ioContext));
+	return lCommonType;
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Control::Branch::getReturnType(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
+}

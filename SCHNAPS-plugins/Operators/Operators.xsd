@@ -1,0 +1,816 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:gui="graphical_user_interface_info" xmlns:pmt="primitives_info">
+	<xsd:annotation>
+		<xsd:appinfo>
+			<string dictName="Operators"/>
+			<int dictPriority="0"/>
+			<string dictRequires=""/>
+			<string shortDescription="Operators primitives for SCHNAPS"/>
+		</xsd:appinfo>
+		<xsd:documentation>
+		W3C XML Schema for SCHNAPS Simulator files by Audrey Durand, November 2010.
+		Primitive structures by Marc-Andre Gardner, March 2010.
+		</xsd:documentation>
+	</xsd:annotation>
+	
+	<xsd:include schemaLocation="XSD/BaseTypes.xsd"/>
+
+	<xsd:element name="Operators_Add" substitutionGroup="_binaryOp" type="_binaryOpComplexType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Addition</pmt:info>
+				<pmt:mappedName lang="en">Add</pmt:mappedName>
+			</xsd:appinfo>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="Operators_AddVariable" substitutionGroup="_modifierOp">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Add a value to a variable.</pmt:info>
+				<pmt:mappedName lang="en">Add to variable</pmt:mappedName>
+				<pmt:returnType definedBy="staticType">Void</pmt:returnType>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:attribute name="label" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allVariables" allowEdition="false"/>
+							<gui:displayValue position="br" showAttr="value" delimiter="+"/>
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="valueType" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="numericTypes" allowEdition="False"/>
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en">Type of value to add. WARNING: type must be the same as variable!</pmt:attributeInfo>
+						<pmt:attributeMappedName lang="en">Type</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="Int"/>
+						<xsd:enumeration value="UInt"/>
+						<xsd:enumeration value="Long"/>
+						<xsd:enumeration value="ULong"/>
+						<xsd:enumeration value="Double"/>
+						<xsd:enumeration value="Float"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="value" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<pmt:attributeInfo lang="en" pairedAttr="valueType"/>
+						<pmt:attributeMappedName lang="en">Value</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="value.ref" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allParameters"/>
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en" reference="true"/>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="Operators_Abs" substitutionGroup="_unaryOp" type="_unaryOpComplexType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Absolute value operation</pmt:info>
+				<pmt:mappedName lang="en">Absolute value</pmt:mappedName>
+			</xsd:appinfo>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="Operators_Div" substitutionGroup="_binaryOp" type="_binaryOpComplexType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Division</pmt:info>
+				<pmt:mappedName lang="en">Divide</pmt:mappedName>
+			</xsd:appinfo>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="Operators_Exp" substitutionGroup="_unaryOp">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Exponential e-based function</pmt:info>
+				<pmt:mappedName lang="en">Exp</pmt:mappedName>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:choice minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:childBehavior/>
+						<pmt:childType definedBy="staticType">Number</pmt:childType>
+					</xsd:appinfo>
+				</xsd:annotation>
+				<xsd:element ref="_arithmeticOp"/>
+				<xsd:element ref="_conditionOp"/>
+				<xsd:element ref="_staticTk"/>
+				<xsd:element ref="_callTk"/>
+			</xsd:choice>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="Operators_Mod" substitutionGroup="_binaryOp">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Modulo</pmt:info>
+				<pmt:mappedName lang="en">Modulo</pmt:mappedName>
+				<pmt:returnType definedBy="argument">1</pmt:returnType>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence minOccurs="1" maxOccurs="1">
+				<xsd:choice minOccurs="1" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:appinfo>
+							<gui:childBehavior/>
+							<pmt:childType definedBy="staticType">Integer</pmt:childType>
+							<pmt:childBranchTag lang="en">First argument</pmt:childBranchTag>
+						</xsd:appinfo>
+					</xsd:annotation>
+					<xsd:element ref="_arithmeticOp"/>
+					<xsd:element ref="_conditionOp"/>
+					<xsd:element ref="_staticTk"/>
+					<xsd:element ref="_callTk"/>
+				</xsd:choice>
+				<xsd:choice minOccurs="1" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:appinfo>
+							<gui:childBehavior/>
+							<pmt:childType definedBy="staticType">Integer</pmt:childType>
+							<pmt:childBranchTag lang="en">Second argument</pmt:childBranchTag>
+						</xsd:appinfo>
+					</xsd:annotation>
+					<xsd:element ref="_arithmeticOp"/>
+					<xsd:element ref="_conditionOp"/>
+					<xsd:element ref="_staticTk"/>
+					<xsd:element ref="_callTk"/>
+				</xsd:choice>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="Operators_Mult" substitutionGroup="_binaryOp" type="_binaryOpComplexType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Multiplication</pmt:info>
+				<pmt:mappedName lang="en">Multiply</pmt:mappedName>
+			</xsd:appinfo>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="Operators_MultVariable" substitutionGroup="_modifierOp">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Multiply variable by value.</pmt:info>
+				<pmt:mappedName lang="en">Multiply variable</pmt:mappedName>
+				<pmt:returnType definedBy="staticType">Void</pmt:returnType>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:attribute name="label" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allVariables" allowEdition="false"/>
+							<gui:displayValue  position="br" showAttr="value" delimiter="*"/>
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="valueType" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="numericTypes" allowEdition="False"/>
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en">Type of value to multiply. WARNING: type must be the same as variable!</pmt:attributeInfo>
+						<pmt:attributeMappedName lang="en">Type</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="Int"/>
+						<xsd:enumeration value="UInt"/>
+						<xsd:enumeration value="Long"/>
+						<xsd:enumeration value="ULong"/>
+						<xsd:enumeration value="Double"/>
+						<xsd:enumeration value="Float"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="value" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<pmt:attributeInfo lang="en" pairedAttr="valueType"/>
+						<pmt:attributeMappedName lang="en">Value</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="value.ref" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allParameters"/>
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en" reference="true"/>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="Operators_Pow" substitutionGroup="_binaryOp" type="_binaryOpComplexType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Exponentiation</pmt:info>
+				<pmt:mappedName lang="en">Exponent</pmt:mappedName>
+			</xsd:appinfo>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="Operators_Sub" substitutionGroup="_binaryOp" type="_binaryOpComplexType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Subtraction</pmt:info>
+				<pmt:mappedName lang="en">Subtract</pmt:mappedName>
+			</xsd:appinfo>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="Operators_SubVariable" substitutionGroup="_modifierOp">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Subtract value from a variable.</pmt:info>
+				<pmt:mappedName lang="en">Sub from variable</pmt:mappedName>
+				<pmt:returnType definedBy="staticType">Void</pmt:returnType>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:attribute name="label" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allVariables" allowEdition="false"/>
+							<gui:displayValue position="br" showAttr="value" delimiter="-"/>
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="valueType" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="numericTypes" allowEdition="False"/>
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en">Type of value to subtract. WARNING: type must be the same as variable!</pmt:attributeInfo>
+						<pmt:attributeMappedName lang="en">Type</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="Int"/>
+						<xsd:enumeration value="UInt"/>
+						<xsd:enumeration value="Long"/>
+						<xsd:enumeration value="ULong"/>
+						<xsd:enumeration value="Double"/>
+						<xsd:enumeration value="Float"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="value" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<pmt:attributeInfo lang="en" pairedAttr="valueType"/>
+						<pmt:attributeMappedName lang="en">Value</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="value.ref" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allParameters"/>
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en" reference="true"/>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="Operators_NPV" substitutionGroup="_unaryOp" type="_unaryOpComplexType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Nearest Present Value</pmt:info>
+				<pmt:mappedName lang="en">NPV</pmt:mappedName>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="_unaryOpComplexType">
+					<xsd:attribute name="rate" type="xsd:double" use="optional">
+						<xsd:annotation>
+							<xsd:appinfo>
+								<pmt:attributeMappedName lang="en">Actualization rate</pmt:attributeMappedName>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="rate.ref" type="xsd:string" use="required">
+						<xsd:annotation>
+							<xsd:appinfo>
+								<gui:attributeBehavior>
+									<gui:list type="allParameters"/>
+								</gui:attributeBehavior>
+								<pmt:attributeInfo lang="en" reference="true"/>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:attribute>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	
+	
+	<xsd:element name="Operators_Concatenate" substitutionGroup="_stringOp">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Concatenate strings</pmt:info>
+				<pmt:mappedName lang="en">Concatenate</pmt:mappedName>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence minOccurs="2" maxOccurs="unbounded">
+				<xsd:choice>
+					<xsd:element ref="_conditionOp"/>
+					<xsd:element ref="_stringOp"/>
+					<xsd:element ref="_tokenBase"/>
+				</xsd:choice>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="Operators_ConcatVariable" substitutionGroup="_modifierOp">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Conat a value to a string variable.</pmt:info>
+				<pmt:mappedName lang="en">Concat to variable</pmt:mappedName>
+				<pmt:returnType definedBy="staticType">Void</pmt:returnType>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:attribute name="label" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allVariables" allowEdition="false"/>
+							<gui:displayValue position="br"/>
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="value" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<pmt:attributeInfo lang="en"/>
+						<pmt:attributeMappedName lang="en">Value</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="value.ref" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allParameters"/>
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en" reference="true"/>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	
+	
+	<xsd:element name="Operators_And" substitutionGroup="_logicalOp" type="_logicalOpComplexType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Logical AND</pmt:info>
+				<pmt:mappedName lang="en">And</pmt:mappedName>
+			</xsd:appinfo>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="Operators_Or" substitutionGroup="_logicalOp" type="_logicalOpComplexType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Logical OR</pmt:info>
+				<pmt:mappedName lang="en">Or</pmt:mappedName>
+			</xsd:appinfo>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="Operators_Not" substitutionGroup="_booleanOp">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Logical NOT</pmt:info>
+				<pmt:mappedName lang="en">Not</pmt:mappedName>
+				<pmt:returnType definedBy="staticType">Bool</pmt:returnType>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence minOccurs="1" maxOccurs="1">
+				<xsd:choice>
+					<xsd:element ref="_booleanOp"/>
+					<xsd:element ref="_conditionOp"/>
+					<xsd:element ref="_staticTk"/>
+					<xsd:element ref="_callTk"/>
+				</xsd:choice>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	
+	<xsd:element name="Operators_IsBetween" substitutionGroup="_booleanOp">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Test inclusive between</pmt:info>
+				<pmt:mappedName lang="en">Is between?</pmt:mappedName>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence minOccurs="1" maxOccurs="1">
+				<xsd:choice> <!-- Value -->
+					<xsd:annotation>
+						<xsd:appinfo>
+							<pmt:childType definedBy="staticType">Number</pmt:childType>
+							<pmt:childBranchTag lang="en">Test value</pmt:childBranchTag>
+						</xsd:appinfo>
+					</xsd:annotation>
+					<xsd:element ref="_arithmeticOp"/>
+					<xsd:element ref="_conditionOp"/>
+					<xsd:element ref="_staticTk"/>
+					<xsd:element ref="_callTk"/>
+				</xsd:choice>
+				<xsd:choice> <!-- Min -->
+					<xsd:annotation>
+						<xsd:appinfo>
+							<pmt:childType definedBy="staticType">Number</pmt:childType>
+							<pmt:childBranchTag lang="en">Min value</pmt:childBranchTag>
+						</xsd:appinfo>
+					</xsd:annotation>
+					<xsd:element ref="_arithmeticOp"/>
+					<xsd:element ref="_conditionOp"/>
+					<xsd:element ref="_staticTk"/>
+					<xsd:element ref="_callTk"/>
+				</xsd:choice>
+				<xsd:choice> <!-- Max -->
+					<xsd:annotation>
+						<xsd:appinfo>
+							<pmt:childType definedBy="staticType">Number</pmt:childType>
+							<pmt:childBranchTag lang="en">Max value</pmt:childBranchTag>
+						</xsd:appinfo>
+					</xsd:annotation>
+					<xsd:element ref="_arithmeticOp"/>
+					<xsd:element ref="_conditionOp"/>
+					<xsd:element ref="_staticTk"/>
+					<xsd:element ref="_callTk"/>
+				</xsd:choice>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="Operators_IsBetweenVariable" substitutionGroup="_logicalOp">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Check if variable is between values.</pmt:info>
+				<pmt:mappedName lang="en">Is variable between?</pmt:mappedName>
+				<pmt:returnType definedBy="staticType">Bool</pmt:returnType>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:attribute name="label" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allVariables" allowEdition="false"/>
+							<gui:displayValue position="br"/>
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="valueType" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="numericTypes" allowEdition="False"/>
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en">Type of value to compare. WARNING: type must be the same as variable!</pmt:attributeInfo>
+						<pmt:attributeMappedName lang="en">Type</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="Int"/>
+						<xsd:enumeration value="UInt"/>
+						<xsd:enumeration value="Long"/>
+						<xsd:enumeration value="ULong"/>
+						<xsd:enumeration value="Double"/>
+						<xsd:enumeration value="Float"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="lowerValue" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<pmt:attributeInfo lang="en" pairedAttr="valueType">Lower bound value.</pmt:attributeInfo>
+						<pmt:attributeMappedName lang="en">Lower value</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="upperValue" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<pmt:attributeInfo lang="en" pairedAttr="valueType">Upper bound value.</pmt:attributeInfo>
+						<pmt:attributeMappedName lang="en">Upper value</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="lowerValue.ref" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allParameters"/>
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en" reference="true">Lower bound value.</pmt:attributeInfo>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="upperValue.ref" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allParameters"/>
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en" reference="true">Upper bound value.</pmt:attributeInfo>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="Operators_IsEqual" substitutionGroup="_comparisonOp" type="_comparisonOpComplexType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">== operator</pmt:info>
+				<pmt:mappedName lang="en">Is equal?</pmt:mappedName>
+			</xsd:appinfo>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="Operators_IsEqualVariable" substitutionGroup="_logicalOp">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Check if variable equals value.</pmt:info>
+				<pmt:mappedName lang="en">Is variable equal to?</pmt:mappedName>
+				<pmt:returnType definedBy="staticType">Bool</pmt:returnType>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:attribute name="label" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allVariables" allowEdition="false"/>
+							<gui:displayValue position="br" showAttr="value" delimiter="=?"/>
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="valueType" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="atomTypes" allowEdition="False"/>
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en">Type of value to compare. WARNING: type must be the same as variable!</pmt:attributeInfo>
+						<pmt:attributeMappedName lang="en">Type</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="Bool"/>
+						<xsd:enumeration value="Char"/>
+						<xsd:enumeration value="Double"/>
+						<xsd:enumeration value="Float"/>
+						<xsd:enumeration value="Int"/>
+						<xsd:enumeration value="Long"/>
+						<xsd:enumeration value="String"/>
+						<xsd:enumeration value="UInt"/>
+						<xsd:enumeration value="ULong"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="value" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<pmt:attributeInfo lang="en" pairedAttr="valueType"/>
+						<pmt:attributeMappedName lang="en">Value</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="value.ref" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allParameters"/>
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en" reference="true"/>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="Operators_IsGreater" substitutionGroup="_comparisonOp" type="_comparisonOpComplexType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">&gt;= operator</pmt:info>
+				<pmt:mappedName lang="en">Is greater than?</pmt:mappedName>
+			</xsd:appinfo>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="Operators_IsGreaterOrEqual" substitutionGroup="_comparisonOp" type="_comparisonOpComplexType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">&gt;= operator</pmt:info>
+				<pmt:mappedName lang="en">Is greater or equal?</pmt:mappedName>
+			</xsd:appinfo>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="Operators_IsGreaterVariable" substitutionGroup="_logicalOp">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Check if variable is greater than value.</pmt:info>
+				<pmt:mappedName lang="en">Is variable greater than?</pmt:mappedName>
+				<pmt:returnType definedBy="staticType">Bool</pmt:returnType>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:attribute name="label" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allVariables" allowEdition="false"/>
+							<gui:displayValue position="br" showAttr="value" delimiter="&gt;"/>
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="valueType" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="numericTypes" allowEdition="False"/>
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en">Type of value to compare. WARNING: type must be the same as variable!</pmt:attributeInfo>
+						<pmt:attributeMappedName lang="en">Type</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="Int"/>
+						<xsd:enumeration value="UInt"/>
+						<xsd:enumeration value="Long"/>
+						<xsd:enumeration value="ULong"/>
+						<xsd:enumeration value="Double"/>
+						<xsd:enumeration value="Float"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="value" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<pmt:attributeInfo lang="en" pairedAttr="valueType"/>
+						<pmt:attributeMappedName lang="en">Value</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="value.ref" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allParameters"/>
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en" reference="true"/>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="Operators_IsLess" substitutionGroup="_comparisonOp" type="_comparisonOpComplexType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">&lt;= operator</pmt:info>
+				<pmt:mappedName lang="en">Is less than?</pmt:mappedName>
+			</xsd:appinfo>
+		</xsd:annotation>
+	</xsd:element>
+
+	<xsd:element name="Operators_IsLessOrEqual" substitutionGroup="_comparisonOp" type="_comparisonOpComplexType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">&lt;= operator</pmt:info>
+				<pmt:mappedName lang="en">Is less or equal?</pmt:mappedName>
+			</xsd:appinfo>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="Operators_IsLessVariable" substitutionGroup="_logicalOp">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Check if variable is less than value.</pmt:info>
+				<pmt:mappedName lang="en">Is variable less than?</pmt:mappedName>
+				<pmt:returnType definedBy="staticType">Bool</pmt:returnType>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:attribute name="label" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allVariables" allowEdition="false"/>
+							<gui:displayValue position="br" showAttr="value" delimiter="&lt;"/>
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="valueType" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="numericTypes" allowEdition="False"/>
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en">Type of value to compare. WARNING: type must be the same as variable!</pmt:attributeInfo>
+						<pmt:attributeMappedName lang="en">Type</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="Int"/>
+						<xsd:enumeration value="UInt"/>
+						<xsd:enumeration value="Long"/>
+						<xsd:enumeration value="ULong"/>
+						<xsd:enumeration value="Double"/>
+						<xsd:enumeration value="Float"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="value" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<pmt:attributeInfo lang="en" pairedAttr="valueType"/>
+						<pmt:attributeMappedName lang="en">Value</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="value.ref" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allParameters"/>
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en" reference="true"/>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+
+</xsd:schema>
