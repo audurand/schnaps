@@ -163,7 +163,7 @@ Number& Int::div(Number& inRightNumber) {
 Number& Int::mod(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	Int lRightInt = inRightNumber;
-	mValue % lRightInt.getValue();
+	mValue = mValue % lRightInt.getValue();
 	return *this;
 	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Int::mod(SCHNAPS::Core::Number&)");
 }

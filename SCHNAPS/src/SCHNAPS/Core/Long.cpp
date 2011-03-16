@@ -162,7 +162,7 @@ Number& Long::div(Number& inRightNumber) {
 Number& Long::mod(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	Long lRightLong = inRightNumber;
-	mValue % lRightLong.getValue();
+	mValue = mValue % lRightLong.getValue();
 	return *this;
 	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Long::mod(SCHNAPS::Core::Number&)");
 }

@@ -162,7 +162,7 @@ Number& UInt::div(Number& inRightNumber) {
 Number& UInt::mod(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	UInt lRightUInt = inRightNumber;
-	mValue % lRightUInt.getValue();
+	mValue = mValue % lRightUInt.getValue();
 	return *this;
 	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::UInt::mod(SCHNAPS::Core::Number&)");
 }
