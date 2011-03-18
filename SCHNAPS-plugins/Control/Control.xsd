@@ -433,7 +433,7 @@
 			<xsd:appinfo>
 				<pmt:info lang="en">Execute sequential operations.</pmt:info>
 				<pmt:mappedName lang="en">Sequential</pmt:mappedName>
-				<pmt:returnType definedBy="commonType">0:-1</pmt:returnType>
+				<pmt:returnType definedBy="argument">-1</pmt:returnType>
 			</xsd:appinfo>
 		</xsd:annotation>
 		<xsd:complexType>
