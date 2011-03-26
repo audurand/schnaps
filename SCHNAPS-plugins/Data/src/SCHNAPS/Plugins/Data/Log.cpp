@@ -28,7 +28,11 @@ using namespace Data;
  * \brief Default constructor.
  */
 Log::Log() :
-	Primitive(0)
+	Primitive(0),
+	mType_Ref(""),
+	mType(NULL),
+	mMessage_Ref(""),
+	mMessage(NULL)
 {}
 
 /*!
@@ -36,6 +40,7 @@ Log::Log() :
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.
  * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
+ * \throw SCHNAPS::Core::IOException if inType or inMessage attributes are missing.
  */
 void Log::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
@@ -48,11 +53,55 @@ void Log::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem
 		lOSS << "got tag <" << inIter->getValue() << "> instead!";
 		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
 	}
+	
 	// retrieve log type
-	mType = inIter->getAttribute("type");
+	if (inIter->getAttribute("inType").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "log type expected!");
+	}
+	
+	switch (mType_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// TODO: local variable value
+			mType = NULL;
+			break;
+		case '$':
+			// parameter value
+			mType = ioSystem.getParameters().getParameterHandle(mType_Ref.substr(1));
+			break;
+		default:
+			// direct value
+			mType = new Core::String(mType_Ref);
+			break;
+	}
 
 	// retrieve log message
-	mMessage = inIter->getAttribute("message");
+	if (inIter->getAttribute("inMessage").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "log message expected!");
+	}
+	mMessage_Ref.assign(inIter->getAttribute("inMessage"));
+	
+	switch (mMessage_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// TODO: local variable value
+			mMessage = NULL;
+			break;
+		case '$':
+			// parameter value
+			mMessage = ioSystem.getParameters().getParameterHandle(mMessage_Ref.substr(1));
+			break;
+		default:
+			// direct value
+			mMessage = new Core::String(mMessage_Ref);
+			break;
+	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Data::Log::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
@@ -63,8 +112,8 @@ void Log::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem
  */
 void Log::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-	ioStreamer.insertAttribute("type", mType);
-	ioStreamer.insertAttribute("message", mMessage);
+	ioStreamer.insertAttribute("inType", mType_Ref);
+	ioStreamer.insertAttribute("inMessage", mMessage_Ref);
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Data::Log::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
@@ -73,14 +122,60 @@ void Log::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
+ * \throw  SCHNAPS::Core::RunTimeException if the method is not defined for the specific type source.
+ * \throw  SCHNAPS::Core::RunTimeException if the method is not defined for the specific message source.
  */
 Core::AnyType::Handle Log::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
-
+	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
+	std::string lType, lMessage;
+	
+	if (mType == NULL) {
+		switch (mType_Ref[0]) {
+			case '@':
+				// individual variable value
+				lType = lContext.getIndividual().getState().getVariable(mType_Ref.substr(1)).writeStr();
+				break;
+			case '#':
+				// environment variable value
+				lType = lContext.getEnvironment().getState().getVariable(mType_Ref.substr(1)).writeStr();
+				break;
+			case '%':
+				// TODO: local variable value
+				break;
+			default:
+				throw schnaps_RunTimeExceptionM("The method is undefined for the specific type source.");
+				break;
+		}
+	} else {
+		// parameter value or direct value
+		lType = mType->writeStr();
+	}
+	
+	if (mMessage == NULL) {
+		switch (mMessage_Ref[0]) {
+			case '@':
+				// individual variable value
+				lMessage = lContext.getIndividual().getState().getVariable(mMessage_Ref.substr(1)).writeStr();
+				break;
+			case '#':
+				// environment variable value
+				lMessage = lContext.getEnvironment().getState().getVariable(mMessage_Ref.substr(1)).writeStr();
+				break;
+			case '%':
+				// TODO: local variable value
+				break;
+			default:
+				throw schnaps_RunTimeExceptionM("The method is undefined for the specific message source.");
+				break;
+		}
+	} else {
+		// parameter value or direct value
+		lMessage = mMessage->writeStr();
+	}
+	
 	std::stringstream lLog;
-	lLog << lContext.getIndividual().getID() << "," << lContext.getClock().getValue() << "," << mType << "," << "\"" << mMessage << "\"";
-
+	lLog << lContext.getIndividual().getID() << "," << lContext.getClock().getValue() << "," << lType << "," << "\"" << lMessage << "\"";
 	lContext.getLogger().log(lLog.str());
 	return NULL;
 	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Data::Log::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");

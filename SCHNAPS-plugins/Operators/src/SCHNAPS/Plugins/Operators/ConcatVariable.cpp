@@ -29,24 +29,57 @@ using namespace Operators;
  */
 ConcatVariable::ConcatVariable() :
 	Core::Primitive(0),
-	mLabel(""),
-	mValue_Ref(""),
-	mValue(NULL)
+	mResult_Ref(""),
+	mArgLeft_Ref(""),
+	mArgLeft(NULL),
+	mArgRight_Ref(""),
+	mArgRight(NULL)
 {}
 
 /*!
- * \brief Construct a primitive for string concatenation to a current individual variable as a copy of an original.
- * \param inOriginal A const reference to the original primitive for string concatenation to a current individual variable.
+ * \brief Construct a primitive for string concatenation of right argument (as string) to left argument (as string) and store result in a variable as a copy of an original.
+ * \param inOriginal A const reference to the original primitive for string concatenation of right argument (as string) to left argument (as string) and store result in a variable.
  */
 ConcatVariable::ConcatVariable(const ConcatVariable& inOriginal) :
 	Core::Primitive(0),
-	mLabel(inOriginal.mLabel.c_str()),
-	mValue_Ref(inOriginal.mValue_Ref.c_str())
+	mResult_Ref(inOriginal.mResult_Ref.c_str()),
+	mArgLeft_Ref(inOriginal.mArgLeft_Ref.c_str()),
+	mArgRight_Ref(inOriginal.mArgRight_Ref.c_str())
 {
-	if (mValue_Ref.empty()) {
-		mValue = Core::castHandleT<Core::String>(inOriginal.mValue->clone());
-	} else {
-		mValue = Core::castHandleT<Core::String>(inOriginal.mValue);
+	switch (mArgLeft_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mArgLeft = NULL;
+			break;
+		case '$':
+			// parameter value
+			mArgLeft = inOriginal.mArgLeft;
+			break;
+		default:
+			// direct value
+			mArgLeft = Core::castHandleT<Core::Atom>(inOriginal.mArgLeft->clone());
+	}
+	
+	switch (mArgRight_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mArgRight = NULL;
+			break;
+		case '$':
+			// parameter value
+			mArgRight = inOriginal.mArgRight;
+			break;
+		default:
+			// direct value
+			mArgRight = Core::castHandleT<Core::Atom>(inOriginal.mArgRight->clone());
 	}
 }
 
@@ -55,8 +88,8 @@ ConcatVariable::ConcatVariable(const ConcatVariable& inOriginal) :
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.
  * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
- * \throw SCHNAPS::Core::IOException if label attribute is missing.
- * \throw SCHNAPS::Core::IOException if value attribute and value.ref attriute are missing.
+ * \throw SCHNAPS::Core::IOException if outResult or inArgLeft or inArgRight attributes are missing.
+ * \throw SCHNAPS::Core::RunTimeException if outResult attribute is not a reference to a variable.
  */
 void ConcatVariable::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
@@ -70,26 +103,64 @@ void ConcatVariable::readWithSystem(PACC::XML::ConstIterator inIter, Core::Syste
 		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
 	}
 
-	// retrieve label
-	if (inIter->getAttribute("label").empty()) {
-		throw schnaps_IOExceptionNodeM(*inIter, "label of variable to set expected!");
+	// retrieve output variable
+	if (inIter->getAttribute("outResult").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "label of variable where to store result expected!");
 	}
-	mLabel = inIter->getAttribute("label");
+	mResult_Ref.assign(inIter->getAttribute("outResult"));
+	
+	if (mResult_Ref[0] != '@') {
+		throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific output result source!");
+	}
 
-	// retrieve value
-	if (inIter->getAttribute("value").empty()) {
-		if (inIter->getAttribute("value.ref").empty()) {
-			throw schnaps_IOExceptionNodeM(*inIter, "comparison value expected!");
-		} else { // from parameter
-			mValue_Ref = inIter->getAttribute("value.ref");
-
-			std::stringstream lSS;
-			lSS << "ref." << mValue_Ref;
-			mValue = Core::castHandleT<Core::String>(ioSystem.getParameters().getParameterHandle(lSS.str().c_str()));
-		}
-	} else { // explicitly given
-		mValue =  new Core::String();
-		mValue->readStr(inIter->getAttribute("value"));
+	// retrieve left argument
+	if (inIter->getAttribute("inArgLeft").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "left argument expected!");
+	}
+	mArgLeft_Ref.assign(inIter->getAttribute("inArgLeft"));
+	
+	switch (mArgLeft_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mArgLeft = NULL;
+			break;
+		case '$':
+			// parameter value
+			mArgLeft = Core::castHandleT<Core::Atom>(ioSystem.getParameters().getParameterHandle(mArgLeft_Ref.substr(1)));
+			break;
+		default:
+			// direct value
+			mArgLeft = new Core::String(mArgLeft_Ref);
+			break;
+	}
+	
+	// retrieve right argument
+	if (inIter->getAttribute("inArgRight").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "right argument expected!");
+	}
+	mArgRight_Ref.assign(inIter->getAttribute("inArgRight"));
+	
+	switch (mArgRight_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mArgRight = NULL;
+			break;
+		case '$':
+			// parameter value
+			mArgRight = Core::castHandleT<Core::Atom>(ioSystem.getParameters().getParameterHandle(mArgRight_Ref.substr(1)));
+			break;
+		default:
+			// direct value
+			mArgRight = new Core::String(mArgRight_Ref);
+			break;
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Operators::ConcatVariable::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
@@ -101,13 +172,9 @@ void ConcatVariable::readWithSystem(PACC::XML::ConstIterator inIter, Core::Syste
  */
 void ConcatVariable::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-	ioStreamer.insertAttribute("label", mLabel);
-	if (mValue_Ref.empty()) {
-		ioStreamer.insertAttribute("valueType", mValue->getName());
-		ioStreamer.insertAttribute("value", mValue->writeStr());
-	} else {
-		ioStreamer.insertAttribute("value.ref", mValue_Ref);
-	}
+	ioStreamer.insertAttribute("outResult", mResult_Ref);
+	ioStreamer.insertAttribute("inArgLeft", mArgLeft_Ref);
+	ioStreamer.insertAttribute("inArgRight", mArgRight_Ref);
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Operators::ConcatVariable::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
@@ -117,17 +184,65 @@ void ConcatVariable::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
  * \throw  SCHNAPS::Core::RunTimeException if the method is not defined for the specific execution context.
+ * \throw  SCHNAPS::Core::RunTimeException if the method is not defined for the specific left argument source.
+ * \throw  SCHNAPS::Core::RunTimeException if the method is not defined for the specific right argument source.
  */
 Core::AnyType::Handle ConcatVariable::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	if (ioContext.getName() == "GenerationContext") {
 		throw schnaps_RunTimeExceptionM("The method is not defined for context 'GenerationContext'.");
 	}
+	
 	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
+	std::string lArgRight, lArgLeft;
+	
+	if (mArgLeft == NULL) {
+		switch (mArgLeft_Ref[0]) {
+			case '@':
+				// individual variable value
+				lArgLeft = lContext.getIndividual().getState().getVariable(mArgLeft_Ref.substr(1)).writeStr();
+				break;
+			case '#':
+				// environment variable value
+				lArgLeft = lContext.getEnvironment().getState().getVariable(mArgLeft_Ref.substr(1)).writeStr();
+				break;
+			case '%':
+				// TODO: local variable value
+				break;
+			default:
+				throw schnaps_RunTimeExceptionM("The method is undefined for the specific left argument source.");
+				break;
+		}
+	} else {
+		// parameter value or direct value
+		lArgLeft = mArgLeft->writeStr();
+	}
+	
+	if (mArgRight == NULL) {
+		switch (mArgRight_Ref[0]) {
+			case '@':
+				// individual variable value
+				lArgRight = lContext.getIndividual().getState().getVariable(mArgRight_Ref.substr(1)).writeStr();
+				break;
+			case '#':
+				// environment variable value
+				lArgRight = lContext.getEnvironment().getState().getVariable(mArgRight_Ref.substr(1)).writeStr();
+				break;
+			case '%':
+				// TODO: local variable value
+				break;
+			default:
+				throw schnaps_RunTimeExceptionM("The method is undefined for the specific left argument source.");
+				break;
+		}
+	} else {
+		// parameter value or direct value
+		lArgRight = mArgRight->writeStr();
+	}
 
 	std::stringstream lSS;
-	lSS << Core::castHandleT<Core::String>(lContext.getIndividual().getState().getVariableHandle(mLabel))->getValue() << mValue->getValue();
-	lContext.getIndividual().getState().setVariable(mLabel, new Core::String(lSS.str()));
+	lSS << lArgLeft << lArgRight;
+	lContext.getIndividual().getState().setVariable(mResult_Ref.substr(1), new Core::String(lSS.str()));
 	return NULL;
 	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Operators::ConcatVariable::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
 }

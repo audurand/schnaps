@@ -41,7 +41,23 @@ NPV::NPV(const NPV& inOriginal) :
 	Core::Primitive(1),
 	mRate_Ref(inOriginal.mRate_Ref.c_str())
 {
-	mRate = Core::castHandleT<Core::Double>(inOriginal.mRate->clone());
+	switch (mRate_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// TODO: local variable value
+			mRate = NULL;
+			break;
+		case '$':
+			// parameter value
+			mRate = inOriginal.mRate;
+		default:
+			// direct value
+			mRate = Core::castHandleT<Core::Double>(inOriginal.mRate->clone());
+			break;
+	}
 }
 
 /*!
@@ -50,8 +66,24 @@ NPV::NPV(const NPV& inOriginal) :
  */
 NPV& NPV::operator=(const NPV& inOriginal) {
 	schnaps_StackTraceBeginM();
-	mRate_Ref = inOriginal.mRate_Ref.c_str();
-	mRate = Core::castHandleT<Core::Double>(inOriginal.mRate->clone());
+	mRate_Ref.assign(inOriginal.mRate_Ref);
+	switch (mRate_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// TODO: local variable value
+			mRate = NULL;
+			break;
+		case '$':
+			// parameter value
+			mRate = inOriginal.mRate;
+		default:
+			// direct value
+			mRate = Core::castHandleT<Core::Double>(inOriginal.mRate->clone());
+			break;
+	}
 	return *this;
 	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::NPV& SCHNAPS::Plugins::Operators::NPV::operator=(const SCHNAPS::Plugins::Operators::NPV&)");
 }
@@ -61,7 +93,7 @@ NPV& NPV::operator=(const NPV& inOriginal) {
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.
  * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
- * \throw SCHNAPS::Core::IOException if rate attribute and rate.ref attribute are missing.
+ * \throw SCHNAPS::Core::IOException if inRate attribute is missing.
  */
 void NPV::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
@@ -75,17 +107,28 @@ void NPV::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem
 		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
 	}
 
-	if (inIter->getAttribute("rate").empty()) {
-		if (inIter->getAttribute("rate.ref").empty()) {
-			throw schnaps_IOExceptionNodeM(*inIter, "discount rate expected!");
-		} else {
-			mRate_Ref = inIter->getAttribute("rate.ref");
-			std::stringstream lSS;
-			lSS << "ref." << mRate_Ref;
-			mRate = Core::castHandleT<Core::Double>(ioSystem.getParameters().getParameterHandle(lSS.str().c_str()));
-		}
-	} else {
-		mRate = new Core::Double(SCHNAPS::str2dbl(inIter->getAttribute("rate")));
+	// retrieve actualization rate
+	if (inIter->getAttribute("inRate").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "discount rate expected!");
+	}
+	mRate_Ref.assign(inIter->getAttribute("inRate"));
+	
+	switch (mRate_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// TODO: local variable value
+			mRate = NULL;
+			break;
+		case '$':
+			// parameter value
+			mRate = Core::castHandleT<Core::Double>(ioSystem.getParameters().getParameterHandle(mRate_Ref.substr(1)));
+		default:
+			// direct value
+			mRate = new Core::Double(SCHNAPS::str2dbl(mRate_Ref));
+			break;
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Operators::NPV::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
@@ -97,11 +140,7 @@ void NPV::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem
  */
 void NPV::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-	if (mRate_Ref.empty()) {
-		ioStreamer.insertAttribute("rate", mRate->writeStr());
-	} else {
-		ioStreamer.insertAttribute("rate.ref", mRate_Ref);
-	}
+	ioStreamer.insertAttribute("inRate", mRate_Ref);
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Operators::NPV::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
@@ -111,21 +150,43 @@ void NPV::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
  * \throw  SCHNAPS::Core::RunTimeException if the method is not defined for the specific context.
+ * \throw  SCHNAPS::Core::RunTimeException if the method is not defined for the specific rate source.
  */
 Core::AnyType::Handle NPV::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	Core::Number::Handle lArg1 = Core::castHandleT<Core::Number>(getArgument(inIndex, 0, ioContext));
+	
 	if (ioContext.getName() == "SimulationContext") {
 		Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
 		double lTime = lContext.getClock().getValue();
-		Core::Double lDenum(std::pow(mRate->getValue() + 1, lTime));
-		lArg1->div(lDenum);
-		return lArg1;
-	} else if (ioContext.getName() == "GenerationContext") {
-		Simulation::GenerationContext& lContext = Core::castObjectT<Simulation::GenerationContext&>(ioContext);
-		double lTime = lContext.getClock().getValue();
-		Core::Double lDenum(std::pow(mRate->getValue() + 1, lTime));
-		lArg1->div(lDenum);
+		Core::Double::Handle lDenum;
+		
+		if (mRate == NULL) {
+			double lRate;
+			
+			switch (mRate_Ref[0]) {
+				case '@':
+					// individual variable value
+					lRate = Core::castHandleT<Core::Double>(lContext.getIndividual().getState().getVariableHandle(mRate_Ref.substr(1)))->getValue();
+					break;
+				case '#':
+					// environment variable value
+					lRate = Core::castHandleT<Core::Double>(lContext.getEnvironment().getState().getVariableHandle(mRate_Ref.substr(1)))->getValue();
+					break;
+				case '%':
+					// TODO: local variable value
+					break;
+				default:
+					throw schnaps_RunTimeExceptionM("The method is undefined for the specific rate source.");
+					break;
+			}
+			lDenum = new Core::Double(std::pow(lRate + 1, lTime));	
+		} else {
+			// parameter value or direct value
+			lDenum = new Core::Double(std::pow(mRate->getValue() + 1, lTime));	
+		}
+		
+		lArg1->div(*lDenum);
 		return lArg1;
 	} else {
 		throw schnaps_RunTimeExceptionM("NPV primitive is not defined for context '" + ioContext.getName() + "'!");

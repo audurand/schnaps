@@ -27,25 +27,80 @@ using namespace Meds;
 Treatment::Treatment() :
 	Primitive(2),
 	mLabel(""),
-	mCompliance(NULL),
-	mCost(NULL),
-	mDiscountRate(NULL),
+	mOutCost_Ref(""),
 	mCompliance_Ref(""),
+	mCompliance(NULL),
 	mCost_Ref(""),
+	mCost(NULL),
 	mDiscountRate_Ref(""),
-	mCostVariableLabel("")
+	mDiscountRate(NULL),
+	mChargeNonCompliant(true)
 {}
 
 Treatment::Treatment(const Treatment& inOriginal) :
 	mLabel(inOriginal.mLabel.c_str()),
+	mOutCost_Ref(inOriginal.mOutCost_Ref.c_str()),
 	mCompliance_Ref(inOriginal.mCompliance_Ref.c_str()),
 	mCost_Ref(inOriginal.mCost_Ref.c_str()),
 	mDiscountRate_Ref(inOriginal.mDiscountRate_Ref.c_str()),
-	mCostVariableLabel(inOriginal.mCostVariableLabel.c_str())
+	mChargeNonCompliant(inOriginal.mChargeNonCompliant)
 {
-	mCompliance = Core::castHandleT<Core::Double>(inOriginal.mCompliance->clone());
-	mCost = Core::castHandleT<Core::Double>(inOriginal.mCost->clone());
-	mDiscountRate = Core::castHandleT<Core::Double>(inOriginal.mDiscountRate->clone());
+	switch (mCompliance_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// TODO: local variable value
+			mCompliance = NULL;
+			break;
+		case '$':
+			// parameter value
+			mCompliance = inOriginal.mCompliance;
+			break;
+		default:
+			// direct value
+			mCompliance = Core::castHandleT<Core::Double>(inOriginal.mCompliance->clone());
+			break;
+	}
+	
+	switch (mCost_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// TODO: local variable value
+			mCost = NULL;
+			break;
+		case '$':
+			// parameter value
+			mCost = inOriginal.mCost;
+			break;
+		default:
+			// direct value
+			mCost = Core::castHandleT<Core::Double>(inOriginal.mCost->clone());
+			break;
+	}
+	
+	switch (mDiscountRate_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// TODO: local variable value
+			mDiscountRate = NULL;
+			break;
+		case '$':
+			// parameter value
+			mDiscountRate = inOriginal.mDiscountRate;
+			break;
+		default:
+			// direct value
+			mDiscountRate = Core::castHandleT<Core::Double>(inOriginal.mDiscountRate->clone());
+			break;
+	}
 }
 
 /*!
@@ -53,11 +108,8 @@ Treatment::Treatment(const Treatment& inOriginal) :
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.
  * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
- * \throw SCHNAPS::Core::IOException if label attribute is missing.
- * \throw SCHNAPS::Core::IOException if compliance attribute and compliance.ref attribute are missing.
- * \throw SCHNAPS::Core::IOException if cost attribute and cost.ref attribute are missing.
- * \throw SCHNAPS::Core::IOException if discountRate attribute and discountRate.ref attribute are missing.
- * \throw SCHNAPS::Core::IOException if costLabelVariable attribute is missing.
+ * \throw SCHNAPS::Core::IOException if inLabel, outCost, inCompliance, inCost, inDiscountRate or inChargeNonCompliant attributes are missing.
+ * \throw SCHNAPS::Core::IOException if inChargeNonCompliant attribute value is unknown.
  */
 void Treatment::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
@@ -72,59 +124,113 @@ void Treatment::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& io
 	}
 
 	// retrieve label
-	if (inIter->getAttribute("label").empty()) {
-		throw schnaps_IOExceptionNodeM(*inIter, "label expected!");
-	} else {
-		mLabel = inIter->getAttribute("label");
+	if (inIter->getAttribute("inLabel").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "label of event expected!");
 	}
+	mLabel.assign(inIter->getAttribute("inLabel"));
 
+	// retrieve output cost destination
+	if (inIter->getAttribute("outCost").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "output cost destination expected!");
+	}
+	mOutCost_Ref.assign(inIter->getAttribute("outCost"));
+		
+	if (mOutCost_Ref[0] != '@') {
+		// TODO: local variable value
+		throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific cost destination source.");
+	}
+	
 	// retrieve compliance
-	if (inIter->getAttribute("compliance").empty()) {
-		if (inIter->getAttribute("compliance.ref").empty()) {
-			throw schnaps_IOExceptionNodeM(*inIter, "compliance expected!");
-		} else {
-			mCompliance_Ref = inIter->getAttribute("ref.compliance");
-			std::stringstream lSS;
-			lSS << "ref." << mCompliance_Ref;
-			mCompliance = Core::castHandleT<Core::Double>(ioSystem.getParameters().getParameterHandle(lSS.str().c_str()));
-		}
-	} else {
-		mCompliance = new Core::Double(SCHNAPS::str2dbl(inIter->getAttribute("compliance")));
+	if (inIter->getAttribute("inCompliance").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "compliance expected!");
 	}
-
+	mCompliance_Ref.assign(inIter->getAttribute("inCompliance"));
+	
+	switch (mCompliance_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// TODO: local variable value
+			mCompliance = NULL;
+			break;
+		case '$':
+			// parameter value
+			mCompliance = Core::castHandleT<Core::Double>(ioSystem.getParameters().getParameterHandle(mCompliance_Ref.substr(1)));
+			break;
+		default:
+			// direct value
+			mCompliance = new Core::Double();
+			mCompliance->readStr(mCompliance_Ref);
+			break;
+	}
+	
 	// retrieve cost
-	if (inIter->getAttribute("cost").empty()) {
-		if (inIter->getAttribute("cost.ref").empty()) {
-			throw schnaps_IOExceptionNodeM(*inIter, "cost expected!");
-		} else {
-			mCost_Ref = inIter->getAttribute("cost.ref");
-			std::stringstream lSS;
-			lSS << "ref." << mCost_Ref;
-			mCost = Core::castHandleT<Core::Double>(ioSystem.getParameters().getParameterHandle(lSS.str().c_str()));
-		}
-	} else {
-		mCost = new Core::Double(SCHNAPS::str2dbl(inIter->getAttribute("cost")));
+	if (inIter->getAttribute("inCost").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "cost expected!");
 	}
-
+	mCost_Ref.assign(inIter->getAttribute("inCost"));
+	
+	switch (mCost_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// TODO: local variable value
+			mCost = NULL;
+			break;
+		case '$':
+			// parameter value
+			mCost = Core::castHandleT<Core::Double>(ioSystem.getParameters().getParameterHandle(mCost_Ref.substr(1)));
+			break;
+		default:
+			// direct value
+			mCost = new Core::Double();
+			mCost->readStr(mCost_Ref);
+			break;
+	}
+		
 	// retrieve discount rate
-	if (inIter->getAttribute("discountRate").empty()) {
-		if (inIter->getAttribute("discountRate.ref").empty()) {
-			throw schnaps_IOExceptionNodeM(*inIter, "discount rate expected!");
-		} else {
-			mDiscountRate_Ref = inIter->getAttribute("discountRate.ref");
-			std::stringstream lSS;
-			lSS << "ref." << mDiscountRate_Ref;
-			mDiscountRate = Core::castHandleT<Core::Double>(ioSystem.getParameters().getParameterHandle(lSS.str().c_str()));
-		}
+	if (inIter->getAttribute("inDiscountRate").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "discount rate expected!");
+	}
+	mDiscountRate_Ref.assign(inIter->getAttribute("inDiscountRate"));
+	
+	switch (mDiscountRate_Ref[0]) {
+	case '@':
+		// individual variable value
+	case '#':
+		// environment variable value
+	case '%':
+		// TODO: local variable value
+		mDiscountRate = NULL;
+		break;
+	case '$':
+		// parameter value
+		mDiscountRate = Core::castHandleT<Core::Double>(ioSystem.getParameters().getParameterHandle(mDiscountRate_Ref.substr(1)));
+		break;
+	default:
+		// direct value
+		mDiscountRate = new Core::Double();
+		mDiscountRate->readStr(mDiscountRate_Ref);
+		break;
+	}
+	
+	// retrieve charge non-compliant flag
+	if (inIter->getAttribute("inChargeNonCompliant").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "charge non-compliant flag expected!");
+	}
+	std::string lChargeNonCompliant = inIter->getAttribute("inChargeNonCompliant");
+	
+	if (lChargeNonCompliant == "true" || lChargeNonCompliant == "TRUE" || lChargeNonCompliant == "True") {
+		mChargeNonCompliant = true;
+	} else if (lChargeNonCompliant == "false" || lChargeNonCompliant == "FALSE" || lChargeNonCompliant == "False") {
+		mChargeNonCompliant = false;
 	} else {
-		mDiscountRate = new Core::Double(SCHNAPS::str2dbl(inIter->getAttribute("discountRate")));
+		throw schnaps_IOExceptionNodeM(*inIter, "unknown value for charge non-compliant flag!");
 	}
-
-	// retrieve label of cost variable
-	if (inIter->getAttribute("costVariableLabel").empty()) {
-		throw schnaps_IOExceptionNodeM(*inIter, "label of cost variable to refer expected!");
-	}
-	mCostVariableLabel = inIter->getAttribute("costVariableLabel");
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Meds::Treatment::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
@@ -135,26 +241,16 @@ void Treatment::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& io
  */
 void Treatment::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-	ioStreamer.insertAttribute("label", mLabel);
-	if (mCompliance_Ref.empty()) {
-		ioStreamer.insertAttribute("compliance.ref", "");
-		ioStreamer.insertAttribute("compliance", mCompliance->writeStr());
+	ioStreamer.insertAttribute("inLabel", mLabel);
+	ioStreamer.insertAttribute("outCost", mOutCost_Ref);
+	ioStreamer.insertAttribute("inCompliance", mCompliance_Ref);
+	ioStreamer.insertAttribute("inCost", mCost_Ref);
+	ioStreamer.insertAttribute("inDiscountRate", mDiscountRate_Ref);
+	if (mChargeNonCompliant) {
+		ioStreamer.insertAttribute("inChargeNonCompliante", "true");
 	} else {
-		ioStreamer.insertAttribute("compliance.ref", mCompliance_Ref);
+		ioStreamer.insertAttribute("inChargeNonCompliante", "false");
 	}
-	if (mCost_Ref.empty()) {
-		ioStreamer.insertAttribute("cost.ref", "");
-		ioStreamer.insertAttribute("cost", mCost->writeStr());
-	} else {
-		ioStreamer.insertAttribute("cost.ref", mCost_Ref);
-	}
-	if (mDiscountRate_Ref.empty()) {
-		ioStreamer.insertAttribute("discountRate.ref", "");
-		ioStreamer.insertAttribute("discountRate", mDiscountRate->writeStr());
-	} else {
-		ioStreamer.insertAttribute("discountRate.ref", mDiscountRate_Ref);
-	}
-	ioStreamer.insertAttribute("costVariableLabel", mCostVariableLabel);
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Meds::Treatment::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
@@ -169,25 +265,138 @@ Core::AnyType::Handle Treatment::execute(unsigned int inIndex, Core::ExecutionCo
 	schnaps_StackTraceBeginM();
 	if (ioContext.getName() == "SimulationContext") {
 		Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
-		double lTime = lContext.getClock().getValue();
+		double lCompliance;
+		
+		if (mCompliance == NULL) {
+			switch (mCompliance_Ref[0]) {
+				case '@':
+					// individual variable value
+					lCompliance = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mCompliance_Ref.substr(1))).getValue();
+					break;
+				case '#':
+					// environment variable value
+					lCompliance = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mCompliance_Ref.substr(1))).getValue();
+					break;
+				case '%':
+					// TODO: local variable value
+					break;
+				default:
+					throw schnaps_RunTimeExceptionM("The method is undefined for the specific compliance source.");
+					break;
+			}
+		} else {
+			lCompliance = mCompliance->getValue();
+		}
+		
+		if (ioContext.getRandomizer().rollUniform() <= lCompliance) {
+			// individual is compliant
+			double lTime = lContext.getClock().getValue();
+			double lCost, lCurrentCost, lDiscountRate;
 
-		// compute cost
-		Core::Double lDenum(std::pow(mDiscountRate->getValue() + 1, lTime));
-		Core::Double::Handle lCost = Core::castHandleT<Core::Double>(mCost->clone());
-		lCost->div(lDenum);
+			if (mCost == NULL) {
+				switch (mCost_Ref[0]) {
+					case '@':
+						// individual variable value
+						lCost = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mCost_Ref.substr(1))).getValue();
+						break;
+					case '#':
+						// environment variable value
+						lCost = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mCost_Ref.substr(1))).getValue();
+						break;
+					case '%':
+						// TODO: local variable value
+						break;
+					default:
+						throw schnaps_RunTimeExceptionM("The method is undefined for the specific cost source.");
+						break;
+				}
+			} else {
+				lCost = mCost->getValue();
+			}
 
-		// set cost
-		Core::Double::Handle lNewValue = Core::castHandleT<Core::Double>(lContext.getIndividual().getState().getVariableHandle(mCostVariableLabel)->clone());
-		lNewValue->add(*lCost);
-		lContext.getIndividual().getState().setVariable(mCostVariableLabel, lNewValue);
-
-		if (ioContext.getRandomizer().rollUniform() < mCompliance->getValue()) {
-			// apply treatment effects
+			if (mDiscountRate == NULL) {
+				switch (mDiscountRate_Ref[0]) {
+					case '@':
+						// individual variable value
+						lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mDiscountRate_Ref.substr(1))).getValue();
+						break;
+					case '#':
+						// environment variable value
+						lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mDiscountRate_Ref.substr(1))).getValue();
+						break;
+					case '%':
+						// TODO: local variable value
+						break;
+					default:
+						throw schnaps_RunTimeExceptionM("The method is undefined for the specific discount rate source.");
+						break;
+				}
+			} else {
+				lDiscountRate = mDiscountRate->getValue();
+			}
+			
+			// add test cost
+			lCost = lCost/std::pow(lDiscountRate + 1, lTime);
+			lCurrentCost = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mOutCost_Ref.substr(1))).getValue();
+			lContext.getIndividual().getState().setVariable(mOutCost_Ref.substr(1), new Core::Double(lCurrentCost + lCost));
+			
 			getArgument(inIndex, 0, ioContext);
-		} else { // not compliant
+		} else {
+			// individual is not compliant
+			if (mChargeNonCompliant) {
+				double lTime = lContext.getClock().getValue();
+				double lCost, lCurrentCost, lDiscountRate;
+
+				if (mCost == NULL) {
+					switch (mCost_Ref[0]) {
+						case '@':
+							// individual variable value
+							lCost = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mCost_Ref.substr(1))).getValue();
+							break;
+						case '#':
+							// environment variable value
+							lCost = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mCost_Ref.substr(1))).getValue();
+							break;
+						case '%':
+							// TODO: local variable value
+							break;
+						default:
+							throw schnaps_RunTimeExceptionM("The method is undefined for the specific cost source.");
+							break;
+					}
+				} else {
+					lCost = mCost->getValue();
+				}
+
+				if (mDiscountRate == NULL) {
+					switch (mDiscountRate_Ref[0]) {
+						case '@':
+							// individual variable value
+							lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mDiscountRate_Ref.substr(1))).getValue();
+							break;
+						case '#':
+							// environment variable value
+							lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mDiscountRate_Ref.substr(1))).getValue();
+							break;
+						case '%':
+							// TODO: local variable value
+							break;
+						default:
+							throw schnaps_RunTimeExceptionM("The method is undefined for the specific discount rate source.");
+							break;
+					}
+				} else {
+					lDiscountRate = mDiscountRate->getValue();
+				}
+				
+				// add test cost
+				lCost = lCost/std::pow(lDiscountRate + 1, lTime);
+				lCurrentCost = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mOutCost_Ref.substr(1))).getValue();
+				lContext.getIndividual().getState().setVariable(mOutCost_Ref.substr(1), new Core::Double(lCurrentCost + lCost));
+			}
+			
 			getArgument(inIndex, 1, ioContext);
 		}
-
 	} else {
 		throw schnaps_RunTimeExceptionM("Primitive is not defined for context '" + ioContext.getName() + "'!");
 	}

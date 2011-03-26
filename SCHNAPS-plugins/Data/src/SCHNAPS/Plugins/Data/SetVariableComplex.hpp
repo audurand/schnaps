@@ -21,8 +21,9 @@
 #ifndef SCHNAPS_Plugins_Data_SetVariableComplex_hpp
 #define SCHNAPS_Plugins_Data_SetVariableComplex_hpp
 
-#include "PACC/XML.hpp"
 #include "SCHNAPS/SCHNAPS.hpp"
+
+#include "PACC/XML.hpp"
 
 namespace SCHNAPS {
 namespace Plugins {
@@ -69,7 +70,7 @@ public:
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
-	std::string mLabel; //!< Label of variable to set.
+	std::string mVariable_Ref; //!< Reference to variable to set.
 };
 } // end of Data namespace
 } // end of Plugins namespace

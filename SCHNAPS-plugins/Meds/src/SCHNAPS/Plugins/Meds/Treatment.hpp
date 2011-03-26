@@ -70,14 +70,15 @@ public:
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
-	std::string mLabel;
+	std::string mLabel;					//!< Label of test.
+	std::string mOutCost_Ref;			//!< Reference to the output cost destination.
+	std::string mCompliance_Ref;		//!< Reference to the compliance.
 	Core::Double::Handle mCompliance;	//!< A handle to the compliance value.
+	std::string mCost_Ref;				//!< Reference to the cost.
 	Core::Double::Handle mCost;			//!< A handle to the cost value.
+	std::string mDiscountRate_Ref;		//!< Reference to the discount rate.
 	Core::Double::Handle mDiscountRate;	//!< A handle to the discount rate value.
-	std::string mCompliance_Ref;		//!< Label of compliance parameter.
-	std::string mCost_Ref;				//!< Label of cost parameter.
-	std::string mDiscountRate_Ref;		//!< Label of discount rate parameter.
-	std::string mCostVariableLabel;		//!< Label of individual variable for cumulating cost.
+	bool mChargeNonCompliant;			//!< Charge or not non-compliance individuals.
 };
 } // end of Meds namespace
 } // end of Plugins namespace

@@ -30,7 +30,7 @@ using namespace Simulation;
  */
 State::State(const State& inOriginal) {
 	for (VariablesMap::const_iterator lIt = inOriginal.mVariablesMap.begin(); lIt != inOriginal.mVariablesMap.end(); lIt++) {
-		mVariablesMap[lIt->first] = Core::castHandleT<Core::Atom>(lIt->second->clone());
+		mVariablesMap[lIt->first] = Core::castHandleT<Core::AnyType>(lIt->second->clone());
 	}
 }
 
@@ -42,7 +42,7 @@ State& State::operator=(const State& inOriginal) {
 	schnaps_StackTraceBeginM();
 	mVariablesMap.clear();
 	for (VariablesMap::const_iterator lIt = inOriginal.mVariablesMap.begin(); lIt != inOriginal.mVariablesMap.end(); lIt++) {
-		mVariablesMap[lIt->first] = Core::castHandleT<Core::Atom>(lIt->second->clone());
+		mVariablesMap[lIt->first] = Core::castHandleT<Core::AnyType>(lIt->second->clone());
 	}
 
 	return *this;
@@ -91,7 +91,7 @@ void State::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSyst
 			}
 
 			lAlloc = Core::castHandleT<Core::Atom::Alloc>(ioSystem.getFactory().getAllocator(lChild->getAttribute("type")));
-			mVariablesMap[lChild->getAttribute("label")] = Core::castHandleT<Core::Atom>(lAlloc->allocate());
+			mVariablesMap[lChild->getAttribute("label")] = Core::castHandleT<Core::AnyType>(lAlloc->allocate());
 			mVariablesMap[lChild->getAttribute("label")]->readStr(lChild->getAttribute("value"));
 		}
 	}
@@ -141,7 +141,7 @@ void State::clear() {
  * \param inValue A handle to new value of the variable.
  * \throw SCHNAPS::Core::RunTimeException if the variable already exists.
  */
-void State::insertVariable(const std::string& inLabel, Core::Atom::Handle inValue) {
+void State::insertVariable(const std::string& inLabel, Core::AnyType::Handle inValue) {
 	schnaps_StackTraceBeginM();
 	if (mVariablesMap.find(inLabel) != mVariablesMap.end()) {
 		std::ostringstream lOSS;
@@ -149,7 +149,7 @@ void State::insertVariable(const std::string& inLabel, Core::Atom::Handle inValu
 		lOSS << "could not insert it.";
 		throw schnaps_RunTimeExceptionM(lOSS.str());
 	}
-	mVariablesMap.insert(std::pair<std::string, Core::Atom::Handle>(inLabel.c_str(), inValue));
+	mVariablesMap.insert(std::pair<std::string, Core::AnyType::Handle>(inLabel.c_str(), inValue));
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::State::insertVariable(const std::string&, SCHNAPS::Core::Atom::Handle) const");
 }
 	

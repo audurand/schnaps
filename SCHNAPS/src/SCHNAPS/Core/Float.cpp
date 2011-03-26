@@ -89,7 +89,6 @@ bool Float::isLess(const Object& inRightObj) const {
 /*!
  * \brief Read the object from string.
  * \param inStr String to read the object from.
- * \throw SCHNAPS::Core::InternalException if the string contains an unknown value for object.
  */
 void Float::readStr(std::string& inStr) {
 	schnaps_StackTraceBeginM();
@@ -121,85 +120,78 @@ AnyType::Handle Float::clone() const {
 }
 
 /*!
- *  \brief  Compute absolute value.
- *  \return A reference to the resulting number.
+ * \brief  Compute the absolute value.
+ * \return A handle to the resulting number.
  */
-Number& Float::abs() {
+Number::Handle Float::abs() {
 	schnaps_StackTraceBeginM();
-	mValue = std::fabs(mValue);
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Float::abs()");
+	return new Float(std::fabs(mValue));
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Float::abs()");
 }
 
 /*!
- *  \brief  Add a number.
- *  \return A reference to the resulting number.
+ * \brief  Compute the addition a number.
+ * \return A handle to the resulting number.
  */
-Number& Float::add(Number& inRightNumber) {
+Number::Handle Float::add(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	Float lRightFloat = inRightNumber;
-	mValue += lRightFloat.getValue();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Float::add(SCHNAPS::Core::Number&)");
+	return new Float(mValue + lRightFloat.getValue());
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Float::add(SCHNAPS::Core::Number&)");
 }
 
 /*!
- *  \brief  Divide by a number.
- *  \return A reference to the resulting number.
+ * \brief  Compute the division by a number.
+ * \return A handle to the resulting number.
  */
-Number& Float::div(Number& inRightNumber) {
+Number::Handle Float::div(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	Float lRightFloat = inRightNumber;
-	mValue /= lRightFloat.getValue();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Float::div(SCHNAPS::Core::Number&)");
+	return new Float(mValue / lRightFloat.getValue());
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Float::div(SCHNAPS::Core::Number&)");
 }
 
 /*!
  *  \brief  Compute the base-e exponential function, which is the e number raised to the power x.
- *  \return A reference to the resulting number.
+ *  \return A handle to the resulting number.
  */
-Number& Float::exp() {
+Number::Handle Float::exp() {
 	schnaps_StackTraceBeginM();
-	mValue = std::exp(mValue);
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Float::exp()");
+	return new Float(std::exp(mValue));
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Float::exp()");
 }
 
 /*!
- *  \brief  Multiply by a number.
- *  \return A reference to the resulting number.
+ * \brief  Compute the multiplication by a number.
+ * \return A handle to the resulting number.
  */
-Number& Float::mult(Number& inRightNumber) {
+Number::Handle Float::mult(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	Float lRightFloat = inRightNumber;
-	mValue *= lRightFloat.getValue();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Float::mult(SCHNAPS::Core::Number&)");
+	return new Float(mValue * lRightFloat.getValue());
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Float::mult(SCHNAPS::Core::Number&)");
 }
 
 /*!
- *  \brief  Raise to the power exponent.
- *  \return A reference to the resulting number.
+ *  \brief  Compute the raise to the power exponent.
+ *  \return A handle to the resulting number.
  */
-Number& Float::pow(Number& inRightNumber) {
+Number::Handle Float::pow(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	Float lRightFloat = inRightNumber;
-	mValue = std::pow(mValue, lRightFloat.getValue());
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Float::pow(SCHNAPS::Core::Number&)");
+	return new Float(std::pow(mValue, lRightFloat.getValue()));
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Float::pow(SCHNAPS::Core::Number&)");
 }
 
 /*!
- *  \brief  Subtract a number.
- *  \return A reference to the resulting number.
+ * \brief  Compute the subtraction by a number.
+ * \return A handle to the resulting number.
  */
-Number& Float::sub(Number& inRightNumber) {
+Number::Handle Float::sub(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	Float lRightFloat = inRightNumber;
-	mValue -= lRightFloat.getValue();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Float::sub(SCHNAPS::Core::Number&)");
+	return new Float(mValue - lRightFloat.getValue());
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Float::sub(SCHNAPS::Core::Number&)");
 }
 
 /*!

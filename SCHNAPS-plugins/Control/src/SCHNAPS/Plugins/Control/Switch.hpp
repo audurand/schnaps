@@ -79,7 +79,6 @@ public:
 
 private:
 	std::string mKeys_Ref;	//!< Reference to switch keys.
-	std::string mKeyType;	//!< Type of switch keys.
 	SwitchMap mSwitchMap;	//!< Map of keys to associated argument index.
 };
 } // end of Control namespace

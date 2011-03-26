@@ -42,7 +42,7 @@
 					<xsd:element ref="_primitive"/>
 				</xsd:choice>
 			</xsd:sequence>
-			<xsd:attribute name="probability" type="xsd:double" use="optional">
+			<xsd:attribute name="inProbability" type="xsd:double" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
@@ -55,25 +55,15 @@
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="probability.ref" type="xsd:string" use="required">
-				<xsd:annotation>
-					<xsd:appinfo>
-						<gui:attributeBehavior>
-							<gui:list type="allParameters"/>
-						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en" reference="true"/>
-					</xsd:appinfo>
-				</xsd:annotation>
-			</xsd:attribute>
 		</xsd:complexType>
 	</xsd:element>
 	
-	<xsd:element name="Control_BranchMulti" substitutionGroup="_conditionOp">
+	<xsd:element name="Control_BranchMulti" substitutionGroup="_multiBranchesConditionOp">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<pmt:info lang="en">Execute a branch with some probability.</pmt:info>
 				<pmt:mappedName lang="en">Branch (multiple)</pmt:mappedName>
-				<pmt:returnType definedBy="commonType">0,-1</pmt:returnType>
+				<pmt:returnType definedBy="commonType">0:-1</pmt:returnType>
 			</xsd:appinfo>
 		</xsd:annotation>
 		<xsd:complexType>
@@ -87,7 +77,7 @@
 					<xsd:element ref="_primitive"/>
 				</xsd:choice>
 			</xsd:sequence>
-			<xsd:attribute name="probabilities" type="xsd:string" use="optional">
+			<xsd:attribute name="inProbabilities" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
@@ -96,17 +86,7 @@
 								<gui:sum>1</gui:sum>
 							</gui:mapToBranches>
 						</gui:attributeBehavior>
-						<pmt:attributeMappedName lang="en">Probability of each branch</pmt:attributeMappedName>
-					</xsd:appinfo>
-				</xsd:annotation>
-			</xsd:attribute>
-			<xsd:attribute name="probabilities.ref" type="xsd:string" use="required">
-				<xsd:annotation>
-					<xsd:appinfo>
-						<gui:attributeBehavior>
-							<gui:list type="allParameters"/>
-						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en" reference="true"/>
+						<pmt:attributeMappedName lang="en">Branch probabilities</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
@@ -116,7 +96,7 @@
 	<xsd:element name="Control_ChoiceIsBetween" substitutionGroup="_multiBranchesConditionOp">
 		<xsd:annotation>
 			<xsd:appinfo>
-				<pmt:info lang="en">Choice according to individual variable value. This executes the branch according to lower bound is less or equal than variable and variable is less than higher bound. Choices MUST be given in crescent order. The variable MUST fit in a range.</pmt:info>
+				<pmt:info lang="en">Choice according to some value. This executes the branch according to lower bound is less or equal than value and value is less than higher bound. Choices MUST be given in crescent order. The value MUST fit in a range.</pmt:info>
 				<pmt:mappedName lang="en">Choice (is between)</pmt:mappedName>
 				<pmt:returnType definedBy="commonType">0:-1</pmt:returnType>
 			</xsd:appinfo>
@@ -132,18 +112,18 @@
 					<xsd:element ref="_primitive"/>
 				</xsd:choice>
 			</xsd:sequence>
-			<xsd:attribute name="choiceVariableLabel" type="xsd:string" use="required">
+			<xsd:attribute name="inValue" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
 							<gui:list type="allVariables" allowEdition="False"/>
 							<gui:displayValue position="br"/>
 						</gui:attributeBehavior>
-						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
+						<pmt:attributeMappedName lang="en">Value</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="choiceType" type="xsd:string" use="optional">
+			<xsd:attribute name="inBounds_Type" use="optional">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
@@ -166,26 +146,16 @@
 					</xsd:restriction>
 				</xsd:simpleType>
 			</xsd:attribute>
-			<xsd:attribute name="choices" type="xsd:string" use="optional">
+			<xsd:attribute name="inBounds" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
 							<gui:mapToBranches regexp="|" startIndex="0" endIndex="-1" defaultAtomValue="0" editable="true" displayAttribute="true">
-								<gui:individualType definedBy="attributeValue">choiceType</gui:individualType>
+								<gui:individualType definedBy="attributeValue">inBounds_Type</gui:individualType>
 							</gui:mapToBranches>
 						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en" pairedAttr="choiceType">WARNING: individual variable used to make choice must be contained between states bounds!</pmt:attributeInfo>
+						<pmt:attributeInfo lang="en" pairedAttr="inBounds_Type">WARNING: value used to make choice must be contained between stated bounds!</pmt:attributeInfo>
 						<pmt:attributeMappedName lang="en">Lower bounds</pmt:attributeMappedName>
-					</xsd:appinfo>
-				</xsd:annotation>
-			</xsd:attribute>
-			<xsd:attribute name="choices.ref" type="xsd:string" use="required">
-				<xsd:annotation>
-					<xsd:appinfo>
-						<gui:attributeBehavior>
-							<gui:list type="allParameters"/>
-						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en" reference="true">WARNING: individual variable used to make choice must be contained between states bounds!</pmt:attributeInfo>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
@@ -195,7 +165,7 @@
 	<xsd:element name="Control_ChoiceIsEqual" substitutionGroup="_multiBranchesConditionOp">
 		<xsd:annotation>
 			<xsd:appinfo>
-				<pmt:info lang="en">Choice according to individual variable value. The variable MUST equal one of the choices.</pmt:info>
+				<pmt:info lang="en">Choice according to some value. The value MUST equal one of the choices.</pmt:info>
 				<pmt:mappedName lang="en">Choice (is equal)</pmt:mappedName>
 				<pmt:returnType definedBy="commonType">0:-1</pmt:returnType>
 			</xsd:appinfo>
@@ -211,18 +181,18 @@
 					<xsd:element ref="_primitive"/>
 				</xsd:choice>
 			</xsd:sequence>
-			<xsd:attribute name="choiceVariableLabel" type="xsd:string" use="required">
+			<xsd:attribute name="inValue" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
 							<gui:list type="allVariables" allowEdition="False"/>
 							<gui:displayValue position="br"/>
 						</gui:attributeBehavior>
-						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
+						<pmt:attributeMappedName lang="en">Value</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="choiceType" type="xsd:string" use="optional">
+			<xsd:attribute name="inChoices_Type" use="optional">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
@@ -245,33 +215,16 @@
 					</xsd:restriction>
 				</xsd:simpleType>
 			</xsd:attribute>
-			<xsd:attribute name="choices" type="xsd:string" use="optional">
+			<xsd:attribute name="inChoices" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
 							<gui:mapToBranches regexp="|" startIndex="0" endIndex="-1" defaultAtomValue="0" editable="true" displayAttribute="true">
-								<gui:individualType definedBy="attributeValue">choiceType</gui:individualType>
+								<gui:individualType definedBy="attributeValue">inChoices_Type</gui:individualType>
 							</gui:mapToBranches>
 						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en" pairedAttr="choiceType">WARNING: individual variable used to make choice must be contained by one of the stated choices!</pmt:attributeInfo>
+						<pmt:attributeInfo lang="en" pairedAttr="choiceType">WARNING: value used to make choice must be contained by one of the stated choices!</pmt:attributeInfo>
 						<pmt:attributeMappedName lang="en">Choices</pmt:attributeMappedName>
-					</xsd:appinfo>
-				</xsd:annotation>
-			</xsd:attribute>
-			<xsd:attribute name="choices.ref" type="xsd:string" use="required">
-				<xsd:annotation>
-					<xsd:appinfo>
-						<gui:attributeBehavior>
-							<gui:list type="allParameters"/>
-						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en" reference="true">WARNING: individual variable used to make choice must be contained by one of the stated choices!</pmt:attributeInfo>
-					</xsd:appinfo>
-				</xsd:annotation>
-			</xsd:attribute>
-			<xsd:attribute name="catchError" type="xsd:boolean" use="optional">
-				<xsd:annotation>
-					<xsd:appinfo>
-						<pmt:attributeInfo lang="en">Catch errors</pmt:attributeInfo>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
@@ -358,13 +311,13 @@
 			<xsd:appinfo>
 				<pmt:info lang="en">Call a process for execution.</pmt:info>
 				<pmt:mappedName lang="en">Process (call)</pmt:mappedName>
-				<pmt:returnType definedBy="processReturnValue">label</pmt:returnType>
+				<pmt:returnType definedBy="processReturnValue">inLabel</pmt:returnType>
 			</xsd:appinfo>
 		</xsd:annotation>
 		<xsd:complexType>
 			<xsd:complexContent>
 				<xsd:extension base="_dynamicTkComplexType">
-					<xsd:attribute name="label" type="xsd:string" use="required">
+					<xsd:attribute name="inLabel" type="xsd:string" use="required">
 						<xsd:annotation>
 							<xsd:appinfo>
 								<gui:attributeBehavior>
@@ -391,7 +344,7 @@
 		<xsd:complexType>
 			<xsd:complexContent>
 				<xsd:extension base="_dynamicTkComplexType">
-					<xsd:attribute name="label" type="xsd:string" use="required">
+					<xsd:attribute name="inLabel" type="xsd:string" use="required">
 						<xsd:annotation>
 							<xsd:appinfo>
 								<gui:attributeBehavior>
@@ -402,14 +355,14 @@
 							</xsd:appinfo>
 						</xsd:annotation>
 					</xsd:attribute>
-					<xsd:attribute name="delay" type="xsd:unsignedLong" use="required">
+					<xsd:attribute name="inDelay" type="xsd:string" use="required">
 						<xsd:annotation>
 							<xsd:appinfo>
 								<pmt:attributeMappedName lang="en">Delay</pmt:attributeMappedName>
 							</xsd:appinfo>
 						</xsd:annotation>
 					</xsd:attribute>
-					<xsd:attribute name="target" type="xsd:string" use="required">
+					<xsd:attribute name="inTarget" use="required">
 						<xsd:annotation>
 							<xsd:appinfo>
 								<pmt:attributeMappedName lang="en">Target</pmt:attributeMappedName>
@@ -494,15 +447,15 @@
 					</xsd:choice>
 				</xsd:sequence>
 			</xsd:sequence>
-			<xsd:attribute name="keyType" type="xsd:string" use="optional">
+			<xsd:attribute name="inKeys_Type" use="optional">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
 							<gui:list type="atomTypes" allowEdition="False"/>
 						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en">WARNING: this must be the same type as switch condition!</pmt:attributeInfo>
+						<pmt:attributeMappedName lang="en">Switch type</pmt:attributeMappedName>
 					</xsd:appinfo>
-					<pmt:attributeInfo lang="en">WARNING: this must be the same type as switch condition!</pmt:attributeInfo>
-					<pmt:attributeMappedName lang="en">Switch type</pmt:attributeMappedName>
 				</xsd:annotation>
 				<xsd:simpleType>
 					<xsd:restriction base="xsd:string">
@@ -518,26 +471,16 @@
 					</xsd:restriction>
 				</xsd:simpleType>
 			</xsd:attribute>
-			<xsd:attribute name="keys" type="xsd:string" use="optional">
+			<xsd:attribute name="inKeys" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
 							<gui:mapToBranches regexp="|" startIndex="2" endIndex="-1" defaultAtomValue="0" editable="true" displayAttribute="true">
-								<gui:individualType definedBy="attributeValue">keyType</gui:individualType>
+								<gui:individualType definedBy="attributeValue">inKeys_Type</gui:individualType>
 							</gui:mapToBranches>
 						</gui:attributeBehavior>
-						<pmt:attributeInfo pairedAttr="keyType"/>
+						<pmt:attributeInfo pairedAttr="inKeys_Type"/>
 						<pmt:attributeMappedName lang="en">Switch values</pmt:attributeMappedName>
-					</xsd:appinfo>
-				</xsd:annotation>
-			</xsd:attribute>
-			<xsd:attribute name="keys.ref" type="xsd:string" use="required">
-				<xsd:annotation>
-					<xsd:appinfo>
-						<gui:attributeBehavior>
-							<gui:list type="allParameters"/>
-						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en" reference="true"/>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>

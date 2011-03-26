@@ -29,24 +29,57 @@ using namespace Operators;
  */
 MultVariable::MultVariable() :
 	Core::Primitive(0),
-	mLabel(""),
-	mValue_Ref(""),
-	mValue(NULL)
+	mResult_Ref(""),
+	mArgLeft_Ref(""),
+	mArgLeft(NULL),
+	mArgRight_Ref(""),
+	mArgRight(NULL)
 {}
 
 /*!
- * \brief Construct a multiplication operator of a current individual variable with a value as a copy of an original.
- * \param inOriginal A const reference to the original multiplication operator of a current individual variable with a value.
+ * \brief Construct an operator to multiply left argument with right argument and store result in a variable as a copy of an original.
+ * \param inOriginal A const reference to the original operator to multiply left argument with right argument and store result in a variable.
  */
 MultVariable::MultVariable(const MultVariable& inOriginal) :
 	Core::Primitive(0),
-	mLabel(inOriginal.mLabel.c_str()),
-	mValue_Ref(inOriginal.mValue_Ref.c_str())
+	mResult_Ref(inOriginal.mResult_Ref.c_str()),
+	mArgLeft_Ref(inOriginal.mArgLeft_Ref.c_str()),
+	mArgRight_Ref(inOriginal.mArgRight_Ref.c_str())
 {
-	if (mValue_Ref.empty()) {
-		mValue = Core::castHandleT<Core::Number>(inOriginal.mValue->clone());
-	} else {
-		mValue = Core::castHandleT<Core::Number>(inOriginal.mValue);
+	switch (mArgLeft_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mArgLeft = NULL;
+			break;
+		case '$':
+			// parameter value
+			mArgLeft = inOriginal.mArgLeft;
+			break;
+		default:
+			// direct value
+			mArgLeft = Core::castHandleT<Core::Number>(inOriginal.mArgLeft->clone());
+	}
+	
+	switch (mArgRight_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mArgRight = NULL;
+			break;
+		case '$':
+			// parameter value
+			mArgRight = inOriginal.mArgRight;
+			break;
+		default:
+			// direct value
+			mArgRight = Core::castHandleT<Core::Number>(inOriginal.mArgRight->clone());
 	}
 }
 
@@ -55,9 +88,10 @@ MultVariable::MultVariable(const MultVariable& inOriginal) :
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.
  * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
- * \throw SCHNAPS::Core::IOException if label attribute is missing.
- * \throw SCHNAPS::Core::IOException if value attribute and value.ref attribute are missing.
- * \throw SCHNAPS::Core::IOException if value attribute is used and valueType attribute is missing.
+ * \throw SCHNAPS::Core::IOException if outResult or inArgLeft or inArgRight attributes are missing.
+ * \throw SCHNAPS::Core::IOException if inArgLeft attribute is a direct value and inArgLeft_Type attribute is missing.
+ * \throw SCHNAPS::Core::IOException if inArgRight attribute is a direct value and inArgRight_Type attribute is missing.
+ * \throw SCHNAPS::Core::RunTimeException if outResult attribute is not a reference to a variable.
  */
 void MultVariable::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
@@ -71,31 +105,74 @@ void MultVariable::readWithSystem(PACC::XML::ConstIterator inIter, Core::System&
 		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
 	}
 
-	// retrieve label
-	if (inIter->getAttribute("label").empty()) {
-		throw schnaps_IOExceptionNodeM(*inIter, "label of variable to multiply expected!");
+	// retrieve output variable
+	if (inIter->getAttribute("outResult").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "label of variable where to store result expected!");
 	}
-	mLabel = inIter->getAttribute("label");
+	mResult_Ref.assign(inIter->getAttribute("outResult"));
+	
+	if (mResult_Ref[0] != '@') {
+		throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific output result source!");
+	}
 
-	// retrieve value
-	if (inIter->getAttribute("value").empty()) {
-		if (inIter->getAttribute("value.ref").empty()) {
-			throw schnaps_IOExceptionNodeM(*inIter, "multiply value expected!");
-		} else { // from parameter
-			mValue_Ref = inIter->getAttribute("value.ref");
-
-			std::stringstream lSS;
-			lSS << "ref." << mValue_Ref;
-			mValue = Core::castHandleT<Core::Number>(ioSystem.getParameters().getParameterHandle(lSS.str().c_str()));
-		}
-	} else { // explicitly given
-		if (inIter->getAttribute("valueType").empty()) {
-			throw schnaps_IOExceptionNodeM(*inIter, "type of value expected!");
-		}
-
-		Core::Number::Alloc::Handle lAlloc = Core::castHandleT<Core::Number::Alloc>(ioSystem.getFactory().getAllocator(inIter->getAttribute("valueType")));
-		mValue = Core::castHandleT<Core::Number>(lAlloc->allocate());
-		mValue->readStr(inIter->getAttribute("value"));
+	// retrieve left argument
+	if (inIter->getAttribute("inArgLeft").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "left argument of subtract expected!");
+	}
+	mArgLeft_Ref.assign(inIter->getAttribute("inArgLeft"));
+	
+	switch (mArgLeft_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mArgLeft = NULL;
+			break;
+		case '$':
+			// parameter value
+			mArgLeft = Core::castHandleT<Core::Number>(ioSystem.getParameters().getParameterHandle(mArgLeft_Ref.substr(1)));
+			break;
+		default: {
+			// direct value
+			if (inIter->getAttribute("inArgLeft_Type").empty()) {
+				throw schnaps_IOExceptionNodeM(*inIter, "type of left argument expected!");
+			}
+			Core::Number::Alloc::Handle lAlloc = Core::castHandleT<Core::Number::Alloc>(ioSystem.getFactory().getAllocator(inIter->getAttribute("inArgLeft_Type")));
+			mArgLeft = Core::castHandleT<Core::Number>(lAlloc->allocate());
+			mArgLeft->readStr(mArgLeft_Ref);
+			break; }
+	}
+	
+	// retrieve right argument
+	if (inIter->getAttribute("inArgRight").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "right argument of subtract expected!");
+	}
+	mArgRight_Ref.assign(inIter->getAttribute("inArgRight"));
+	
+	switch (mArgRight_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mArgRight = NULL;
+			break;
+		case '$':
+			// parameter value
+			mArgRight = Core::castHandleT<Core::Number>(ioSystem.getParameters().getParameterHandle(mArgRight_Ref.substr(1)));
+			break;
+		default: {
+			// direct value
+			if (inIter->getAttribute("inArgRight_Type").empty()) {
+				throw schnaps_IOExceptionNodeM(*inIter, "type of right argument expected!");
+			}
+			Core::Number::Alloc::Handle lAlloc = Core::castHandleT<Core::Number::Alloc>(ioSystem.getFactory().getAllocator(inIter->getAttribute("inArgLeft_Type")));
+			mArgRight = Core::castHandleT<Core::Number>(lAlloc->allocate());
+			mArgRight->readStr(mArgRight_Ref);
+			break; }
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Operators::MultVariable::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
@@ -107,12 +184,17 @@ void MultVariable::readWithSystem(PACC::XML::ConstIterator inIter, Core::System&
  */
 void MultVariable::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-	ioStreamer.insertAttribute("label", mLabel);
-	if (mValue_Ref.empty()) {
-		ioStreamer.insertAttribute("valueType", mValue->getName());
-		ioStreamer.insertAttribute("value", mValue->writeStr());
-	} else {
-		ioStreamer.insertAttribute("value.ref", mValue_Ref);
+	ioStreamer.insertAttribute("outResult", mResult_Ref);
+	ioStreamer.insertAttribute("inArgLeft", mArgLeft_Ref);
+	ioStreamer.insertAttribute("inArgRight", mArgRight_Ref);
+	
+	if (mArgLeft != NULL & mArgLeft_Ref[0] != '$') {
+		// direct value
+		ioStreamer.insertAttribute("inArgLeft_Type", mArgLeft->getType());
+	}
+	if (mArgRight != NULL & mArgRight_Ref[0] != '$') {
+		// direct value
+		ioStreamer.insertAttribute("inArgRight_Type", mArgRight->getType());
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Operators::MultVariable::writeContent(PACC::XML::Streamer&, bool) const");
 }
@@ -123,19 +205,63 @@ void MultVariable::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) 
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
  * \throw  SCHNAPS::Core::RunTimeException if the method is not defined for the specific execution context.
+ * \throw  SCHNAPS::Core::RunTimeException if the method is not defined for the specific left argument source.
+ * \throw  SCHNAPS::Core::RunTimeException if the method is not defined for the specific right argument source.
  */
 Core::AnyType::Handle MultVariable::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	if (ioContext.getName() == "GenerationContext") {
 		throw schnaps_RunTimeExceptionM("The method is not defined for context 'GenerationContext'.");
 	}
+	
 	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
-
-	Core::Number::Handle lVariable = Core::castHandleT<Core::Number>(lContext.getIndividual().getState().getVariableHandle(mLabel));
-	Core::Number::Handle lNewValue = Core::castHandleT<Core::Number>(mValue->clone());
-
-	lNewValue->mult(*lVariable);
-	lContext.getIndividual().getState().setVariable(mLabel, lNewValue);
+	Core::Number lArgLeft, lArgRight;
+	
+	if (mArgLeft == NULL) {
+		switch (mArgLeft_Ref[0]) {
+			case '@':
+				// individual variable value
+				lArgLeft = Core::castObjectT<const Core::Number&>(lContext.getIndividual().getState().getVariable(mArgLeft_Ref.substr(1)));
+				break;
+			case '#':
+				// environment variable value
+				lArgLeft = Core::castObjectT<const Core::Number&>(lContext.getEnvironment().getState().getVariable(mArgLeft_Ref.substr(1)));
+				break;
+			case '%':
+				// TODO: local variable value
+				break;
+			default:
+				throw schnaps_RunTimeExceptionM("The method is undefined for the specific left argument source.");
+				break;
+		}
+	} else {
+		// parameter value or direct value
+		lArgLeft = *mArgLeft;
+	}
+	
+	if (mArgRight == NULL) {
+		switch (mArgRight_Ref[0]) {
+			case '@':
+				// individual variable value
+				lArgRight = Core::castObjectT<const Core::Number&>(lContext.getIndividual().getState().getVariable(mArgRight_Ref.substr(1)));
+				break;
+			case '#':
+				// environment variable value
+				lArgRight = Core::castObjectT<const Core::Number&>(lContext.getEnvironment().getState().getVariable(mArgRight_Ref.substr(1)));
+				break;
+			case '%':
+				// TODO: local variable value
+				break;
+			default:
+				throw schnaps_RunTimeExceptionM("The method is undefined for the specific right argument source.");
+				break;
+		}
+	} else {
+		// parameter value or direct value
+		lArgRight = *mArgRight;
+	}
+	
+	lContext.getIndividual().getState().setVariable(mResult_Ref.substr(1), lArgLeft.mult(lArgRight));
 	return NULL;
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Operators::MultVariable::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
 }

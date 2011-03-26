@@ -10,50 +10,82 @@
 	
 	<xsd:element name="info">
 		<xsd:complexType>
-			<xsd:attribute name="lang" type="xsd:string" default="en" use="optional"/>
+			<xsd:simpleContent>
+				<xsd:extension base="xsd:string">
+					<xsd:attribute name="lang" type="xsd:string" default="en" use="optional"/>
+				</xsd:extension>
+			</xsd:simpleContent>
 		</xsd:complexType>
 	</xsd:element>
 	
 	<xsd:element name="mappedName">
 		<xsd:complexType>
-			<xsd:attribute name="lang" type="xsd:string" default="en" use="optional"/>
+			<xsd:simpleContent>
+				<xsd:extension base="xsd:string">
+					<xsd:attribute name="lang" type="xsd:string" default="en" use="optional"/>
+				</xsd:extension>
+			</xsd:simpleContent>
 		</xsd:complexType>
 	</xsd:element>
 	
 	<xsd:element name="returnType">
 		<xsd:complexType>
-			<xsd:attribute name="definedBy" use="required">
-				<xsd:simpleType>
-					<xsd:restriction base="xsd:string">
-						<xsd:enumeration value="argument"/>
-						<xsd:enumeration value="staticType"/>
-						<xsd:enumeration value="processReturnValue"/>
-						<xsd:enumeration value="variableValue"/>
-						<xsd:enumeration value="parameterValue"/>
-						<xsd:enumeration value="attributeValue"/>
-						<xsd:enumeration value="commonType"/>
-					</xsd:restriction>
-				</xsd:simpleType>
-			</xsd:attribute>
+			<xsd:simpleContent>
+				<xsd:extension base="xsd:string">
+					<xsd:attribute name="definedBy" use="required">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:enumeration value="argument"/>
+								<xsd:enumeration value="staticType"/>
+								<xsd:enumeration value="processReturnValue"/>
+								<xsd:enumeration value="variableValue"/>
+								<xsd:enumeration value="parameterValue"/>
+								<xsd:enumeration value="attributeValue"/>
+								<xsd:enumeration value="commonType"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+				</xsd:extension>
+			</xsd:simpleContent>		
 		</xsd:complexType>
 	</xsd:element>
 	
 	<xsd:element name="childBranchTag">
 		<xsd:complexType>
-			<xsd:attribute name="lang" type="xsd:string" default="en" use="optional"/>
+			<xsd:simpleContent>
+				<xsd:extension base="xsd:string">
+					<xsd:attribute name="lang" type="xsd:string" default="en" use="optional"/>
+				</xsd:extension>
+			</xsd:simpleContent>
 		</xsd:complexType>
 	</xsd:element>
+	
+	<!--Next element is only used to correctly define childType-->
+			
+	<xsd:simpleType name ="rest">
+		<xsd:union>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="Atom"/><!-- Atomic types(Numeric Types + Bool, String, Char) -->
+			     	 	<xsd:enumeration value="Integer"/><!-- Integer types(Int,UInt,Long, ULong) -->
+					<xsd:enumeration value="Number"/><!-- Numeric types(Int,UInt,Long, ULong,Double,Float) -->
+					<xsd:enumeration value="FPoint"/><!-- Floating point types(Double,Float)-->
+					<xsd:enumeration value="Any"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:minInclusive value="0"/><!-- Argument cannot be less than 0 -->
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:union>
+	</xsd:simpleType>		
 	
 	<xsd:element name="childType">
 		<xsd:complexType>
 			<xsd:simpleContent>
-	    		<xsd:restriction base="xsd:string">
-		     		<xsd:enumeration value="Atom"/><!-- Atomic types(Numeric Types + Bool, String, Char) -->
-		     	 	<xsd:enumeration value="Integer"/><!-- Integer types(Int,UInt,Long, ULong) -->
-					<xsd:enumeration value="Number"/><!-- Numeric types(Int,UInt,Long, ULong,Double,Float) -->
-					<xsd:enumeration value="FPoint"/><!-- Floating point types(Double,Float)-->
-					<xsd:enumeration value="Any"/>
-					<xsd:attribute name="definedBy" use="required">
+		    		<xsd:extension base="rest">
+			    		<xsd:attribute name="definedBy" use="required">
 						<xsd:simpleType>
 							<xsd:restriction base="xsd:string">
 								<xsd:enumeration value="argument"/>
@@ -61,22 +93,30 @@
 							</xsd:restriction>
 						</xsd:simpleType>
 					</xsd:attribute>
-		    	</xsd:restriction>				
+				</xsd:extension>			
   			</xsd:simpleContent>
 		</xsd:complexType>
 	</xsd:element>
 	
 	<xsd:element name="attributeInfo">
 		<xsd:complexType>
-			<xsd:attribute name="lang" type="xsd:string" default="en" use="optional"/>
-			<xsd:attribute name="reference" type="xsd:boolean" default="false" use ="optional"/>
-			<xsd:attribute name="pairedAttr" type="xsd:string" default="" use ="optional"/>
+			<xsd:simpleContent>
+		    		<xsd:extension base="xsd:string">
+					<xsd:attribute name="lang" type="xsd:string" default="en" use="optional"/>
+					<xsd:attribute name="reference" type="xsd:boolean" default="false" use ="optional"/>
+					<xsd:attribute name="pairedAttr" type="xsd:string" default="" use ="optional"/>
+				</xsd:extension>			
+  			</xsd:simpleContent>
 		</xsd:complexType>
 	</xsd:element>
 	
 	<xsd:element name="attributeMappedName">
 		<xsd:complexType>
-			<xsd:attribute name="lang" type="xsd:string" default="en" use="optional"/>
+			<xsd:simpleContent>
+		    		<xsd:extension base="xsd:string">
+					<xsd:attribute name="lang" type="xsd:string" default="en" use="optional"/>
+				</xsd:extension>			
+  			</xsd:simpleContent>
 		</xsd:complexType>
 	</xsd:element>
 	

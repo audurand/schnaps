@@ -70,8 +70,9 @@ public:
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
-	std::string mLabel;						//!< Label of event.
-	std::string mProbabilityVariableLabel;	//!< Label of individual variable representing the probaility of event.
+	std::string mLabel;					//!< Label of event.
+	std::string mProbability_Ref;		//!< Reference to the probability of event.
+	Core::Double::Handle mProbability;	//!< A handle to the probaility of event.
 };
 } // end of Meds namespace
 } // end of Plugins namespace

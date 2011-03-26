@@ -30,7 +30,7 @@ namespace Operators {
 
 /*!
  *  \class ConcatVariable SCHNAPS/Plugins/Operators/ConcatVariable.hpp "SCHNAPS/Plugins/Operators/ConcatVariable.hpp"
- *  \brief Concatenate a string value to a string variable of current individual.
+ *  \brief Concatenate right argument (as string) to left argument (as string) and store result in a variable.
  */
 class ConcatVariable: public Core::Primitive {
 public:
@@ -67,9 +67,11 @@ public:
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
-	std::string mLabel;				//!< Label of concerned variable.
-	std::string mValue_Ref; 		//!< Value to concatenate (reference).
-	Core::String::Handle mValue;	//!< A handle to the value to concatenate.
+	std::string mResult_Ref;		//!< Reference of variable for storing result.
+	std::string mArgLeft_Ref;		//!< Reference to left argument.
+	Core::Atom::Handle mArgLeft;	//!< A handle to left argument.
+	std::string mArgRight_Ref;		//!< Reference to right argument.
+	Core::Atom::Handle mArgRight;	//!< A handle to right argument.
 };
 } // end of Operators namespace
 } // end of Plugins namespace

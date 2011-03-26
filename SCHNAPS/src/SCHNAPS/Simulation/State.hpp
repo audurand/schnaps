@@ -43,13 +43,13 @@ namespace Simulation {
 class State: public Core::Object {
 protected:
 #if defined(SCHNAPS_HAVE_STD_HASHMAP)
-	typedef std::hash_map<std::string, Core::Atom::Handle, Core::HashString> VariablesMap;
+	typedef std::hash_map<std::string, Core::AnyType::Handle, Core::HashString> VariablesMap;
 #elif defined(SCHNAPS_HAVE_GNUCXX_HASHMAP)
-	typedef __gnu_cxx::hash_map<std::string, Core::Atom::Handle, Core::HashString> VariablesMap;
+	typedef __gnu_cxx::hash_map<std::string, Core::AnyType::Handle, Core::HashString> VariablesMap;
 #elif defined(SCHNAPS_HAVE_STDEXT_HASHMAP)
-	typedef stdext::hash_map<std::string, Core::Atom::Handle, Core::HashString> VariablesMap;
+	typedef stdext::hash_map<std::string, Core::AnyType::Handle, Core::HashString> VariablesMap;
 #else // No hash_map found
-	typedef std::map<std::string, Core::Atom::Handle> VariablesMap;
+	typedef std::map<std::string, Core::AnyType::Handle> VariablesMap;
 #endif
 
 public:
@@ -90,7 +90,7 @@ public:
 	void clear();
 
 	//! Insert a variable.
-	void insertVariable(const std::string& inLabel, Core::Atom::Handle inValue);
+	void insertVariable(const std::string& inLabel, Core::AnyType::Handle inValue);
 	//! Remove a variable.
 	void removeVariable(const std::string& inLabel);
 	//! Check if the state contains a variable.
@@ -103,7 +103,7 @@ public:
 	 * \throw  SCHNAPS::Core::RunTimeException if the variable does not exist.
 	 * \throw  SCHNAPS::Core::AssertException if the variable is NULL.
 	 */
-	const Core::Atom& getVariable(const std::string& inLabel) const {
+	const Core::AnyType& getVariable(const std::string& inLabel) const {
 		schnaps_StackTraceBeginM();
 		VariablesMap::const_iterator lIterVariables = mVariablesMap.find(inLabel);
 		if (lIterVariables == mVariablesMap.end()) {
@@ -123,7 +123,7 @@ public:
 	 * \return A const reference to the value of the variable.
 	 * \throw  SCHNAPS::Core::RunTimeException if the variable does not exist.
 	 */
-	const Core::Atom::Handle getVariableHandle(const std::string& inLabel) const {
+	const Core::AnyType::Handle getVariableHandle(const std::string& inLabel) const {
 		schnaps_StackTraceBeginM();
 		VariablesMap::const_iterator lIterVariables = mVariablesMap.find(inLabel);
 		if (lIterVariables == mVariablesMap.end()) {
@@ -142,7 +142,7 @@ public:
 	 * \param inValue A handle to the new value of the variable.
 	 * \throw SCHNAPS::Core::RunTimeException if the variable does not exist.
 	 */
-	void setVariable(const std::string& inLabel, Core::Atom::Handle inValue) {
+	void setVariable(const std::string& inLabel, Core::AnyType::Handle inValue) {
 		schnaps_StackTraceBeginM();
 		VariablesMap::iterator lIterVariables = mVariablesMap.find(inLabel);
 		if (lIterVariables == mVariablesMap.end()) {

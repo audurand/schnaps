@@ -89,7 +89,6 @@ bool ULong::isLess(const Object& inRightObj) const {
 /*!
  * \brief Read the object from string.
  * \param inStr String to read the object from.
- * \throw SCHNAPS::Core::InternalException if the string contains an unknown value for object.
  */
 void ULong::readStr(const std::string& inStr) {
 	schnaps_StackTraceBeginM();
@@ -121,74 +120,69 @@ AnyType::Handle ULong::clone() const {
 }
 
 /*!
- *  \brief  Compute absolute value.
- *  \return A reference to the resulting number.
+ * \brief  Compute the absolute value.
+ * \return A handle to the resulting number.
  */
-Number& ULong::abs() {
+Number::Handle ULong::abs() {
 	schnaps_StackTraceBeginM();
-	mValue = std::fabs(mValue);
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::ULong::abs()");
+	return new ULong(std::fabs(mValue));
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::ULong::abs()");
 }
 
 /*!
- *  \brief  Add a number.
- *  \return A reference to the resulting number.
+ * \brief  Compute the addition a number.
+ * \return A handle to the resulting number.
  */
-Number& ULong::add(Number& inRightNumber) {
+Number::Handle ULong::add(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	ULong lRightLong = inRightNumber;
-	mValue += lRightLong.getValue();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::ULong::add(SCHNAPS::Core::Number&)");
+	return new ULong(mValue + lRightLong.getValue());
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::ULong::add(SCHNAPS::Core::Number&)");
 }
 
 /*!
- *  \brief  Divide by a number.
- *  \return A reference to the resulting number.
+ * \brief  Compute the division by a number.
+ * \return A handle to the resulting number.
  */
-Number& ULong::div(Number& inRightNumber) {
+Number::Handle ULong::div(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	ULong lRightLong = inRightNumber;
-	mValue /= lRightLong.getValue();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::ULong::div(SCHNAPS::Core::Number&)");
+	return new ULong(mValue / lRightLong.getValue());
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::ULong::div(SCHNAPS::Core::Number&)");
 }
 
 /*!
- *  \brief  Compute the modulo by a number.
- *  \return A reference to the resulting number.
+ * \brief  Compute the modulo by a number.
+ * \return A handle to the resulting number.
  */
-Number& ULong::mod(Number& inRightNumber) {
+Number::Handle ULong::mod(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	ULong lRightLong = inRightNumber;
-	mValue = mValue % lRightLong.getValue();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::ULong::mod(SCHNAPS::Core::Number&)");
+	return new ULong(mValue % lRightLong.getValue());
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::ULong::mod(SCHNAPS::Core::Number&)");
 }
 
 /*!
- *  \brief  Multiply by a number.
- *  \return A reference to the resulting number.
+ * \brief  Compute the multiplication by a number.
+ * \return A handle to the resulting number.
  */
-Number& ULong::mult(Number& inRightNumber) {
+Number::Handle ULong::mult(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	ULong lRightLong = inRightNumber;
-	mValue *= lRightLong.getValue();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::ULong::mult(SCHNAPS::Core::Number&)");
+	return new ULong(mValue * lRightLong.getValue());
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::ULong::mult(SCHNAPS::Core::Number&)");
 }
 
 /*!
- *  \brief  Subtract a number.
- *  \return A reference to the resulting number.
+ * \brief  Compute the subtraction by a number.
+ * \return A handle to the resulting number.
  */
-Number& ULong::sub(Number& inRightNumber) {
+
+Number::Handle ULong::sub(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	ULong lRightLong = inRightNumber;
-	mValue -= lRightLong.getValue();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::ULong::sub(SCHNAPS::Core::Number&)");
+	return new ULong(mValue - lRightLong.getValue());
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::ULong::sub(SCHNAPS::Core::Number&)");
 }
 
 /*!

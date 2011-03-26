@@ -89,7 +89,6 @@ bool UInt::isLess(const Object& inRightObj) const {
 /*!
  * \brief Read the object from string.
  * \param inStr String to read the object from.
- * \throw SCHNAPS::Core::InternalException if the string contains an unknown value for object.
  */
 void UInt::readStr(const std::string& inStr) {
 	schnaps_StackTraceBeginM();
@@ -121,74 +120,68 @@ AnyType::Handle UInt::clone() const {
 }
 
 /*!
- *  \brief  Compute absolute value.
- *  \return A reference to the resulting number.
+ * \brief  Compute the absolute value.
+ * \return A handle to the resulting number.
  */
-Number& UInt::abs() {
+Number::Handle UInt::abs() {
 	schnaps_StackTraceBeginM();
-	mValue = std::fabs(mValue);
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::UInt::abs()");
+	return new UInt(std::fabs(mValue));
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::UInt::abs()");
 }
 
 /*!
- *  \brief  Add a number.
- *  \return A reference to the resulting number.
+ * \brief  Compute the addition a number.
+ * \return A handle to the resulting number.
  */
-Number& UInt::add(Number& inRightNumber) {
+Number::Handle UInt::add(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	UInt lRightUInt = inRightNumber;
-	mValue += lRightUInt.getValue();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::UInt::add(SCHNAPS::Core::Number&)");
+	return new UInt(mValue + lRightUInt.getValue());
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::UInt::add(SCHNAPS::Core::Number&)");
 }
 
 /*!
- *  \brief  Divide by a number.
- *  \return A reference to the resulting number.
+ * \brief  Compute the division by a number.
+ * \return A handle to the resulting number.
  */
-Number& UInt::div(Number& inRightNumber) {
+Number::Handle UInt::div(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	UInt lRightUInt = inRightNumber;
-	mValue /= lRightUInt.getValue();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::UInt::div(SCHNAPS::Core::Number&)");
+	return new UInt(mValue / lRightUInt.getValue());
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::UInt::div(SCHNAPS::Core::Number&)");
 }
 
 /*!
- *  \brief  Compute the modulo by a number.
- *  \return A reference to the resulting number.
+ * \brief  Compute the modulo by a number.
+ * \return A handle to the resulting number.
  */
-Number& UInt::mod(Number& inRightNumber) {
+Number::Handle UInt::mod(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	UInt lRightUInt = inRightNumber;
-	mValue = mValue % lRightUInt.getValue();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::UInt::mod(SCHNAPS::Core::Number&)");
+	return new UInt(mValue % lRightUInt.getValue());
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::UInt::mod(SCHNAPS::Core::Number&)");
 }
 
 /*!
- *  \brief  Multiply by a number.
- *  \return A reference to the resulting number.
+ * \brief  Compute the multiplication by a number.
+ * \return A handle to the resulting number.
  */
-Number& UInt::mult(Number& inRightNumber) {
+Number::Handle UInt::mult(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	UInt lRightUInt = inRightNumber;
-	mValue *= lRightUInt.getValue();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::UInt::mult(SCHNAPS::Core::Number&)");
+	return new UInt(mValue * lRightUInt.getValue());
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::UInt::mult(SCHNAPS::Core::Number&)");
 }
 
 /*!
- *  \brief  Subtract a number.
- *  \return A reference to the resulting number.
+ * \brief  Compute the subtraction by a number.
+ * \return A handle to the resulting number.
  */
-Number& UInt::sub(Number& inRightNumber) {
+Number::Handle UInt::sub(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	UInt lRightUInt = inRightNumber;
-	mValue -= lRightUInt.getValue();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::UInt::sub(SCHNAPS::Core::Number&)");
+	return new UInt(mValue - lRightUInt.getValue());
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::UInt::sub(SCHNAPS::Core::Number&)");
 }
 
 /*!

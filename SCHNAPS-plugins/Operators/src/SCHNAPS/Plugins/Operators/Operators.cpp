@@ -24,39 +24,43 @@
 SCHNAPS_Plugin_BeginDefinitionM("Operators", "1.0");
 
 // math operators
-SCHNAPS_Plugin_AddAllocM("Operators_Abs", SCHNAPS::Plugins::Operators::Abs::Alloc);
-SCHNAPS_Plugin_AddAllocM("Operators_Add", SCHNAPS::Plugins::Operators::Add::Alloc);
+SCHNAPS_Plugin_AddAllocM("Operators_AbsComplex", SCHNAPS::Plugins::Operators::AbsComplex::Alloc);
+SCHNAPS_Plugin_AddAllocM("Operators_AddComplex", SCHNAPS::Plugins::Operators::AddComplex::Alloc);
 SCHNAPS_Plugin_AddAllocM("Operators_AddVariable", SCHNAPS::Plugins::Operators::AddVariable::Alloc);
-SCHNAPS_Plugin_AddAllocM("Operators_Div", SCHNAPS::Plugins::Operators::Div::Alloc);
-SCHNAPS_Plugin_AddAllocM("Operators_Exp", SCHNAPS::Plugins::Operators::Exp::Alloc);
-SCHNAPS_Plugin_AddAllocM("Operators_Mod", SCHNAPS::Plugins::Operators::Mod::Alloc);
-SCHNAPS_Plugin_AddAllocM("Operators_Mult", SCHNAPS::Plugins::Operators::Mult::Alloc);
+SCHNAPS_Plugin_AddAllocM("Operators_DivComplex", SCHNAPS::Plugins::Operators::DivComplex::Alloc);
+SCHNAPS_Plugin_AddAllocM("Operators_ExpComplex", SCHNAPS::Plugins::Operators::ExpComplex::Alloc);
+SCHNAPS_Plugin_AddAllocM("Operators_ModComplex", SCHNAPS::Plugins::Operators::ModComplex::Alloc);
+SCHNAPS_Plugin_AddAllocM("Operators_MultComplex", SCHNAPS::Plugins::Operators::MultComplex::Alloc);
 SCHNAPS_Plugin_AddAllocM("Operators_MultVariable", SCHNAPS::Plugins::Operators::MultVariable::Alloc);
-SCHNAPS_Plugin_AddAllocM("Operators_Pow", SCHNAPS::Plugins::Operators::Pow::Alloc);
-SCHNAPS_Plugin_AddAllocM("Operators_Sub", SCHNAPS::Plugins::Operators::Sub::Alloc);
+SCHNAPS_Plugin_AddAllocM("Operators_PowComplex", SCHNAPS::Plugins::Operators::PowComplex::Alloc);
+SCHNAPS_Plugin_AddAllocM("Operators_SubComplex", SCHNAPS::Plugins::Operators::SubComplex::Alloc);
 SCHNAPS_Plugin_AddAllocM("Operators_SubVariable", SCHNAPS::Plugins::Operators::SubVariable::Alloc);
 
 // relational operators
 SCHNAPS_Plugin_AddAllocM("Operators_IsBetween", SCHNAPS::Plugins::Operators::IsBetween::Alloc);
-SCHNAPS_Plugin_AddAllocM("Operators_IsBetweenVariable", SCHNAPS::Plugins::Operators::IsBetweenVariable::Alloc);
+SCHNAPS_Plugin_AddAllocM("Operators_IsBetweenComplex", SCHNAPS::Plugins::Operators::IsBetweenComplex::Alloc);
 SCHNAPS_Plugin_AddAllocM("Operators_IsEqual", SCHNAPS::Plugins::Operators::IsEqual::Alloc);
-SCHNAPS_Plugin_AddAllocM("Operators_IsEqualVariable", SCHNAPS::Plugins::Operators::IsEqualVariable::Alloc);
+SCHNAPS_Plugin_AddAllocM("Operators_IsEqualComplex", SCHNAPS::Plugins::Operators::IsEqualComplex::Alloc);
 SCHNAPS_Plugin_AddAllocM("Operators_IsGreater", SCHNAPS::Plugins::Operators::IsGreater::Alloc);
-SCHNAPS_Plugin_AddAllocM("Operators_IsGreaterVariable", SCHNAPS::Plugins::Operators::IsGreaterVariable::Alloc);
+SCHNAPS_Plugin_AddAllocM("Operators_IsGreaterComplex", SCHNAPS::Plugins::Operators::IsGreaterComplex::Alloc);
 SCHNAPS_Plugin_AddAllocM("Operators_IsGreaterOrEqual", SCHNAPS::Plugins::Operators::IsGreaterOrEqual::Alloc);
+SCHNAPS_Plugin_AddAllocM("Operators_IsGreaterOrEqualComplex", SCHNAPS::Plugins::Operators::IsGreaterOrEqualComplex::Alloc);
 SCHNAPS_Plugin_AddAllocM("Operators_IsLess", SCHNAPS::Plugins::Operators::IsLess::Alloc);
-SCHNAPS_Plugin_AddAllocM("Operators_IsLessVariable", SCHNAPS::Plugins::Operators::IsLessVariable::Alloc);
+SCHNAPS_Plugin_AddAllocM("Operators_IsLessComplex", SCHNAPS::Plugins::Operators::IsLessComplex::Alloc);
 SCHNAPS_Plugin_AddAllocM("Operators_IsLessOrEqual", SCHNAPS::Plugins::Operators::IsLessOrEqual::Alloc);
-SCHNAPS_Plugin_AddAllocM("Operators_Not", SCHNAPS::Plugins::Operators::Not::Alloc);
+SCHNAPS_Plugin_AddAllocM("Operators_IsLessOrEqualComplex", SCHNAPS::Plugins::Operators::IsLessOrEqualComplex::Alloc);
 
 // logical operators
 SCHNAPS_Plugin_AddAllocM("Operators_And", SCHNAPS::Plugins::Operators::And::Alloc);
+SCHNAPS_Plugin_AddAllocM("Operators_AndComplex", SCHNAPS::Plugins::Operators::AndComplex::Alloc);
+SCHNAPS_Plugin_AddAllocM("Operators_Not", SCHNAPS::Plugins::Operators::Not::Alloc);
+SCHNAPS_Plugin_AddAllocM("Operators_NotComplex", SCHNAPS::Plugins::Operators::NotComplex::Alloc);
 SCHNAPS_Plugin_AddAllocM("Operators_Or", SCHNAPS::Plugins::Operators::Or::Alloc);
+SCHNAPS_Plugin_AddAllocM("Operators_OrComplex", SCHNAPS::Plugins::Operators::OrComplex::Alloc);
 
 // others
-SCHNAPS_Plugin_AddAllocM("Operators_Concatenate", SCHNAPS::Plugins::Operators::Concatenate::Alloc);
+SCHNAPS_Plugin_AddAllocM("Operators_ConcatComplex", SCHNAPS::Plugins::Operators::ConcatComplex::Alloc);
 SCHNAPS_Plugin_AddAllocM("Operators_ConcatVariable", SCHNAPS::Plugins::Operators::ConcatVariable::Alloc);
 SCHNAPS_Plugin_AddAllocM("Operators_NPV", SCHNAPS::Plugins::Operators::NPV::Alloc);
-SCHNAPS_Plugin_AddAllocM("Operators_Serialize", SCHNAPS::Plugins::Operators::Serialize::Alloc);
 
 SCHNAPS_Plugin_EndDefinitionM();

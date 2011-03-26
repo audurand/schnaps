@@ -31,7 +31,7 @@ namespace Operators {
 
 /*!
  *  \class MultVariable SCHNAPS/Plugins/Operators/MultVariable.hpp "SCHNAPS/Plugins/Operators/MultVariable.hpp"
- *  \brief Multiplication operator of a current individual variable with a value.
+ *  \brief Multiply left argument with right argument and store result in a variable.
  */
 class MultVariable: public Core::Primitive {
 public:
@@ -68,9 +68,11 @@ public:
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
-	std::string mLabel; 			//!< Label of concerned variable.
-	std::string mValue_Ref; 		//!< Value to multiply with (reference).
-	Core::Number::Handle mValue;	//!< A handle to the value to multiply with variable.
+	std::string mResult_Ref;		//!< Reference of variable for storing result.
+	std::string mArgLeft_Ref;		//!< Reference to left argument in multiplication.
+	Core::Number::Handle mArgLeft;	//!< A handle to left argument in multiplication.
+	std::string mArgRight_Ref;		//!< Reference to right argument in multiplication.
+	Core::Number::Handle mArgRight;	//!< A handle to right argument in multiplication.
 };
 } // end of Operators namespace
 } // end of Plugins namespace

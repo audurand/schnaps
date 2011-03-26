@@ -55,7 +55,7 @@ ProcessCall::ProcessCall(const std::string& inLabel) :
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.
  * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
- * \throw SCHNAPS::Core::IOException if label attribute is missing.
+ * \throw SCHNAPS::Core::IOException if inLabel attribute is missing.
  */
 void ProcessCall::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
@@ -68,7 +68,7 @@ void ProcessCall::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
 		lOSS << "got tag <" << inIter->getValue() << "> instead!";
 		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
 	}
-	if (inIter->getAttribute("label").empty()) {
+	if (inIter->getAttribute("inLabel").empty()) {
 		throw schnaps_IOExceptionNodeM(*inIter, "label of called process expected!");
 	}
 
@@ -83,7 +83,7 @@ void ProcessCall::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
  */
 void ProcessCall::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-	ioStreamer.insertAttribute("label", mLabel);
+	ioStreamer.insertAttribute("inLabel", mLabel);
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Control::ProcessCall::writeContent(PACC::XML::Streamer&, bool) const");
 }
 

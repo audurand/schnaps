@@ -73,7 +73,7 @@ public:
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
-	std::string mRate_Ref;		//!< Label of actualization rate parameter.
+	std::string mRate_Ref;		//!< Reference to actualization rate.
 	Core::Double::Handle mRate;	//!< A handle to the actualization rate.
 };
 } // end of Operators namespace

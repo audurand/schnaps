@@ -21,8 +21,9 @@
 #ifndef SCHNAPS_Plugins_Control_ChoiceIsBetween_hpp
 #define SCHNAPS_Plugins_Control_ChoiceIsBetween_hpp
 
-#include "PACC/XML.hpp"
 #include "SCHNAPS/SCHNAPS.hpp"
+
+#include "PACC/XML.hpp"
 
 namespace SCHNAPS {
 namespace Plugins {
@@ -30,8 +31,8 @@ namespace Control {
 
 /*!
  *  \class ChoiceIsBetween SCHNAPS/Plugins/Control/ChoiceIsBetween.hpp "SCHNAPS/Plugins/Control/ChoiceIsBetween.hpp"
- *  \brief Branch choice according to the value of an individual variable and choice bounds.
- *  	   Lower boundaries are given and branches are executed according to LowerBound <= Variable < HigherBound.
+ *  \brief Branch choice according to some value and choice bounds.
+ *  	   Lower boundaries are given and branches are executed according to LowerBound <= Value < HigherBound.
  */
 class ChoiceIsBetween: public Core::Primitive {
 public:
@@ -73,9 +74,10 @@ public:
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
-	std::string mChoiceVariableLabel;	//!< Current individual variable label to switch on.
-	std::string mChoices_Ref;			//!< Reference to choice values.
-	Core::Vector::Handle mChoices;		//!< A Handle to the vector of choice lower bounds.
+	std::string mValue_Ref;			//!< Reference to the value to switch on.
+	Core::Number::Handle mValue;	//!< A handle to the value to switch on.
+	std::string mBounds_Ref;		//!< Reference to choice values.
+	Core::Vector::Handle mBounds;	//!< A Handle to the vector of choice lower bounds.
 };
 } // end of Control namespace  
 } // end of Plugins namespace

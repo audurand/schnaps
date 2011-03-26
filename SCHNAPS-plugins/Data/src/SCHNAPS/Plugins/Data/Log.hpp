@@ -62,8 +62,10 @@ public:
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
-	std::string mType;		//!< Type of log.
-	std::string mMessage;	//!< Message to log.
+	std::string mType_Ref;			//!< Reference to the type of log.
+	Core::AnyType::Handle mType;	//!< A handle to the type of log.
+	std::string mMessage_Ref;		//!< Reference to the message to log.
+	Core::AnyType::Handle mMessage;	//!< A handle to the message to log.
 };
 } // end of Data namespace
 } // end of Plugins namespace

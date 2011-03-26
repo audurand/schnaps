@@ -21,8 +21,9 @@
 #ifndef SCHNAPS_Plugins_Control_Branch_hpp
 #define SCHNAPS_Plugins_Control_Branch_hpp
 
-#include "PACC/XML.hpp"
 #include "SCHNAPS/SCHNAPS.hpp"
+
+#include "PACC/XML.hpp"
 
 namespace SCHNAPS {
 namespace Plugins {
@@ -72,7 +73,7 @@ public:
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
-	std::string mProbability_Ref;		//!< Label of parameter than represents the probability.
+	std::string mProbability_Ref;		//!< Reference to the probability.
 	Core::Double::Handle mProbability;	//!< A handle to the probability.
 };
 } // end of Control namespace
