@@ -140,17 +140,17 @@ void Value::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 Core::AnyType::Handle Value::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
-	Core::AnyType lValue;
+	Core::AnyType::Handle lValue;
 	
 	if (mValue == NULL) {
 		switch (mValue_Ref[0]) {
 			case '@':
 				// individual variable value
-				lValue = Core::castObjectT<const Core::AnyType&>(lContext.getIndividual().getState().getVariable(mValue_Ref.substr(1)));
+				lValue = lContext.getIndividual().getState().getVariableHandle(mValue_Ref.substr(1));
 				break;
 			case '#':
 				// environment variable value
-				lValue = Core::castObjectT<const Core::Number&>(lContext.getEnvironment().getState().getVariable(mValue_Ref.substr(1)));
+				lValue = Core::castHandleT<Core::AnyType>(lContext.getEnvironment().getState().getVariable(mValue_Ref.substr(1)).clone());
 				break;
 			case '%':
 				// TODO: local variable value
@@ -161,10 +161,10 @@ Core::AnyType::Handle Value::execute(unsigned int inIndex, Core::ExecutionContex
 		}
 	} else {
 		// parameter value or direct value
-		lValue = *mValue;
+		lValue = mValue;
 	}
 	
-	return Core::castHandleT<Core::AnyType>(lValue.clone());
+	return lValue;
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Data::Value::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 

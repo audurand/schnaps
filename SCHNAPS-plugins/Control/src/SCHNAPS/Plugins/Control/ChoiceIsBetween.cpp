@@ -264,19 +264,19 @@ void ChoiceIsBetween::writeContent(PACC::XML::Streamer& ioStreamer, bool inInden
  */
 Core::AnyType::Handle ChoiceIsBetween::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	Core::Atom lValue;
+	Core::Atom::Handle lValue;
 	
 	if (mValue == NULL) {
 		switch (mValue_Ref[0]) {
 			case '@': {
 				// individual variable value
 				Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
-				lValue = Core::castObjectT<const Core::Atom&>(lContext.getIndividual().getState().getVariable(mValue_Ref.substr(1)));
+				lValue = Core::castHandleT<Core::Atom>(lContext.getIndividual().getState().getVariableHandle(mValue_Ref.substr(1)));
 				break; }
 			case '#': {
 				// environment variable value
 				Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
-				lValue = Core::castObjectT<const Core::Atom&>(lContext.getEnvironment().getState().getVariable(mValue_Ref.substr(1)));
+				lValue = Core::castHandleT<Core::Atom>(lContext.getEnvironment().getState().getVariableHandle(mValue_Ref.substr(1))->clone());
 				break; }
 			case '%':
 				// TODO: local variable value
@@ -287,17 +287,17 @@ Core::AnyType::Handle ChoiceIsBetween::execute(unsigned int inIndex, Core::Execu
 		}
 	} else {
 		// parameter value or direct value
-		lValue = *mValue;
+		lValue = mValue;
 	}
 	
-	if (lValue.isLess(*(*mBounds)[0])) {
-		printf("Value: %s\n", lValue.writeStr().c_str());
+	if (lValue->isLess(*(*mBounds)[0])) {
+		printf("Value: %s\n", lValue->writeStr().c_str());
 		printf("Lower bound: %s\n", (*mBounds)[0]->writeStr().c_str());
-		throw schnaps_RunTimeExceptionM("Value '" + lValue.writeStr() + "' is not in any range of choices!");
+		throw schnaps_RunTimeExceptionM("Value '" + lValue->writeStr() + "' is not in any range of choices!");
 	}
 
 	for (unsigned int i = 0; i < mBounds->size(); i++) {
-		if (lValue.isLess(*(*mBounds)[i])) {
+		if (lValue->isLess(*(*mBounds)[i])) {
 			return getArgument(inIndex, i-1, ioContext);
 		}
 	}

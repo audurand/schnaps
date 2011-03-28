@@ -68,11 +68,11 @@ void ProcessCall::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
 		lOSS << "got tag <" << inIter->getValue() << "> instead!";
 		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
 	}
+	
 	if (inIter->getAttribute("inLabel").empty()) {
 		throw schnaps_IOExceptionNodeM(*inIter, "label of called process expected!");
 	}
-
-	mLabel = inIter->getAttribute("label");
+	mLabel.assign(inIter->getAttribute("inLabel"));
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Control::ProcessCall::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 

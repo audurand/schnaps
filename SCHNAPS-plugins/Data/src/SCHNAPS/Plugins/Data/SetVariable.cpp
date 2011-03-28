@@ -158,7 +158,7 @@ Core::AnyType::Handle SetVariable::execute(unsigned int inIndex, Core::Execution
 	}
 	
 	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
-	Core::AnyType lValue;
+	Core::AnyType::Handle lValue;
 
 	std::string lTypeVariable = lContext.getIndividual().getState().getVariable(mVariable_Ref.substr(1)).getType();
 	
@@ -166,11 +166,11 @@ Core::AnyType::Handle SetVariable::execute(unsigned int inIndex, Core::Execution
 		switch (mValue_Ref[0]) {
 			case '@':
 				// individual variable value
-				lValue = lContext.getIndividual().getState().getVariable(mValue_Ref.substr(1));
+				lValue = Core::castHandleT<Core::AnyType>(lContext.getIndividual().getState().getVariableHandle(mValue_Ref.substr(1))->clone());
 				break;
 			case '#':
 				// environment variable value
-				lValue = lContext.getEnvironment().getState().getVariable(mValue_Ref.substr(1));
+				lValue = Core::castHandleT<Core::AnyType>(lContext.getEnvironment().getState().getVariableHandle(mValue_Ref.substr(1))->clone());
 				break;
 			case '%':
 				// TODO: local variable value
@@ -181,10 +181,10 @@ Core::AnyType::Handle SetVariable::execute(unsigned int inIndex, Core::Execution
 		}
 	} else {
 		// parameter value or direct value
-		lValue = *mValue;
+		lValue = Core::castHandleT<Core::AnyType>(mValue->clone());
 	}
 	
-	std::string lTypeNewValue = lValue.getType();
+	std::string lTypeNewValue = lValue->getType();
 	if (lTypeVariable != lTypeNewValue) {
 		std::stringstream lOSS;
 		lOSS << "The type of variable '" << mVariable_Ref.substr(1) << "' (" << lTypeVariable << ") ";
@@ -193,7 +193,7 @@ Core::AnyType::Handle SetVariable::execute(unsigned int inIndex, Core::Execution
 		throw schnaps_RunTimeExceptionM(lOSS.str());
 	}
 	
-	lContext.getIndividual().getState().setVariable(mVariable_Ref.substr(1), Core::castHandleT<Core::AnyType>(lValue.clone()));
+	lContext.getIndividual().getState().setVariable(mVariable_Ref.substr(1), lValue);
 	return NULL;
 	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Data::SetVariable::execute(unsigned int, Core::ExecutionContext&)");
 }

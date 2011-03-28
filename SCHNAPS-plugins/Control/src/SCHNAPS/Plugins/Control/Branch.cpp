@@ -159,51 +159,19 @@ void Branch::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const 
 Core::AnyType::Handle Branch::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	double lRandom = ioContext.getRandomizer().rollUniform();
+	double lProbability;
 	
 	if (mProbability == NULL) {
-		Core::Double::Handle lProbability;
-		
 		switch (mProbability_Ref[0]) {
 			case '@': {
 				// individual variable value
-				if (ioContext.getName() == "GenerationContext") {
-					Simulation::GenerationContext& lContext = Core::castObjectT<Simulation::GenerationContext&>(ioContext);
-					if (lContext.getIndividual().getState().hasVariable(mProbability_Ref.substr(1))) {
-						lProbability = Core::castHandleT<Core::Double>(lContext.getIndividual().getState().getVariableHandle(mProbability_Ref.substr(1)));
-					} else {
-						// intialize the variable before continuing
-						
-						// save current primitive tree
-						Core::PrimitiveTree::Handle lCurrentPrimitiveTree = lContext.getPrimitiveTreeHandle();
-						
-						if (lContext.getGenProfile().getDemography().hasVariable(mProbability_Ref.substr(1)) == false) {
-							// variable not in demography, check in simulation variables
-							if (lContext.getGenProfile().getSimulationVariables().hasVariable(mProbability_Ref.substr(1))) {
-								// variable not in simulation variables either, throw error
-								throw schnaps_RunTimeExceptionM("Variable " + mProbability_Ref.substr(1) + " is empty for current individual and is not contained in demography nor in simulation variables.");
-							} else {
-								// variable is in simulation variables
-								lProbability = Core::castHandleT<Core::Double>(lContext.getGenProfile().getSimulationVariables().getVariableInitTree(mProbability_Ref.substr(1)).interpret(ioContext));
-							}
-						} else {
-							// variable is in demography
-							lProbability = Core::castHandleT<Core::Double>(lContext.getGenProfile().getDemography().getVariableInitTree(mProbability_Ref.substr(1)).interpret(ioContext));
-						}
-						// add newly computed variable to individual
-						lContext.getIndividual().getState().insertVariable(mProbability_Ref.substr(1), Core::castHandleT<Core::Double>(lProbability->clone()));
-						
-						// restore primitive tree
-						lContext.setPrimitiveTree(lCurrentPrimitiveTree);
-					}
-				} else {
-					Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
-					lProbability = Core::castHandleT<Core::Double>(lContext.getIndividual().getState().getVariableHandle(mProbability_Ref.substr(1)));
-				}
+				Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
+				lProbability = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mProbability_Ref.substr(1))).getValue();
 				break; }
 			case '#': {
 				// environment variable value
 				Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
-				lProbability = Core::castHandleT<Core::Double>(lContext.getIndividual().getState().getVariableHandle(mProbability_Ref.substr(1)));
+				lProbability = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mProbability_Ref.substr(1))).getValue();
 				break; }
 			case '%':
 				// TODO: local variable value
@@ -212,23 +180,17 @@ Core::AnyType::Handle Branch::execute(unsigned int inIndex, Core::ExecutionConte
 				throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific probability source!");
 				break;
 		}
-		
-		if (lRandom < lProbability->getValue()) {
-			// first branch
-			return getArgument(inIndex, 0, ioContext);
-		} else {
-			// second branch
-			return getArgument(inIndex, 1, ioContext);
-		}
 	} else {
 		// parameter value or direct value
-		if (lRandom < mProbability->getValue()) {
-			// first branch
-			return getArgument(inIndex, 0, ioContext);
-		} else {
-			// second branch
-			return getArgument(inIndex, 1, ioContext);
-		}
+		lProbability = mProbability->getValue();
+	}
+	
+	if (lRandom < lProbability) {
+		// first branch
+		return getArgument(inIndex, 0, ioContext);
+	} else {
+		// second branch
+		return getArgument(inIndex, 1, ioContext);
 	}
 	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Control::Branch::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }

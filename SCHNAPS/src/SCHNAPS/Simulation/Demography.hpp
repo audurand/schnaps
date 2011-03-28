@@ -21,7 +21,6 @@
 #ifndef SCHNAPS_Simulation_Demography_hpp
 #define SCHNAPS_Simulation_Demography_hpp
 
-#include "SCHNAPS/Core/HashString.hpp"
 #include "SCHNAPS/Core/Object.hpp"
 #include "SCHNAPS/Core/PrimitiveTree.hpp"
 
@@ -35,17 +34,6 @@ namespace Simulation {
  *  \brief Demography variables.
  */
 class Demography: public Core::Object {
-protected:
-#if defined(SCHNAPS_HAVE_STD_HASHMAP)
-	typedef std::hash_map<std::string, Core::PrimitiveTree::Handle, HashString> VariablesMap;
-#elif defined(SCHNAPS_HAVE_GNUCXX_HASHMAP)
-	typedef __gnu_cxx::hash_map<std::string, Core::PrimitiveTree::Handle, HashString> VariablesMap;
-#elif defined(SCHNAPS_HAVE_STDEXT_HASHMAP)
-	typedef stdext::hash_map<std::string, Core::PrimitiveTree::Handle, HashString> VariablesMap;
-#else // no hash_map found
-	typedef std::map<std::string, Core::PrimitiveTree::Handle> VariablesMap;
-#endif
-
 public:
 	//! Demography allocator type.
 	typedef Core::AllocatorT<Demography, Core::Object::Alloc> Alloc;
@@ -78,14 +66,13 @@ public:
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 	
 	//! Return the list of variables contained in demography.
-	std::vector<std::string> getVariableList() const;
-	//! Return a const reference to a variable initialization tree function.
-	const Core::PrimitiveTree& getVariableInitTree(const std::string& inLabel) const;
-	//! Check if a variable is contained in demography.
-	bool hasVariable(const std::string& inLabel) const;
+	const std::vector<std::string>& getVariables() const;
+	//! Return the list of variables contained in demography.
+	const Core::PrimitiveTree& getInitTree(unsigned int inIndex) const;
 
 protected:
-VariablesMap mVariablesMap; //!< The map of all demography variable labels to initialization tree.
+std::vector<std::string> mVariables;					//!< Variable labels.
+std::vector<Core::PrimitiveTree::Handle> mInitTrees;	//!< Initialization trees or variable of same index.
 };
 } // end of Simulation namespace
 } // end of SCHNAPS namespace

@@ -194,17 +194,17 @@ void IsEqual::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const
 Core::AnyType::Handle IsEqual::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
-	Core::Number lArgLeft, lArgRight;
+	Core::Number::Handle lArgLeft, lArgRight;
 	
 	if (mArgLeft == NULL) {
 		switch (mArgLeft_Ref[0]) {
 			case '@':
 				// individual variable value
-				lArgLeft = Core::castObjectT<const Core::Number&>(lContext.getIndividual().getState().getVariable(mArgLeft_Ref.substr(1)));
+				lArgLeft = Core::castHandleT<Core::Number>(lContext.getIndividual().getState().getVariableHandle(mArgLeft_Ref.substr(1)));
 				break;
 			case '#':
 				// environment variable value
-				lArgLeft = Core::castObjectT<const Core::Number&>(lContext.getEnvironment().getState().getVariable(mArgLeft_Ref.substr(1)));
+				lArgLeft = Core::castHandleT<Core::Number>(lContext.getEnvironment().getState().getVariableHandle(mArgLeft_Ref.substr(1))->clone());
 				break;
 			case '%':
 				// TODO: local variable value
@@ -215,18 +215,18 @@ Core::AnyType::Handle IsEqual::execute(unsigned int inIndex, Core::ExecutionCont
 		}
 	} else {
 		// parameter value or direct value
-		lArgLeft = *mArgLeft;
+		lArgLeft = mArgLeft;
 	}
 	
 	if (mArgRight == NULL) {
 		switch (mArgRight_Ref[0]) {
 			case '@':
 				// individual variable value
-				lArgRight = Core::castObjectT<const Core::Number&>(lContext.getIndividual().getState().getVariable(mArgRight_Ref.substr(1)));
+				lArgRight = Core::castHandleT<Core::Number>(lContext.getIndividual().getState().getVariableHandle(mArgRight_Ref.substr(1)));
 				break;
 			case '#':
 				// environment variable value
-				lArgRight = Core::castObjectT<const Core::Number&>(lContext.getEnvironment().getState().getVariable(mArgRight_Ref.substr(1)));
+				lArgRight = Core::castHandleT<Core::Number>(lContext.getEnvironment().getState().getVariableHandle(mArgRight_Ref.substr(1))->clone());
 				break;
 			case '%':
 				// TODO: local variable value
@@ -237,10 +237,10 @@ Core::AnyType::Handle IsEqual::execute(unsigned int inIndex, Core::ExecutionCont
 		}
 	} else {
 		// parameter value or direct value
-		lArgRight = *mArgRight;
+		lArgRight = mArgRight;
 	}
 	
-	return new Core::Bool(lArgLeft.isEqual(lArgRight));
+	return new Core::Bool(lArgLeft->isEqual(*lArgRight));
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Operators::IsEqual::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
 }
 

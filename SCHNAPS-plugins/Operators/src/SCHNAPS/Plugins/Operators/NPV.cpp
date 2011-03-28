@@ -159,19 +159,19 @@ Core::AnyType::Handle NPV::execute(unsigned int inIndex, Core::ExecutionContext&
 	if (ioContext.getName() == "SimulationContext") {
 		Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
 		double lTime = lContext.getClock().getValue();
+		double lRate;
 		Core::Double::Handle lDenum;
 		
 		if (mRate == NULL) {
-			double lRate;
 			
 			switch (mRate_Ref[0]) {
 				case '@':
 					// individual variable value
-					lRate = Core::castHandleT<Core::Double>(lContext.getIndividual().getState().getVariableHandle(mRate_Ref.substr(1)))->getValue();
+					lRate = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mRate_Ref.substr(1))).getValue();
 					break;
 				case '#':
 					// environment variable value
-					lRate = Core::castHandleT<Core::Double>(lContext.getEnvironment().getState().getVariableHandle(mRate_Ref.substr(1)))->getValue();
+					lRate = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mRate_Ref.substr(1))).getValue();
 					break;
 				case '%':
 					// TODO: local variable value
@@ -180,14 +180,13 @@ Core::AnyType::Handle NPV::execute(unsigned int inIndex, Core::ExecutionContext&
 					throw schnaps_RunTimeExceptionM("The method is undefined for the specific rate source.");
 					break;
 			}
-			lDenum = new Core::Double(std::pow(lRate + 1, lTime));	
 		} else {
 			// parameter value or direct value
-			lDenum = new Core::Double(std::pow(mRate->getValue() + 1, lTime));	
+			lRate = mRate->getValue();
 		}
 		
-		lArg1->div(*lDenum);
-		return lArg1;
+		lDenum = new Core::Double(std::pow(lRate + 1, lTime));
+		return lArg1->div(*lDenum);
 	} else {
 		throw schnaps_RunTimeExceptionM("NPV primitive is not defined for context '" + ioContext.getName() + "'!");
 	}

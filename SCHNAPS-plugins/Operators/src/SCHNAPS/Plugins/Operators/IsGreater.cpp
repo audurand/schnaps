@@ -194,17 +194,17 @@ void IsGreater::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) con
 Core::AnyType::Handle IsGreater::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
-	Core::Number lArgLeft, lArgRight;
+	Core::Number::Handle lArgLeft, lArgRight;
 	
 	if (mArgLeft == NULL) {
 		switch (mArgLeft_Ref[0]) {
 			case '@':
 				// individual variable value
-				lArgLeft = Core::castObjectT<const Core::Number&>(lContext.getIndividual().getState().getVariable(mArgLeft_Ref.substr(1)));
+				lArgLeft = Core::castHandleT<Core::Number>(lContext.getIndividual().getState().getVariableHandle(mArgLeft_Ref.substr(1)));
 				break;
 			case '#':
 				// environment variable value
-				lArgLeft = Core::castObjectT<const Core::Number&>(lContext.getEnvironment().getState().getVariable(mArgLeft_Ref.substr(1)));
+				lArgLeft = Core::castHandleT<Core::Number>(lContext.getEnvironment().getState().getVariableHandle(mArgLeft_Ref.substr(1))->clone());
 				break;
 			case '%':
 				// TODO: local variable value
@@ -215,18 +215,18 @@ Core::AnyType::Handle IsGreater::execute(unsigned int inIndex, Core::ExecutionCo
 		}
 	} else {
 		// parameter value or direct value
-		lArgLeft = *mArgLeft;
+		lArgLeft = mArgLeft;
 	}
 	
 	if (mArgRight == NULL) {
 		switch (mArgRight_Ref[0]) {
 			case '@':
 				// individual variable value
-				lArgRight = Core::castObjectT<const Core::Number&>(lContext.getIndividual().getState().getVariable(mArgRight_Ref.substr(1)));
+				lArgRight = Core::castHandleT<Core::Number>(lContext.getIndividual().getState().getVariableHandle(mArgRight_Ref.substr(1)));
 				break;
 			case '#':
 				// environment variable value
-				lArgRight = Core::castObjectT<const Core::Number&>(lContext.getEnvironment().getState().getVariable(mArgRight_Ref.substr(1)));
+				lArgRight = Core::castHandleT<Core::Number>(lContext.getEnvironment().getState().getVariableHandle(mArgRight_Ref.substr(1))->clone());
 				break;
 			case '%':
 				// TODO: local variable value
@@ -237,10 +237,10 @@ Core::AnyType::Handle IsGreater::execute(unsigned int inIndex, Core::ExecutionCo
 		}
 	} else {
 		// parameter value or direct value
-		lArgRight = *mArgRight;
+		lArgRight = mArgRight;
 	}
 	
-	return new Core::Bool(lArgRight.isLess(lArgLeft));
+	return new Core::Bool(lArgRight->isLess(*lArgLeft));
 	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Operators::IsGreater::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
 }
 
