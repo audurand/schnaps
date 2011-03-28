@@ -213,10 +213,10 @@ void ChoiceIsBetween::readWithSystem(PACC::XML::ConstIterator inIter, Core::Syst
 			default: {
 				// direct value
 				// retrieve type of choices
-				if (inIter->getAttribute("inChoices_Type").empty()) {
-					throw schnaps_IOExceptionNodeM(*inIter, "type of choices expected!");
+				if (inIter->getAttribute("inBounds_Type").empty()) {
+					throw schnaps_IOExceptionNodeM(*inIter, "type of bounds expected!");
 				}
-				Core::Number::Alloc::Handle lAlloc = Core::castHandleT<Core::Number::Alloc>(ioSystem.getFactory().getAllocator(inIter->getAttribute("inChoices_Type")));
+				Core::Number::Alloc::Handle lAlloc = Core::castHandleT<Core::Number::Alloc>(ioSystem.getFactory().getAllocator(inIter->getAttribute("inBounds_Type")));
 				
 				std::stringstream lSS(mBounds_Ref);
 				PACC::Tokenizer lTokenizer(lSS);

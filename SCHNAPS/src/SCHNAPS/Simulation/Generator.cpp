@@ -241,24 +241,18 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 			lContext->getIndividual().getState().clear();
 			
 			for (unsigned int j = 0; j < lDemographyVariables.size(); j++) {
-				if (lContext->getIndividual().getState().hasVariable(lDemographyVariables[j]) == false) {
-					// the variable has not been computed yet for this individual
-					lContext->getIndividual().getState().insertVariable(
-						lDemographyVariables[j],
-						Core::castHandleT<Core::Atom>(lContext->getGenProfile().getDemography().getVariableInitTree(lDemographyVariables[j]).interpret(*lContext)));
-				}
+				lContext->getIndividual().getState().insertVariable(
+					lDemographyVariables[j],
+					lContext->getGenProfile().getDemography().getVariableInitTree(lDemographyVariables[j]).interpret(*lContext));
 			}
 			// retry until a valid individual is created
 		} while (Core::castHandleT<Core::Bool>(lContext->getGenProfile().getAcceptFunction().interpret(*lContext))->getValue() == false);
 
 		// add simulation variables
 		for (unsigned int j = 0; j < lSimulationVariables.size(); j++) {
-			if (lContext->getIndividual().getState().hasVariable(lSimulationVariables[j]) == false) {
-				// the variable has not been computed yet for this individual
-				lContext->getIndividual().getState().insertVariable(
-					lSimulationVariables[j],
-					Core::castHandleT<Core::Atom>(lContext->getGenProfile().getSimulationVariables().getVariableInitTree(lSimulationVariables[j]).interpret(*lContext)));
-			}
+			lContext->getIndividual().getState().insertVariable(
+				lSimulationVariables[j],
+				lContext->getGenProfile().getSimulationVariables().getVariableInitTree(lSimulationVariables[j]).interpret(*lContext));
 		}
 
 		// erase non-wanted demographic variables
