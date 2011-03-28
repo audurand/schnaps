@@ -286,7 +286,7 @@ Core::AnyType::Handle ChoiceIsEqual::execute(unsigned int inIndex, Core::Executi
 				if (ioContext.getName() == "GenerationContext") {
 					Simulation::GenerationContext& lContext = Core::castObjectT<Simulation::GenerationContext&>(ioContext);
 					if (lContext.getIndividual().getState().hasVariable(mValue_Ref.substr(1))) {
-						lValue = lContext.getIndividual().getState().getVariableHandle(mValue_Ref.substr(1));
+						lValue = Core::castHandleT<Core::Atom>(lContext.getIndividual().getState().getVariableHandle(mValue_Ref.substr(1)));
 					} else {
 						// intialize the variable before continuing
 						
@@ -314,7 +314,7 @@ Core::AnyType::Handle ChoiceIsEqual::execute(unsigned int inIndex, Core::Executi
 					}
 				} else {
 					Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
-					lValue = lContext.getIndividual().getState().getVariableHandle(mValue_Ref.substr(1));
+					lValue = Core::castHandleT<Core::Atom>(lContext.getIndividual().getState().getVariableHandle(mValue_Ref.substr(1)));
 				}
 				break; }
 			case '#': {
