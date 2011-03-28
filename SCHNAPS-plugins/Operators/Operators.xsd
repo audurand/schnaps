@@ -61,7 +61,7 @@
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="inArgLeft_Type" type="xsd:string" use="optional">
+			<xsd:attribute name="inArgLeft_Type" use="optional">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
@@ -90,7 +90,7 @@
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="inArgRight_Type" type="xsd:string" use="optional">
+			<xsd:attribute name="inArgRight_Type" use="optional">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
@@ -223,7 +223,7 @@
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="inArgLeft_Type" type="xsd:string" use="optional">
+			<xsd:attribute name="inArgLeft_Type" use="optional">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
@@ -252,7 +252,7 @@
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="inArgRight_Type" type="xsd:string" use="optional">
+			<xsd:attribute name="inArgRight_Type" use="optional">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
@@ -322,7 +322,7 @@
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="inArgLeft_Type" type="xsd:string" use="optional">
+			<xsd:attribute name="inArgLeft_Type" use="optional">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
@@ -351,7 +351,7 @@
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="inArgRight_Type" type="xsd:string" use="optional">
+			<xsd:attribute name="inArgRight_Type" use="optional">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
@@ -393,7 +393,7 @@
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="inValue_Type" type="xsd:string" use="optional">
+			<xsd:attribute name="inValue_Type" use="optional">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
@@ -422,7 +422,7 @@
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="inArgLeft_Type" type="xsd:string" use="optional">
+			<xsd:attribute name="inArgLeft_Type" use="optional">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
@@ -451,7 +451,7 @@
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="inArgRight_Type" type="xsd:string" use="optional">
+			<xsd:attribute name="inArgRight_Type" use="optional">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
@@ -541,7 +541,7 @@
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="inArgLeft_Type" type="xsd:string" use="optional">
+			<xsd:attribute name="inArgLeft_Type" use="optional">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
@@ -570,7 +570,7 @@
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="inArgRight_Type" type="xsd:string" use="optional">
+			<xsd:attribute name="inArgRight_Type" use="optional">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
@@ -620,7 +620,7 @@
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="inArgLeft_Type" type="xsd:string" use="optional">
+			<xsd:attribute name="inArgLeft_Type" use="optional">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
@@ -649,7 +649,7 @@
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="inArgRight_Type" type="xsd:string" use="optional">
+			<xsd:attribute name="inArgRight_Type" use="optional">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
@@ -699,7 +699,7 @@
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="inArgLeft_Type" type="xsd:string" use="optional">
+			<xsd:attribute name="inArgLeft_Type" use="optional">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
@@ -728,7 +728,7 @@
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="inArgRight_Type" type="xsd:string" use="optional">
+			<xsd:attribute name="inArgRight_Type" use="optional">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
@@ -778,7 +778,7 @@
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="inArgLeft_Type" type="xsd:string" use="optional">
+			<xsd:attribute name="inArgLeft_Type" use="optional">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
@@ -807,7 +807,7 @@
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="inArgRight_Type" type="xsd:string" use="optional">
+			<xsd:attribute name="inArgRight_Type" use="optional">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
@@ -857,7 +857,7 @@
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="inArgLeft_Type" type="xsd:string" use="optional">
+			<xsd:attribute name="inArgLeft_Type" use="optional">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
@@ -886,7 +886,7 @@
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="inArgRight_Type" type="xsd:string" use="optional">
+			<xsd:attribute name="inArgRight_Type" use="optional">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
@@ -1085,7 +1085,7 @@
 		</xsd:complexType>
 	</xsd:element>
 	
-	<xsd:element name="Operators_NPV" substitutionGroup="_unaryOp" type="_unaryOpComplexType">
+	<xsd:element name="Operators_NPV" substitutionGroup="_unaryOp">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<pmt:info lang="en">Compute the Nearest Present Value of the child (number).</pmt:info>

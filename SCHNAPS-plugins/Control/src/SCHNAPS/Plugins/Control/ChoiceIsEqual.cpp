@@ -276,46 +276,14 @@ Core::AnyType::Handle ChoiceIsEqual::execute(unsigned int inIndex, Core::Executi
 	schnaps_StackTraceBeginM();
 	
 	ChoiceMap::const_iterator lIterChoice;
-	unsigned int lIndex;
+	Core::Atom::Handle lValue;
 	
 	if (mValue == NULL) {
-		Core::Atom::Handle lValue;
 		switch (mValue_Ref[0]) {
 			case '@': {
 				// individual variable value
-				if (ioContext.getName() == "GenerationContext") {
-					Simulation::GenerationContext& lContext = Core::castObjectT<Simulation::GenerationContext&>(ioContext);
-					if (lContext.getIndividual().getState().hasVariable(mValue_Ref.substr(1))) {
-						lValue = Core::castHandleT<Core::Atom>(lContext.getIndividual().getState().getVariableHandle(mValue_Ref.substr(1)));
-					} else {
-						// intialize the variable before continuing
-						
-						// save current primitive tree
-						Core::PrimitiveTree::Handle lCurrentPrimitiveTree = lContext.getPrimitiveTreeHandle();
-						
-						if (lContext.getGenProfile().getDemography().hasVariable(mValue_Ref.substr(1)) == false) {
-							// variable not in demography, check in simulation variables
-							if (lContext.getGenProfile().getSimulationVariables().hasVariable(mValue_Ref.substr(1))) {
-								// variable not in simulation variables either, throw error
-								throw schnaps_RunTimeExceptionM("Variable " + mValue_Ref.substr(1) + " is empty for current individual and is not contained in demography nor in simulation variables.");
-							} else {
-								// variable is in simulation variables
-								lValue = Core::castHandleT<Core::Atom>(lContext.getGenProfile().getSimulationVariables().getVariableInitTree(mValue_Ref.substr(1)).interpret(ioContext));
-							}
-						} else {
-							// variable is in demography
-							lValue = Core::castHandleT<Core::Atom>(lContext.getGenProfile().getDemography().getVariableInitTree(mValue_Ref.substr(1)).interpret(ioContext));
-						}
-						// add newly computed variable to individual
-						lContext.getIndividual().getState().insertVariable(mValue_Ref.substr(1), Core::castHandleT<Core::Atom>(lValue->clone()));
-						
-						// restore primitive tree
-						lContext.setPrimitiveTree(lCurrentPrimitiveTree);
-					}
-				} else {
-					Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
-					lValue = Core::castHandleT<Core::Atom>(lContext.getIndividual().getState().getVariableHandle(mValue_Ref.substr(1)));
-				}
+				Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
+				lValue = Core::castHandleT<Core::Atom>(lContext.getIndividual().getState().getVariableHandle(mValue_Ref.substr(1)));
 				break; }
 			case '#': {
 				// environment variable value
@@ -329,27 +297,19 @@ Core::AnyType::Handle ChoiceIsEqual::execute(unsigned int inIndex, Core::Executi
 				throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific source!");
 				break;
 		}
-		lIterChoice = mChoiceMap.find(mValue);
-		if (lIterChoice == mChoiceMap.end()) {
-			std::stringstream lOSS;
-			lOSS << "Value " << lValue->writeStr() << " is not in choices; ";
-			lOSS << "could not make choice.";
-			throw schnaps_RunTimeExceptionM(lOSS.str());
-		}
-		lIndex = lIterChoice->second;
 	} else {
 		// parameter value or direct value
-		lIterChoice = mChoiceMap.find(mValue);
-		if (lIterChoice == mChoiceMap.end()) {
-			std::stringstream lOSS;
-			lOSS << "Value " << mValue->writeStr() << " is not in choices; ";
-			lOSS << "could not make choice.";
-			throw schnaps_RunTimeExceptionM(lOSS.str());
-		}
-		lIndex = lIterChoice->second;
+		lValue = mValue;
 	}
 	
-	return getArgument(inIndex, lIndex, ioContext);
+	lIterChoice = mChoiceMap.find(lValue);
+	if (lIterChoice == mChoiceMap.end()) {
+		std::stringstream lOSS;
+		lOSS << "Value " << lValue->writeStr() << " is not in choices; ";
+		lOSS << "could not make choice.";
+		throw schnaps_RunTimeExceptionM(lOSS.str());
+	}
+	return getArgument(inIndex, lIterChoice->second, ioContext);
 	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Control::ChoiceIsEqual::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 

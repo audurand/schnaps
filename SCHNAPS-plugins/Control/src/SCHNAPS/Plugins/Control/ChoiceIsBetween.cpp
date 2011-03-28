@@ -263,50 +263,20 @@ void ChoiceIsBetween::writeContent(PACC::XML::Streamer& ioStreamer, bool inInden
  * \throw  SCHNAPS::Core::RunTimeException if the variable is less than the lower choice bound.
  */
 Core::AnyType::Handle ChoiceIsBetween::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
-	schnaps_StackTraceBeginM();	
+	schnaps_StackTraceBeginM();
+	Core::Atom lValue;
+	
 	if (mValue == NULL) {
-		Core::Atom::Handle lValue;
 		switch (mValue_Ref[0]) {
 			case '@': {
 				// individual variable value
-				if (ioContext.getName() == "GenerationContext") {
-					Simulation::GenerationContext& lContext = Core::castObjectT<Simulation::GenerationContext&>(ioContext);
-					if (lContext.getIndividual().getState().hasVariable(mValue_Ref.substr(1))) {
-						lValue = Core::castHandleT<Core::Atom>(lContext.getIndividual().getState().getVariableHandle(mValue_Ref.substr(1)));
-					} else {
-						// intialize the variable before continuing
-						
-						// save current primitive tree
-						Core::PrimitiveTree::Handle lCurrentPrimitiveTree = lContext.getPrimitiveTreeHandle();
-						
-						if (lContext.getGenProfile().getDemography().hasVariable(mValue_Ref.substr(1)) == false) {
-							// variable not in demography, check in simulation variables
-							if (lContext.getGenProfile().getSimulationVariables().hasVariable(mValue_Ref.substr(1))) {
-								// variable not in simulation variables either, throw error
-								throw schnaps_RunTimeExceptionM("Variable " + mValue_Ref.substr(1) + " is empty for current individual and is not contained in demography nor in simulation variables.");
-							} else {
-								// variable is in simulation variables
-								lValue = Core::castHandleT<Core::Atom>(lContext.getGenProfile().getSimulationVariables().getVariableInitTree(mValue_Ref.substr(1)).interpret(ioContext));
-							}
-						} else {
-							// variable is in demography
-							lValue = Core::castHandleT<Core::Atom>(lContext.getGenProfile().getDemography().getVariableInitTree(mValue_Ref.substr(1)).interpret(ioContext));
-						}
-						// add newly computed variable to individual
-						lContext.getIndividual().getState().insertVariable(mValue_Ref.substr(1), Core::castHandleT<Core::Atom>(lValue->clone()));
-						
-						// restore primitive tree
-						lContext.setPrimitiveTree(lCurrentPrimitiveTree);
-					}
-				} else {
-					Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
-					lValue = Core::castHandleT<Core::Atom>(lContext.getIndividual().getState().getVariableHandle(mValue_Ref.substr(1)));
-				}
+				Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
+				lValue = Core::castObjectT<const Core::Atom&>(lContext.getIndividual().getState().getVariable(mValue_Ref.substr(1)));
 				break; }
 			case '#': {
 				// environment variable value
 				Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
-				lValue = Core::castHandleT<Core::Atom>(lContext.getEnvironment().getState().getVariableHandle(mValue_Ref.substr(1))->clone());
+				lValue = Core::castObjectT<const Core::Atom&>(lContext.getEnvironment().getState().getVariable(mValue_Ref.substr(1)));
 				break; }
 			case '%':
 				// TODO: local variable value
@@ -315,29 +285,20 @@ Core::AnyType::Handle ChoiceIsBetween::execute(unsigned int inIndex, Core::Execu
 				throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific source!");
 				break;
 		}
-		if (lValue->isLess(*(*mBounds)[0])) {
-			printf("Value: %s\n", lValue->writeStr().c_str());
-			printf("Lower bound: %s\n", (*mBounds)[0]->writeStr().c_str());
-			throw schnaps_RunTimeExceptionM("Value '" + lValue->writeStr() + "' is not in any range of choices!");
-		}
-
-		for (unsigned int i = 0; i < mBounds->size(); i++) {
-			if (lValue->isLess(*(*mBounds)[i])) {
-				return getArgument(inIndex, i-1, ioContext);
-			}
-		}
 	} else {
 		// parameter value or direct value
-		if (mValue->isLess(*(*mBounds)[0])) {
-			printf("Value: %s\n", mValue->writeStr().c_str());
-			printf("Lower bound: %s\n", (*mBounds)[0]->writeStr().c_str());
-			throw schnaps_RunTimeExceptionM("Value '" + mValue->writeStr() + "' is not in any range of choices!");
-		}
+		lValue = *mValue;
+	}
+	
+	if (lValue.isLess(*(*mBounds)[0])) {
+		printf("Value: %s\n", lValue.writeStr().c_str());
+		printf("Lower bound: %s\n", (*mBounds)[0]->writeStr().c_str());
+		throw schnaps_RunTimeExceptionM("Value '" + lValue.writeStr() + "' is not in any range of choices!");
+	}
 
-		for (unsigned int i = 0; i < mBounds->size(); i++) {
-			if (mValue->isLess(*(*mBounds)[i])) {
-				return getArgument(inIndex, i-1, ioContext);
-			}
+	for (unsigned int i = 0; i < mBounds->size(); i++) {
+		if (lValue.isLess(*(*mBounds)[i])) {
+			return getArgument(inIndex, i-1, ioContext);
 		}
 	}
 	return getArgument(inIndex, mBounds->size()-1, ioContext);

@@ -117,7 +117,7 @@
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="inValue_Type" type="xsd:string" use="optional">
+			<xsd:attribute name="inValue_Type" use="optional">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
@@ -200,7 +200,7 @@
 							</xsd:appinfo>
 						</xsd:annotation>
 					</xsd:attribute>
-					<xsd:attribute name="inValue_Type" type="xsd:string" use="optional">
+					<xsd:attribute name="inValue_Type" use="optional">
 						<xsd:annotation>
 							<xsd:appinfo>
 								<gui:attributeBehavior>
