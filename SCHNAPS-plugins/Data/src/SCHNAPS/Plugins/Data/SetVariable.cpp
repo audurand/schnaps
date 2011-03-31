@@ -89,8 +89,7 @@ void SetVariable::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
 	}
 	mVariable_Ref.assign(inIter->getAttribute("outVariable"));
 	
-	if (mVariable_Ref[0] != '@') {
-		// TODO: store in local variable
+	if (mVariable_Ref[0] != '@' && mVariable_Ref[0] != '%') {
 		throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific variable source!");
 	}
 
@@ -106,7 +105,7 @@ void SetVariable::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mValue = NULL;
 			break;
 		case '$':
@@ -148,40 +147,32 @@ void SetVariable::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) c
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
- * \throw  SCHNAPS::Core::RunTimeException if the method is not defined for the specific execution context.
  * \throw  SCHNAPS::Core::RunTimeException if the type of new value does not match the type of variable.
  */
 Core::AnyType::Handle SetVariable::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	if (ioContext.getName() == "GenerationContext") {
-		throw schnaps_RunTimeExceptionM("The method is not defined for context 'GenerationContext'.");
-	}
-	
-	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
+	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
 	Core::AnyType::Handle lValue;
 
 	std::string lTypeVariable = lContext.getIndividual().getState().getVariable(mVariable_Ref.substr(1)).getType();
 	
-	if (mValue == NULL) {
-		switch (mValue_Ref[0]) {
-			case '@':
-				// individual variable value
-				lValue = Core::castHandleT<Core::AnyType>(lContext.getIndividual().getState().getVariableHandle(mValue_Ref.substr(1))->clone());
-				break;
-			case '#':
-				// environment variable value
-				lValue = Core::castHandleT<Core::AnyType>(lContext.getEnvironment().getState().getVariableHandle(mValue_Ref.substr(1))->clone());
-				break;
-			case '%':
-				// TODO: local variable value
-				break;
-			default:
-				throw schnaps_RunTimeExceptionM("The method is undefined for the specific value source.");
-				break;
-		}
-	} else {
-		// parameter value or direct value
-		lValue = Core::castHandleT<Core::AnyType>(mValue->clone());
+	switch (mValue_Ref[0]) {
+		case '@':
+			// individual variable value
+			lValue = Core::castHandleT<Core::AnyType>(lContext.getIndividual().getState().getVariableHandle(mValue_Ref.substr(1))->clone());
+			break;
+		case '#':
+			// environment variable value
+			lValue = Core::castHandleT<Core::AnyType>(lContext.getEnvironment().getState().getVariableHandle(mValue_Ref.substr(1))->clone());
+			break;
+		case '%':
+			// local variable value
+			lValue = Core::castHandleT<Core::AnyType>(lContext.getLocalVariableHandle(mValue_Ref.substr(1))->clone());
+			break;
+		default:
+			// parameter value or direct value
+			lValue = Core::castHandleT<Core::AnyType>(mValue->clone());
+			break;
 	}
 	
 	std::string lTypeNewValue = lValue->getType();

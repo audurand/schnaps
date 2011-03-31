@@ -190,54 +190,57 @@ void IsGreater::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) con
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
+ * \throw  SCHNAPS::RunTimeException if the primitive is undefined for the specific left argument source.
+ * \throw  SCHNAPS::RunTimeException if the primitive is undefined for the specific right argument source.
  */
 Core::AnyType::Handle IsGreater::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
 	Core::Number::Handle lArgLeft, lArgRight;
 	
 	if (mArgLeft == NULL) {
 		switch (mArgLeft_Ref[0]) {
 			case '@':
 				// individual variable value
-				lArgLeft = Core::castHandleT<Core::Number>(lContext.getIndividual().getState().getVariableHandle(mArgLeft_Ref.substr(1)));
+				lArgLeft = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getIndividual().getState().getVariableHandle(mArgLeft_Ref.substr(1)));
 				break;
 			case '#':
 				// environment variable value
-				lArgLeft = Core::castHandleT<Core::Number>(lContext.getEnvironment().getState().getVariableHandle(mArgLeft_Ref.substr(1))->clone());
+				lArgLeft = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getEnvironment().getState().getVariableHandle(mArgLeft_Ref.substr(1))->clone());
 				break;
 			case '%':
-				// TODO: local variable value
+				// local variable value
+				lArgLeft = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::SimulationContext&>(ioContext).getLocalVariableHandle(mArgLeft_Ref.substr(1)));
 				break;
 			default:
-				throw schnaps_RunTimeExceptionM("The method is undefined for the specific left argument source.");
+				throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific left argument source.");
 				break;
 		}
 	} else {
 		// parameter value or direct value
-		lArgLeft = mArgLeft;
+		lArgLeft = Core::castHandleT<Core::Number>(mArgLeft->clone());
 	}
 	
 	if (mArgRight == NULL) {
 		switch (mArgRight_Ref[0]) {
 			case '@':
 				// individual variable value
-				lArgRight = Core::castHandleT<Core::Number>(lContext.getIndividual().getState().getVariableHandle(mArgRight_Ref.substr(1)));
+				lArgRight = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getIndividual().getState().getVariableHandle(mArgRight_Ref.substr(1)));
 				break;
 			case '#':
 				// environment variable value
-				lArgRight = Core::castHandleT<Core::Number>(lContext.getEnvironment().getState().getVariableHandle(mArgRight_Ref.substr(1))->clone());
+				lArgRight = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getEnvironment().getState().getVariableHandle(mArgRight_Ref.substr(1))->clone());
 				break;
 			case '%':
-				// TODO: local variable value
+				// local variable value
+				lArgRight = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::SimulationContext&>(ioContext).getLocalVariableHandle(mArgRight_Ref.substr(1)));
 				break;
 			default:
-				throw schnaps_RunTimeExceptionM("The method is undefined for the specific right argument source.");
+				throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific right argument source.");
 				break;
 		}
 	} else {
 		// parameter value or direct value
-		lArgRight = mArgRight;
+		lArgRight = Core::castHandleT<Core::Number>(mArgRight->clone());
 	}
 	
 	return new Core::Bool(lArgRight->isLess(*lArgLeft));

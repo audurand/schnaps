@@ -29,11 +29,34 @@
 namespace SCHNAPS {
 namespace Simulation {
 
+
 /*!
  *  \class Demography SCHNAPS/Simulation/Demography.hpp "SCHNAPS/Simulation/Demography.hpp"
  *  \brief Demography variables.
  */
 class Demography: public Core::Object {
+protected:
+	struct LocalVariable {
+		std::string mLabel;
+		Core::PrimitiveTree::Handle mInitTree;
+		
+		LocalVariable(const std::string& inLabel, const Core::PrimitiveTree::Handle inInitTree) {
+			mLabel = inLabel.c_str();
+			mInitTree = inInitTree;
+		}
+	};
+	
+	struct Variable {
+		std::string mLabel;
+		Core::PrimitiveTree::Handle mInitTree;
+		std::vector<LocalVariable> mLocalVariables;
+		
+		Variable(const std::string& inLabel, const Core::PrimitiveTree::Handle inInitTree) {
+			mLabel = inLabel.c_str();
+			mInitTree = inInitTree;
+		}
+	};
+
 public:
 	//! Demography allocator type.
 	typedef Core::AllocatorT<Demography, Core::Object::Alloc> Alloc;
@@ -65,14 +88,18 @@ public:
 	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 	
-	//! Return the list of variables contained in demography.
-	const std::vector<std::string>& getVariables() const;
-	//! Return the list of variables contained in demography.
-	const Core::PrimitiveTree& getInitTree(unsigned int inIndex) const;
+	//! Read variable from XML using system.
+	void readVariable(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Read local variables from XML using system.
+	void readLocalVariables(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	
+	//! Return the number of variables contained in demography.
+	unsigned int getVariablesSize() const;
+	//! Return a specific variable of demography.
+	const Demography::Variable& getVariable(unsigned int inIndex) const;
 
 protected:
-std::vector<std::string> mVariables;					//!< Variable labels.
-std::vector<Core::PrimitiveTree::Handle> mInitTrees;	//!< Initialization trees or variable of same index.
+	std::vector<Variable> mVariables;	//!< Demography variables init information.
 };
 } // end of Simulation namespace
 } // end of SCHNAPS namespace

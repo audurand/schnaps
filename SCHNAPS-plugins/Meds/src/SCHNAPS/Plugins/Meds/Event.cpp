@@ -100,7 +100,7 @@ void Event::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSyst
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mProbability = NULL;
 			break;
 		case '$':
@@ -133,45 +133,35 @@ void Event::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
- * \throw  SCHNAPS::Core::RunTimeException if the primitive is not defined for the specific context.
- * \throw  SCHNAPS::Core::RunTimeException if the method is undefined for the specific probability source.
  */
 Core::AnyType::Handle Event::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	if (ioContext.getName() == "SimulationContext") {
-		Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
-
-		// get event probability
-		double lProbability;
-		
-		if (mProbability == NULL) {
-			switch (mProbability_Ref[0]) {
-				case '@':
-					// individual variable value
-					lProbability = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mProbability_Ref.substr(1))).getValue();
-					break;
-				case '#':
-					// environment variable value
-					lProbability = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mProbability_Ref.substr(1))).getValue();
-					break;
-				case '%':
-					// TODO: local variable value
-					break;
-				default:
-					throw schnaps_RunTimeExceptionM("The method is undefined for the specific probability source.");
-					break;
-			}
-		} else {
+	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
+	double lProbability;
+	
+	switch (mProbability_Ref[0]) {
+		case '@':
+			// individual variable value
+			lProbability = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mProbability_Ref.substr(1))).getValue();
+			break;
+		case '#':
+			// environment variable value
+			lProbability = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mProbability_Ref.substr(1))).getValue();
+			break;
+		case '%':
+			// local variable value
+			lProbability = Core::castObjectT<const Core::Double&>(lContext.getLocalVariable(mProbability_Ref.substr(1))).getValue();
+			break;
+		default:
+			// parameter value or direct value
 			lProbability = mProbability->getValue();
-		}
-
-		if (ioContext.getRandomizer().rollUniform() <= lProbability) { // event
-			getArgument(inIndex, 0, ioContext);
-		} else { // no event
-			getArgument(inIndex, 1, ioContext);
-		}
-	} else {
-		throw schnaps_RunTimeExceptionM("Event primitive is not defined for context '" + ioContext.getName() + "'!");
+			break;
+	}
+	
+	if (ioContext.getRandomizer().rollUniform() <= lProbability) { // event
+		getArgument(inIndex, 0, ioContext);
+	} else { // no event
+		getArgument(inIndex, 1, ioContext);
 	}
 	return NULL;
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Meds::Event::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");

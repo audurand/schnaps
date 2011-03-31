@@ -33,14 +33,14 @@ namespace Control {
  *  \class ProcessCall SCHNAPS/Basic/ProcessCall.hpp "SCHNAPS/Basic/ProcessCall.hpp"
  *  \brief Token terminal primitive that calls a process for immediate execution.
  */
-class ProcessCall: public SCHNAPS::Core::Primitive {
+class ProcessCall: public Core::Primitive {
 public:
 	//! ProcessCall allocator type.
-	typedef SCHNAPS::Core::AllocatorT<ProcessCall, SCHNAPS::Core::Primitive::Alloc> Alloc;
+	typedef Core::AllocatorT<ProcessCall, Core::Primitive::Alloc> Alloc;
 	//! ProcessCall handle type.
-	typedef SCHNAPS::Core::PointerT<ProcessCall, SCHNAPS::Core::Primitive::Handle> Handle;
+	typedef Core::PointerT<ProcessCall, Core::Primitive::Handle> Handle;
 	//! ProcessCall bag type.
-	typedef SCHNAPS::Core::ContainerT<ProcessCall, SCHNAPS::Core::Primitive::Bag> Bag;
+	typedef Core::ContainerT<ProcessCall, Core::Primitive::Bag> Bag;
 
 	ProcessCall();
 	ProcessCall(const ProcessCall& inOriginal);

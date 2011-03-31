@@ -86,6 +86,7 @@ protected:
 #endif
 
 public:
+
 	//! SimulationContext allocator type.
 	typedef Core::AllocatorT<SimulationContext, ExecutionContext::Alloc> Alloc;
 	//! SimulationContext handle type.
@@ -97,9 +98,16 @@ public:
 	SimulationContext(const SimulationContext& inOriginal);
 	explicit SimulationContext(const Core::System::Handle inSystem, const Clock::Handle inClock, const Environment::Handle inEnvironment);
 	virtual ~SimulationContext() {}
-
+	
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
-		return mName;
+		schnaps_StackTraceBeginM();
+		const static std::string lName("SimulationContext");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Simulation::SimulationContext::getName() const");
 	}
 
 	//! Read processes from XML.
@@ -200,12 +208,12 @@ public:
 
 private:
 	// data structures
-	ProcessMap mProcesses;			//!< Stored processes.
-	ClockObservers mClockObservers;	//!< Clock observers.
-	ScenarioMap mScenarios;			//!< Scenario processes (label to scenario).
+	ProcessMap mProcesses;				//!< Stored processes.
+	ClockObservers mClockObservers;		//!< Clock observers.
+	ScenarioMap mScenarios;				//!< Scenario processes (label to scenario).
 
 	// current structures
-	std::list<Push> mPushList;		//!< List of pushes made while executing current individual.
+	std::list<Push> mPushList;			//!< List of pushes made while executing current individual.
 };
 } // end of Simulation namespace
 } // end of SCHNAPS namespace

@@ -55,10 +55,10 @@ Nothing& Nothing::operator=(const Nothing& inOriginal) {
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
  */
-SCHNAPS::Core::AnyType::Handle Nothing::execute(unsigned int inIndex, SCHNAPS::Core::ExecutionContext& ioContext) const {
+Core::AnyType::Handle Nothing::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	return NULL;
-	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SSCHNAPS::Plugins::Control::Nothing::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Control::Nothing::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
 }
 
 /*!
@@ -67,9 +67,9 @@ SCHNAPS::Core::AnyType::Handle Nothing::execute(unsigned int inIndex, SCHNAPS::C
  * \param  ioContext A reference to the execution context.
  * \return A const reference to the return type.
  */
-const std::string& Nothing::getReturnType(unsigned int inIndex, SCHNAPS::Core::ExecutionContext& ioContext) const {
+const std::string& Nothing::getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	const static std::string lType("Void");
 	return lType;
-	schnaps_StackTraceEndM("const std::string& SSCHNAPS::Plugins::Control::Nothing::getReturnType(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Control::Nothing::getReturnType(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }

@@ -162,7 +162,8 @@ Core::AnyType::Handle ProcessPush::execute(unsigned int inIndex, Core::Execution
 				lDelay = Core::castHandleT<Core::ULong>(lContext.getEnvironment().getState().getVariableHandle(mDelay_Ref.substr(1).c_str()))->getValue();
 				break;
 			case '%':
-				// TODO: local variable value
+				// local variable value
+				lDelay = Core::castHandleT<Core::ULong>(lContext.getLocalVariableHandle(mDelay_Ref.substr(1).c_str()))->getValue();
 				break;
 			default:
 				throw schnaps_RunTimeExceptionM("The method is undefined for the specified delay source!");

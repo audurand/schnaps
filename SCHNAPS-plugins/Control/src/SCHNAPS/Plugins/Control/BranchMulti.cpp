@@ -46,7 +46,7 @@ BranchMulti::BranchMulti(const BranchMulti& inOriginal) :
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mProbabilities = NULL;
 			break;
 		case '$':
@@ -75,7 +75,7 @@ BranchMulti& BranchMulti::operator=(const BranchMulti& inOriginal) {
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mProbabilities = NULL;
 			break;
 		case '$':
@@ -178,9 +178,35 @@ void BranchMulti::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) c
  */
 Core::AnyType::Handle BranchMulti::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
+	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
+	Core::Vector::Handle lProbabilities;
 	Core::RouletteT<unsigned int> lRoulette;
-	for (unsigned int i = 0; i < mProbabilities->size(); i++) {
-		lRoulette.insert(i, Core::castHandleT<Core::Double>((*mProbabilities)[i])->getValue());
+	
+	switch (mProbabilities_Ref[0]) {
+		case '@':
+			// individual variable value
+			lProbabilities = Core::castHandleT<Core::Vector>(lContext.getIndividual().getState().getVariableHandle(mProbabilities_Ref.substr(1)));
+			break;
+		case '#':
+			// environment variable value
+			lProbabilities = Core::castHandleT<Core::Vector>(lContext.getIndividual().getState().getVariableHandle(mProbabilities_Ref.substr(1))->clone());
+			break;
+		case '%':
+			// local variable value
+			lProbabilities = Core::castHandleT<Core::Vector>(lContext.getLocalVariableHandle(mProbabilities_Ref.substr(1)));
+			break;
+		case '$':
+			// parameter value
+			lProbabilities = Core::castHandleT<Core::Vector>(mProbabilities->clone());
+			break;
+		default:
+			// direct value
+			lProbabilities = mProbabilities;
+			break;
+	}
+	
+	for (unsigned int i = 0; i < lProbabilities->size(); i++) {
+		lRoulette.insert(i, Core::castHandleT<Core::Double>((*lProbabilities)[i])->getValue());
 	}
 	return getArgument(inIndex, lRoulette.select(ioContext.getRandomizer()), ioContext);
 	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Control::BranchMulti::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");

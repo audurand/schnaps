@@ -52,7 +52,7 @@ AddVariable::AddVariable(const AddVariable& inOriginal) :
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mArgLeft = NULL;
 			break;
 		case '$':
@@ -111,8 +111,7 @@ void AddVariable::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
 	}
 	mResult_Ref.assign(inIter->getAttribute("outResult"));
 	
-	if (mResult_Ref[0] != '@') {
-		// TODO: store in local variable
+	if (mResult_Ref[0] != '@' && mResult_Ref[0] != '%') {
 		throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific output result source!");
 	}
 
@@ -128,7 +127,7 @@ void AddVariable::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mArgLeft = NULL;
 			break;
 		case '$':
@@ -158,7 +157,7 @@ void AddVariable::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mArgRight = NULL;
 			break;
 		case '$':
@@ -205,17 +204,12 @@ void AddVariable::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) c
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
- * \throw  SCHNAPS::Core::RunTimeException if the method is not defined for the specific execution context.
- * \throw  SCHNAPS::Core::RunTimeException if the method is not defined for the specific left argument source.
- * \throw  SCHNAPS::Core::RunTimeException if the method is not defined for the specific right argument source.
+ * \throw  SCHNAPS::Core::RunTimeException if the primitive is not defined for the specific left argument source.
+ * \throw  SCHNAPS::Core::RunTimeException if the primitive is not defined for the specific right argument source.
  */
 Core::AnyType::Handle AddVariable::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
-	schnaps_StackTraceBeginM();
-	if (ioContext.getName() == "GenerationContext") {
-		throw schnaps_RunTimeExceptionM("The method is not defined for context 'GenerationContext'.");
-	}
-	
-	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
+	schnaps_StackTraceBeginM();	
+	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
 	Core::Number::Handle lArgLeft, lArgRight;
 	
 	if (mArgLeft == NULL) {
@@ -229,15 +223,16 @@ Core::AnyType::Handle AddVariable::execute(unsigned int inIndex, Core::Execution
 				lArgLeft = Core::castHandleT<Core::Number>(lContext.getEnvironment().getState().getVariableHandle(mArgLeft_Ref.substr(1))->clone());
 				break;
 			case '%':
-				// TODO: local variable value
+				// local variable value
+				lArgLeft = Core::castHandleT<Core::Number>(lContext.getLocalVariableHandle(mArgLeft_Ref.substr(1)));
 				break;
 			default:
-				throw schnaps_RunTimeExceptionM("The method is undefined for the specific left argument source.");
+				throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific left argument source.");
 				break;
 		}
 	} else {
 		// parameter value or direct value
-		lArgLeft = mArgLeft;
+		lArgLeft = Core::castHandleT<Core::Number>(mArgLeft->clone());
 	}
 	
 	if (mArgRight == NULL) {
@@ -251,18 +246,19 @@ Core::AnyType::Handle AddVariable::execute(unsigned int inIndex, Core::Execution
 				lArgRight = Core::castHandleT<Core::Number>(lContext.getEnvironment().getState().getVariableHandle(mArgRight_Ref.substr(1))->clone());
 				break;
 			case '%':
-				// TODO: local variable value
+				// local variable value
+				lArgRight = Core::castHandleT<Core::Number>(lContext.getLocalVariableHandle(mArgRight_Ref.substr(1)));
 				break;
 			default:
-				throw schnaps_RunTimeExceptionM("The method is undefined for the specific right argument source.");
+				throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific right argument source.");
 				break;
 		}
 	} else {
 		// parameter value or direct value
-		lArgRight = mArgRight;
+		lArgRight = Core::castHandleT<Core::Number>(mArgRight->clone());
 	}
 	
-	lContext.getIndividual().getState().setVariable(mResult_Ref.substr(1), lArgLeft->add(*lArgRight));
+	lContext.getIndividual().getState().setVariable(mResult_Ref.substr(1), lArgLeft->add(*lArgRight));	
 	return NULL;
 	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Operators::AddVariable::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
 }

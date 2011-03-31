@@ -182,7 +182,8 @@
 																	</xsd:annotation>
 																	<xsd:complexType>
 																		<xsd:sequence>
-																			<xsd:element ref="PrimitiveTree"/>
+																			<xsd:element ref="LocalVariables" minOccurs="1" maxOccurs="1"/>
+																			<xsd:element ref="PrimitiveTree" minOccurs="1" maxOccurs="1"/>
 																		</xsd:sequence>
 																		<xsd:attribute name="label" use="required" type="xsd:string"/>
 																	</xsd:complexType>
@@ -234,7 +235,8 @@
 																	</xsd:annotation>
 																	<xsd:complexType>
 																		<xsd:sequence>
-																			<xsd:element ref="PrimitiveTree"/>
+																			<xsd:element ref="LocalVariables" minOccurs="1" maxOccurs="1"/>
+																			<xsd:element ref="PrimitiveTree" minOccurs="1" maxOccurs="1"/>
 																		</xsd:sequence>
 																		<xsd:attribute name="label" use="required" type="xsd:string"/>
 																	</xsd:complexType>
@@ -361,7 +363,8 @@
 					</xsd:annotation>
 					<xsd:complexType>
 						<xsd:sequence>
-							<xsd:element ref="PrimitiveTree" minOccurs="0" maxOccurs="1"/>
+							<xsd:element ref="LocalVariables" minOccurs="1" maxOccurs="1"/>
+							<xsd:element ref="PrimitiveTree" minOccurs="1" maxOccurs="1"/>
 						</xsd:sequence>
 						<xsd:attribute name="label" type="xsd:string" use="required"/>
 						<xsd:attribute name="file" type="xsd:string" use="optional"/>
@@ -497,6 +500,31 @@
 				<xsd:element ref="_primitive"/>
 			</xsd:sequence>
 			<xsd:attribute name="size" type="xsd:nonNegativeInteger" use="required"/>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="LocalVariables">
+		<xsd:annotation>
+			<xsd:documentation>
+				Defines variables local to some process or variable initialization.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="LocalVariable">
+					<xsd:annotation>
+						<xsd:documentation>
+							Defines a local variable.
+						</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element ref="PrimitiveTree"/>
+						</xsd:sequence>
+						<xsd:attribute name="label" use="required" type="xsd:string"/>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
 		</xsd:complexType>
 	</xsd:element>
 	

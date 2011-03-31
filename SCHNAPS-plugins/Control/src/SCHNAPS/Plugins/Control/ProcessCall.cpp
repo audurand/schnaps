@@ -99,14 +99,18 @@ Core::AnyType::Handle ProcessCall::execute(unsigned int inIndex, Core::Execution
 	Core::PrimitiveTree::Handle lCurrentPrimitiveTree;
 	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
 
-	// save current primitive tree
+	// save current primitive tree and local variables
 	lCurrentPrimitiveTree = lContext.getPrimitiveTreeHandle();
+	Simulation::SimulationContext::LocalVariablesMap lCurrentLocalVariables = lContext.getLocalVariables();
 
-	// process called primitive tree
+	// execute process called
 	lResult = lContext.getProcessHandle(mLabel)->execute(ioContext);
 
-	// restore current primitive tree
+	// restore current primitive tree and local variables
 	lContext.setPrimitiveTree(lCurrentPrimitiveTree);
+	for (Simulation::SimulationContext::LocalVariablesMap::const_iterator lIt = lCurrentLocalVariables.begin(); lIt != lCurrentLocalVariables.end(); lIt++) {
+		lContext.insertLocalVariable(lIt->first, lIt->second);
+	}
 
 	return lResult;
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Control::ProcessCall::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");

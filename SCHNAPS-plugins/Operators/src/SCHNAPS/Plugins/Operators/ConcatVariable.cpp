@@ -183,17 +183,12 @@ void ConcatVariable::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
- * \throw  SCHNAPS::Core::RunTimeException if the method is not defined for the specific execution context.
  * \throw  SCHNAPS::Core::RunTimeException if the method is not defined for the specific left argument source.
  * \throw  SCHNAPS::Core::RunTimeException if the method is not defined for the specific right argument source.
  */
 Core::AnyType::Handle ConcatVariable::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
-	schnaps_StackTraceBeginM();
-	if (ioContext.getName() == "GenerationContext") {
-		throw schnaps_RunTimeExceptionM("The method is not defined for context 'GenerationContext'.");
-	}
-	
-	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
+	schnaps_StackTraceBeginM();	
+	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
 	std::string lArgRight, lArgLeft;
 	
 	if (mArgLeft == NULL) {
@@ -207,7 +202,8 @@ Core::AnyType::Handle ConcatVariable::execute(unsigned int inIndex, Core::Execut
 				lArgLeft = lContext.getEnvironment().getState().getVariable(mArgLeft_Ref.substr(1)).writeStr();
 				break;
 			case '%':
-				// TODO: local variable value
+				// local variable value
+				lArgLeft = lContext.getLocalVariable(mArgLeft_Ref.substr(1)).writeStr();
 				break;
 			default:
 				throw schnaps_RunTimeExceptionM("The method is undefined for the specific left argument source.");
@@ -229,7 +225,8 @@ Core::AnyType::Handle ConcatVariable::execute(unsigned int inIndex, Core::Execut
 				lArgRight = lContext.getEnvironment().getState().getVariable(mArgRight_Ref.substr(1)).writeStr();
 				break;
 			case '%':
-				// TODO: local variable value
+				// local variable value
+				lArgRight = lContext.getLocalVariable(mArgRight_Ref.substr(1)).writeStr();
 				break;
 			default:
 				throw schnaps_RunTimeExceptionM("The method is undefined for the specific left argument source.");

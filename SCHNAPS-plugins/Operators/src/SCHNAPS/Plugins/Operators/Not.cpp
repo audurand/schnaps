@@ -123,27 +123,28 @@ void Not::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
+ * \throw  SCHNAPS::RunTimeException if the primitive is undefined for the specific argument source.
  */
 Core::AnyType::Handle Not::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);	
 	bool lArg;
 	
 	if (mArg == NULL) {
 		switch (mArg_Ref[0]) {
 			case '@':
 				// individual variable value
-				lArg = Core::castObjectT<const Core::Bool&>(lContext.getIndividual().getState().getVariable(mArg_Ref.substr(1))).getValue();
+				lArg = Core::castObjectT<const Core::Bool&>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getIndividual().getState().getVariable(mArg_Ref.substr(1))).getValue();
 				break;
 			case '#':
 				// environment variable value
-				lArg = Core::castObjectT<const Core::Bool&>(lContext.getEnvironment().getState().getVariable(mArg_Ref.substr(1))).getValue();
+				lArg = Core::castObjectT<const Core::Bool&>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getEnvironment().getState().getVariable(mArg_Ref.substr(1))).getValue();
 				break;
 			case '%':
-				// TODO: local variable value
+				// local variable value
+				lArg = Core::castObjectT<const Core::Bool&>(Core::castObjectT<Simulation::SimulationContext&>(ioContext).getLocalVariable(mArg_Ref.substr(1))).getValue();
 				break;
 			default:
-				throw schnaps_RunTimeExceptionM("The method is undefined for the specific argument source.");
+				throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific argument source.");
 				break;
 		}
 	} else {

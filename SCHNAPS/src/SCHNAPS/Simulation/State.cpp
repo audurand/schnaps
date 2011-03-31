@@ -29,8 +29,8 @@ using namespace Simulation;
  * \param inOriginal A const reference to the original state.
  */
 State::State(const State& inOriginal) {
-	for (VariablesMap::const_iterator lIt = inOriginal.mVariablesMap.begin(); lIt != inOriginal.mVariablesMap.end(); lIt++) {
-		mVariablesMap[lIt->first] = Core::castHandleT<Core::AnyType>(lIt->second->clone());
+	for (VariablesMap::const_iterator lIt = inOriginal.mVariables.begin(); lIt != inOriginal.mVariables.end(); lIt++) {
+		mVariables[lIt->first] = Core::castHandleT<Core::AnyType>(lIt->second->clone());
 	}
 }
 
@@ -40,11 +40,10 @@ State::State(const State& inOriginal) {
  */
 State& State::operator=(const State& inOriginal) {
 	schnaps_StackTraceBeginM();
-	mVariablesMap.clear();
-	for (VariablesMap::const_iterator lIt = inOriginal.mVariablesMap.begin(); lIt != inOriginal.mVariablesMap.end(); lIt++) {
-		mVariablesMap[lIt->first] = Core::castHandleT<Core::AnyType>(lIt->second->clone());
+	mVariables.clear();
+	for (VariablesMap::const_iterator lIt = inOriginal.mVariables.begin(); lIt != inOriginal.mVariables.end(); lIt++) {
+		mVariables[lIt->first] = Core::castHandleT<Core::AnyType>(lIt->second->clone());
 	}
-
 	return *this;
 	schnaps_StackTraceEndM("SCHNAPS::Simulation::State& SCHNAPS::Simulation::State::operator=(const SCHNAPS::Simulation::State&)");
 }
@@ -91,8 +90,8 @@ void State::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSyst
 			}
 
 			lAlloc = Core::castHandleT<Core::Atom::Alloc>(ioSystem.getFactory().getAllocator(lChild->getAttribute("type")));
-			mVariablesMap[lChild->getAttribute("label")] = Core::castHandleT<Core::AnyType>(lAlloc->allocate());
-			mVariablesMap[lChild->getAttribute("label")]->readStr(lChild->getAttribute("value"));
+			mVariables[lChild->getAttribute("label")] = Core::castHandleT<Core::AnyType>(lAlloc->allocate());
+			mVariables[lChild->getAttribute("label")]->readStr(lChild->getAttribute("value"));
 		}
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::State::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
@@ -104,7 +103,7 @@ void State::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSyst
  * \param inIndent Wether to indent or not.
  */
 void State::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
-	for (VariablesMap::const_iterator lIt = mVariablesMap.begin(); lIt != mVariablesMap.end(); lIt++) {
+	for (VariablesMap::const_iterator lIt = mVariables.begin(); lIt != mVariables.end(); lIt++) {
 		ioStreamer.openTag("Variable");
 		ioStreamer.insertAttribute("label", lIt->first);
 		ioStreamer.insertAttribute("type", lIt->second->getName());
@@ -131,25 +130,25 @@ void State::print(std::ostream& ioStream, const std::vector<std::string>& inVari
  */
 void State::clear() {
 	schnaps_StackTraceBeginM();
-	mVariablesMap.clear();
+	mVariables.clear();
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::State::clear()");
 }
 
 /*!
  * \brief Insert a variable.
  * \param inLabel A const reference to the label of the variable.
- * \param inValue A handle to new value of the variable.
+ * \param inValue A handle to value of the variable.
  * \throw SCHNAPS::Core::RunTimeException if the variable already exists.
  */
 void State::insertVariable(const std::string& inLabel, Core::AnyType::Handle inValue) {
 	schnaps_StackTraceBeginM();
-	if (mVariablesMap.find(inLabel) != mVariablesMap.end()) {
+	if (mVariables.find(inLabel) != mVariables.end()) {
 		std::ostringstream lOSS;
 		lOSS << "The variable '" << inLabel << "' already exists; ";
 		lOSS << "could not insert it.";
 		throw schnaps_RunTimeExceptionM(lOSS.str());
 	}
-	mVariablesMap.insert(std::pair<std::string, Core::AnyType::Handle>(inLabel.c_str(), inValue));
+	mVariables.insert(std::pair<std::string, Core::AnyType::Handle>(inLabel.c_str(), inValue));
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::State::insertVariable(const std::string&, SCHNAPS::Core::Atom::Handle) const");
 }
 	
@@ -160,14 +159,14 @@ void State::insertVariable(const std::string& inLabel, Core::AnyType::Handle inV
  */
 void State::removeVariable(const std::string& inLabel) {
 	schnaps_StackTraceBeginM();
-	VariablesMap::const_iterator lIterVariables = mVariablesMap.find(inLabel);
-	if (lIterVariables == mVariablesMap.end()) {
+	VariablesMap::const_iterator lIterVariables = mVariables.find(inLabel);
+	if (lIterVariables == mVariables.end()) {
 		std::ostringstream lOSS;
 		lOSS << "The variable '" << inLabel << "' does not exist; ";
 		lOSS << "could not remove it.";
 		throw schnaps_RunTimeExceptionM(lOSS.str());
 	}
-	mVariablesMap.erase(inLabel);
+	mVariables.erase(inLabel);
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::State::removeVariable(const std::string&)");
 }
 	
@@ -178,8 +177,8 @@ void State::removeVariable(const std::string& inLabel) {
  */
 bool State::hasVariable(const std::string& inLabel) const {
 	schnaps_StackTraceBeginM();
-	VariablesMap::const_iterator lIterVariables = mVariablesMap.find(inLabel);
-	if (lIterVariables == mVariablesMap.end()) {
+	VariablesMap::const_iterator lIterVariables = mVariables.find(inLabel);
+	if (lIterVariables == mVariables.end()) {
 		return false;
 	}
 	return true;

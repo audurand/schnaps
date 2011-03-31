@@ -29,9 +29,20 @@ namespace Simulation {
 
 /*!
  *  \class Process SCHNAPS/Simulation/Process.hpp "SCHNAPS/Simulation/Process.hpp"
- *  \brief Process that constitute a simulation.
+ *  \brief Process part of a simulation.
  */
 class Process: public Core::Object {
+protected:
+	struct LocalVariable {
+		std::string mLabel;
+		Core::PrimitiveTree::Handle mInitTree;
+		
+		LocalVariable(const std::string& inLabel, const Core::PrimitiveTree::Handle inInitTree) {
+			mLabel = inLabel.c_str();
+			mInitTree = inInitTree;
+		}
+	};
+
 public:
 	//! Process target.
 	enum Target {
@@ -68,6 +79,9 @@ public:
 	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
 	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
+	
+	//! Read local variables from XML using system.
+	void readLocalVariables(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
 
 	//! Return a handle to the result of process execution.
 	virtual Core::AnyType::Handle execute(Core::ExecutionContext& ioContext) const;
@@ -84,10 +98,11 @@ public:
 	}
 
 protected:
-	std::string mLabel;
+	std::string mLabel;							//!< Label of process.
 
 private:
-	SCHNAPS::Core::PrimitiveTree::Handle mPrimitiveTree;
+	Core::PrimitiveTree::Handle mPrimitiveTree;	//!< Primive tree that represents the process execution.
+	std::vector<LocalVariable> mLocalVariables;	//!< Local variables initialization functions.
 };
 } // end of Simulation namespace
 } // end of SCHNAPS namespace

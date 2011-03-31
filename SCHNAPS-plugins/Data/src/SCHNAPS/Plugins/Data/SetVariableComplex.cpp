@@ -66,8 +66,7 @@ void SetVariableComplex::readWithSystem(PACC::XML::ConstIterator inIter, Core::S
 	}
 	mVariable_Ref.assign(inIter->getAttribute("outVariable"));
 	
-	if (mVariable_Ref[0] != '@') {
-		// TODO: store in local variable
+	if (mVariable_Ref[0] != '@' && mVariable_Ref[0] != '%') {
 		throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific variable source!");
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Data::SetVariableComplex::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
@@ -93,7 +92,7 @@ void SetVariableComplex::writeContent(PACC::XML::Streamer& ioStreamer, bool inIn
  */
 Core::AnyType::Handle SetVariableComplex::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
+	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
 	Core::AnyType::Handle lArg = getArgument(inIndex, 0, ioContext);
 
 	std::string lTypeVariable = lContext.getIndividual().getState().getVariable(mVariable_Ref.substr(1)).getType();
@@ -106,7 +105,13 @@ Core::AnyType::Handle SetVariableComplex::execute(unsigned int inIndex, Core::Ex
 		throw schnaps_RunTimeExceptionM(lOSS.str());
 	}
 
-	lContext.getIndividual().getState().setVariable(mVariable_Ref.substr(1), lArg);
+	if (mVariable_Ref[0] == '@') {
+		// individual variable
+		lContext.getIndividual().getState().setVariable(mVariable_Ref.substr(1), lArg);
+	} else { // mVariable_Ref[0] == '%'
+		// local variable
+		lContext.setLocalVariable(mVariable_Ref.substr(1), lArg);
+	}
 	return NULL;
 	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Data::SetVariableComplex::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
 }

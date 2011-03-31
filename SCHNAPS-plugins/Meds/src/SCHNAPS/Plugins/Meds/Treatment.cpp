@@ -135,8 +135,7 @@ void Treatment::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& io
 	}
 	mOutCost_Ref.assign(inIter->getAttribute("outCost"));
 		
-	if (mOutCost_Ref[0] != '@') {
-		// TODO: local variable value
+	if (mOutCost_Ref[0] != '@' && mOutCost_Ref[0] != '%') {
 		throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific cost destination source.");
 	}
 	
@@ -152,7 +151,7 @@ void Treatment::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& io
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mCompliance = NULL;
 			break;
 		case '$':
@@ -178,7 +177,7 @@ void Treatment::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& io
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mCost = NULL;
 			break;
 		case '$':
@@ -204,7 +203,7 @@ void Treatment::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& io
 	case '#':
 		// environment variable value
 	case '%':
-		// TODO: local variable value
+		// local variable value
 		mDiscountRate = NULL;
 		break;
 	case '$':
@@ -259,146 +258,130 @@ void Treatment::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) con
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
- * \throw  SCHNAPS::Core::RunTimeException if the primitive is not defined for the specific context.
  */
 Core::AnyType::Handle Treatment::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	if (ioContext.getName() == "SimulationContext") {
-		Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
-		double lCompliance;
-		
-		if (mCompliance == NULL) {
-			switch (mCompliance_Ref[0]) {
-				case '@':
-					// individual variable value
-					lCompliance = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mCompliance_Ref.substr(1))).getValue();
-					break;
-				case '#':
-					// environment variable value
-					lCompliance = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mCompliance_Ref.substr(1))).getValue();
-					break;
-				case '%':
-					// TODO: local variable value
-					break;
-				default:
-					throw schnaps_RunTimeExceptionM("The method is undefined for the specific compliance source.");
-					break;
-			}
-		} else {
+	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
+	double lCompliance;
+	
+	switch (mCompliance_Ref[0]) {
+		case '@':
+			// individual variable value
+			lCompliance = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mCompliance_Ref.substr(1))).getValue();
+			break;
+		case '#':
+			// environment variable value
+			lCompliance = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mCompliance_Ref.substr(1))).getValue();
+			break;
+		case '%':
+			// local variable value
+			lCompliance = Core::castObjectT<const Core::Double&>(lContext.getLocalVariable(mCompliance_Ref.substr(1))).getValue();
+			break;
+		default:
+			// parameter value or direct value
 			lCompliance = mCompliance->getValue();
+			break;
+	}
+	
+	if (ioContext.getRandomizer().rollUniform() <= lCompliance) {
+		// individual is compliant
+		double lTime = lContext.getClock().getValue();
+		double lCost, lCurrentCost, lDiscountRate;
+
+		switch (mCost_Ref[0]) {
+			case '@':
+				// individual variable value
+				lCost = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mCost_Ref.substr(1))).getValue();
+				break;
+			case '#':
+				// environment variable value
+				lCost = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mCost_Ref.substr(1))).getValue();
+				break;
+			case '%':
+				// local variable value
+				lCost = Core::castObjectT<const Core::Double&>(lContext.getLocalVariable(mCost_Ref.substr(1))).getValue();
+				break;
+			default:
+				// parameter value or direct value
+				lCost = mCost->getValue();
+				break;
+		}
+
+		switch (mDiscountRate_Ref[0]) {
+			case '@':
+				// individual variable value
+				lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mDiscountRate_Ref.substr(1))).getValue();
+				break;
+			case '#':
+				// environment variable value
+				lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mDiscountRate_Ref.substr(1))).getValue();
+				break;
+			case '%':
+				// local variable value
+				lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getLocalVariable(mDiscountRate_Ref.substr(1))).getValue();
+				break;
+			default:
+				// parameter value or direct value
+				lDiscountRate = mDiscountRate->getValue();
+				break;
 		}
 		
-		if (ioContext.getRandomizer().rollUniform() <= lCompliance) {
-			// individual is compliant
+		// add test cost
+		lCost = lCost/std::pow(lDiscountRate + 1, lTime);
+		lCurrentCost = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mOutCost_Ref.substr(1))).getValue();
+		lContext.getIndividual().getState().setVariable(mOutCost_Ref.substr(1), new Core::Double(lCurrentCost + lCost));
+		
+		getArgument(inIndex, 0, ioContext);
+	} else {
+		// individual is not compliant
+		if (mChargeNonCompliant) {
 			double lTime = lContext.getClock().getValue();
 			double lCost, lCurrentCost, lDiscountRate;
 
-			if (mCost == NULL) {
-				switch (mCost_Ref[0]) {
-					case '@':
-						// individual variable value
-						lCost = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mCost_Ref.substr(1))).getValue();
-						break;
-					case '#':
-						// environment variable value
-						lCost = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mCost_Ref.substr(1))).getValue();
-						break;
-					case '%':
-						// TODO: local variable value
-						break;
-					default:
-						throw schnaps_RunTimeExceptionM("The method is undefined for the specific cost source.");
-						break;
-				}
-			} else {
-				lCost = mCost->getValue();
+			switch (mCost_Ref[0]) {
+				case '@':
+					// individual variable value
+					lCost = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mCost_Ref.substr(1))).getValue();
+					break;
+				case '#':
+					// environment variable value
+					lCost = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mCost_Ref.substr(1))).getValue();
+					break;
+				case '%':
+					// local variable value
+					lCost = Core::castObjectT<const Core::Double&>(lContext.getLocalVariable(mCost_Ref.substr(1))).getValue();
+					break;
+				default:
+					// parameter value or direct value
+					lCost = mCost->getValue();
+					break;
 			}
 
-			if (mDiscountRate == NULL) {
-				switch (mDiscountRate_Ref[0]) {
-					case '@':
-						// individual variable value
-						lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mDiscountRate_Ref.substr(1))).getValue();
-						break;
-					case '#':
-						// environment variable value
-						lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mDiscountRate_Ref.substr(1))).getValue();
-						break;
-					case '%':
-						// TODO: local variable value
-						break;
-					default:
-						throw schnaps_RunTimeExceptionM("The method is undefined for the specific discount rate source.");
-						break;
-				}
-			} else {
-				lDiscountRate = mDiscountRate->getValue();
+			switch (mDiscountRate_Ref[0]) {
+				case '@':
+					// individual variable value
+					lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mDiscountRate_Ref.substr(1))).getValue();
+					break;
+				case '#':
+					// environment variable value
+					lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mDiscountRate_Ref.substr(1))).getValue();
+					break;
+				case '%':
+					// local variable value
+					lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getLocalVariable(mDiscountRate_Ref.substr(1))).getValue();
+					break;
+				default:
+					lDiscountRate = mDiscountRate->getValue();
+					break;
 			}
 			
 			// add test cost
 			lCost = lCost/std::pow(lDiscountRate + 1, lTime);
 			lCurrentCost = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mOutCost_Ref.substr(1))).getValue();
 			lContext.getIndividual().getState().setVariable(mOutCost_Ref.substr(1), new Core::Double(lCurrentCost + lCost));
-			
-			getArgument(inIndex, 0, ioContext);
-		} else {
-			// individual is not compliant
-			if (mChargeNonCompliant) {
-				double lTime = lContext.getClock().getValue();
-				double lCost, lCurrentCost, lDiscountRate;
-
-				if (mCost == NULL) {
-					switch (mCost_Ref[0]) {
-						case '@':
-							// individual variable value
-							lCost = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mCost_Ref.substr(1))).getValue();
-							break;
-						case '#':
-							// environment variable value
-							lCost = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mCost_Ref.substr(1))).getValue();
-							break;
-						case '%':
-							// TODO: local variable value
-							break;
-						default:
-							throw schnaps_RunTimeExceptionM("The method is undefined for the specific cost source.");
-							break;
-					}
-				} else {
-					lCost = mCost->getValue();
-				}
-
-				if (mDiscountRate == NULL) {
-					switch (mDiscountRate_Ref[0]) {
-						case '@':
-							// individual variable value
-							lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mDiscountRate_Ref.substr(1))).getValue();
-							break;
-						case '#':
-							// environment variable value
-							lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mDiscountRate_Ref.substr(1))).getValue();
-							break;
-						case '%':
-							// TODO: local variable value
-							break;
-						default:
-							throw schnaps_RunTimeExceptionM("The method is undefined for the specific discount rate source.");
-							break;
-					}
-				} else {
-					lDiscountRate = mDiscountRate->getValue();
-				}
-				
-				// add test cost
-				lCost = lCost/std::pow(lDiscountRate + 1, lTime);
-				lCurrentCost = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mOutCost_Ref.substr(1))).getValue();
-				lContext.getIndividual().getState().setVariable(mOutCost_Ref.substr(1), new Core::Double(lCurrentCost + lCost));
-			}
-			
-			getArgument(inIndex, 1, ioContext);
 		}
-	} else {
-		throw schnaps_RunTimeExceptionM("Primitive is not defined for context '" + ioContext.getName() + "'!");
+		
+		getArgument(inIndex, 1, ioContext);
 	}
 	return NULL;
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Meds::Treatment::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");

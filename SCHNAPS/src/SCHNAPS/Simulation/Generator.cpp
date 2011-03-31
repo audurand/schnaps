@@ -151,11 +151,10 @@ Individual::Bag::Handle Generator::generate(const std::string& inProfile, unsign
 
 	// compute variables to erase
 	Core::StringArray::Handle lEraseVariable = new Core::StringArray();
-	std::vector<std::string> lVariables = lProfile->getDemography().getVariables();
-	for (unsigned int i = 0; i < lVariables.size(); i++) {
-		if (lProfile->getIndividualModel().find(lVariables[i]) == lProfile->getIndividualModel().end()) {
+	for (unsigned int i = 0; i < lProfile->getDemography().getVariablesSize(); i++) {
+		if (lProfile->getIndividualModel().find(lProfile->getDemography().getVariable(i).mLabel) == lProfile->getIndividualModel().end()) {
 			// if variable not in individual model, add to variable list for thrash
-			lEraseVariable->push_back(lVariables[i]);
+			lEraseVariable->push_back(lProfile->getDemography().getVariable(i).mLabel);
 		}
 	}
 
@@ -226,9 +225,6 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 
 	inThread->getIndividuals().clear();
 	inThread->getIndividuals().reserve(inThread->getSize());
-	
-	std::vector<std::string> lDemographyVariables = lContext->getGenProfile().getDemography().getVariables();
-	std::vector<std::string> lSimulationVariables = lContext->getGenProfile().getSimulationVariables().getVariables();
 
 	for (unsigned int i = 0; i < inThread->getSize(); i++) {
 		lID.str("");
@@ -237,22 +233,45 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 		inThread->getIndividuals().push_back(new Individual(lID.str()));
 		lContext->setIndividual(inThread->getIndividuals().back());
 
+		// add demography variables
 		do {
 			lContext->getIndividual().getState().clear();
 			
-			for (unsigned int j = 0; j < lDemographyVariables.size(); j++) {
+			for (unsigned int j = 0; j < lContext->getGenProfile().getDemography().getVariablesSize(); j++) {
+				// set local variables
+				for (unsigned int k = 0; k < lContext->getGenProfile().getDemography().getVariable(j).mLocalVariables.size(); k++) {
+					lContext->insertLocalVariable(
+						lContext->getGenProfile().getDemography().getVariable(j).mLocalVariables[k].mLabel,
+						lContext->getGenProfile().getDemography().getVariable(j).mLocalVariables[k].mInitTree->interpret(*lContext));
+				}
+				
+				// compute variable init value
 				lContext->getIndividual().getState().insertVariable(
-					lDemographyVariables[j],
-					lContext->getGenProfile().getDemography().getInitTree(j).interpret(*lContext));
+					lContext->getGenProfile().getDemography().getVariable(j).mLabel,
+					lContext->getGenProfile().getDemography().getVariable(j).mInitTree->interpret(*lContext));
+				
+				// clear local variables
+				lContext->clearLocalVariables();
 			}
 			// retry until a valid individual is created
 		} while (Core::castHandleT<Core::Bool>(lContext->getGenProfile().getAcceptFunction().interpret(*lContext))->getValue() == false);
 
 		// add simulation variables
-		for (unsigned int j = 0; j < lSimulationVariables.size(); j++) {
+		for (unsigned int j = 0; j < lContext->getGenProfile().getSimulationVariables().getVariablesSize(); j++) {
+			// set local variables
+			for (unsigned int k = 0; k < lContext->getGenProfile().getSimulationVariables().getVariable(j).mLocalVariables.size(); k++) {
+				lContext->insertLocalVariable(
+					lContext->getGenProfile().getSimulationVariables().getVariable(j).mLocalVariables[k].mLabel,
+					lContext->getGenProfile().getDemography().getVariable(j).mLocalVariables[k].mInitTree->interpret(*lContext));
+			}
+			
+			// compute variable init value
 			lContext->getIndividual().getState().insertVariable(
-				lSimulationVariables[j],
-				lContext->getGenProfile().getSimulationVariables().getInitTree(j).interpret(*lContext));
+				lContext->getGenProfile().getSimulationVariables().getVariable(j).mLabel,
+				lContext->getGenProfile().getSimulationVariables().getVariable(j).mInitTree->interpret(*lContext));
+			
+			// clear local variables
+			lContext->clearLocalVariables();
 		}
 
 		// erase non-wanted demographic variables

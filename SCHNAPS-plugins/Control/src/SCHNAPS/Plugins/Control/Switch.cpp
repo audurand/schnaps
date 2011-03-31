@@ -97,7 +97,7 @@ void Switch::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSys
 				// environment variable value
 			case '%':
 				// local variable value
-				throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific keys source!");
+				throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific keys source.");
 				break;
 			case '$': {
 				// parameter value

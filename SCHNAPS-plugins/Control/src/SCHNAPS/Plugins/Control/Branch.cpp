@@ -46,7 +46,7 @@ Branch::Branch(const Branch& inOriginal) :
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mProbability = NULL;
 			break;
 		case '$':
@@ -74,7 +74,7 @@ Branch& Branch::operator=(const Branch& inOriginal) {
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mProbability = NULL;
 			break;
 		case '$':
@@ -122,7 +122,7 @@ void Branch::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSys
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mProbability = NULL;
 			break;
 		case '$':
@@ -173,9 +173,11 @@ Core::AnyType::Handle Branch::execute(unsigned int inIndex, Core::ExecutionConte
 				Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
 				lProbability = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mProbability_Ref.substr(1))).getValue();
 				break; }
-			case '%':
-				// TODO: local variable value
-				break;
+			case '%': {
+				// local variable value
+				Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
+				lProbability = Core::castObjectT<const Core::Double&>(lContext.getLocalVariable(mProbability_Ref.substr(1))).getValue();
+				break; }
 			default:
 				throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific probability source!");
 				break;

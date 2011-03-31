@@ -49,7 +49,7 @@ ChoiceIsBetween::ChoiceIsBetween(const ChoiceIsBetween& inOriginal) :
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mValue = NULL;
 			break;
 		case '$':
@@ -63,13 +63,6 @@ ChoiceIsBetween::ChoiceIsBetween(const ChoiceIsBetween& inOriginal) :
 	}
 	
 	switch (mBounds_Ref[0]) {
-		case '@':
-			// individual variable value
-		case '#':
-			// environment variable value
-		case '%':
-			// TODO: local variable value
-			break;
 		case '$':
 			// parameter value
 			mBounds = inOriginal.mBounds;
@@ -100,7 +93,7 @@ ChoiceIsBetween& ChoiceIsBetween::operator=(const ChoiceIsBetween& inOriginal) {
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mValue = NULL;
 			break;
 		case '$':
@@ -114,13 +107,6 @@ ChoiceIsBetween& ChoiceIsBetween::operator=(const ChoiceIsBetween& inOriginal) {
 	}
 	
 	switch (mBounds_Ref[0]) {
-		case '@':
-			// individual variable value
-		case '#':
-			// environment variable value
-		case '%':
-			// TODO: local variable value
-			break;
 		case '$':
 			// parameter value
 			mBounds = inOriginal.mBounds;
@@ -264,30 +250,30 @@ void ChoiceIsBetween::writeContent(PACC::XML::Streamer& ioStreamer, bool inInden
  */
 Core::AnyType::Handle ChoiceIsBetween::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	Core::Atom::Handle lValue;
+	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
+	Core::Number::Handle lValue;
 	
-	if (mValue == NULL) {
-		switch (mValue_Ref[0]) {
-			case '@': {
-				// individual variable value
-				Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
-				lValue = Core::castHandleT<Core::Atom>(lContext.getIndividual().getState().getVariableHandle(mValue_Ref.substr(1)));
-				break; }
-			case '#': {
-				// environment variable value
-				Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
-				lValue = Core::castHandleT<Core::Atom>(lContext.getEnvironment().getState().getVariableHandle(mValue_Ref.substr(1))->clone());
-				break; }
-			case '%':
-				// TODO: local variable value
-				break;
-			default:
-				throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific source!");
-				break;
-		}
-	} else {
-		// parameter value or direct value
-		lValue = mValue;
+	switch (mValue_Ref[0]) {
+		case '@':
+			// individual variable value
+			lValue = Core::castHandleT<Core::Number>(lContext.getIndividual().getState().getVariableHandle(mValue_Ref.substr(1)));
+			break;
+		case '#':
+			// environment variable value
+			lValue = Core::castHandleT<Core::Number>(lContext.getEnvironment().getState().getVariableHandle(mValue_Ref.substr(1))->clone());
+			break;
+		case '%':
+			// local variable value
+			lValue = Core::castHandleT<Core::Number>(lContext.getLocalVariableHandle(mValue_Ref.substr(1)));
+			break;
+		case '$':
+			// parameter value
+			lValue = Core::castHandleT<Core::Number>(mValue->clone());
+			break;
+		default:
+			// direct value
+			lValue = mValue;
+			break;
 	}
 	
 	if (lValue->isLess(*(*mBounds)[0])) {

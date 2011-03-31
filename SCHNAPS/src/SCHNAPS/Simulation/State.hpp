@@ -105,8 +105,8 @@ public:
 	 */
 	const Core::AnyType& getVariable(const std::string& inLabel) const {
 		schnaps_StackTraceBeginM();
-		VariablesMap::const_iterator lIterVariables = mVariablesMap.find(inLabel);
-		if (lIterVariables == mVariablesMap.end()) {
+		VariablesMap::const_iterator lIterVariables = mVariables.find(inLabel);
+		if (lIterVariables == mVariables.end()) {
 			std::ostringstream lOSS;
 			lOSS << "The variable '" << inLabel << "' does not exist; ";
 			lOSS << "could not get it.";
@@ -114,26 +114,26 @@ public:
 		}
 		schnaps_NonNullPointerAssertM(lIterVariables->second);
 		return *lIterVariables->second;
-		schnaps_StackTraceEndM("const SCHNAPS::Core::Atom& SCHNAPS::Simulation::State::getVariable(const std::string&) const");
+		schnaps_StackTraceEndM("const SCHNAPS::Core::AnyType& SCHNAPS::Simulation::State::getVariable(const std::string&) const");
 	}
 
 	/*!
-	 * \brief  Return a const reference to the value of a variable.
+	 * \brief  Return a const handle to the value of a variable.
 	 * \param  inLabel A const reference to the label of the variable.
-	 * \return A const reference to the value of the variable.
+	 * \return A const handle to the value of the variable.
 	 * \throw  SCHNAPS::Core::RunTimeException if the variable does not exist.
 	 */
 	const Core::AnyType::Handle getVariableHandle(const std::string& inLabel) const {
 		schnaps_StackTraceBeginM();
-		VariablesMap::const_iterator lIterVariables = mVariablesMap.find(inLabel);
-		if (lIterVariables == mVariablesMap.end()) {
+		VariablesMap::const_iterator lIterVariables = mVariables.find(inLabel);
+		if (lIterVariables == mVariables.end()) {
 			std::ostringstream lOSS;
 			lOSS << "The variable '" << inLabel << "' does not exist; ";
 			lOSS << "could not get it.";
 			throw schnaps_RunTimeExceptionM(lOSS.str());
 		}
 		return lIterVariables->second;
-		schnaps_StackTraceEndM("const SCHNAPS::Core::Atom::Handle SCHNAPS::Simulation::State::getVariableHandle(const std::string&) const");
+		schnaps_StackTraceEndM("const SCHNAPS::Core::AnyType::Handle SCHNAPS::Simulation::State::getVariableHandle(const std::string&) const");
 	}
 
 	/*!
@@ -144,19 +144,19 @@ public:
 	 */
 	void setVariable(const std::string& inLabel, Core::AnyType::Handle inValue) {
 		schnaps_StackTraceBeginM();
-		VariablesMap::iterator lIterVariables = mVariablesMap.find(inLabel);
-		if (lIterVariables == mVariablesMap.end()) {
+		VariablesMap::iterator lIterVariables = mVariables.find(inLabel);
+		if (lIterVariables == mVariables.end()) {
 			std::ostringstream lOSS;
 			lOSS << "The variable '" << inLabel << "' does not exist; ";
 			lOSS << "could not set it.";
 			throw schnaps_RunTimeExceptionM(lOSS.str());
 		}
 		lIterVariables->second = inValue;
-		schnaps_StackTraceEndM("void SCHNAPS::Simulation::State::setVariable(const std::string&, SCHNAPS::Core::Atom::Handle) const");
+		schnaps_StackTraceEndM("void SCHNAPS::Simulation::State::setVariable(const std::string&, SCHNAPS::Core::AnyType::Handle) const");
 	}
 
 private:
-	VariablesMap mVariablesMap; //!< The map of variable labels to values.
+	VariablesMap mVariables; //!< The map of variable labels to values.
 };
 } // end of Simulation namespace
 } // end of SCHNAPS namespace

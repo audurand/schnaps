@@ -51,11 +51,14 @@ public:
 	GenerationContext& operator=(const GenerationContext& inOriginal);
 
 	/*!
-	 * \brief  Return a const reference to the name of simulation execution context.
-	 * \return A const reference to the name of simulation execution context.
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
 	 */
 	virtual const std::string& getName() const {
-		return mName;
+		schnaps_StackTraceBeginM();
+		const static std::string lName("GenrationContext");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Simulation::GenerationContext::getName() const");
 	}
 
 	//! Return a handle to a deep copy of the generation context.

@@ -65,7 +65,7 @@ void Log::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mType = NULL;
 			break;
 		case '$':
@@ -90,7 +90,7 @@ void Log::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mMessage = NULL;
 			break;
 		case '$':
@@ -134,14 +134,15 @@ Core::AnyType::Handle Log::execute(unsigned int inIndex, Core::ExecutionContext&
 		switch (mType_Ref[0]) {
 			case '@':
 				// individual variable value
-				lType = lContext.getIndividual().getState().getVariable(mType_Ref.substr(1)).writeStr();
+				lType = lContext.getIndividual().getState().getVariableHandle(mType_Ref.substr(1))->writeStr();
 				break;
 			case '#':
 				// environment variable value
-				lType = lContext.getEnvironment().getState().getVariable(mType_Ref.substr(1)).writeStr();
+				lType = lContext.getEnvironment().getState().getVariableHandle(mType_Ref.substr(1))->writeStr();
 				break;
 			case '%':
-				// TODO: local variable value
+				// local variable value
+				lType = lContext.getLocalVariableHandle(mType_Ref.substr(1))->writeStr();
 				break;
 			default:
 				throw schnaps_RunTimeExceptionM("The method is undefined for the specific type source.");
@@ -156,14 +157,15 @@ Core::AnyType::Handle Log::execute(unsigned int inIndex, Core::ExecutionContext&
 		switch (mMessage_Ref[0]) {
 			case '@':
 				// individual variable value
-				lMessage = lContext.getIndividual().getState().getVariable(mMessage_Ref.substr(1)).writeStr();
+				lMessage = lContext.getIndividual().getState().getVariableHandle(mMessage_Ref.substr(1))->writeStr();
 				break;
 			case '#':
 				// environment variable value
-				lMessage = lContext.getEnvironment().getState().getVariable(mMessage_Ref.substr(1)).writeStr();
+				lMessage = lContext.getEnvironment().getState().getVariableHandle(mMessage_Ref.substr(1))->writeStr();
 				break;
 			case '%':
-				// TODO: local variable value
+				// local variable value
+				lMessage = lContext.getLocalVariableHandle(mMessage_Ref.substr(1))->writeStr();
 				break;
 			default:
 				throw schnaps_RunTimeExceptionM("The method is undefined for the specific message source.");

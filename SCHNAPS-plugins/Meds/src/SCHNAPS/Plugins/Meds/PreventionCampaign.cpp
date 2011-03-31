@@ -91,6 +91,7 @@ PreventionCampaign::PreventionCampaign(const PreventionCampaign& inOriginal) :
  * \param ioSystem A reference to the system.
  * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
  * \throw SCHNAPS::Core::IOException if outCost, inCost or inDiscountRate attributes are missing.
+ * \throw SCHNAPS::Core::RunTimeException if the primitive is undefined for the specific cost destination source.
  */
 void PreventionCampaign::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
@@ -110,8 +111,7 @@ void PreventionCampaign::readWithSystem(PACC::XML::ConstIterator inIter, Core::S
 		}
 		mOutCost_Ref.assign(inIter->getAttribute("outCost"));
 		
-		if (mOutCost_Ref[0] != '@') {
-			// TODO: local variable value
+		if (mOutCost_Ref[0] != '@' && mOutCost_Ref[0] != '%') {
 			throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific cost destination source.");
 		}
 		
@@ -127,7 +127,7 @@ void PreventionCampaign::readWithSystem(PACC::XML::ConstIterator inIter, Core::S
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mCost = NULL;
 			break;
 		case '$':
@@ -153,7 +153,7 @@ void PreventionCampaign::readWithSystem(PACC::XML::ConstIterator inIter, Core::S
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mDiscountRate = NULL;
 			break;
 		case '$':
@@ -187,65 +187,53 @@ void PreventionCampaign::writeContent(PACC::XML::Streamer& ioStreamer, bool inIn
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
- * \throw  SCHNAPS::Core::RunTimeException if the primitive is not defined for the specific context.
- * \throw  SCHNAPS::Core::RunTimeException if the method is undefined for the specific cost source.
- * \throw  SCHNAPS::Core::RunTimeException if the method is undefined for the specific discount rate source.
  */
 Core::AnyType::Handle PreventionCampaign::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		if (ioContext.getName() == "SimulationContext") {
-			Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
-			double lTime = lContext.getClock().getValue();
-			double lCost, lCurrentCost, lDiscountRate;
+		Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
+		double lTime = lContext.getClock().getValue();
+		double lCost, lCurrentCost, lDiscountRate;
 
-			if (mCost == NULL) {
-				switch (mCost_Ref[0]) {
-					case '@':
-						// individual variable value
-						lCost = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mCost_Ref.substr(1))).getValue();
-						break;
-					case '#':
-						// environment variable value
-						lCost = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mCost_Ref.substr(1))).getValue();
-						break;
-					case '%':
-						// TODO: local variable value
-						break;
-					default:
-						throw schnaps_RunTimeExceptionM("The method is undefined for the specific cost source.");
-						break;
-				}
-			} else {
+		switch (mCost_Ref[0]) {
+			case '@':
+				// individual variable value
+				lCost = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mCost_Ref.substr(1))).getValue();
+				break;
+			case '#':
+				// environment variable value
+				lCost = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mCost_Ref.substr(1))).getValue();
+				break;
+			case '%':
+				// local variable value
+				lCost = Core::castObjectT<const Core::Double&>(lContext.getLocalVariable(mCost_Ref.substr(1))).getValue();
+				break;
+			default:
+				// parameter value or direct value
 				lCost = mCost->getValue();
-			}
-
-			if (mDiscountRate == NULL) {
-				switch (mDiscountRate_Ref[0]) {
-					case '@':
-						// individual variable value
-						lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mDiscountRate_Ref.substr(1))).getValue();
-						break;
-					case '#':
-						// environment variable value
-						lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mDiscountRate_Ref.substr(1))).getValue();
-						break;
-					case '%':
-						// TODO: local variable value
-						break;
-					default:
-						throw schnaps_RunTimeExceptionM("The method is undefined for the specific discount rate source.");
-						break;
-				}
-			} else {
-				lDiscountRate = mDiscountRate->getValue();
-			}
-			
-			lCost = lCost/std::pow(lDiscountRate + 1, lTime);
-			lCurrentCost = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mOutCost_Ref.substr(1))).getValue();
-			lContext.getIndividual().getState().setVariable(mOutCost_Ref.substr(1), new Core::Double(lCurrentCost + lCost));
-		} else {
-			throw schnaps_RunTimeExceptionM("Prevention campaign primitive is not defined for context '" + ioContext.getName() + "'!");
+				break;
 		}
+
+		switch (mDiscountRate_Ref[0]) {
+			case '@':
+				// individual variable value
+				lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mDiscountRate_Ref.substr(1))).getValue();
+				break;
+			case '#':
+				// environment variable value
+				lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mDiscountRate_Ref.substr(1))).getValue();
+				break;
+			case '%':
+				// local variable value
+				lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getLocalVariable(mDiscountRate_Ref.substr(1))).getValue();
+				break;
+			default:
+				lDiscountRate = mDiscountRate->getValue();
+				break;
+		}
+		
+		lCost = lCost/std::pow(lDiscountRate + 1, lTime);
+		lCurrentCost = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mOutCost_Ref.substr(1))).getValue();
+		lContext.getIndividual().getState().setVariable(mOutCost_Ref.substr(1), new Core::Double(lCurrentCost + lCost));
 		return NULL;
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Meds::PreventionCampaign::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }

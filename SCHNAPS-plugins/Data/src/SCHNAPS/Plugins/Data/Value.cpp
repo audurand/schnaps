@@ -123,7 +123,7 @@ void Value::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
 	ioStreamer.insertAttribute("inValue", mValue_Ref);
 	
-	if (mValue != NULL & mValue_Ref[0] != '$') {
+	if (mValue != NULL && mValue_Ref[0] != '$') {
 		// direct value
 		ioStreamer.insertAttribute("invalue_Type", mValue->getType());
 	}
@@ -135,33 +135,29 @@ void Value::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
- * \throw  SCHNAPS::Core::RunTimeException if the method is not defined for the specific value source.
  */
 Core::AnyType::Handle Value::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
 	Core::AnyType::Handle lValue;
 	
-	if (mValue == NULL) {
-		switch (mValue_Ref[0]) {
-			case '@':
-				// individual variable value
-				lValue = lContext.getIndividual().getState().getVariableHandle(mValue_Ref.substr(1));
-				break;
-			case '#':
-				// environment variable value
-				lValue = Core::castHandleT<Core::AnyType>(lContext.getEnvironment().getState().getVariable(mValue_Ref.substr(1)).clone());
-				break;
-			case '%':
-				// TODO: local variable value
-				break;
-			default:
-				throw schnaps_RunTimeExceptionM("The method is undefined for the specific value source.");
-				break;
-		}
-	} else {
-		// parameter value or direct value
-		lValue = mValue;
+	switch (mValue_Ref[0]) {
+		case '@':
+			// individual variable value
+			lValue = Core::castHandleT<Core::AnyType>(lContext.getIndividual().getState().getVariableHandle(mValue_Ref.substr(1))->clone());
+			break;
+		case '#':
+			// environment variable value
+			lValue = Core::castHandleT<Core::AnyType>(lContext.getEnvironment().getState().getVariableHandle(mValue_Ref.substr(1))->clone());
+			break;
+		case '%':
+			// local variable value
+			lValue = Core::castHandleT<Core::AnyType>(lContext.getLocalVariableHandle(mValue_Ref.substr(1))->clone());
+			break;
+		default:
+			// parameter value or direct value
+			lValue = Core::castHandleT<Core::AnyType>(mValue->clone());
+			break;
 	}
 	
 	return lValue;

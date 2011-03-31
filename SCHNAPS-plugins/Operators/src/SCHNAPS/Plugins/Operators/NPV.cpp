@@ -47,7 +47,7 @@ NPV::NPV(const NPV& inOriginal) :
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mRate = NULL;
 			break;
 		case '$':
@@ -73,7 +73,7 @@ NPV& NPV::operator=(const NPV& inOriginal) {
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mRate = NULL;
 			break;
 		case '$':
@@ -119,7 +119,7 @@ void NPV::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mRate = NULL;
 			break;
 		case '$':
@@ -149,47 +149,41 @@ void NPV::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
- * \throw  SCHNAPS::Core::RunTimeException if the method is not defined for the specific context.
- * \throw  SCHNAPS::Core::RunTimeException if the method is not defined for the specific rate source.
+ * \throw  SCHNAPS::Core::RunTimeException if the primitive is not defined for the specific rate source.
  */
 Core::AnyType::Handle NPV::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	Core::Number::Handle lArg1 = Core::castHandleT<Core::Number>(getArgument(inIndex, 0, ioContext));
+	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
+	double lTime = lContext.getClock().getValue();
+	double lRate;
+	Core::Double::Handle lDenum;
 	
-	if (ioContext.getName() == "SimulationContext") {
-		Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
-		double lTime = lContext.getClock().getValue();
-		double lRate;
-		Core::Double::Handle lDenum;
-		
-		if (mRate == NULL) {
-			
-			switch (mRate_Ref[0]) {
-				case '@':
-					// individual variable value
-					lRate = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mRate_Ref.substr(1))).getValue();
-					break;
-				case '#':
-					// environment variable value
-					lRate = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mRate_Ref.substr(1))).getValue();
-					break;
-				case '%':
-					// TODO: local variable value
-					break;
-				default:
-					throw schnaps_RunTimeExceptionM("The method is undefined for the specific rate source.");
-					break;
-			}
-		} else {
-			// parameter value or direct value
-			lRate = mRate->getValue();
+	if (mRate == NULL) {
+		switch (mRate_Ref[0]) {
+			case '@':
+				// individual variable value
+				lRate = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mRate_Ref.substr(1))).getValue();
+				break;
+			case '#':
+				// environment variable value
+				lRate = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mRate_Ref.substr(1))).getValue();
+				break;
+			case '%':
+				// local variable value
+				lRate = Core::castObjectT<const Core::Double&>(lContext.getLocalVariable(mRate_Ref.substr(1))).getValue();
+				break;
+			default:
+				throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific rate source.");
+				break;
 		}
-		
-		lDenum = new Core::Double(std::pow(lRate + 1, lTime));
-		return lArg1->div(*lDenum);
 	} else {
-		throw schnaps_RunTimeExceptionM("NPV primitive is not defined for context '" + ioContext.getName() + "'!");
+		// parameter value or direct value
+		lRate = mRate->getValue();
 	}
+	lDenum = new Core::Double(std::pow(lRate + 1, lTime));
+	
+	Core::Number::Handle lArg = Core::castHandleT<Core::Number>(getArgument(inIndex, 0, ioContext));
+	return lArg->div(*lDenum);
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Operators::NPV::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 

@@ -49,7 +49,7 @@ ChoiceIsEqual::ChoiceIsEqual(const ChoiceIsEqual& inOriginal) :
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mValue = NULL;
 			break;
 		case '$':
@@ -64,13 +64,6 @@ ChoiceIsEqual::ChoiceIsEqual(const ChoiceIsEqual& inOriginal) :
 	
 	mChoiceMap.clear();
 	switch (mChoices_Ref[0]) {
-		case '@':
-			// individual variable value
-		case '#':
-			// environment variable value
-		case '%':
-			// TODO: local variable value
-			break;
 		case '$':
 			// parameter value
 			for (ChoiceMap::const_iterator lIt = inOriginal.mChoiceMap.begin(); lIt != inOriginal.mChoiceMap.end(); lIt++) {
@@ -102,7 +95,7 @@ ChoiceIsEqual& ChoiceIsEqual::operator=(const ChoiceIsEqual& inOriginal) {
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mValue = NULL;
 			break;
 		case '$':
@@ -117,13 +110,6 @@ ChoiceIsEqual& ChoiceIsEqual::operator=(const ChoiceIsEqual& inOriginal) {
 	
 	mChoiceMap.clear();
 	switch (mChoices_Ref[0]) {
-		case '@':
-			// individual variable value
-		case '#':
-			// environment variable value
-		case '%':
-			// TODO: local variable value
-			break;
 		case '$':
 			// parameter value
 			for (ChoiceMap::const_iterator lIt = inOriginal.mChoiceMap.begin(); lIt != inOriginal.mChoiceMap.end(); lIt++) {
@@ -274,32 +260,30 @@ void ChoiceIsEqual::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent)
  */
 Core::AnyType::Handle ChoiceIsEqual::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	
+	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
 	ChoiceMap::const_iterator lIterChoice;
 	Core::Atom::Handle lValue;
 	
-	if (mValue == NULL) {
-		switch (mValue_Ref[0]) {
-			case '@': {
-				// individual variable value
-				Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
-				lValue = Core::castHandleT<Core::Atom>(lContext.getIndividual().getState().getVariableHandle(mValue_Ref.substr(1)));
-				break; }
-			case '#': {
-				// environment variable value
-				Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
-				lValue = Core::castHandleT<Core::Atom>(lContext.getEnvironment().getState().getVariableHandle(mValue_Ref.substr(1))->clone());
-				break; }
-			case '%':
-				// TODO: local variable value
-				break;
-			default:
-				throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific source!");
-				break;
-		}
-	} else {
-		// parameter value or direct value
-		lValue = mValue;
+	switch (mValue_Ref[0]) {
+		case '@':
+			// individual variable value
+			lValue = Core::castHandleT<Core::Atom>(lContext.getIndividual().getState().getVariableHandle(mValue_Ref.substr(1)));
+			break;
+		case '#':
+			// environment variable value
+			lValue = Core::castHandleT<Core::Atom>(lContext.getEnvironment().getState().getVariableHandle(mValue_Ref.substr(1))->clone());
+			break;
+		case '%':
+			// local variable value
+			lValue = Core::castHandleT<Core::Atom>(lContext.getLocalVariableHandle(mValue_Ref.substr(1)));
+			break;
+		case '$':
+			// parameter value
+			lValue =  Core::castHandleT<Core::Atom>(mValue->clone());
+		default:
+			// direct value
+			lValue = mValue;
+			break;
 	}
 	
 	lIterChoice = mChoiceMap.find(lValue);

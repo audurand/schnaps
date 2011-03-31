@@ -1,8 +1,8 @@
 /*
  * IndividualModel.cpp
  *
- *  Created on: 2010-04-14
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,10 @@
 using namespace SCHNAPS;
 using namespace Simulation;
 
+/*!
+ * \brief Construct an individual model as a copy of an original.
+ * \param inOriginal A const reference to the original model.
+ */
 IndividualModel::IndividualModel(const IndividualModel& inOriginal) {
 	for (IndividualModel::const_iterator lIt = inOriginal.begin(); lIt != inOriginal.end(); lIt++) {
 		this->insert((*lIt).c_str());
@@ -31,43 +35,47 @@ IndividualModel::IndividualModel(const IndividualModel& inOriginal) {
 }
 
 /*!
- *  \brief Reading the state.
+ * \brief Read object from XML using system.
+ * \param inIter XML iterator of input document.
+ * \param ioSystem A reference to the system.
+ * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
+ * \throw SCHNAPS::Core::IOException if a label attribute is missing.
  */
-void IndividualModel::readWithSystem(PACC::XML::ConstIterator inIter, SCHNAPS::Core::System& ioSystem) {
+void IndividualModel::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
-		if (inIter->getType() != PACC::XML::eData) {
-			throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
-		}
-		if (inIter->getValue() != getName()) {
-			std::ostringstream lOSS;
-			lOSS << "tag <" + getName() + "> expected, but ";
-			lOSS << "got tag <" << inIter->getValue() << "> instead!";
-			throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
-		}
+	if (inIter->getType() != PACC::XML::eData) {
+		throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
+	}
+	if (inIter->getValue() != getName()) {
+		std::ostringstream lOSS;
+		lOSS << "tag <" + getName() + "> expected, but ";
+		lOSS << "got tag <" << inIter->getValue() << "> instead!";
+		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
+	}
 
-		this->clear();
-		for (PACC::XML::ConstIterator lChild = inIter->getFirstChild(); lChild; lChild++) {
-			if (lChild->getType() == PACC::XML::eData) {
-				if (lChild->getValue() != "Variable") {
-					std::ostringstream lOSS;
-					lOSS << "tag <Variable> expected, but ";
-					lOSS << "got tag <" << lChild->getValue() << "> instead!";
-					throw schnaps_IOExceptionNodeM(*lChild, lOSS.str());
-				}
-				if (lChild->getAttribute("label").empty()) {
-					throw schnaps_IOExceptionNodeM(*lChild, "label attribute expected!");
-				}
-
-				this->insert(lChild->getAttribute("label"));
+	this->clear();
+	for (PACC::XML::ConstIterator lChild = inIter->getFirstChild(); lChild; lChild++) {
+		if (lChild->getType() == PACC::XML::eData) {
+			if (lChild->getValue() != "Variable") {
+				std::ostringstream lOSS;
+				lOSS << "tag <Variable> expected, but ";
+				lOSS << "got tag <" << lChild->getValue() << "> instead!";
+				throw schnaps_IOExceptionNodeM(*lChild, lOSS.str());
 			}
+			if (lChild->getAttribute("label").empty()) {
+				throw schnaps_IOExceptionNodeM(*lChild, "label attribute expected!");
+			}
+
+			this->insert(lChild->getAttribute("label"));
 		}
+	}
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::IndividualModel::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
 /*!
- *  \brief Write the state.
- *  \param ioStreamer XML streamer to write the state into.
- *  \param inIndent Whether XML output should be indented.
+ * \brief Write object content to XML.
+ * \param ioStreamer XML streamer to output document.
+ * \param inIndent Wether to indent or not.
  */
 void IndividualModel::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	for (IndividualModel::const_iterator lIt = this->begin(); lIt != this->end(); lIt++) {
