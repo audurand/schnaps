@@ -30,7 +30,7 @@ namespace Operators {
 
 /*!
  *  \class DivComplex SCHNAPS/Plugins/Operators/DivComplex.hpp "SCHNAPS/Plugins/Operators/DivComplex.hpp"
- *  \brief Mathematical DivComplexision operation primitive.
+ *  \brief Mathematical Division operation primitive.
  */
 class DivComplex: public Core::Primitive {
 public:

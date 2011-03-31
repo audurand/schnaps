@@ -32,8 +32,8 @@ DivComplex::DivComplex() :
 {}
 
 /*!
- * \brief Construct a DivComplexision primitive as a copy of an original.
- * \param inOriginal A const reference to the original DivComplexision primitive.
+ * \brief Construct a division primitive as a copy of an original.
+ * \param inOriginal A const reference to the original division primitive.
  */
 DivComplex::DivComplex(const DivComplex& inOriginal) :
 	Primitive(2)
