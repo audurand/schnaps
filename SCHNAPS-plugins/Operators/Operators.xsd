@@ -123,6 +123,87 @@
 		</xsd:annotation>
 	</xsd:element>
 	
+	<xsd:element name="Operators_DivVariable" substitutionGroup="_modifierOp">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Compute the division of left number by right number. Store the result in a variable.</pmt:info>
+				<pmt:mappedName lang="en">Div (result in variable)</pmt:mappedName>
+				<pmt:returnType definedBy="staticType">Void</pmt:returnType>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:attribute name="outResult" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="allVariables" allowEdition="false"/>
+							<gui:displayValue position="br" showAttr="value" delimiter="+"/>
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="inArgLeft" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
+						<pmt:attributeMappedName lang="en">Left number</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="inArgLeft_Type" use="optional">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="numericTypes" allowEdition="False"/>
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en">Type of left argument. WARNING: type must be the same as variable!</pmt:attributeInfo>
+						<pmt:attributeMappedName lang="en">Left argument type</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="Int"/>
+						<xsd:enumeration value="UInt"/>
+						<xsd:enumeration value="Long"/>
+						<xsd:enumeration value="ULong"/>
+						<xsd:enumeration value="Double"/>
+						<xsd:enumeration value="Float"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="inArgRight" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
+						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="inArgRight_Type" use="optional">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="numericTypes" allowEdition="False"/>
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en">Type of right argument. WARNING: type must be the same as variable!</pmt:attributeInfo>
+						<pmt:attributeMappedName lang="en">Right argument type</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="Int"/>
+						<xsd:enumeration value="UInt"/>
+						<xsd:enumeration value="Long"/>
+						<xsd:enumeration value="ULong"/>
+						<xsd:enumeration value="Double"/>
+						<xsd:enumeration value="Float"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	
 	<xsd:element name="Operators_ExpComplex" substitutionGroup="_unaryOp">
 		<xsd:annotation>
 			<xsd:appinfo>

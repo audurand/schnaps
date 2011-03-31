@@ -28,6 +28,7 @@ SCHNAPS_Plugin_AddAllocM("Operators_AbsComplex", SCHNAPS::Plugins::Operators::Ab
 SCHNAPS_Plugin_AddAllocM("Operators_AddComplex", SCHNAPS::Plugins::Operators::AddComplex::Alloc);
 SCHNAPS_Plugin_AddAllocM("Operators_AddVariable", SCHNAPS::Plugins::Operators::AddVariable::Alloc);
 SCHNAPS_Plugin_AddAllocM("Operators_DivComplex", SCHNAPS::Plugins::Operators::DivComplex::Alloc);
+SCHNAPS_Plugin_AddAllocM("Operators_DivVariable", SCHNAPS::Plugins::Operators::DivVariable::Alloc);
 SCHNAPS_Plugin_AddAllocM("Operators_ExpComplex", SCHNAPS::Plugins::Operators::ExpComplex::Alloc);
 SCHNAPS_Plugin_AddAllocM("Operators_ModComplex", SCHNAPS::Plugins::Operators::ModComplex::Alloc);
 SCHNAPS_Plugin_AddAllocM("Operators_MultComplex", SCHNAPS::Plugins::Operators::MultComplex::Alloc);

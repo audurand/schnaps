@@ -26,6 +26,7 @@
 #include "SCHNAPS/Plugins/Operators/AddComplex.hpp"
 #include "SCHNAPS/Plugins/Operators/AddVariable.hpp"
 #include "SCHNAPS/Plugins/Operators/DivComplex.hpp"
+#include "SCHNAPS/Plugins/Operators/DivVariable.hpp"
 #include "SCHNAPS/Plugins/Operators/ExpComplex.hpp"
 #include "SCHNAPS/Plugins/Operators/ModComplex.hpp"
 #include "SCHNAPS/Plugins/Operators/MultComplex.hpp"
