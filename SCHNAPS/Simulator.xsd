@@ -518,10 +518,9 @@
 						</xsd:documentation>
 					</xsd:annotation>
 					<xsd:complexType>
-						<xsd:sequence>
-							<xsd:element ref="PrimitiveTree"/>
-						</xsd:sequence>
 						<xsd:attribute name="label" use="required" type="xsd:string"/>
+						<xsd:attribute name="type" use="required" type="xsd:string"/>
+						<xsd:attribute name="value" use="required" type="xsd:string"/>
 					</xsd:complexType>
 				</xsd:element>
 			</xsd:sequence>

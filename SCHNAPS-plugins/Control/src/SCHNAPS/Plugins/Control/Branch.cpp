@@ -88,7 +88,7 @@ Branch& Branch::operator=(const Branch& inOriginal) {
 	}
 
 	return *this;
-	schnaps_StackTraceEndM("Core::Branch& SCHNAPS::Plugins::Control::Branch::operator=(const SCHNAPS::Core::Branch&)");
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Control::Branch& SCHNAPS::Plugins::Control::Branch::operator=(const SCHNAPS::Plugins::Control::Branch&)");
 }
 
 /*!
@@ -154,37 +154,29 @@ void Branch::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const 
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
- * \throw SCHNAPS::Core::RunTimeException if the primitive is undefined for the specific probability source.
  */
 Core::AnyType::Handle Branch::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
+	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
 	double lRandom = ioContext.getRandomizer().rollUniform();
 	double lProbability;
 	
-	if (mProbability == NULL) {
-		switch (mProbability_Ref[0]) {
-			case '@': {
-				// individual variable value
-				Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
-				lProbability = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mProbability_Ref.substr(1))).getValue();
-				break; }
-			case '#': {
-				// environment variable value
-				Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
-				lProbability = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mProbability_Ref.substr(1))).getValue();
-				break; }
-			case '%': {
-				// local variable value
-				Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
-				lProbability = Core::castObjectT<const Core::Double&>(lContext.getLocalVariable(mProbability_Ref.substr(1))).getValue();
-				break; }
-			default:
-				throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific probability source!");
-				break;
-		}
-	} else {
-		// parameter value or direct value
-		lProbability = mProbability->getValue();
+	switch (mProbability_Ref[0]) {
+		case '@':
+			// individual variable value
+			lProbability = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mProbability_Ref.substr(1))).getValue();
+			break;
+		case '#':
+			// environment variable value
+			lProbability = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mProbability_Ref.substr(1))).getValue();
+			break;
+		case '%':
+			// local variable value
+			lProbability = Core::castObjectT<const Core::Double&>(lContext.getLocalVariable(mProbability_Ref.substr(1))).getValue();
+			break;
+		default:
+			lProbability = mProbability->getValue();
+			break;
 	}
 	
 	if (lRandom < lProbability) {

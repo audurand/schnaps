@@ -241,8 +241,8 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 				// set local variables
 				for (unsigned int k = 0; k < lContext->getGenProfile().getDemography().getVariable(j).mLocalVariables.size(); k++) {
 					lContext->insertLocalVariable(
-						lContext->getGenProfile().getDemography().getVariable(j).mLocalVariables[k].mLabel,
-						lContext->getGenProfile().getDemography().getVariable(j).mLocalVariables[k].mInitTree->interpret(*lContext));
+						lContext->getGenProfile().getDemography().getVariable(j).mLocalVariables[k].first,
+						Core::castHandleT<Core::AnyType>(lContext->getGenProfile().getDemography().getVariable(j).mLocalVariables[k].second->clone()));
 				}
 				
 				// compute variable init value
@@ -261,8 +261,8 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 			// set local variables
 			for (unsigned int k = 0; k < lContext->getGenProfile().getSimulationVariables().getVariable(j).mLocalVariables.size(); k++) {
 				lContext->insertLocalVariable(
-					lContext->getGenProfile().getSimulationVariables().getVariable(j).mLocalVariables[k].mLabel,
-					lContext->getGenProfile().getDemography().getVariable(j).mLocalVariables[k].mInitTree->interpret(*lContext));
+					lContext->getGenProfile().getSimulationVariables().getVariable(j).mLocalVariables[k].first,
+					Core::castHandleT<Core::AnyType>(lContext->getGenProfile().getDemography().getVariable(j).mLocalVariables[k].second->clone()));
 			}
 			
 			// compute variable init value

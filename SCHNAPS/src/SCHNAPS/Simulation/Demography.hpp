@@ -36,15 +36,7 @@ namespace Simulation {
  */
 class Demography: public Core::Object {
 protected:
-	struct LocalVariable {
-		std::string mLabel;
-		Core::PrimitiveTree::Handle mInitTree;
-		
-		LocalVariable(const std::string& inLabel, const Core::PrimitiveTree::Handle inInitTree) {
-			mLabel = inLabel.c_str();
-			mInitTree = inInitTree;
-		}
-	};
+	typedef std::pair<std::string, Core::AnyType::Handle> LocalVariable;
 	
 	struct Variable {
 		std::string mLabel;

@@ -21,7 +21,7 @@
 #include "SCHNAPS/SCHNAPS.hpp"
 #include "SCHNAPS/Plugins/Operators/Operators.hpp"
 
-SCHNAPS_Plugin_BeginDefinitionM("Operators", "1.0");
+SCHNAPS_Plugin_BeginDefinitionM("Operators", "2.0.0");
 
 // math operators
 SCHNAPS_Plugin_AddAllocM("Operators_AbsComplex", SCHNAPS::Plugins::Operators::AbsComplex::Alloc);

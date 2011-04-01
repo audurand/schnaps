@@ -60,9 +60,9 @@ Core::Object::Handle Process::deepCopy(const Core::System& inSystem) const {
 	schnaps_StackTraceBeginM();
 	Process::Handle lCopy = new Process(mLabel, Core::castHandleT<Core::PrimitiveTree>(mPrimitiveTree->deepCopy(inSystem)));
 	for (unsigned int i = 0; i < this->mLocalVariables.size(); i++) {
-		lCopy->mLocalVariables.push_back(LocalVariable(
-			this->mLocalVariables[i].mLabel,
-			Core::castHandleT<Core::PrimitiveTree>(this->mLocalVariables[i].mInitTree->deepCopy(inSystem))));
+		lCopy->mLocalVariables.push_back(std::pair<std::string, Core::AnyType::Handle>(
+			this->mLocalVariables[i].first,
+			this->mLocalVariables[i].second));
 	}
 	return lCopy;
 	schnaps_StackTraceEndM("SCHNAPS::Core::Object::Handle SCHNAPS::Simulation::Process::deepCopy(const SCHNAPS::Core::System&) const ");
@@ -123,8 +123,9 @@ void Process::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const
 	ioStreamer.openTag("LocalVariables");
 	for (unsigned int i = 0; i < mLocalVariables.size(); i++) {
 		ioStreamer.openTag("LocalVariable");
-		ioStreamer.insertAttribute("label", mLocalVariables[i].mLabel);
-		mLocalVariables[i].mInitTree->write(ioStreamer, inIndent);
+		ioStreamer.insertAttribute("label", mLocalVariables[i].first);
+		ioStreamer.insertAttribute("type", mLocalVariables[i].second->getType());
+		ioStreamer.insertAttribute("value", mLocalVariables[i].second->writeStr());
 		ioStreamer.closeTag();
 	}
 	ioStreamer.closeTag();
@@ -138,7 +139,7 @@ void Process::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.
  * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
- * \throw SCHNAPS::Core::IOException if label attribute is missing.
+ * \throw SCHNAPS::Core::IOException if label, type or value attributes are missing.
  */
 void Process::readLocalVariables(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
@@ -150,6 +151,7 @@ void Process::readLocalVariables(PACC::XML::ConstIterator inIter, Core::System& 
 	}
 	
 	mLocalVariables.clear();
+	Core::AnyType::Alloc::Handle lAlloc;
 	for (PACC::XML::ConstIterator lChild = inIter->getFirstChild(); lChild; lChild++) {
 		if (lChild->getValue() != "LocalVariable") {
 			std::ostringstream lOSS;
@@ -158,18 +160,26 @@ void Process::readLocalVariables(PACC::XML::ConstIterator inIter, Core::System& 
 			throw schnaps_IOExceptionNodeM(*lChild, lOSS.str());
 		}
 		
+		// retrieve label
 		if (lChild->getAttribute("label").empty()) {
 			throw schnaps_IOExceptionNodeM(*lChild, "label attribute expected!");
 		}
-		
-		mLocalVariables.push_back(LocalVariable(lChild->getAttribute("label"), new Core::PrimitiveTree()));
+		mLocalVariables.push_back(std::pair<std::string, Core::AnyType::Handle>(lChild->getAttribute("label"), NULL));
 		
 #ifdef SCHNAPS_FULL_DEBUG
-		printf("\tReading local variable: %s\n", mLocalVariables.back().mLabel.c_str());
+		printf("\tReading local variable: %s\n", mLocalVariables.back().first.c_str());
 #endif
 
-		// read local variable init tree
-		mLocalVariables.back().mInitTree->readWithSystem(lChild->getFirstChild(), ioSystem);
+		// retrieve value
+		if (lChild->getAttribute("type").empty()) {
+			throw schnaps_IOExceptionNodeM(*lChild, "type attribute expected!");
+		}
+		if (lChild->getAttribute("value").empty()) {
+			throw schnaps_IOExceptionNodeM(*lChild, "value attribute expected!");
+		}
+		lAlloc = Core::castHandleT<Core::AnyType::Alloc>(ioSystem.getFactory().getAllocator(lChild->getAttribute("type")));
+		mLocalVariables.back().second = Core::castHandleT<Core::AnyType>(lAlloc->allocate());
+		mLocalVariables.back().second->readStr(lChild->getAttribute("value"));
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Process::readLocalVariables(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
@@ -186,7 +196,9 @@ Core::AnyType::Handle Process::execute(Core::ExecutionContext& ioContext) const 
 	
 	// set process local variables
 	for (unsigned int i = 0; i < mLocalVariables.size(); i++) {
-		lContext.insertLocalVariable(mLocalVariables[i].mLabel, mLocalVariables[i].mInitTree->interpret(ioContext));
+		lContext.insertLocalVariable(
+			mLocalVariables[i].first,
+			Core::castHandleT<Core::AnyType>(mLocalVariables[i].second->clone()));
 	}
 	lResult = mPrimitiveTree->interpret(ioContext);
 	lContext.clearLocalVariables();

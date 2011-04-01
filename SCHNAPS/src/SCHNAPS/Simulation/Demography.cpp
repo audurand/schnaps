@@ -31,9 +31,14 @@ using namespace Simulation;
 Demography::Demography(const Demography& inOriginal) {
 	this->mVariables.clear();
 	for (unsigned int i = 0; i < inOriginal.mVariables.size(); i++) {
-		this->mVariables.push_back(Variable(inOriginal.mVariables[i].mLabel, inOriginal.mVariables[i].mInitTree));
+		this->mVariables.push_back(Variable(
+			inOriginal.mVariables[i].mLabel,
+			inOriginal.mVariables[i].mInitTree));
+		
 		for (unsigned int j = 0; j < inOriginal.mVariables[i].mLocalVariables.size(); j++) {
-			this->mVariables.back().mLocalVariables.push_back(LocalVariable(inOriginal.mVariables[i].mLocalVariables[j].mLabel, inOriginal.mVariables[i].mLocalVariables[j].mInitTree));
+			this->mVariables.back().mLocalVariables.push_back(LocalVariable(
+				inOriginal.mVariables[i].mLocalVariables[j].first,
+				inOriginal.mVariables[i].mLocalVariables[j].second));
 		}
 	}
 }
@@ -52,8 +57,8 @@ Core::Object::Handle Demography::deepCopy(const Core::System& inSystem) const {
 			Core::castHandleT<Core::PrimitiveTree>(this->mVariables[i].mInitTree->deepCopy(inSystem))));
 		for (unsigned int j = 0; j < this->mVariables[i].mLocalVariables.size(); j++) {
 			lCopy->mVariables.back().mLocalVariables.push_back(LocalVariable(
-				this->mVariables[i].mLocalVariables[j].mLabel,
-				Core::castHandleT<Core::PrimitiveTree>(this->mVariables[i].mLocalVariables[j].mInitTree->deepCopy(inSystem))));
+				this->mVariables[i].mLocalVariables[j].first,
+				Core::castHandleT<Core::AnyType>(this->mVariables[i].mLocalVariables[j].second->clone())));
 		}
 	}
 	return lCopy;
@@ -115,8 +120,9 @@ void Demography::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) co
 		ioStreamer.openTag("LocalVariables");
 		for (unsigned int j = 0; j < mVariables[i].mLocalVariables.size(); j++) {
 			ioStreamer.openTag("LocalVariable");
-			ioStreamer.insertAttribute("label", mVariables[i].mLocalVariables[j].mLabel);
-			mVariables[i].mLocalVariables[j].mInitTree->write(ioStreamer, inIndent);
+			ioStreamer.insertAttribute("label", mVariables[i].mLocalVariables[j].first);
+			ioStreamer.insertAttribute("type", mVariables[i].mLocalVariables[j].second->getType());
+			ioStreamer.insertAttribute("value", mVariables[i].mLocalVariables[j].second->writeStr());
 			ioStreamer.closeTag();
 		}
 		ioStreamer.closeTag();
@@ -178,6 +184,7 @@ void Demography::readLocalVariables(PACC::XML::ConstIterator inIter, Core::Syste
 		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
 	}
 	
+	Core::AnyType::Alloc::Handle lAlloc;
 	for (PACC::XML::ConstIterator lChild = inIter->getFirstChild(); lChild; lChild++) {
 		if (lChild->getValue() != "LocalVariable") {
 			std::ostringstream lOSS;
@@ -186,18 +193,26 @@ void Demography::readLocalVariables(PACC::XML::ConstIterator inIter, Core::Syste
 			throw schnaps_IOExceptionNodeM(*lChild, lOSS.str());
 		}
 		
+		// retrieve label
 		if (lChild->getAttribute("label").empty()) {
 			throw schnaps_IOExceptionNodeM(*lChild, "label attribute expected!");
 		}
-		
-		mVariables.back().mLocalVariables.push_back(LocalVariable(lChild->getAttribute("label"), new Core::PrimitiveTree()));
+		mVariables.back().mLocalVariables.push_back(std::pair<std::string, Core::AnyType::Handle>(lChild->getAttribute("label"), NULL));
 		
 #ifdef SCHNAPS_FULL_DEBUG
-		printf("\tReading local variable: %s\n", mVariables.back().mLocalVariables.back().mLabel.c_str());
+		printf("\tReading local variable: %s\n", mVariables.back().mLocalVariables.back().first.c_str());
 #endif
 
-		// read local variable init tree
-		mVariables.back().mLocalVariables.back().mInitTree->readWithSystem(lChild->getFirstChild(), ioSystem);
+		// retrieve value
+		if (lChild->getAttribute("type").empty()) {
+			throw schnaps_IOExceptionNodeM(*lChild, "type attribute expected!");
+		}
+		if (lChild->getAttribute("value").empty()) {
+			throw schnaps_IOExceptionNodeM(*lChild, "value attribute expected!");
+		}
+		lAlloc = Core::castHandleT<Core::AnyType::Alloc>(ioSystem.getFactory().getAllocator(lChild->getAttribute("type")));
+		mVariables.back().mLocalVariables.back().second = Core::castHandleT<Core::AnyType>(lAlloc->allocate());
+		mVariables.back().mLocalVariables.back().second->readStr(lChild->getAttribute("value"));
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Demography::readLocalVariables(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }

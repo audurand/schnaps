@@ -21,7 +21,7 @@
 #include "SCHNAPS/SCHNAPS.hpp"
 #include "SCHNAPS/Plugins/Data/Data.hpp"
 
-SCHNAPS_Plugin_BeginDefinitionM("Data", "1.0");
+SCHNAPS_Plugin_BeginDefinitionM("Data", "2.0.0");
 
 SCHNAPS_Plugin_AddAllocM("Data_Clock", SCHNAPS::Plugins::Data::Clock::Alloc);
 SCHNAPS_Plugin_AddAllocM("Data_Log", SCHNAPS::Plugins::Data::Log::Alloc);

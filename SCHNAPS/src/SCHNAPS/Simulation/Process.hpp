@@ -33,15 +33,7 @@ namespace Simulation {
  */
 class Process: public Core::Object {
 protected:
-	struct LocalVariable {
-		std::string mLabel;
-		Core::PrimitiveTree::Handle mInitTree;
-		
-		LocalVariable(const std::string& inLabel, const Core::PrimitiveTree::Handle inInitTree) {
-			mLabel = inLabel.c_str();
-			mInitTree = inInitTree;
-		}
-	};
+	typedef std::pair<std::string, Core::AnyType::Handle> LocalVariable;
 
 public:
 	//! Process target.
@@ -79,9 +71,6 @@ public:
 	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
 	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
-	
-	//! Read local variables from XML using system.
-	void readLocalVariables(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
 
 	//! Return a handle to the result of process execution.
 	virtual Core::AnyType::Handle execute(Core::ExecutionContext& ioContext) const;
@@ -96,13 +85,17 @@ public:
 	const std::string& getLabel() const {
 		return mLabel;
 	}
+	
+private:
+	//! Read local variables from XML using system.
+	void readLocalVariables(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
 
 protected:
 	std::string mLabel;							//!< Label of process.
 
 private:
 	Core::PrimitiveTree::Handle mPrimitiveTree;	//!< Primive tree that represents the process execution.
-	std::vector<LocalVariable> mLocalVariables;	//!< Local variables initialization functions.
+	std::vector<LocalVariable> mLocalVariables;	//!< Variables local to the process.
 };
 } // end of Simulation namespace
 } // end of SCHNAPS namespace

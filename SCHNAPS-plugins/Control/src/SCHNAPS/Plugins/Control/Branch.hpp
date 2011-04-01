@@ -22,7 +22,6 @@
 #define SCHNAPS_Plugins_Control_Branch_hpp
 
 #include "SCHNAPS/SCHNAPS.hpp"
-
 #include "PACC/XML.hpp"
 
 namespace SCHNAPS {
@@ -30,7 +29,7 @@ namespace Plugins {
 namespace Control {
 
 /*!
- *  \class Branch SCHNAPS/Plugins/Easier/Branch.hpp "SCHNAPS/Plugins/Easier/Branch.hpp"
+ *  \class Branch SCHNAPS/Plugins/Control/Branch.hpp "SCHNAPS/Plugins/Control/Branch.hpp"
  *  \brief Executes the first branch with some probability, else second branch.
  */
 class Branch: public Core::Primitive {

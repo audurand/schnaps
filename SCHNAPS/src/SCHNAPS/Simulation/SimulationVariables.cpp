@@ -31,9 +31,13 @@ using namespace Simulation;
 SimulationVariables::SimulationVariables(const SimulationVariables& inOriginal) {
 	this->mVariables.clear();
 	for (unsigned int i = 0; i < inOriginal.mVariables.size(); i++) {
-		this->mVariables.push_back(Variable(inOriginal.mVariables[i].mLabel, inOriginal.mVariables[i].mInitTree));
+		this->mVariables.push_back(Variable(
+			inOriginal.mVariables[i].mLabel,
+			inOriginal.mVariables[i].mInitTree));
 		for (unsigned int j = 0; j < inOriginal.mVariables[i].mLocalVariables.size(); j++) {
-			this->mVariables.back().mLocalVariables.push_back(LocalVariable(inOriginal.mVariables[i].mLocalVariables[j].mLabel, inOriginal.mVariables[i].mLocalVariables[j].mInitTree));
+			this->mVariables.back().mLocalVariables.push_back(LocalVariable(
+				inOriginal.mVariables[i].mLocalVariables[j].first,
+				inOriginal.mVariables[i].mLocalVariables[j].second));
 		}
 	}
 }
@@ -53,8 +57,8 @@ Core::Object::Handle SimulationVariables::deepCopy(const Core::System& inSystem)
 			Core::castHandleT<Core::PrimitiveTree>(this->mVariables[i].mInitTree->deepCopy(inSystem))));
 		for (unsigned int j = 0; j < this->mVariables[i].mLocalVariables.size(); j++) {
 			lCopy->mVariables.back().mLocalVariables.push_back(LocalVariable(
-				this->mVariables[i].mLocalVariables[j].mLabel,
-				Core::castHandleT<Core::PrimitiveTree>(this->mVariables[i].mLocalVariables[j].mInitTree->deepCopy(inSystem))));
+				this->mVariables[i].mLocalVariables[j].first,
+				Core::castHandleT<Core::AnyType>(this->mVariables[i].mLocalVariables[j].second->clone())));
 		}
 	}
 	return lCopy;
