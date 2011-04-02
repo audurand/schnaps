@@ -84,7 +84,7 @@ DecisionMaker& DecisionMaker::operator=(const DecisionMaker& inOriginal) {
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.
  * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
- * \throw SCHNAPS::Core::IOException if choice attribute is missing.
+ * \throw SCHNAPS::Core::IOException if label attribute is missing.
  */
 void DecisionMaker::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
@@ -100,10 +100,10 @@ void DecisionMaker::readWithSystem(PACC::XML::ConstIterator inIter, Core::System
 
 	// read choices
 	for (PACC::XML::ConstIterator lChild = inIter->getFirstChild(); lChild; lChild++) {
-		if (lChild->getAttribute("choice").empty()) {
-			throw schnaps_IOExceptionNodeM(*lChild, "choice name expected!");
+		if (lChild->getAttribute("label").empty()) {
+			throw schnaps_IOExceptionNodeM(*lChild, "choice label expected!");
 		}
-		(*this)[lChild->getAttribute("choice")].readWithSystem(lChild, ioSystem);
+		(*this)[lChild->getAttribute("label")].readWithSystem(lChild, ioSystem);
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Learning::DecisionMaker::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
