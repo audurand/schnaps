@@ -59,7 +59,7 @@ IsEqual::IsEqual(const IsEqual& inOriginal) :
 			break;
 		default:
 			// direct value
-			mArgLeft = Core::castHandleT<Core::Number>(inOriginal.mArgLeft->clone());
+			mArgLeft = Core::castHandleT<Core::Atom>(inOriginal.mArgLeft->clone());
 	}
 	
 	switch (mArgRight_Ref[0]) {
@@ -77,7 +77,7 @@ IsEqual::IsEqual(const IsEqual& inOriginal) :
 			break;
 		default:
 			// direct value
-			mArgRight = Core::castHandleT<Core::Number>(inOriginal.mArgRight->clone());
+			mArgRight = Core::castHandleT<Core::Atom>(inOriginal.mArgRight->clone());
 	}
 }
 
@@ -119,15 +119,15 @@ void IsEqual::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSy
 			break;
 		case '$':
 			// parameter value
-			mArgLeft = Core::castHandleT<Core::Number>(ioSystem.getParameters().getParameterHandle(mArgLeft_Ref.substr(1)));
+			mArgLeft = Core::castHandleT<Core::Atom>(ioSystem.getParameters().getParameterHandle(mArgLeft_Ref.substr(1)));
 			break;
 		default: {
 			// direct value
 			if (inIter->getAttribute("inArgLeft_Type").empty()) {
 				throw schnaps_IOExceptionNodeM(*inIter, "type of left argument expected!");
 			}
-			Core::Number::Alloc::Handle lAlloc = Core::castHandleT<Core::Number::Alloc>(ioSystem.getFactory().getAllocator(inIter->getAttribute("inArgLeft_Type")));
-			mArgLeft = Core::castHandleT<Core::Number>(lAlloc->allocate());
+			Core::Atom::Alloc::Handle lAlloc = Core::castHandleT<Core::Atom::Alloc>(ioSystem.getFactory().getAllocator(inIter->getAttribute("inArgLeft_Type")));
+			mArgLeft = Core::castHandleT<Core::Atom>(lAlloc->allocate());
 			mArgLeft->readStr(mArgLeft_Ref);
 			break; }
 	}
@@ -149,15 +149,15 @@ void IsEqual::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSy
 			break;
 		case '$':
 			// parameter value
-			mArgRight = Core::castHandleT<Core::Number>(ioSystem.getParameters().getParameterHandle(mArgRight_Ref.substr(1)));
+			mArgRight = Core::castHandleT<Core::Atom>(ioSystem.getParameters().getParameterHandle(mArgRight_Ref.substr(1)));
 			break;
 		default: {
 			// direct value
 			if (inIter->getAttribute("inArgRight_Type").empty()) {
 				throw schnaps_IOExceptionNodeM(*inIter, "type of right argument expected!");
 			}
-			Core::Number::Alloc::Handle lAlloc = Core::castHandleT<Core::Number::Alloc>(ioSystem.getFactory().getAllocator(inIter->getAttribute("inArgLeft_Type")));
-			mArgRight = Core::castHandleT<Core::Number>(lAlloc->allocate());
+			Core::Atom::Alloc::Handle lAlloc = Core::castHandleT<Core::Atom::Alloc>(ioSystem.getFactory().getAllocator(inIter->getAttribute("inArgRight_Type")));
+			mArgRight = Core::castHandleT<Core::Atom>(lAlloc->allocate());
 			mArgRight->readStr(mArgRight_Ref);
 			break; }
 	}
@@ -190,57 +190,55 @@ void IsEqual::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
- * \throw  SCHNAPS::RunTimeException if the primitive is undefined for the specific left argument source.
- * \throw  SCHNAPS::RunTimeException if the primitive is undefined for the specific right argument source.
  */
 Core::AnyType::Handle IsEqual::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	Core::Number::Handle lArgLeft, lArgRight;
+	Core::Atom::Handle lArgLeft, lArgRight;
 	
-	if (mArgLeft == NULL) {
-		switch (mArgLeft_Ref[0]) {
-			case '@':
-				// individual variable value
-				lArgLeft = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getIndividual().getState().getVariableHandle(mArgLeft_Ref.substr(1)));
-				break;
-			case '#':
-				// environment variable value
-				lArgLeft = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getEnvironment().getState().getVariableHandle(mArgLeft_Ref.substr(1))->clone());
-				break;
-			case '%':
-				// local variable value
-				lArgLeft = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::SimulationContext&>(ioContext).getLocalVariableHandle(mArgLeft_Ref.substr(1)));
-				break;
-			default:
-				throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific left argument source.");
-				break;
-		}
-	} else {
-		// parameter value or direct value
-		lArgLeft = Core::castHandleT<Core::Number>(mArgLeft->clone());
+	switch (mArgLeft_Ref[0]) {
+		case '@':
+			// individual variable value
+			lArgLeft = Core::castHandleT<Core::Atom>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getIndividual().getState().getVariableHandle(mArgLeft_Ref.substr(1)));
+			break;
+		case '#':
+			// environment variable value
+			lArgLeft = Core::castHandleT<Core::Atom>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getEnvironment().getState().getVariableHandle(mArgLeft_Ref.substr(1))->clone());
+			break;
+		case '%':
+			// local variable value
+			lArgLeft = Core::castHandleT<Core::Atom>(Core::castObjectT<Simulation::SimulationContext&>(ioContext).getLocalVariableHandle(mArgLeft_Ref.substr(1)));
+			break;
+		case '$':
+			// parameter value
+			lArgLeft = Core::castHandleT<Core::Atom>(mArgLeft->clone());
+			break;
+		default:
+			// direct value
+			lArgLeft = mArgLeft;
+			break;
 	}
 	
-	if (mArgRight == NULL) {
-		switch (mArgRight_Ref[0]) {
-			case '@':
-				// individual variable value
-				lArgRight = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getIndividual().getState().getVariableHandle(mArgRight_Ref.substr(1)));
-				break;
-			case '#':
-				// environment variable value
-				lArgRight = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getEnvironment().getState().getVariableHandle(mArgRight_Ref.substr(1))->clone());
-				break;
-			case '%':
-				// local variable value
-				lArgRight = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::SimulationContext&>(ioContext).getLocalVariableHandle(mArgRight_Ref.substr(1)));
-				break;
-			default:
-				throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific right argument source.");
-				break;
-		}
-	} else {
-		// parameter value or direct value
-		lArgRight = Core::castHandleT<Core::Number>(mArgRight->clone());
+	switch (mArgRight_Ref[0]) {
+		case '@':
+			// individual variable value
+			lArgRight = Core::castHandleT<Core::Atom>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getIndividual().getState().getVariableHandle(mArgRight_Ref.substr(1)));
+			break;
+		case '#':
+			// environment variable value
+			lArgRight = Core::castHandleT<Core::Atom>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getEnvironment().getState().getVariableHandle(mArgRight_Ref.substr(1))->clone());
+			break;
+		case '%':
+			// local variable value
+			lArgRight = Core::castHandleT<Core::Atom>(Core::castObjectT<Simulation::SimulationContext&>(ioContext).getLocalVariableHandle(mArgRight_Ref.substr(1)));
+			break;
+		case '$':
+			// parameter value
+			lArgRight = Core::castHandleT<Core::Atom>(mArgRight->clone());
+			break;
+		default:
+			// direct value
+			lArgRight = mArgRight;
+			break;
 	}
 	
 	return new Core::Bool(lArgLeft->isEqual(*lArgRight));

@@ -69,9 +69,9 @@ public:
 
 private:
 	std::string mArgLeft_Ref;		//!< Reference to left argument in comparison.
-	Core::Number::Handle mArgLeft;	//!< A handle to left argument in comparison.
+	Core::Atom::Handle mArgLeft;	//!< A handle to left argument in comparison.
 	std::string mArgRight_Ref;		//!< Reference to right argument in comparison.
-	Core::Number::Handle mArgRight;	//!< A handle to right argument in comparison.
+	Core::Atom::Handle mArgRight;	//!< A handle to right argument in comparison.
 };
 } // end of Operators namespace
 } // end of Plugins namespace

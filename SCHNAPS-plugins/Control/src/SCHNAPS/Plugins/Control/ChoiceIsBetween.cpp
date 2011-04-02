@@ -151,7 +151,7 @@ void ChoiceIsBetween::readWithSystem(PACC::XML::ConstIterator inIter, Core::Syst
 	if (inIter->getAttribute("inValue").empty()) {
 		throw schnaps_IOExceptionNodeM(*inIter, "choice value expected!");
 	}
-	mValue_Ref = inIter->getAttribute("value");
+	mValue_Ref.assign(inIter->getAttribute("inValue"));
 	
 	switch (mValue_Ref[0]) {
 		case '@':
@@ -180,44 +180,43 @@ void ChoiceIsBetween::readWithSystem(PACC::XML::ConstIterator inIter, Core::Syst
 	// retrieve choice boundaries
 	if (inIter->getAttribute("inBounds").empty()) {
 		throw schnaps_IOExceptionNodeM(*inIter, "choices bounds expected!");
-	} else {
-		mBounds_Ref.assign(inIter->getAttribute("inBounds"));
+	}
+	mBounds_Ref.assign(inIter->getAttribute("inBounds"));
 		
-		switch (mBounds_Ref[0]) {
-			case '@':
-				// individual variable value
-			case '#':
-				// environment variable value
-			case '%':
-				// local variable value
-				throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific bounds source!");
-				break;
-			case '$':
-				// parameter value
-				mBounds = Core::castHandleT<Core::Vector>(ioSystem.getParameters().getParameterHandle(mBounds_Ref.substr(1)));
-				break;
-			default: {
-				// direct value
-				// retrieve type of choices
-				if (inIter->getAttribute("inBounds_Type").empty()) {
-					throw schnaps_IOExceptionNodeM(*inIter, "type of bounds expected!");
-				}
-				Core::Number::Alloc::Handle lAlloc = Core::castHandleT<Core::Number::Alloc>(ioSystem.getFactory().getAllocator(inIter->getAttribute("inBounds_Type")));
-				
-				std::stringstream lSS(mBounds_Ref);
-				PACC::Tokenizer lTokenizer(lSS);
-				lTokenizer.setDelimiters("|", "");
+	switch (mBounds_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific bounds source!");
+			break;
+		case '$':
+			// parameter value
+			mBounds = Core::castHandleT<Core::Vector>(ioSystem.getParameters().getParameterHandle(mBounds_Ref.substr(1)));
+			break;
+		default: {
+			// direct value
+			// retrieve type of choices
+			if (inIter->getAttribute("inBounds_Type").empty()) {
+				throw schnaps_IOExceptionNodeM(*inIter, "type of bounds expected!");
+			}
+			Core::Number::Alloc::Handle lAlloc = Core::castHandleT<Core::Number::Alloc>(ioSystem.getFactory().getAllocator(inIter->getAttribute("inBounds_Type")));
+			
+			std::stringstream lSS(mBounds_Ref);
+			PACC::Tokenizer lTokenizer(lSS);
+			lTokenizer.setDelimiters("|", "");
 
-				std::string lBound;
+			std::string lBound;
 
-				mBounds = new Core::Vector();
-				while (lTokenizer.getNextToken(lBound)) {
-					// add to map
-					mBounds->push_back(Core::castHandleT<Core::Number>(lAlloc->allocate()));
-					mBounds->back()->readStr(lBound);
-				}
-				break; }
-		}
+			mBounds = new Core::Vector();
+			while (lTokenizer.getNextToken(lBound)) {
+				// add to map
+				mBounds->push_back(Core::castHandleT<Core::Number>(lAlloc->allocate()));
+				mBounds->back()->readStr(lBound);
+			}
+			break; }
 	}
 
 	if (mBounds->size() == 0) {

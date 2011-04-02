@@ -117,7 +117,7 @@ void MultVariable::readWithSystem(PACC::XML::ConstIterator inIter, Core::System&
 
 	// retrieve left argument
 	if (inIter->getAttribute("inArgLeft").empty()) {
-		throw schnaps_IOExceptionNodeM(*inIter, "left argument of subtract expected!");
+		throw schnaps_IOExceptionNodeM(*inIter, "left argument expected!");
 	}
 	mArgLeft_Ref.assign(inIter->getAttribute("inArgLeft"));
 	
@@ -147,7 +147,7 @@ void MultVariable::readWithSystem(PACC::XML::ConstIterator inIter, Core::System&
 	
 	// retrieve right argument
 	if (inIter->getAttribute("inArgRight").empty()) {
-		throw schnaps_IOExceptionNodeM(*inIter, "right argument of subtract expected!");
+		throw schnaps_IOExceptionNodeM(*inIter, "right argument expected!");
 	}
 	mArgRight_Ref.assign(inIter->getAttribute("inArgRight"));
 	
@@ -204,58 +204,56 @@ void MultVariable::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) 
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
- * \throw  SCHNAPS::Core::RunTimeException if the primitive is not defined for the specific left argument source.
- * \throw  SCHNAPS::Core::RunTimeException if the primitive is not defined for the specific right argument source.
  */
 Core::AnyType::Handle MultVariable::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();	
 	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
 	Core::Number::Handle lArgLeft, lArgRight;
 	
-	if (mArgLeft == NULL) {
-		switch (mArgLeft_Ref[0]) {
-			case '@':
-				// individual variable value
-				lArgLeft = Core::castHandleT<Core::Number>(lContext.getIndividual().getState().getVariableHandle(mArgLeft_Ref.substr(1)));
-				break;
-			case '#':
-				// environment variable value
-				lArgLeft = Core::castHandleT<Core::Number>(lContext.getEnvironment().getState().getVariableHandle(mArgLeft_Ref.substr(1))->clone());
-				break;
-			case '%':
-				// local variable value
-				lArgLeft = Core::castHandleT<Core::Number>(lContext.getLocalVariableHandle(mArgLeft_Ref.substr(1)));
-				break;
-			default:
-				throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific left argument source.");
-				break;
-		}
-	} else {
-		// parameter value or direct value
-		lArgLeft = Core::castHandleT<Core::Number>(mArgLeft->clone());
+	switch (mArgLeft_Ref[0]) {
+		case '@':
+			// individual variable value
+			lArgLeft = Core::castHandleT<Core::Number>(lContext.getIndividual().getState().getVariableHandle(mArgLeft_Ref.substr(1)));
+			break;
+		case '#':
+			// environment variable value
+			lArgLeft = Core::castHandleT<Core::Number>(lContext.getEnvironment().getState().getVariableHandle(mArgLeft_Ref.substr(1))->clone());
+			break;
+		case '%':
+			// local variable value
+			lArgLeft = Core::castHandleT<Core::Number>(lContext.getLocalVariableHandle(mArgLeft_Ref.substr(1)));
+			break;
+		case '$':
+			// parameter value
+			lArgLeft = Core::castHandleT<Core::Number>(mArgLeft->clone());
+			break;
+		default:
+			// direct value
+			lArgLeft = mArgLeft;
+			break;
 	}
 	
-	if (mArgRight == NULL) {
-		switch (mArgRight_Ref[0]) {
-			case '@':
-				// individual variable value
-				lArgRight = Core::castHandleT<Core::Number>(lContext.getIndividual().getState().getVariableHandle(mArgRight_Ref.substr(1)));
-				break;
-			case '#':
-				// environment variable value
-				lArgRight = Core::castHandleT<Core::Number>(lContext.getEnvironment().getState().getVariableHandle(mArgRight_Ref.substr(1))->clone());
-				break;
-			case '%':
-				// local variable value
-				lArgRight = Core::castHandleT<Core::Number>(lContext.getLocalVariableHandle(mArgRight_Ref.substr(1)));
-				break;
-			default:
-				throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific right argument source.");
-				break;
-		}
-	} else {
-		// parameter value or direct value
-		lArgRight = Core::castHandleT<Core::Number>(mArgRight->clone());
+	switch (mArgRight_Ref[0]) {
+		case '@':
+			// individual variable value
+			lArgRight = Core::castHandleT<Core::Number>(lContext.getIndividual().getState().getVariableHandle(mArgRight_Ref.substr(1)));
+			break;
+		case '#':
+			// environment variable value
+			lArgRight = Core::castHandleT<Core::Number>(lContext.getEnvironment().getState().getVariableHandle(mArgRight_Ref.substr(1))->clone());
+			break;
+		case '%':
+			// local variable value
+			lArgRight = Core::castHandleT<Core::Number>(lContext.getLocalVariableHandle(mArgRight_Ref.substr(1)));
+			break;
+		case '$':
+			// parameter value
+			lArgRight = Core::castHandleT<Core::Number>(mArgRight->clone());
+			break;
+		default:
+			// direct value
+			lArgRight = mArgRight;
+			break;
 	}
 	
 	lContext.getIndividual().getState().setVariable(mResult_Ref.substr(1), lArgLeft->mult(*lArgRight));
