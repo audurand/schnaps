@@ -103,6 +103,7 @@ public:
 			for (unsigned int i = 0; i < mOptions.size(); i++) {
 				lActions.push_back(Action(mOptions[i]));
 			}
+			this->insert(std::pair<std::string, std::vector<Action> >(inState, lActions));
 		}
 		return (*this)[inState];
 		schnaps_StackTraceEndM("std::vector<SCHNAPS::Plugins::Learning::Action>& SCHNAPS::Plugins::Learning::Choice::getActions(const std::string&)");

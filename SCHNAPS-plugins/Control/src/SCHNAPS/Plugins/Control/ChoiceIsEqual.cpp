@@ -132,9 +132,8 @@ ChoiceIsEqual& ChoiceIsEqual::operator=(const ChoiceIsEqual& inOriginal) {
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.
  * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
- * \throw SCHNAPS::Core::IOException if choiceVariableLabel attribute is missing.
- * \throw SCHNAPS::Core::IOException if choices attribute and choices.ref attribute are missing.
- * \throw SCHNAPS::Core::IOException if choices attribute is used and choiceType attribute is missing.
+ * \throw SCHNAPS::Core::IOException if choices or inValue attributes are missing.
+ * \throw SCHNAPS::Core::IOException if choices attribute is given as direct value and inChoices_Type attribute is missing.
  * \throw SCHNAPS::Core::IOException if choice bounds are not given in crescent order.
  * \throw SCHNAPS::Core::IOException if less than one choice are given.
  * \throw SCHNAPS::Core::RunTimeException if the primitive is undefined for the specific choices source.
@@ -199,7 +198,7 @@ void ChoiceIsEqual::readWithSystem(PACC::XML::ConstIterator inIter, Core::System
 			break;
 		case '$': {
 			// parameter value
-			Core::Vector::Handle lChoices = Core::castHandleT<Core::Vector>(ioSystem.getParameters().getParameterHandle(mChoices_Ref.substr(1).c_str()));
+			Core::Vector::Handle lChoices = Core::castHandleT<Core::Vector>(ioSystem.getParameters().getParameterHandle(mChoices_Ref.substr(1)));
 			for (unsigned int i = 0; i < lChoices->size(); i++) {
 				mChoiceMap.insert(std::pair<Core::Atom::Handle, unsigned int>(Core::castHandleT<Core::Atom>((*lChoices)[i]), i));
 			}

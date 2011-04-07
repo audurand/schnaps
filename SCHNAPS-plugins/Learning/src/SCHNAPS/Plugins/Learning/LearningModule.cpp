@@ -55,6 +55,10 @@ void LearningModule::readWithSystem(PACC::XML::ConstIterator inIter, Core::Syste
 		lOSS << "got tag <" << inIter->getValue() << "> instead!";
 		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
 	}
+	
+#ifdef SCHNAPS_FULL_DEBUG
+	std::cout << "Reading learning module\n";
+#endif
 
 	unsigned int lNbThreads = Core::castHandleT<Core::UInt>(ioSystem.getParameters().getParameterHandle("threads.simulator"))->getValue();
 	mDecisionMakers.clear();

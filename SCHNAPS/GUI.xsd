@@ -70,7 +70,7 @@
 							<xsd:attribute name="displayAttribute" type="xsd:boolean" use="optional" default="false"/>
 						</xsd:complexType>
 					</xsd:element>
-					<xsd:element name="list" minOccurs="0" maxOccurs="1">
+					<xsd:element name="list" minOccurs="0" maxOccurs="unbounded">
 						<xsd:complexType>
 							<xsd:attribute name="type" use="required">
 								<xsd:simpleType>
@@ -83,6 +83,8 @@
 										<xsd:enumeration value="processesAndScenarios"/>
 										<xsd:enumeration value="allVariables"/>
 										<xsd:enumeration value="envVariables"/>
+										<xsd:enumeration value="indVariables"/>
+										<xsd:enumeration value="locVariables"/>
 										<xsd:enumeration value="allParameters"/>
 									</xsd:restriction>
 								</xsd:simpleType>

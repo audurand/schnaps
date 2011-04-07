@@ -207,7 +207,7 @@ void DivVariable::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) c
  */
 Core::AnyType::Handle DivVariable::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();	
-	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
+	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
 	Core::Number::Handle lArgLeft, lArgRight;
 	
 	switch (mArgLeft_Ref[0]) {
@@ -256,7 +256,15 @@ Core::AnyType::Handle DivVariable::execute(unsigned int inIndex, Core::Execution
 			break;
 	}
 	
-	lContext.getIndividual().getState().setVariable(mResult_Ref.substr(1), lArgLeft->div(*lArgRight));	
+	if (mResult_Ref[0] == '@') {
+		// individual variable
+		Simulation::SimulationContext& lSimulationContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
+		lSimulationContext.getIndividual().getState().setVariable(mResult_Ref.substr(1), lArgLeft->div(*lArgRight));
+	} else { // mResult_Ref[0] == '%'
+		// local variable
+		lContext.setLocalVariable(mResult_Ref.substr(1), lArgLeft->div(*lArgRight));
+	}
+	
 	return NULL;
 	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Operators::DivVariable::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
 }

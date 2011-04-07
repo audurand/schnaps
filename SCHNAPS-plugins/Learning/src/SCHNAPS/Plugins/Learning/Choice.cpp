@@ -146,6 +146,10 @@ void Choice::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSys
 	// read reward function
 	inIter++;
 	readFunctionReward(inIter, ioSystem);
+	
+	// read choice map
+	inIter++;
+	readChoiceMap(inIter, ioSystem);
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Learning::Choice::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
@@ -229,21 +233,20 @@ void Choice::readOptions(PACC::XML::ConstIterator inIter, Core::System& ioSystem
 
 	mOptions.clear();
 	for (PACC::XML::ConstIterator lChild = inIter->getFirstChild(); lChild; lChild++) {
-		if (lChild->getType() != PACC::XML::eData) {
-			throw schnaps_IOExceptionNodeM(*lChild, "tag expected!");
+		if (lChild->getType() == PACC::XML::eData) {
+			if (lChild->getValue() != "Option") {
+				std::ostringstream lOSS;
+				lOSS << "tag <Option> expected, but ";
+				lOSS << "got tag <" << lChild->getValue() << "> instead!";
+				throw schnaps_IOExceptionNodeM(*lChild, lOSS.str());
+			}
+			
+			// retrieve label
+			if (lChild->getAttribute("label").empty()) {
+				throw schnaps_IOExceptionNodeM(*lChild, "choice option label expected!");
+			}
+			mOptions.push_back(lChild->getAttribute("label"));
 		}
-		if (lChild->getValue() != "Option") {
-			std::ostringstream lOSS;
-			lOSS << "tag <Option> expected, but ";
-			lOSS << "got tag <" << lChild->getValue() << "> instead!";
-			throw schnaps_IOExceptionNodeM(*lChild, lOSS.str());
-		}
-		
-		// retrieve label
-		if (lChild->getAttribute("label").empty()) {
-			throw schnaps_IOExceptionNodeM(*lChild, "choice option label expected!");
-		}
-		mOptions.push_back(inIter->getAttribute("label"));
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Learning::Choice::readOptions(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
@@ -273,6 +276,7 @@ void Choice::readFunctionState(PACC::XML::ConstIterator inIter, Core::System& io
 		
 		// retrieve function execution tree
 		inIter++;
+		mFunctionState.mExecution = new Core::PrimitiveTree();
 		mFunctionState.mExecution->readWithSystem(inIter, ioSystem);
 	} else {
 		std::ifstream lIFS(inIter->getAttribute("file").c_str(), std::ios::in);
@@ -308,6 +312,7 @@ void Choice::readFunctionReward(PACC::XML::ConstIterator inIter, Core::System& i
 		
 		// retrieve function execution tree
 		inIter++;
+		mFunctionReward.mExecution = new Core::PrimitiveTree();
 		mFunctionReward.mExecution->readWithSystem(inIter, ioSystem);
 	} else {
 		std::ifstream lIFS(inIter->getAttribute("file").c_str(), std::ios::in);

@@ -130,8 +130,8 @@ else(DL_LIB MATCHES DL_LIB-NOTFOUND)
 	message(STATUS "++ dl library found - ${DL_LIB_PATH}")
 endif(DL_LIB MATCHES DL_LIB-NOTFOUND)
 
-message(STATUS "Looking for SCHNAPS basic plugin sourcefiles...")
-# Include all SCHNAPS plugin Basic sourcefiles and headers
+message(STATUS "Looking for SCHNAPS Control plugin sourcefiles...")
+# Include all SCHNAPS Control plugin sourcefiles and headers
 file(GLOB_RECURSE SCHNAPS_PLUGINS_CONTROL_SOURCES src/SCHNAPS/Plugins/Control/*.cpp )
 file(GLOB_RECURSE SCHNAPS_PLUGINS_CONTROL_HEADERS src/SCHNAPS/Plugins/Control/*.hpp)
 

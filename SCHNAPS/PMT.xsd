@@ -74,7 +74,7 @@
 				</xsd:restriction>
 			</xsd:simpleType>
 			<xsd:simpleType>
-				<xsd:restriction base="xsd:string">
+				<xsd:restriction base="xsd:unsignedLong">
 					<xsd:minInclusive value="0"/><!-- Argument cannot be less than 0 -->
 				</xsd:restriction>
 			</xsd:simpleType>
@@ -118,6 +118,21 @@
 				</xsd:extension>			
   			</xsd:simpleContent>
 		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="attributeType">
+		<xsd:simpleType>
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="Bool"/>
+		     	 	<xsd:enumeration value="Double"/>
+				<xsd:enumeration value="Float"/>
+				<xsd:enumeration value="Int"/>
+				<xsd:enumeration value="UInt"/>
+				<xsd:enumeration value="Long"/>
+				<xsd:enumeration value="ULong"/>
+				<xsd:enumeration value="String"/>
+			</xsd:restriction>
+		</xsd:simpleType>
 	</xsd:element>
 	
 	<xsd:element name="eventHandler">

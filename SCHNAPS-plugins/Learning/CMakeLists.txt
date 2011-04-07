@@ -154,23 +154,38 @@ SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 # Setting up library
 add_library(
-	learning
+	learning-lib
 	${SCHNAPS_PLUGINS_LEARNING_LIBRARY_TYPE}
 	${SCHNAPS_PLUGINS_LEARNING_SOURCES}
 	${SCHNAPS_PLUGINS_LEARNING_HEADERS}
 	)
 
-target_link_libraries(learning pacc)
-target_link_libraries(learning schnaps)
-target_link_libraries(learning dl)
+target_link_libraries(learning-lib pacc)
+target_link_libraries(learning-lib schnaps)
+target_link_libraries(learning-lib dl)
 
-set_target_properties(learning PROPERTIES VERSION ${LIBRARY_VERSION} LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/lib" COMPILE_FLAGS "-rdynamic")
+set_target_properties(learning-lib PROPERTIES VERSION ${LIBRARY_VERSION} LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/lib" COMPILE_FLAGS "-rdynamic")
+
+# Setting up executable
+add_executable(
+	learning-bin
+	${SCHNAPS_PLUGINS_LEARNING_SOURCES}
+	${SCHNAPS_PLUGINS_LEARNING_HEADERS}
+	)
+
+target_link_libraries(learning-bin pacc)
+target_link_libraries(learning-bin schnaps)
+target_link_libraries(learning-bin dl)
+
+set_target_properties(learning-bin PROPERTIES OUTPUT_NAME schnaps-learning VERSION ${SCHNAPS_PLUGINS_LEARNING_VERSION} RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin" COMPILE_FLAGS "-rdynamic")
+
 
 # Install dependencies
 install(FILES ${SCHNAPS_PLUGINS_LEARNING_HEADERS} DESTINATION include/SCHNAPS/Plugins/Learning)
 
 # Install targets
-install(TARGETS learning
+install(TARGETS learning-bin learning-lib
+  RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib/schnaps-plugins
   ARCHIVE DESTINATION lib/schnaps-plugins
 )

@@ -95,11 +95,12 @@ public:
 	 */
 	unsigned int getActionID(const std::string& inDecisionNode, Simulation::Individual::Handle inIndividual) {
 		schnaps_StackTraceBeginM();
-		if (this->find(inDecisionNode) == this->end()) {
+		DecisionMaker::iterator lIterDecisionNode = this->find(inDecisionNode);
+		if (lIterDecisionNode == this->end()) {
 			throw schnaps_RunTimeExceptionM("Decision node '" + inDecisionNode + "' is not in decision maker; could not make choice.");
 		}
 		// get choice learning data
-		Choice& lChoice = this->find(inDecisionNode)->second;
+		Choice& lChoice = lIterDecisionNode->second;
 		
 		// set current individual in learning context
 		mContext.setIndividual(inIndividual);
@@ -109,10 +110,10 @@ public:
 		
 		// get action stats for that state
 		std::vector<Action>& lActions = lChoice.getActions(lCurrentState);
-		
+				
 		// make choice using GEAS
 		unsigned int lActionID;
-		if (mLearning->getValue()) {
+		if (mLearning->getValue()) {			
 			// learning mode
 			std::vector<unsigned int> lActionsNeverTried;
 			int lNbActionsRequireMoreUpdates = 0;
@@ -139,7 +140,7 @@ public:
 				// all actions tried, but some require more updates, random all
 				lActionID = mContext.getRandomizer().rollInteger(0, lActions.size()-1);
 			} else {
-				// very actions tried at least two times
+				// every actions tried at least two times
 				double lVariance, lCoeff, lMean, lCurrentValue, lMaxValue;
 				std::vector<unsigned int> lMaxActions;
 				
@@ -176,6 +177,7 @@ public:
 			(*mOGZS) << inDecisionNode << "," << lCurrentState << "," << lActionID << "," << inIndividual->getIndex() << "\n";
 			mOGZS->flush();
 		} else {
+			
 			// exploitation mode = action with best mean
 			double lCurrentValue, lMaxValue;
 			std::vector<unsigned int> lMaxActions;

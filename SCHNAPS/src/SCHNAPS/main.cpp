@@ -38,8 +38,8 @@ int main(int argc, char* argv[]) {
 		// configuration
 		std::string lDirectory = "";
 		std::string lConfigurationFile = "";
+		std::string lParameters = "";
 		std::string lScenario = "";
-		char *lParameters = '\0';
 
 		printf("start\n");
 
@@ -48,16 +48,16 @@ int main(int argc, char* argv[]) {
 		while ((lOpt = getopt(argc, argv, "d:c:s:p:")) != -1) {
 			switch (lOpt) {
 			case 'd':
-				lDirectory = optarg;
+				lDirectory.assign(optarg);
 				break;
 			case 'c':
-				lConfigurationFile = optarg;
-				break;
-			case 's':
-				lScenario = optarg;
+				lConfigurationFile.assign(optarg);
 				break;
 			case 'p':
-				lParameters = optarg;
+				lParameters.assign(optarg);
+				break;
+			case 's':
+				lScenario.assign(optarg);
 				break;
 			case '?':
 				fprintf(stderr, "Missing argument of option -%c.\n", optopt);
@@ -79,25 +79,29 @@ int main(int argc, char* argv[]) {
 		
 		if (lScenario.empty()) {
 			std::stringstream lOSS;
-			lOSS << "The given scenario label is empty; ";
+			lOSS << "The given scenario is empty; ";
 			lOSS << "could not simulate it.";
 			schnaps_RunTimeExceptionM(lOSS.str());
 		}
 
 		Simulation::Simulator lSimulator;
 
+		// set current working directory
 		if (lDirectory.empty() == false) {
 			int lChdir = chdir(lDirectory.c_str());
 			schnaps_AssertM(lChdir == 0);
 		}
 
+		// configure simulator from file
 		PACC::XML::Document *lDocument = new PACC::XML::Document();
 		lDocument->parse(lConfigurationFile);
 		lSimulator.read(lDocument->getFirstDataTag());
 		delete lDocument;
 
 		// command-line parameters override configuration file.
-		lSimulator.configure(lParameters);
+		if (lParameters.empty() == false) {
+			lSimulator.configure(lParameters);
+		}
 
 		printf("- Simulation\n");
 		// simulate

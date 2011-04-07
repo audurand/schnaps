@@ -46,8 +46,8 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="allVariables" allowEdition="false"/>
-							<gui:displayValue position="br" showAttr="value" delimiter="+"/>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -56,6 +56,13 @@
 			<xsd:attribute name="inArgLeft" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>
+							<gui:displayValue position="br" showAttr="inArgRight" delimiter="+"/>		
+						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Left number</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -85,6 +92,12 @@
 			<xsd:attribute name="inArgRight" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -126,8 +139,8 @@
 	<xsd:element name="Operators_DivVariable" substitutionGroup="_modifierOp">
 		<xsd:annotation>
 			<xsd:appinfo>
-				<pmt:info lang="en">Compute the division of left number by right number. Store the result in a variable.</pmt:info>
-				<pmt:mappedName lang="en">Div (result in variable)</pmt:mappedName>
+				<pmt:info lang="en">Compute the division of left and right numbers. Store the result in a variable.</pmt:info>
+				<pmt:mappedName lang="en">Divide (result in variable)</pmt:mappedName>
 				<pmt:returnType definedBy="staticType">Void</pmt:returnType>
 			</xsd:appinfo>
 		</xsd:annotation>
@@ -136,8 +149,8 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="allVariables" allowEdition="false"/>
-							<gui:displayValue position="br" showAttr="value" delimiter="+"/>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -146,6 +159,13 @@
 			<xsd:attribute name="inArgLeft" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>
+							<gui:displayValue position="br" showAttr="inArgRight" delimiter="/"/>		
+						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Left number</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -175,6 +195,12 @@
 			<xsd:attribute name="inArgRight" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -203,7 +229,7 @@
 			</xsd:attribute>
 		</xsd:complexType>
 	</xsd:element>
-	
+
 	<xsd:element name="Operators_ExpComplex" substitutionGroup="_unaryOp">
 		<xsd:annotation>
 			<xsd:appinfo>
@@ -215,7 +241,6 @@
 			<xsd:choice minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
 					<xsd:appinfo>
-						<gui:childBehavior/>
 						<pmt:childType definedBy="staticType">Number</pmt:childType>
 					</xsd:appinfo>
 				</xsd:annotation>
@@ -232,7 +257,6 @@
 			<xsd:appinfo>
 				<pmt:info lang="en">Compute the modulo of left child (number) by right child (number).</pmt:info>
 				<pmt:mappedName lang="en">Modulo (complex)</pmt:mappedName>
-				<pmt:returnType definedBy="argument">1</pmt:returnType>
 			</xsd:appinfo>
 		</xsd:annotation>
 		<xsd:complexType>
@@ -240,7 +264,6 @@
 				<xsd:choice minOccurs="1" maxOccurs="1">
 					<xsd:annotation>
 						<xsd:appinfo>
-							<gui:childBehavior/>
 							<pmt:childType definedBy="staticType">Integer</pmt:childType>
 							<pmt:childBranchTag lang="en">Right number</pmt:childBranchTag>
 						</xsd:appinfo>
@@ -253,7 +276,6 @@
 				<xsd:choice minOccurs="1" maxOccurs="1">
 					<xsd:annotation>
 						<xsd:appinfo>
-							<gui:childBehavior/>
 							<pmt:childType definedBy="staticType">Integer</pmt:childType>
 							<pmt:childBranchTag lang="en">Left number</pmt:childBranchTag>
 						</xsd:appinfo>
@@ -289,8 +311,8 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="allVariables" allowEdition="false"/>
-							<gui:displayValue position="br" showAttr="value" delimiter="+"/>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -299,6 +321,13 @@
 			<xsd:attribute name="inArgLeft" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>
+							<gui:displayValue position="br" showAttr="inArgRight" delimiter="*"/>		
+						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Left number</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -328,6 +357,12 @@
 			<xsd:attribute name="inArgRight" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -388,8 +423,8 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="allVariables" allowEdition="false"/>
-							<gui:displayValue position="br" showAttr="value" delimiter="+"/>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -398,6 +433,13 @@
 			<xsd:attribute name="inArgLeft" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>
+							<gui:displayValue position="br" showAttr="inArgRight" delimiter="-"/>		
+						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Left number</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -427,6 +469,12 @@
 			<xsd:attribute name="inArgRight" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -462,13 +510,18 @@
 			<xsd:appinfo>
 				<pmt:info lang="en">Test inclusive between on numbers.</pmt:info>
 				<pmt:mappedName lang="en">Is value between?</pmt:mappedName>
-				<pmt:returnType definedBy="staticType">Bool</pmt:returnType>
 			</xsd:appinfo>
 		</xsd:annotation>
 		<xsd:complexType>
 			<xsd:attribute name="inValue" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inValue_Type"/>
 						<pmt:attributeMappedName lang="en">Test number</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -498,6 +551,12 @@
 			<xsd:attribute name="inArgLeft" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Min number</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -527,6 +586,12 @@
 			<xsd:attribute name="inArgRight" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Max number</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -610,13 +675,19 @@
 			<xsd:appinfo>
 				<pmt:info lang="en">Test is left argument is equal to right argument.</pmt:info>
 				<pmt:mappedName lang="en">Is equal?</pmt:mappedName>
-				<pmt:returnType definedBy="staticType">Bool</pmt:returnType>
 			</xsd:appinfo>
 		</xsd:annotation>
 		<xsd:complexType>
 			<xsd:attribute name="inArgLeft" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>
+							<gui:displayValue position="br" showAttr="inArgRight" delimiter="=?"/>		
+						</gui:attributeBehavior>	
 						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Left argument</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -646,6 +717,12 @@
 			<xsd:attribute name="inArgRight" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -689,13 +766,19 @@
 			<xsd:appinfo>
 				<pmt:info lang="en">Test is left argument is greater than right argument.</pmt:info>
 				<pmt:mappedName lang="en">Is greater?</pmt:mappedName>
-				<pmt:returnType definedBy="staticType">Bool</pmt:returnType>
 			</xsd:appinfo>
 		</xsd:annotation>
 		<xsd:complexType>
 			<xsd:attribute name="inArgLeft" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>
+							<gui:displayValue position="br" showAttr="inArgRight" delimiter="&gt;"/>			
+						</gui:attributeBehavior>	
 						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Left argument</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -725,6 +808,12 @@
 			<xsd:attribute name="inArgRight" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -768,13 +857,19 @@
 			<xsd:appinfo>
 				<pmt:info lang="en">Test is left argument is greater or equal to right argument.</pmt:info>
 				<pmt:mappedName lang="en">Is greater or equal?</pmt:mappedName>
-				<pmt:returnType definedBy="staticType">Bool</pmt:returnType>
 			</xsd:appinfo>
 		</xsd:annotation>
 		<xsd:complexType>
 			<xsd:attribute name="inArgLeft" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>
+							<gui:displayValue position="br" showAttr="inArgRight" delimiter="&gt;="/>			
+						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Left argument</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -804,6 +899,12 @@
 			<xsd:attribute name="inArgRight" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -847,13 +948,19 @@
 			<xsd:appinfo>
 				<pmt:info lang="en">Test is left argument is less than right argument.</pmt:info>
 				<pmt:mappedName lang="en">Is less?</pmt:mappedName>
-				<pmt:returnType definedBy="staticType">Bool</pmt:returnType>
 			</xsd:appinfo>
 		</xsd:annotation>
 		<xsd:complexType>
 			<xsd:attribute name="inArgLeft" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>
+							<gui:displayValue position="br" showAttr="inArgRight" delimiter="&lt;"/>		
+						</gui:attributeBehavior>	
 						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Left argument</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -883,6 +990,12 @@
 			<xsd:attribute name="inArgRight" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -926,13 +1039,19 @@
 			<xsd:appinfo>
 				<pmt:info lang="en">Test is left argument is less or equal to right argument.</pmt:info>
 				<pmt:mappedName lang="en">Is less or equal?</pmt:mappedName>
-				<pmt:returnType definedBy="staticType">Bool</pmt:returnType>
 			</xsd:appinfo>
 		</xsd:annotation>
 		<xsd:complexType>
 			<xsd:attribute name="inArgLeft" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>
+							<gui:displayValue position="br" showAttr="inArgRight" delimiter="&lt;="/>		
+						</gui:attributeBehavior>	
 						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Left argument</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -962,6 +1081,12 @@
 			<xsd:attribute name="inArgRight" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -995,7 +1120,7 @@
 		<xsd:annotation>
 			<xsd:appinfo>
 				<pmt:info lang="en">Test is left child is less or equal to right child.</pmt:info>
-				<pmt:mappedName lang="en">Is less or equal?</pmt:mappedName>
+				<pmt:mappedName lang="en">Is less or equal? (complex)</pmt:mappedName>
 			</xsd:appinfo>
 		</xsd:annotation>
 	</xsd:element>
@@ -1006,21 +1131,35 @@
 			<xsd:appinfo>
 				<pmt:info lang="en">Compute a logical AND between left and right booleans.</pmt:info>
 				<pmt:mappedName lang="en">AND</pmt:mappedName>
-				<pmt:returnType definedBy="staticType">Bool</pmt:returnType>
 			</xsd:appinfo>
 		</xsd:annotation>
 		<xsd:complexType>
 			<xsd:attribute name="inArgLeft" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>
+							<gui:displayValue position="br" showAttr="inArgRight" delimiter="&amp;"/>		
+						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Left boolean</pmt:attributeMappedName>
+						<pmt:attributeType>Bool</pmt:attributeType>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
 			<xsd:attribute name="inArgRight" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Right boolean</pmt:attributeMappedName>
+						<pmt:attributeType>Bool</pmt:attributeType>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
@@ -1041,14 +1180,21 @@
 			<xsd:appinfo>
 				<pmt:info lang="en">Compute a logical NOT on boolean.</pmt:info>
 				<pmt:mappedName lang="en">NOT</pmt:mappedName>
-				<pmt:returnType definedBy="staticType">Bool</pmt:returnType>
 			</xsd:appinfo>
 		</xsd:annotation>
 		<xsd:complexType>
 			<xsd:attribute name="inArg" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>
+							<gui:displayValue position="br"/>		
+						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Boolean</pmt:attributeMappedName>
+						<pmt:attributeType>Bool</pmt:attributeType>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
@@ -1060,7 +1206,6 @@
 			<xsd:appinfo>
 				<pmt:info lang="en">Compute a logical NOT on child (boolean).</pmt:info>
 				<pmt:mappedName lang="en">NOT (complex)</pmt:mappedName>
-				<pmt:returnType definedBy="staticType">Bool</pmt:returnType>
 			</xsd:appinfo>
 		</xsd:annotation>
 		<xsd:complexType>
@@ -1080,21 +1225,35 @@
 			<xsd:appinfo>
 				<pmt:info lang="en">Compute a logical OR between left and right booleans.</pmt:info>
 				<pmt:mappedName lang="en">OR</pmt:mappedName>
-				<pmt:returnType definedBy="staticType">Bool</pmt:returnType>
 			</xsd:appinfo>
 		</xsd:annotation>
 		<xsd:complexType>
 			<xsd:attribute name="inArgLeft" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>
+							<gui:displayValue position="br" showAttr="inArgRight" delimiter="|"/>			
+						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Left boolean</pmt:attributeMappedName>
+						<pmt:attributeType>Bool</pmt:attributeType>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
 			<xsd:attribute name="inArgRight" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Right boolean</pmt:attributeMappedName>
+						<pmt:attributeType>Bool</pmt:attributeType>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
@@ -1142,8 +1301,8 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="allVariables" allowEdition="false"/>
-							<gui:displayValue position="br" showAttr="value" delimiter="+"/>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -1152,6 +1311,13 @@
 			<xsd:attribute name="inArgLeft" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>
+							<gui:displayValue position="br" showAttr="inArgRight" delimiter="&lt;"/>		
+						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Left string</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
@@ -1159,6 +1325,12 @@
 			<xsd:attribute name="inArgRight" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Right string</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
@@ -1176,20 +1348,18 @@
 		<xsd:complexType>
 			<xsd:complexContent>
 				<xsd:extension base="_unaryOpComplexType">
-					<xsd:attribute name="rate" type="xsd:double" use="optional">
-						<xsd:annotation>
-							<xsd:appinfo>
-								<pmt:attributeMappedName lang="en">Actualization rate</pmt:attributeMappedName>
-							</xsd:appinfo>
-						</xsd:annotation>
-					</xsd:attribute>
-					<xsd:attribute name="rate.ref" type="xsd:string" use="required">
+					<xsd:attribute name="rate" type="xsd:string" use="required">
 						<xsd:annotation>
 							<xsd:appinfo>
 								<gui:attributeBehavior>
-									<gui:list type="allParameters"/>
+									<gui:list type="indVariables" allowEdition="False"/>
+									<gui:list type="envVariables" allowEdition="False"/>
+									<gui:list type="locVariables" allowEdition="False"/>
+									<gui:list type="allParameters" allowEdition="False"/>	
+									<gui:displayValue position="br"/>	
 								</gui:attributeBehavior>
-								<pmt:attributeInfo lang="en" reference="true"/>
+								<pmt:attributeMappedName lang="en">Actualization rate</pmt:attributeMappedName>
+								<pmt:attributeType>Double</pmt:attributeType>
 							</xsd:appinfo>
 						</xsd:annotation>
 					</xsd:attribute>

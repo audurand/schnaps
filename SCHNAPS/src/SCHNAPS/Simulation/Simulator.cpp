@@ -460,7 +460,7 @@ void Simulator::processScenario(SimulationThread::Handle inThread) {
 	const std::vector<unsigned int>& lNewIndexes = inThread->getNewIndexes();
 
 	// if there is a scenario for individuals
-	if (lContext.getScenarios().find(inThread->getScenarioLabel())->second.mProcessIndividual != NULL) {
+	if (lContext.getScenario(inThread->getScenarioLabel()).mProcessIndividual != NULL) {
 		// execute the scenario
 		for (unsigned int i = 0; i < lNewIndexes.size(); i++) {
 			lContext.setIndividual(lContext.getEnvironment().getPopulation()[lNewIndexes[i]]);
@@ -582,9 +582,6 @@ void Simulator::readInput(PACC::XML::ConstIterator inIter) {
 void Simulator::readSimulation(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceBeginM();
 	schnaps_NonNullPointerAssertM(mSystem);
-#ifdef SCHNAPS_FULL_DEBUG
-	printf("Reading simulation\n");
-#endif
 	if (inIter->getType() != PACC::XML::eData) {
 		throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
 	}
@@ -594,6 +591,10 @@ void Simulator::readSimulation(PACC::XML::ConstIterator inIter) {
 		lOSS << "got tag <" << inIter->getValue() << "> instead!";
 		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
 	}
+	
+#ifdef SCHNAPS_FULL_DEBUG
+	printf("Reading simulation\n");
+#endif
 
 	PACC::XML::ConstIterator lChild = inIter->getFirstChild();
 
@@ -626,10 +627,6 @@ void Simulator::readSimulation(PACC::XML::ConstIterator inIter) {
  */
 void Simulator::readOutput(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceBeginM();
-	schnaps_NonNullPointerAssertM(mSystem);
-#ifdef SCHNAPS_FULL_DEBUG
-	printf("Reading output\n");
-#endif
 	if (inIter->getType() != PACC::XML::eData) {
 		throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
 	}
@@ -639,6 +636,10 @@ void Simulator::readOutput(PACC::XML::ConstIterator inIter) {
 		lOSS << "got tag <" << inIter->getValue() << "> instead!";
 		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
 	}
+	
+#ifdef SCHNAPS_FULL_DEBUG
+	std::cout << "Reading output\n";
+#endif
 
 	PACC::XML::ConstIterator lChild = inIter->getFirstChild();
 	readEnvironmentOutput(lChild++);
@@ -699,7 +700,6 @@ void Simulator::readRandomizerInfo(PACC::XML::ConstIterator inIter) {
  */
 void Simulator::readEnvironmentOutput(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceBeginM();
-	schnaps_NonNullPointerAssertM(mSystem);
 	if (inIter->getType() != PACC::XML::eData) {
 		throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
 	}
@@ -709,6 +709,10 @@ void Simulator::readEnvironmentOutput(PACC::XML::ConstIterator inIter) {
 		lOSS << "got tag <" << inIter->getValue() << "> instead!";
 		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
 	}
+	
+#ifdef SCHNAPS_FULL_DEBUG
+	printf("- environment\n");
+#endif
 
 	mOutputParameters.mEnvironment.clear();
 	for (PACC::XML::ConstIterator lChild = inIter->getFirstChild(); lChild; lChild++) {
@@ -737,7 +741,6 @@ void Simulator::readEnvironmentOutput(PACC::XML::ConstIterator inIter) {
  */
 void Simulator::readPopulationOutput(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceBeginM();
-	schnaps_NonNullPointerAssertM(mSystem);
 	if (inIter->getType() != PACC::XML::eData) {
 		throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
 	}
@@ -747,6 +750,10 @@ void Simulator::readPopulationOutput(PACC::XML::ConstIterator inIter) {
 		lOSS << "got tag <" << inIter->getValue() << "> instead!";
 		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
 	}
+	
+#ifdef SCHNAPS_FULL_DEBUG
+	printf("- population\n");
+#endif
 
 	mOutputParameters.mPopulation.clear();
 	for (PACC::XML::ConstIterator lChild_i = inIter->getFirstChild(); lChild_i; lChild_i++) {

@@ -178,6 +178,10 @@ void DecisionMaker::update(const std::string& inDecisionNode, const std::string&
 void DecisionMaker::setSystem(Core::System::Handle inSystem) {
 	schnaps_StackTraceBeginM();
 	mContext.setSystem(inSystem);
+	if (inSystem != NULL) {
+		mLearning = Core::castHandleT<Core::Bool>(inSystem->getParameters().getParameterHandle("learning.learn"));
+		mGEAS_Alpha = Core::castHandleT<Core::Double>(inSystem->getParameters().getParameterHandle("learning.geas.alpha"));
+	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Learning::DecisionMaker::setSystem(SCHNAPS::Core::System::Handle)");
 }
 

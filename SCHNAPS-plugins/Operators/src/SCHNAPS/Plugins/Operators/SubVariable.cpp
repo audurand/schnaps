@@ -111,7 +111,7 @@ void SubVariable::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
 	}
 	mResult_Ref.assign(inIter->getAttribute("outResult"));
 	
-	if (mResult_Ref[0] != '@') {
+	if (mResult_Ref[0] != '@' && mResult_Ref[0] != '%') {
 		throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific output result source!");
 	}
 
@@ -209,7 +209,7 @@ void SubVariable::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) c
  */
 Core::AnyType::Handle SubVariable::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
+	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
 	Core::Number::Handle lArgLeft, lArgRight;
 	
 	if (mArgLeft == NULL) {
@@ -258,7 +258,15 @@ Core::AnyType::Handle SubVariable::execute(unsigned int inIndex, Core::Execution
 		lArgRight = Core::castHandleT<Core::Number>(mArgRight->clone());
 	}
 	
-	lContext.getIndividual().getState().setVariable(mResult_Ref.substr(1), lArgLeft->sub(*lArgRight));
+	if (mResult_Ref[0] == '@') {
+		// individual variable
+		Simulation::SimulationContext& lSimulationContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
+		lSimulationContext.getIndividual().getState().setVariable(mResult_Ref.substr(1), lArgLeft->sub(*lArgRight));
+	} else { // mResult_Ref[0] == '%'
+		// local variable
+		lContext.setLocalVariable(mResult_Ref.substr(1), lArgLeft->sub(*lArgRight));
+	}
+	
 	return NULL;
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Operators::SubVariable::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
 }

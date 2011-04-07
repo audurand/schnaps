@@ -42,7 +42,7 @@
 					<xsd:element ref="_primitive"/>
 				</xsd:choice>
 			</xsd:sequence>
-			<xsd:attribute name="inProbability" type="xsd:double" use="required">
+			<xsd:attribute name="inProbability" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
@@ -50,8 +50,13 @@
 								<gui:individualType definedBy="xsdType">xsd:double</gui:individualType>
 								<gui:sum>1</gui:sum>
 							</gui:mapToBranches>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Probability</pmt:attributeMappedName>
+						<pmt:attributeType>Double</pmt:attributeType>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
@@ -81,10 +86,14 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:mapToBranches regexp="|" startIndex="0" endIndex="-1" editable="false" displayAttribute="true">
+							<gui:mapToBranches regexp="|" startIndex="0" endIndex="-1" editable="true" displayAttribute="true">
 								<gui:individualType definedBy="xsdType">xsd:double</gui:individualType>
 								<gui:sum>1</gui:sum>
 							</gui:mapToBranches>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Branch probabilities</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -116,7 +125,10 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="allVariables" allowEdition="False"/>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
 							<gui:displayValue position="br"/>
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Value</pmt:attributeMappedName>
@@ -153,6 +165,10 @@
 							<gui:mapToBranches regexp="|" startIndex="0" endIndex="-1" defaultAtomValue="0" editable="true" displayAttribute="true">
 								<gui:individualType definedBy="attributeValue">inBounds_Type</gui:individualType>
 							</gui:mapToBranches>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inBounds_Type">WARNING: value used to make choice must be contained between stated bounds!</pmt:attributeInfo>
 						<pmt:attributeMappedName lang="en">Lower bounds</pmt:attributeMappedName>
@@ -185,7 +201,10 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="allVariables" allowEdition="False"/>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
 							<gui:displayValue position="br"/>
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Value</pmt:attributeMappedName>
@@ -222,8 +241,12 @@
 							<gui:mapToBranches regexp="|" startIndex="0" endIndex="-1" defaultAtomValue="0" editable="true" displayAttribute="true">
 								<gui:individualType definedBy="attributeValue">inChoices_Type</gui:individualType>
 							</gui:mapToBranches>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
 						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en" pairedAttr="choiceType">WARNING: value used to make choice must be contained by one of the stated choices!</pmt:attributeInfo>
+						<pmt:attributeInfo lang="en" pairedAttr="inChoices_Type">WARNING: value used to make choice must be contained by one of the stated choices!</pmt:attributeInfo>
 						<pmt:attributeMappedName lang="en">Choices</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
@@ -358,7 +381,14 @@
 					<xsd:attribute name="inDelay" type="xsd:string" use="required">
 						<xsd:annotation>
 							<xsd:appinfo>
+								<gui:attributeBehavior>
+									<gui:list type="indVariables" allowEdition="False"/>
+									<gui:list type="envVariables" allowEdition="False"/>
+									<gui:list type="locVariables" allowEdition="False"/>
+									<gui:list type="allParameters" allowEdition="False"/>		
+								</gui:attributeBehavior>
 								<pmt:attributeMappedName lang="en">Delay</pmt:attributeMappedName>
+								<pmt:attributeType>ULong</pmt:attributeType>
 							</xsd:appinfo>
 						</xsd:annotation>
 					</xsd:attribute>
@@ -478,6 +508,10 @@
 							<gui:mapToBranches regexp="|" startIndex="2" endIndex="-1" defaultAtomValue="0" editable="true" displayAttribute="true">
 								<gui:individualType definedBy="attributeValue">inKeys_Type</gui:individualType>
 							</gui:mapToBranches>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeInfo pairedAttr="inKeys_Type"/>
 						<pmt:attributeMappedName lang="en">Switch values</pmt:attributeMappedName>

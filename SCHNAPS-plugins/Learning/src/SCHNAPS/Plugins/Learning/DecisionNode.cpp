@@ -101,7 +101,7 @@ Core::AnyType::Handle DecisionNode::execute(unsigned int inIndex, Core::Executio
 	schnaps_StackTraceBeginM();
 	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
 	// call the learning module to get the index of action to execute
-	unsigned int lActionIndex = Core::castObjectT<LearningModule&>(ioContext.getComponent("LearningModule")).getActionID(mLabel, lContext);
+	unsigned int lActionIndex = Core::castObjectT<LearningModule&>(ioContext.getComponent("Learning_LearningModule")).getActionID(mLabel, lContext);
 	return getArgument(inIndex, lActionIndex, ioContext);
 	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Learning::DecisionNode::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
