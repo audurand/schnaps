@@ -132,16 +132,6 @@ Number::operator Double() const {
 }
 
 /*!
- * \brief Casting operator to float.
- * \throw  SCHNAPS::Core::InternalException if the method is not overdefined in a subclass.
- */
-Number::operator Float() const {
-	schnaps_StackTraceBeginM();
-	throw schnaps_UndefinedMethodInternalExceptionM("operator Float", "Number", getName());
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number::operator Float() const");
-}
-
-/*!
  * \brief Casting operator to integer.
  * \throw  SCHNAPS::Core::InternalException if the method is not overdefined in a subclass.
  */

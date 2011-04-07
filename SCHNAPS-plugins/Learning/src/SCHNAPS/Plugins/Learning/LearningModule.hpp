@@ -64,6 +64,9 @@ public:
 	virtual void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
 	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
+
+	//! Initialize the component.
+	virtual void init(Core::System& ioSystem);
 	
 	//! Open decision makers log files in learning module.
 	void open(const std::string& inFileName);
@@ -87,12 +90,12 @@ public:
 	 */
 	unsigned int getActionID(const std::string& inDecisionNode, Simulation::SimulationContext& ioContext) {
 		schnaps_StackTraceBeginM();
-		return mDecisionMakers[ioContext.getThreadNb()].getActionID(inDecisionNode, ioContext.getIndividualHandle());
+		return mDecisionMakers[ioContext.getThreadNb()]->getActionID(inDecisionNode, ioContext.getIndividualHandle());
 		schnaps_StackTraceEndM("unsigned int SCHNAPS::Plugins::Learning::LearningModule::getActionID(const std::string&, SCHNAPS::Simulation::SimulationContext&)");
 	}
 	
 private:
-	std::vector<DecisionMaker> mDecisionMakers;
+	DecisionMaker::Bag mDecisionMakers;
 };
 } // end of Learning namespace
 } // end of Plugins namespace

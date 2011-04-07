@@ -92,8 +92,7 @@ bool UInt::isLess(const Object& inRightObj) const {
  */
 void UInt::readStr(const std::string& inStr) {
 	schnaps_StackTraceBeginM();
-	std::istringstream lISS(inStr);
-	lISS >> mValue;
+	mValue = SCHNAPS::str2uint(inStr);
 	schnaps_StackTraceEndM("void SCHNAPS::Core::UInt::readStr(std::string&)");
 }
 
@@ -192,16 +191,6 @@ UInt::operator Double() const {
 	Double lDouble(static_cast<double>(mValue));
 	return lDouble;
 	schnaps_StackTraceEndM("SCHNAPS::Core::UInt::operator Double() const");
-}
-
-/*!
- * \brief Casting operator to float.
- */
-UInt::operator Float() const {
-	schnaps_StackTraceBeginM();
-	Float lFloat(static_cast<float>(mValue));
-	return lFloat;
-	schnaps_StackTraceEndM("SCHNAPS::Core::UInt::operator Float() const");
 }
 
 /*!

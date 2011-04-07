@@ -58,6 +58,7 @@ void Log::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem
 	if (inIter->getAttribute("inType").empty()) {
 		throw schnaps_IOExceptionNodeM(*inIter, "log type expected!");
 	}
+	mType_Ref.assign(inIter->getAttribute("inType"));
 	
 	switch (mType_Ref[0]) {
 		case '@':

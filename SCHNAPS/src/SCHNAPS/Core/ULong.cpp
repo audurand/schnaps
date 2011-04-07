@@ -92,8 +92,8 @@ bool ULong::isLess(const Object& inRightObj) const {
  */
 void ULong::readStr(const std::string& inStr) {
 	schnaps_StackTraceBeginM();
-	std::istringstream lISS(inStr);
-	lISS >> mValue;
+	std::stringstream lSS(inStr);
+	lSS >> mValue;
 	schnaps_StackTraceEndM("void SCHNAPS::Core::ULong::readStr(std::string&)");
 }
 
@@ -193,16 +193,6 @@ ULong::operator Double() const {
 	Double lDouble(static_cast<double>(mValue));
 	return lDouble;
 	schnaps_StackTraceEndM("SCHNAPS::Core::ULong::operator Double() const");
-}
-
-/*!
- * \brief Casting operator to float.
- */
-ULong::operator Float() const {
-	schnaps_StackTraceBeginM();
-	Float lFloat(static_cast<float>(mValue));
-	return lFloat;
-	schnaps_StackTraceEndM("SCHNAPS::Core::ULong::operator Float() const");
 }
 
 /*!

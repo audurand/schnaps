@@ -213,8 +213,7 @@ void Test::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSyste
 			break;
 		default:
 			// direct value
-			mCompliance = new Core::Double();
-			mCompliance->readStr(mCompliance_Ref);
+			mCompliance = new Core::Double(SCHNAPS::str2dbl(mCompliance_Ref));
 			break;
 	}
 	
@@ -239,8 +238,7 @@ void Test::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSyste
 			break;
 		default:
 			// direct value
-			mSensitivity = new Core::Double();
-			mSensitivity->readStr(mSensitivity_Ref);
+			mSensitivity = new Core::Double(SCHNAPS::str2dbl(mSensitivity_Ref));
 			break;
 	}
 	
@@ -265,34 +263,7 @@ void Test::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSyste
 			break;
 		default:
 			// direct value
-			mSpecificity = new Core::Double();
-			mSensitivity->readStr(mSpecificity_Ref);
-			break;
-	}
-	
-	// retrieve specificity
-	if (inIter->getAttribute("inSpecificity").empty()) {
-		throw schnaps_IOExceptionNodeM(*inIter, "specificity expected!");
-	}
-	mSpecificity_Ref.assign(inIter->getAttribute("inSpecificity"));
-	
-	switch (mSpecificity_Ref[0]) {
-		case '@':
-			// individual variable value
-		case '#':
-			// environment variable value
-		case '%':
-			// local variable value
-			mSpecificity = NULL;
-			break;
-		case '$':
-			// parameter value
-			mSpecificity = Core::castHandleT<Core::Double>(ioSystem.getParameters().getParameterHandle(mSpecificity_Ref.substr(1)));
-			break;
-		default:
-			// direct value
-			mSpecificity = new Core::Double();
-			mSensitivity->readStr(mSpecificity_Ref);
+			mSpecificity = new Core::Double(SCHNAPS::str2dbl(mSpecificity_Ref));
 			break;
 	}
 	
@@ -317,8 +288,7 @@ void Test::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSyste
 			break;
 		default:
 			// direct value
-			mCost = new Core::Double();
-			mCost->readStr(mCost_Ref);
+			mCost = new Core::Double(SCHNAPS::str2dbl(mCost_Ref));
 			break;
 	}
 		
@@ -343,8 +313,7 @@ void Test::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSyste
 		break;
 	default:
 		// direct value
-		mDiscountRate = new Core::Double();
-		mDiscountRate->readStr(mDiscountRate_Ref);
+		mDiscountRate = new Core::Double(SCHNAPS::str2dbl(mDiscountRate_Ref));
 		break;
 	}
 

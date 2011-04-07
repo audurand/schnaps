@@ -38,7 +38,7 @@ namespace Learning {
  *  \class DecisionMaker SCHNAPS/Plugins/Learning/DecisionMaker.hpp "SCHNAPS/Plugins/Learning/DecisionMaker.hpp"
  *  \brief Make the decision of next action to execute.
  */
-class DecisionMaker: public Core::Object, public std::map<std::string, Choice > {
+class DecisionMaker: public Core::Object, public std::map<std::string, Choice::Handle > {
 public:
 	//! DecisionMaker allocator type.
 	typedef Core::AllocatorT<DecisionMaker, Core::Object::Alloc> Alloc;
@@ -53,6 +53,9 @@ public:
 	
 	//! Copy operator.
 	DecisionMaker& operator=(const DecisionMaker& inOriginal);
+	
+	//! Return a handle to a deep copy of the object.
+	virtual Core::Object::Handle deepCopy(const Core::System& inSystem) const;
 	
 	/*!
 	 * \brief  Return a const reference to the name of object.
@@ -100,7 +103,7 @@ public:
 			throw schnaps_RunTimeExceptionM("Decision node '" + inDecisionNode + "' is not in decision maker; could not make choice.");
 		}
 		// get choice learning data
-		Choice& lChoice = lIterDecisionNode->second;
+		Choice& lChoice = *(lIterDecisionNode->second);
 		
 		// set current individual in learning context
 		mContext.setIndividual(inIndividual);

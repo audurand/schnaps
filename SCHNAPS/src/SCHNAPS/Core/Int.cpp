@@ -93,8 +93,7 @@ bool Int::isLess(const Object& inRightObj) const {
  */
 void Int::readStr(const std::string& inStr) {
 	schnaps_StackTraceBeginM();
-	std::istringstream lISS(inStr);
-	lISS >> mValue;
+	mValue = SCHNAPS::str2int(inStr);
 	schnaps_StackTraceEndM("void SCHNAPS::Core::Int::readStr(std::string&)");
 }
 
@@ -193,16 +192,6 @@ Int::operator Double() const {
 	Double lDouble(static_cast<double>(mValue));
 	return lDouble;
 	schnaps_StackTraceEndM("SCHNAPS::Core::Int::operator Double() const");
-}
-
-/*!
- * \brief Casting operator to float.
- */
-Int::operator Float() const {
-	schnaps_StackTraceBeginM();
-	Float lFloat(static_cast<float>(mValue));
-	return lFloat;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Int::operator Float() const");
 }
 
 /*!

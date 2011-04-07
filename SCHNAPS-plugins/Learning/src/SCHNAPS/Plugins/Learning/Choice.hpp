@@ -68,6 +68,9 @@ public:
 	Choice(const Choice& inOriginal);
 	virtual ~Choice() {}
 	
+	//! Return a handle to a deep copy of the object.
+	virtual Core::Object::Handle deepCopy(const Core::System& inSystem) const;
+	
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

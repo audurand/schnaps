@@ -67,7 +67,6 @@
 #include "Core/Long.hpp"
 #include "Core/UInt.hpp"
 #include "Core/ULong.hpp"
-#include "Core/Float.hpp"
 #include "Core/Double.hpp"
 #include "Core/String.hpp"
 

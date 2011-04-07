@@ -41,7 +41,6 @@ Factory::Factory() :
 
 	// numbers
 	insertAllocator("Double", new Double::Alloc());
-	insertAllocator("Float", new Float::Alloc());
 	insertAllocator("Int", new Int::Alloc());
 	insertAllocator("Long", new Long::Alloc());
 	insertAllocator("UInt", new UInt::Alloc());

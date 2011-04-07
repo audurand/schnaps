@@ -30,7 +30,6 @@ namespace Core {
 
 // forward declaration
 class Double;
-class Float;
 class Int;
 class Long;
 class UInt;
@@ -112,8 +111,6 @@ public:
 
 	//! Casting operator to double.
 	operator Double() const;
-	//! Casting operator to float.
-	operator Float() const;
 	//! Casting operator to integer.
 	operator Int() const;
 	//! Casting operator to long.

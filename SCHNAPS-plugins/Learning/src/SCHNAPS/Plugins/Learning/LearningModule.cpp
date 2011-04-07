@@ -62,10 +62,11 @@ void LearningModule::readWithSystem(PACC::XML::ConstIterator inIter, Core::Syste
 
 	unsigned int lNbThreads = Core::castHandleT<Core::UInt>(ioSystem.getParameters().getParameterHandle("threads.simulator"))->getValue();
 	mDecisionMakers.clear();
-	mDecisionMakers.resize(lNbThreads);
-	for (unsigned int i = 0; i < mDecisionMakers.size(); i++) {
-			mDecisionMakers[i].readWithSystem(inIter->getFirstChild(), ioSystem);
-			mDecisionMakers[i].setThreadNb(i);
+	mDecisionMakers.push_back(new DecisionMaker());
+	mDecisionMakers.back()->readWithSystem(inIter->getFirstChild(), ioSystem);
+	mDecisionMakers.back()->setThreadNb(0);
+	for (unsigned int i = 1; i < lNbThreads; i++) {
+		mDecisionMakers.push_back(Core::castHandleT<DecisionMaker>(mDecisionMakers[0]->deepCopy(ioSystem)));
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Learning::LearningModule::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
@@ -77,8 +78,32 @@ void LearningModule::readWithSystem(PACC::XML::ConstIterator inIter, Core::Syste
  */
 void LearningModule::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-	mDecisionMakers[0].write(ioStreamer, inIndent);
+	mDecisionMakers[0]->write(ioStreamer, inIndent);
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Learning::LearningModule::writeContent(PACC::XML::Streamer&, bool) const");
+}
+
+/*!
+ * \brief Initialize this component.
+ * \param ioSystem A reference to the system.
+ */
+void LearningModule::init(Core::System& ioSystem) {
+	schnaps_StackTraceBeginM();
+	unsigned int lThreads_New = Core::castObjectT<const Core::UInt&>(ioSystem.getParameters().getParameter("threads.simulator")).getValue();
+	unsigned int lThreads_Old = mDecisionMakers.size();
+	
+	if (lThreads_New > lThreads_Old) {
+		for (unsigned int i = lThreads_Old; i < lThreads_New; i++) {
+			// add decision maker for the specific thread
+			mDecisionMakers.push_back(Core::castHandleT<DecisionMaker>(mDecisionMakers[0]->deepCopy(ioSystem)));
+			mDecisionMakers.back()->setThreadNb(i);
+		}
+	} else {
+		// remove unused decision makers
+		for (unsigned int i = lThreads_New; i < lThreads_Old; i++) {
+			mDecisionMakers.pop_back();
+		}
+	}
+	schnaps_StackTraceEndM("void SCHNAPS::Core::LearningModule::init(SCHNAPS::Core::System&)");
 }
 
 /*!
@@ -91,7 +116,7 @@ void LearningModule::open(const std::string& inFileName) {
 	for (unsigned int i = 0; i < mDecisionMakers.size(); i++) {
 		lSS.str("");
 		lSS << inFileName << "_" << i << ".gz";
-		mDecisionMakers[i].open(lSS.str());
+		mDecisionMakers[i]->open(lSS.str());
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Learning::LearningModule::open(const std::string&)");
 }
@@ -102,7 +127,7 @@ void LearningModule::open(const std::string& inFileName) {
 void LearningModule::close() {
 	schnaps_StackTraceBeginM();
 	for (unsigned int i = 0; i < mDecisionMakers.size(); i++) {
-		mDecisionMakers[i].close();
+		mDecisionMakers[i]->close();
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Learning::LearningModule::clost()");
 }
@@ -132,7 +157,7 @@ void LearningModule::update(const std::string& inFileName) {
 			lTokenizer->getNextToken(lIndividualIndex);
 			
 			for (unsigned int j = 0; j < mDecisionMakers.size(); j++) {
-				mDecisionMakers[j].update(lChoiceNode, lState, SCHNAPS::str2uint(lActionIndex), SCHNAPS::str2uint(lIndividualIndex));
+				mDecisionMakers[j]->update(lChoiceNode, lState, SCHNAPS::str2uint(lActionIndex), SCHNAPS::str2uint(lIndividualIndex));
 			}
 		}
 		
@@ -150,7 +175,7 @@ void LearningModule::update(const std::string& inFileName) {
 void LearningModule::setSystem(Core::System::Handle inSystem) {
 	schnaps_StackTraceBeginM();
 	for (unsigned int i = 0; i < mDecisionMakers.size(); i++) {
-		mDecisionMakers[i].setSystem(inSystem);
+		mDecisionMakers[i]->setSystem(inSystem);
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Learning::LearningModule::setSystem(SCHNAPS::Core::System::Handle)");
 }
@@ -162,7 +187,7 @@ void LearningModule::setSystem(Core::System::Handle inSystem) {
 void LearningModule::setEnvironment(Simulation::Environment::Handle inEnvironment) {
 	schnaps_StackTraceBeginM();
 	for (unsigned int i = 0; i < mDecisionMakers.size(); i++) {
-		mDecisionMakers[i].setEnvironment(inEnvironment);
+		mDecisionMakers[i]->setEnvironment(inEnvironment);
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Learning::LearningModule::setEnvironment(SCHNAPS::Simulation::Environment::Handle)");
 }
@@ -173,7 +198,7 @@ void LearningModule::setEnvironment(Simulation::Environment::Handle inEnvironmen
 void LearningModule::setClock(Simulation::Clock::Handle inClock) {
 	schnaps_StackTraceBeginM();
 	for (unsigned int i = 0; i < mDecisionMakers.size(); i++) {
-		mDecisionMakers[i].setClock(inClock);
+		mDecisionMakers[i]->setClock(inClock);
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Learning::LearningModule::setClock(SCHNAPS::Simulation::Clock::Handle)");
 }

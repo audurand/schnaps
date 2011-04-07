@@ -29,7 +29,6 @@ namespace SCHNAPS {
 namespace Core {
 
 // forward declaration
-class Float;
 class Int;
 class Long;
 class UInt;
@@ -114,8 +113,6 @@ public:
 
 	//! Casting operator to double.
 	virtual operator Double() const;
-	//! Casting operator to float.
-	virtual operator Float() const;
 	//! Casting operator to integer.
 	virtual operator Int() const;
 	//! Casting operator to long.

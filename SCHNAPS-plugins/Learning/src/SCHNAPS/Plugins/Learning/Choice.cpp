@@ -111,6 +111,39 @@ Choice::Choice(const Choice& inOriginal) :
 {}
 
 /*!
+ * \brief  Return a handle to a deep copy of the object.
+ * \param  inSystem A const reference to the system.
+ * \return A handle to a deep copy of the object.
+ */
+Core::Object::Handle Choice::deepCopy(const Core::System& inSystem) const {
+	schnaps_StackTraceBeginM();
+	Choice::Handle lCopy = new Choice();
+	
+	// copy label
+	lCopy->mLabel.assign(this->mLabel.c_str());
+	
+	// copy options
+	for (unsigned int i = 0; i < this->mOptions.size(); i++) {
+		lCopy->mOptions.push_back(this->mOptions[i].c_str());
+	}
+	
+	// copy state function
+	for (unsigned int i = 0; i < this->mFunctionState.mLocalVariables.size(); i++) {
+		lCopy->mFunctionState.mLocalVariables.push_back(std::pair<std::string, Core::AnyType::Handle>(this->mFunctionState.mLocalVariables[i].first.c_str(), Core::castHandleT<Core::AnyType>(this->mFunctionState.mLocalVariables[i].second->clone())));
+	}
+	lCopy->mFunctionState.mExecution = Core::castHandleT<Core::PrimitiveTree>(this->mFunctionState.mExecution->deepCopy(inSystem));
+	
+	// copy reward function
+	for (unsigned int i = 0; i < this->mFunctionReward.mLocalVariables.size(); i++) {
+		lCopy->mFunctionReward.mLocalVariables.push_back(std::pair<std::string, Core::AnyType::Handle>(this->mFunctionReward.mLocalVariables[i].first.c_str(), Core::castHandleT<Core::AnyType>(this->mFunctionReward.mLocalVariables[i].second->clone())));
+	}
+	lCopy->mFunctionReward.mExecution = Core::castHandleT<Core::PrimitiveTree>(this->mFunctionReward.mExecution->deepCopy(inSystem));
+	
+	return lCopy;
+	schnaps_StackTraceEndM("SCHNAPS::Core::Object::Handle SCHNAPS::Plugins::Learning::Choice::deepCopy(const SCHNAPS::Core::System&) const");
+}
+
+/*!
  * \brief Read object from XML using system.
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.

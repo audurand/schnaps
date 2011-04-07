@@ -102,8 +102,8 @@ void Parameters::readStr(const std::string& inStr) {
 	while (lTokenizer.getNextToken(lOption)) {
 		lPos = lOption.find("=");
 
-		if (lPos == std::string::npos) {
-			printf("Expected value of option %s!\n", lOption.c_str());
+		if (lPos == std::string::npos || lPos == lOption.size()-1) {
+			std::cout << "Expected value for parameter " <<  lOption.substr(0, lPos) << "!\n";
 		} else {
 			lIterParameters = mParametersMap.find(lOption.substr(0, lPos));
 			if (lIterParameters == mParametersMap.end()) {

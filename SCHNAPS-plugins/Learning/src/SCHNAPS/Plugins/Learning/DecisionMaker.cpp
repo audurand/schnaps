@@ -44,7 +44,7 @@ DecisionMaker::DecisionMaker(const DecisionMaker& inOriginal) :
 {
 	clear();
 	for (DecisionMaker::const_iterator lIt = inOriginal.begin(); lIt != inOriginal.end(); lIt++) {
-		insert(std::pair<std::string, Choice>(lIt->first, lIt->second));
+		insert(std::pair<std::string, Choice::Handle>(lIt->first, lIt->second));
 	}
 	
 	mContext.setSystem(inOriginal.mContext.getSystemHandle());
@@ -67,7 +67,7 @@ DecisionMaker& DecisionMaker::operator=(const DecisionMaker& inOriginal) {
 	
 	clear();
 	for (DecisionMaker::const_iterator lIt = inOriginal.begin(); lIt != inOriginal.end(); lIt++) {
-		insert(std::pair<std::string, Choice>(lIt->first, lIt->second));
+		insert(std::pair<std::string, Choice::Handle>(lIt->first, lIt->second));
 	}
 	
 	mContext.setSystem(inOriginal.mContext.getSystemHandle());
@@ -77,6 +77,23 @@ DecisionMaker& DecisionMaker::operator=(const DecisionMaker& inOriginal) {
 		mLearning = Core::castHandleT<Core::Bool>(mContext.getSystem().getParameters().getParameterHandle("learning.learn"));
 		mGEAS_Alpha = Core::castHandleT<Core::Double>(mContext.getSystem().getParameters().getParameterHandle("learning.geas.alpha"));
 	}
+}
+
+/*!
+ * \brief  Return a handle to a deep copy of the object.
+ * \param  inSystem A const reference to the system.
+ * \return A handle to a deep copy of the object.
+ */
+Core::Object::Handle DecisionMaker::deepCopy(const Core::System& inSystem) const {
+	schnaps_StackTraceBeginM();
+	DecisionMaker::Handle lCopy = new DecisionMaker();
+	
+	for (DecisionMaker::const_iterator lIt = this->begin(); lIt != this->end(); lIt++) {
+		lCopy->insert(std::pair<std::string, Choice::Handle>(lIt->first.c_str(), Core::castHandleT<Choice>(lIt->second->deepCopy(inSystem))));
+	}
+	
+	return lCopy;
+	schnaps_StackTraceEndM("SCHNAPS::Core::Object::Handle SCHNAPS::Plugins::Learning::DecisionMaker::deepCopy(const SCHNAPS::Core::System&) const");
 }
 
 /*!
@@ -103,7 +120,8 @@ void DecisionMaker::readWithSystem(PACC::XML::ConstIterator inIter, Core::System
 		if (lChild->getAttribute("label").empty()) {
 			throw schnaps_IOExceptionNodeM(*lChild, "choice label expected!");
 		}
-		(*this)[lChild->getAttribute("label")].readWithSystem(lChild, ioSystem);
+		this->insert(std::pair<std::string, Choice::Handle>(lChild->getAttribute("label"), new Choice()));
+		(*this)[lChild->getAttribute("label")]->readWithSystem(lChild, ioSystem);
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Learning::DecisionMaker::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
@@ -116,7 +134,7 @@ void DecisionMaker::readWithSystem(PACC::XML::ConstIterator inIter, Core::System
 void DecisionMaker::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
 	for (DecisionMaker::const_iterator lIt = this->begin(); lIt != this->end(); lIt++) {
-		lIt->second.write(ioStreamer, inIndent);
+		lIt->second->write(ioStreamer, inIndent);
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Learning::DecisionMaker::writeContent(PACC::XML::Streamer&, bool) const");
 }
@@ -151,7 +169,7 @@ void DecisionMaker::close() {
 void DecisionMaker::update(const std::string& inDecisionNode, const std::string& inState, unsigned int inActionID, unsigned int inIndividualID) {
 	schnaps_StackTraceBeginM();
 	// get choice learning data
-	Choice& lChoice = this->find(inDecisionNode)->second;
+	Choice& lChoice = *(this->find(inDecisionNode)->second);
 	std::vector<Action>& lActions = lChoice.getActions(inState);
 	
 	// set individual (using the absolute index part of its ID)
@@ -201,7 +219,7 @@ void DecisionMaker::setEnvironment(Simulation::Environment::Handle inEnvironment
  */
 void DecisionMaker::setClock(Simulation::Clock::Handle inClock) {
 	schnaps_StackTraceBeginM();
-	 mContext.setClock(inClock);
+	mContext.setClock(inClock);
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Learning::DecisionMaker::setClock(SCHNAPS::Simulation::Clock::Handle)");
 }
 
@@ -211,6 +229,6 @@ void DecisionMaker::setClock(Simulation::Clock::Handle inClock) {
  */
 void DecisionMaker::setThreadNb(unsigned int inThreadNb) {
 	schnaps_StackTraceBeginM();
-	 mContext.setThreadNb(inThreadNb);
+	mContext.setThreadNb(inThreadNb);
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Learning::DecisionMaker::setThreadNb(unsigned int)");
 }
