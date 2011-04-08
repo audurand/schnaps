@@ -61,5 +61,6 @@
 #include "SCHNAPS/Plugins/Operators/ConcatComplex.hpp"
 #include "SCHNAPS/Plugins/Operators/ConcatVariable.hpp"
 #include "SCHNAPS/Plugins/Operators/NPV.hpp"
+#include "SCHNAPS/Plugins/Operators/Serialize.hpp"
 
 #endif /* Operators_hpp */

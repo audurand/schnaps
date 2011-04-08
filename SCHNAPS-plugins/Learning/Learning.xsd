@@ -15,10 +15,10 @@
 	
 	<xsd:include schemaLocation="XSD/BaseTypes.xsd"/>
 	
-	<xsd:element name="LearningModule" substitutionGroup="_component">
+	<xsd:element name="Learning_LearningModule" substitutionGroup="_component">
 		<xsd:complexType>
 			<xsd:sequence minOccurs="1" maxOccurs="1">
-				<xsd:element name="DecisionMaker">
+				<xsd:element name="Learning_DecisionMaker">
 					<xsd:complexType>
 						<xsd:sequence minOccurs="0" maxOccurs="unbounded">
 							<xsd:element name="Choice">
