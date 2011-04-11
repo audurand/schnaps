@@ -164,7 +164,7 @@ target_link_libraries(learning-lib pacc)
 target_link_libraries(learning-lib schnaps)
 target_link_libraries(learning-lib dl)
 
-set_target_properties(learning-lib PROPERTIES VERSION ${LIBRARY_VERSION} LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/lib" COMPILE_FLAGS "-rdynamic")
+set_target_properties(learning-lib PROPERTIES OUTPUT_NAME learning VERSION ${LIBRARY_VERSION} LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/lib" COMPILE_FLAGS "-rdynamic")
 
 # Setting up executable
 add_executable(
