@@ -51,7 +51,7 @@ public:
 	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-		const static std::string lName("Learning_Action");
+		const static std::string lName("Action");
 		return lName;
 		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Learning::Action::getName() const");
 	}
