@@ -1,0 +1,6 @@
+  <Environment>
+    <State>
+      <Variable type="Int" value="0" label="Total_Optometriste"/>
+      <Variable type="Int" value="0" label="Total_Ophtalmologiste"/>
+    </State>
+  </Environment>

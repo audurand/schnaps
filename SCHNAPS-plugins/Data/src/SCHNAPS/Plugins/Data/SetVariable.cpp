@@ -58,8 +58,40 @@ SetVariable::SetVariable(const SetVariable& inOriginal) :
 			break;
 		default:
 			// direct value
-			mValue = Core::castHandleT<Core::AnyType>(inOriginal.mValue->clone());
+			mValue = inOriginal.mValue->clone();
 	}
+}
+
+/*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
+SetVariable& SetVariable::operator=(const SetVariable& inOriginal) {
+	schnaps_StackTraceBeginM();
+	mVariable_Ref.assign(inOriginal.mVariable_Ref.c_str());
+	mValue_Ref.assign(inOriginal.mValue_Ref.c_str());
+	
+	switch (mValue_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mValue = NULL;
+			break;
+		case '$':
+			// parameter value
+			mValue = inOriginal.mValue;
+			break;
+		default:
+			// direct value
+			mValue = inOriginal.mValue->clone();
+			break;
+	}
+
+	return *this;
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Data::SetVariable& SCHNAPS::Plugins::Data::SetVariable::operator=(const SCHNAPS::Plugins::Data::SetVariable&)");
 }
 
 /*!
@@ -159,19 +191,19 @@ Core::AnyType::Handle SetVariable::execute(unsigned int inIndex, Core::Execution
 	switch (mValue_Ref[0]) {
 		case '@':
 			// individual variable value
-			lValue = Core::castHandleT<Core::AnyType>(lContext.getIndividual().getState().getVariableHandle(mValue_Ref.substr(1))->clone());
+			lValue = lContext.getIndividual().getState().getVariableHandle(mValue_Ref.substr(1))->clone();
 			break;
 		case '#':
 			// environment variable value
-			lValue = Core::castHandleT<Core::AnyType>(lContext.getEnvironment().getState().getVariableHandle(mValue_Ref.substr(1))->clone());
+			lValue = lContext.getEnvironment().getState().getVariableHandle(mValue_Ref.substr(1))->clone();
 			break;
 		case '%':
 			// local variable value
-			lValue = Core::castHandleT<Core::AnyType>(lContext.getLocalVariableHandle(mValue_Ref.substr(1))->clone());
+			lValue = lContext.getLocalVariableHandle(mValue_Ref.substr(1))->clone();
 			break;
 		default:
 			// parameter value or direct value
-			lValue = Core::castHandleT<Core::AnyType>(mValue->clone());
+			lValue = mValue->clone();
 			break;
 	}
 	

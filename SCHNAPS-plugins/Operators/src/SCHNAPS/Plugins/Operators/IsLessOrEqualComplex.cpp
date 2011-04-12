@@ -40,16 +40,6 @@ IsLessOrEqualComplex::IsLessOrEqualComplex(const IsLessOrEqualComplex& inOrigina
 {}
 
 /*!
- * \brief  Copy operator.
- * \return A reference to the current object.
- */
-IsLessOrEqualComplex& IsLessOrEqualComplex::operator=(const IsLessOrEqualComplex& inOriginal) {
-	schnaps_StackTraceBeginM();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::IsLessOrEqualComplex& SCHNAPS::Plugins::Operators::IsLessOrEqualComplex::operator=(const SCHNAPS::Plugins::Operators::IsLessOrEqualComplex&)");
-}
-
-/*!
  * \brief  Execute the primitive.
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.

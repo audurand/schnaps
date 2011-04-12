@@ -40,16 +40,6 @@ ModComplex::ModComplex(const ModComplex& inOriginal) :
 {}
 
 /*!
- * \brief  Copy operator.
- * \return A reference to the current object.
- */
-ModComplex& ModComplex::operator=(const ModComplex& inOriginal) {
-	schnaps_StackTraceBeginM();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::ModComplex& SCHNAPS::Plugins::Operators::ModComplex::operator=(const SCHNAPS::Plugins::Operators::ModComplex&)");
-}
-
-/*!
  * \brief  Execute the primitive.
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.

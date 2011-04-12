@@ -1,0 +1,1447 @@
+  <Demography>
+    <Variable type="Int" label="Age">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Control_BranchMulti inProbabilities="0.000225|0.001361|0.003389|0.007364|0.01388|0.023425|0.031573|0.037145|0.042092|0.045769|0.047509|0.052673|0.058171|0.060326|0.06156|0.06147|0.059695|0.060659|0.055296|0.048699|0.042849|0.038739|0.033313|0.028536|0.023236|0.019207|0.014079|0.010239|0.007048|0.004687|0.002812|0.001541|0.000685|0.000316|0.000189|0.000099|0.000144">
+          <Data_Value inValue_Type="Int" inValue="13"/>
+          <Data_Value inValue_Type="Int" inValue="14"/>
+          <Data_Value inValue_Type="Int" inValue="15"/>
+          <Data_Value inValue_Type="Int" inValue="16"/>
+          <Data_Value inValue_Type="Int" inValue="17"/>
+          <Data_Value inValue_Type="Int" inValue="18"/>
+          <Data_Value inValue_Type="Int" inValue="19"/>
+          <Data_Value inValue_Type="Int" inValue="20"/>
+          <Data_Value inValue_Type="Int" inValue="21"/>
+          <Data_Value inValue_Type="Int" inValue="22"/>
+          <Data_Value inValue_Type="Int" inValue="23"/>
+          <Data_Value inValue_Type="Int" inValue="24"/>
+          <Data_Value inValue_Type="Int" inValue="25"/>
+          <Data_Value inValue_Type="Int" inValue="26"/>
+          <Data_Value inValue_Type="Int" inValue="27"/>
+          <Data_Value inValue_Type="Int" inValue="28"/>
+          <Data_Value inValue_Type="Int" inValue="29"/>
+          <Data_Value inValue_Type="Int" inValue="30"/>
+          <Data_Value inValue_Type="Int" inValue="31"/>
+          <Data_Value inValue_Type="Int" inValue="32"/>
+          <Data_Value inValue_Type="Int" inValue="33"/>
+          <Data_Value inValue_Type="Int" inValue="34"/>
+          <Data_Value inValue_Type="Int" inValue="35"/>
+          <Data_Value inValue_Type="Int" inValue="36"/>
+          <Data_Value inValue_Type="Int" inValue="37"/>
+          <Data_Value inValue_Type="Int" inValue="38"/>
+          <Data_Value inValue_Type="Int" inValue="39"/>
+          <Data_Value inValue_Type="Int" inValue="40"/>
+          <Data_Value inValue_Type="Int" inValue="41"/>
+          <Data_Value inValue_Type="Int" inValue="42"/>
+          <Data_Value inValue_Type="Int" inValue="43"/>
+          <Data_Value inValue_Type="Int" inValue="44"/>
+          <Data_Value inValue_Type="Int" inValue="45"/>
+          <Data_Value inValue_Type="Int" inValue="46"/>
+          <Data_Value inValue_Type="Int" inValue="47"/>
+          <Data_Value inValue_Type="Int" inValue="48"/>
+          <Data_Value inValue_Type="Int" inValue="49"/>
+        </Control_BranchMulti>
+      </PrimitiveTree>
+    </Variable>
+    <Variable type="Bool" label="SD">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Control_ChoiceIsEqual inChoices="$Age_13_49_1ans" inValue="@Age">
+          <Control_Branch inProbability="0.002379">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.002457">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.002139">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.002077">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.001878">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.003258">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.002655">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.002351">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.002915">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.002613">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.002382">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.002801">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.0030800">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.002895">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.00336">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.003329">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.003965">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.003923">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.004891">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.005487">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.006242">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.00777">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.00895">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.010436">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.012753">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.01529">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.018229">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.021397">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.025711">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.030836">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.038318">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.046405">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.052075">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.001618">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.001753">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.001802">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.000531">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+        </Control_ChoiceIsEqual>
+      </PrimitiveTree>
+    </Variable>
+    <Variable type="Bool" label="PF_T1">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Control_IfThenElse>
+          <Data_Value inValue="@SD"/>
+          <Control_ChoiceIsEqual inChoices="$Age_13_49_1ans" inValue="@Age">
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+            <Control_Branch inProbability="0.1837553">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.7499678">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.2521436">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.2521436">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.2257260">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.3768093">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.3768093">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.4055972">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.4486900">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.4766432">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.5014966">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.5620908">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.5620908">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.5682616">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.5682616">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.5729650">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.5729650">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.5729650">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.5889905">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.6066480">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.6066480">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.6066480">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.6066480">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.6141678">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.6150950">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.6163393">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.5944912">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.6415309">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_ChoiceIsEqual>
+          <Control_ChoiceIsEqual inChoices="$Age_13_49_1ans" inValue="@Age">
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+            <Control_Branch inProbability="0.00752">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.03216">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.03177">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.03413">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.03658">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.03037">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.0379">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.02771">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.03974">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.03701">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.03682">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.04293">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.04216">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.04481">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.04280">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.04859">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.04849">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.05427">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.04779">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.05534">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.05769">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.06212">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.05731">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.06398">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.07967">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.07710">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.10041">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.11177">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.1033">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.14773">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.06711">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.10448">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.06667">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.28571">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.25">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.79167">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+          </Control_ChoiceIsEqual>
+        </Control_IfThenElse>
+      </PrimitiveTree>
+    </Variable>
+    <Variable type="Bool" label="IVG_T1">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Control_IfThenElse>
+          <Data_Value inValue="@PF_T1"/>
+          <Data_Value inValue_Type="Bool" inValue="false"/>
+          <Control_IfThenElse>
+            <Data_Value inValue="@SD"/>
+            <Control_ChoiceIsEqual inChoices="$Age_13_49_1ans" inValue="@Age">
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Control_Branch inProbability="0.7213441">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.6865017">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.6259678">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.6259678">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.6765803">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.5694624">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.5694624">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.5141249">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.4361900">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.3787727">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.4183916">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.3014916">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.3014916">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.2645355">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.2645355">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.2356501">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.2356501">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.2356501">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.2124519">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.2124592">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.2124592">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.2124592">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.2124592">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0931902">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.1070591">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.1257778">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.1524292">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_ChoiceIsEqual>
+            <Control_ChoiceIsEqual inChoices="$Age_13_49_1ans" inValue="@Age">
+              <Control_Branch inProbability="0.6087">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.83333">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.71299">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.70899">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.63083">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.59691">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.50144">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.46173">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.41462">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.37678">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.30903">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.26837">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.23938">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.19261">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.17243">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.17492">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.16286">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.16333">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.16828">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.17087">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.18401">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.19737">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.19840">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.23573">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.26835">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.29731">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.32105">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.35738">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.40268">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.44853">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.45778">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.46043">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.58333">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.64286">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.80000">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.77778">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.80000">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+            </Control_ChoiceIsEqual>
+          </Control_IfThenElse>
+        </Control_IfThenElse>
+      </PrimitiveTree>
+    </Variable>
+    <Variable type="Bool" label="PF_T2">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Control_IfThenElse>
+          <Operators_OrComplex>
+            <Data_Value inValue="@PF_T1"/>
+            <Data_Value inValue="@IVG_T1"/>
+          </Operators_OrComplex>
+          <Data_Value inValue_Type="Bool" inValue="false"/>
+          <Control_IfThenElse>
+            <Data_Value inValue="@SD"/>
+            <Control_ChoiceIsEqual inChoices="$Age_13_49_1ans" inValue="@Age">
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Control_Branch inProbability="0.0048766">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0577532">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.1337699">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.1337699">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.1337699">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.1691568">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.1691568">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.1691568">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.1855153">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.1949413">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.23">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.23">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.23">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.23">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.23">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.23">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.23">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.23">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.23">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.23">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.23">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.23">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.23">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.23">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.23">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.23">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.23">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.23">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_ChoiceIsEqual>
+            <Control_ChoiceIsEqual inChoices="$Age_13_49_1ans" inValue="@Age">
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Control_Branch inProbability="0.0012403">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0004076">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0006873">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0005580">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0004676">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0005886">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0004398">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0004590">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0003451">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0003898">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0003665">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0003772">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0003475">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0003666">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0003396">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0003695">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0003993">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0003754">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0003859">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0003687">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0004095">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0004700">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0005240">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0005387">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0005596">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0006937">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0007951">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0010734">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0011057">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0015622">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0018715">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0010124">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0023231">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0045071">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.0076155">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+            </Control_ChoiceIsEqual>
+          </Control_IfThenElse>
+        </Control_IfThenElse>
+      </PrimitiveTree>
+    </Variable>
+    <Variable type="Bool" label="IVG_T2">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Control_IfThenElse>
+          <Operators_OrComplex>
+            <Data_Value inValue="@PF_T1"/>
+            <Data_Value inValue="@IVG_T1"/>
+            <Data_Value inValue="@PF_T2"/>
+          </Operators_OrComplex>
+          <Data_Value inValue_Type="Bool" inValue="false"/>
+          <Control_IfThenElse>
+            <Data_Value inValue="@SD"/>
+            <Control_ChoiceIsEqual inChoices="$Age_13_49_1ans" inValue="@Age">
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Control_Branch inProbability="0.2491793">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.2226160">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.4830028">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.4830028">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.4830028">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.3183940">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.3183940">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.3183940">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.2374652">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.1893393">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_ChoiceIsEqual>
+            <Control_ChoiceIsEqual inChoices="$Age_13_49_1ans" inValue="@Age">
+              <Control_Branch inProbability="0.44444">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.18182">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.22340">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.21675">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.14257">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.12815">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.09936">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.08325">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.07116">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.05312">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.03904">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.03451">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.03200">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.02009">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.01986">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.01911">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.02006">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.01996">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.01632">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.01752">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.02472">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.02508">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.02599">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.03711">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.03199">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.03483">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.05066">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.05439">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.04802">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.08482">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.09016">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.05333">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.12">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.2">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.66667">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_ChoiceIsEqual>
+          </Control_IfThenElse>
+        </Control_IfThenElse>
+      </PrimitiveTree>
+    </Variable>
+    <Variable type="Bool" label="Mortinaissance">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Control_IfThenElse>
+          <Operators_OrComplex>
+            <Data_Value inValue="@PF_T1"/>
+            <Data_Value inValue="@IVG_T1"/>
+            <Data_Value inValue="@PF_T2"/>
+            <Data_Value inValue="@IVG_T2"/>
+          </Operators_OrComplex>
+          <Data_Value inValue_Type="Bool" inValue="false"/>
+          <Control_IfThenElse>
+            <Data_Value inValue="@SD"/>
+            <Control_ChoiceIsBetween inBounds="13|18|46" inBounds_Type="Int" inValue="@Age">
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Control_Branch inProbability="0.065753">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_ChoiceIsBetween>
+            <Control_ChoiceIsEqual inChoices="$Age_13_49_1ans" inValue="@Age">
+              <Control_Branch inProbability="0.008700">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.008700">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.006154">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.006010">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.005867">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.005860">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.005890">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.004036">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.004017">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.004026">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.004130">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.004218">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.003141">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.003286">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.003417">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.003489">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.003687">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.003579">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.003753">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.003871">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.004047">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.004469">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.004856">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.005141">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.005599">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.006184">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.006605">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.010689">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.011536">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.013363">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.014748">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.017307">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.019141">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.025228">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.028754">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.030102">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.031464">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+            </Control_ChoiceIsEqual>
+          </Control_IfThenElse>
+        </Control_IfThenElse>
+      </PrimitiveTree>
+    </Variable>
+  </Demography>

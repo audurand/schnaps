@@ -1,0 +1,9 @@
+  <Process label="Evenements_Trimestre_2">
+	<LocalVariables/>
+    <PrimitiveTree size="1">
+      <Operators_OrComplex>
+        <Data_Value inValue="@PF_T2"/>
+        <Data_Value inValue="@IVG_T2"/>
+      </Operators_OrComplex>
+    </PrimitiveTree>
+  </Process>

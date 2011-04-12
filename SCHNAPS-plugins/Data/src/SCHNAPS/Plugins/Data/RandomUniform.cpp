@@ -40,16 +40,6 @@ RandomUniform::RandomUniform(const RandomUniform& inOriginal) :
 {}
 
 /*!
- * \brief  Copy operator.
- * \return A reference to the current object.
- */
-RandomUniform& RandomUniform::operator=(const RandomUniform& inOriginal) {
-	schnaps_StackTraceBeginM();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Plugins::Data::RandomUniform& SCHNAPS::Plugins::Data::RandomUniform::operator=(const SCHNAPS::Plugins::Data::RandomUniform&)");
-}
-
-/*!
  * \brief  Execute the primitive.
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.

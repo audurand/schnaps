@@ -46,6 +46,9 @@ public:
 	Event(const Event& inOriginal);
 	virtual ~Event() {}
 
+	//! Copy operator.
+	Event& operator=(const Event& inOriginal);
+
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

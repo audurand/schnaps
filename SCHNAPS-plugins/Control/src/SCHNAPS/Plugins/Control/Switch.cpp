@@ -41,8 +41,16 @@ Switch::Switch(const Switch& inOriginal) :
 	mKeys_Ref(inOriginal.mKeys_Ref.c_str())
 {
 	mSwitchMap.clear();
-	for (SwitchMap::const_iterator lIt = inOriginal.mSwitchMap.begin(); lIt != inOriginal.mSwitchMap.end(); lIt++) {
-		mSwitchMap.insert(std::pair<Core::Atom::Handle, unsigned int>(Core::castHandleT<Core::Atom>(lIt->first->clone()), lIt->second));
+	if (mKeys_Ref[0] == '$') {
+		// parameter value
+		for (SwitchMap::const_iterator lIt = inOriginal.mSwitchMap.begin(); lIt != inOriginal.mSwitchMap.end(); lIt++) {
+			mSwitchMap.insert(std::pair<Core::Atom::Handle, unsigned int>(Core::castHandleT<Core::Atom>(lIt->first), lIt->second));
+		}
+	} else {
+		// direct value
+		for (SwitchMap::const_iterator lIt = inOriginal.mSwitchMap.begin(); lIt != inOriginal.mSwitchMap.end(); lIt++) {
+			mSwitchMap.insert(std::pair<Core::Atom::Handle, unsigned int>(Core::castHandleT<Core::Atom>(lIt->first->clone()), lIt->second));
+		}
 	}
 }
 
@@ -55,8 +63,16 @@ Switch& Switch::operator=(const Switch& inOriginal) {
 	this->setNumberArguments(inOriginal.getNumberArguments());
 	mKeys_Ref.assign(inOriginal.mKeys_Ref.c_str());
 	mSwitchMap.clear();
-	for (SwitchMap::const_iterator lIt = inOriginal.mSwitchMap.begin(); lIt != inOriginal.mSwitchMap.end(); lIt++) {
-		mSwitchMap.insert(std::pair<Core::Atom::Handle, unsigned int>(Core::castHandleT<Core::Atom>(lIt->first->clone()), lIt->second));
+	if (mKeys_Ref[0] == '$') {
+		// parameter value
+		for (SwitchMap::const_iterator lIt = inOriginal.mSwitchMap.begin(); lIt != inOriginal.mSwitchMap.end(); lIt++) {
+			mSwitchMap.insert(std::pair<Core::Atom::Handle, unsigned int>(Core::castHandleT<Core::Atom>(lIt->first), lIt->second));
+		}
+	} else {
+		// direct value
+		for (SwitchMap::const_iterator lIt = inOriginal.mSwitchMap.begin(); lIt != inOriginal.mSwitchMap.end(); lIt++) {
+			mSwitchMap.insert(std::pair<Core::Atom::Handle, unsigned int>(Core::castHandleT<Core::Atom>(lIt->first->clone()), lIt->second));
+		}
 	}
 	return *this;
 	schnaps_StackTraceEndM("SCHNAPS::Core::Switch& SCHNAPS::Plugins::Control::Switch::operator=(const SCHNAPS::Core::Switch&)");

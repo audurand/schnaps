@@ -40,16 +40,6 @@ SubComplex::SubComplex(const SubComplex& inOriginal) :
 {}
 
 /*!
- * \brief  Copy operator.
- * \return A reference to the current object.
- */
-SubComplex& SubComplex::operator=(const SubComplex& inOriginal) {
-	schnaps_StackTraceBeginM();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::SubComplex& SCHNAPS::Plugins::Operators::SubComplex::operator=(const SCHNAPS::Plugins::Operators::SubComplex&)");
-}
-
-/*!
  * \brief  Execute the primitive.
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.

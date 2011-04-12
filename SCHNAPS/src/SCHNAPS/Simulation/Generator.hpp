@@ -69,7 +69,7 @@ public:
 	Generator();
 	Generator(const Generator& inOriginal);
 	explicit Generator(Core::System::Handle inSystem, Clock::Handle inClock, Environment::Handle inEnvironment);
-	virtual ~Generator();
+	virtual ~Generator() {}
 
 	/*!
 	 * \brief  Return a const reference to the name of object.

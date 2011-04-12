@@ -46,6 +46,9 @@ public:
 	Test(const Test& inOriginal);
 	virtual ~Test() {}
 
+	//! Copy operator.
+	Test& operator=(const Test& inOriginal);
+
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

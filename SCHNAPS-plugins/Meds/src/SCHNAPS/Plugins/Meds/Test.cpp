@@ -65,7 +65,7 @@ Test::Test(const Test& inOriginal) :
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mCompliance = NULL;
 			break;
 		case '$':
@@ -84,7 +84,7 @@ Test::Test(const Test& inOriginal) :
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mSensitivity = NULL;
 			break;
 		case '$':
@@ -103,7 +103,7 @@ Test::Test(const Test& inOriginal) :
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mSpecificity = NULL;
 			break;
 		case '$':
@@ -122,7 +122,7 @@ Test::Test(const Test& inOriginal) :
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mCost = NULL;
 			break;
 		case '$':
@@ -141,7 +141,7 @@ Test::Test(const Test& inOriginal) :
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mDiscountRate = NULL;
 			break;
 		case '$':
@@ -153,6 +153,120 @@ Test::Test(const Test& inOriginal) :
 			mDiscountRate = Core::castHandleT<Core::Double>(inOriginal.mDiscountRate->clone());
 			break;
 	}
+}
+
+/*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
+Test& Test::operator=(const Test& inOriginal) {
+	schnaps_StackTraceBeginM();
+	mLabel.assign(inOriginal.mLabel.c_str());
+	mOutCost_Ref.assign(inOriginal.mOutCost_Ref.c_str());
+	mCompliance_Ref.assign(inOriginal.mCompliance_Ref.c_str());
+	mSensitivity_Ref.assign(inOriginal.mSensitivity_Ref.c_str());
+	mSpecificity_Ref.assign(inOriginal.mSpecificity_Ref.c_str());
+	mCost_Ref.assign(inOriginal.mCost_Ref.c_str());
+	mDiscountRate_Ref.assign(inOriginal.mDiscountRate_Ref.c_str());
+	mState_Ref.assign(inOriginal.mState_Ref.c_str());
+	
+	switch (mCompliance_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mCompliance = NULL;
+			break;
+		case '$':
+			// parameter value
+			mCompliance = inOriginal.mCompliance;
+			break;
+		default:
+			// direct value
+			mCompliance = Core::castHandleT<Core::Double>(inOriginal.mCompliance->clone());
+			break;
+	}
+	
+	switch (mSensitivity_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mSensitivity = NULL;
+			break;
+		case '$':
+			// parameter value
+			mSensitivity = inOriginal.mSensitivity;
+			break;
+		default:
+			// direct value
+			mSensitivity = Core::castHandleT<Core::Double>(inOriginal.mSensitivity->clone());
+			break;
+	}
+	
+	switch (mSpecificity_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mSpecificity = NULL;
+			break;
+		case '$':
+			// parameter value
+			mSpecificity = inOriginal.mSpecificity;
+			break;
+		default:
+			// direct value
+			mSpecificity = Core::castHandleT<Core::Double>(inOriginal.mSpecificity->clone());
+			break;
+	}
+	
+	switch (mCost_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mCost = NULL;
+			break;
+		case '$':
+			// parameter value
+			mCost = inOriginal.mCost;
+			break;
+		default:
+			// direct value
+			mCost = Core::castHandleT<Core::Double>(inOriginal.mCost->clone());
+			break;
+	}
+	
+	switch (mDiscountRate_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mDiscountRate = NULL;
+			break;
+		case '$':
+			// parameter value
+			mDiscountRate = inOriginal.mDiscountRate;
+			break;
+		default:
+			// direct value
+			mDiscountRate = Core::castHandleT<Core::Double>(inOriginal.mDiscountRate->clone());
+			break;
+	}
+
+	return *this;
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Meds::Test& SCHNAPS::Plugins::Meds::Test::operator=(const SCHNAPS::Plugins::Meds::Test&)");
 }
 
 /*!

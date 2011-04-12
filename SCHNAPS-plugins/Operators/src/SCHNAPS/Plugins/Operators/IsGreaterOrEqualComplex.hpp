@@ -46,9 +46,6 @@ public:
 	IsGreaterOrEqualComplex(const IsGreaterOrEqualComplex& inOriginal);
 	virtual ~IsGreaterOrEqualComplex() {}
 
-	//! Copy operator.
-	IsGreaterOrEqualComplex& operator=(const IsGreaterOrEqualComplex& inOriginal);
-
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

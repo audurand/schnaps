@@ -46,6 +46,9 @@ public:
 	Not(const Not& inOriginal);
 	virtual ~Not() {}
 
+	//! Copy operator.
+	Not& operator=(const Not& inOriginal);
+
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

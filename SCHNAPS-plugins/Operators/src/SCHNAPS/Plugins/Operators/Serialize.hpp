@@ -46,6 +46,9 @@ public:
 	Serialize(const Serialize& inOriginal);
 	virtual ~Serialize() {}
 
+	//! Copy operator.
+	Serialize& operator=(const Serialize& inOriginal);
+
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

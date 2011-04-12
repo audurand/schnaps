@@ -46,9 +46,6 @@ public:
 	ExpComplex(const ExpComplex& inOriginal);
 	virtual ~ExpComplex() {}
 
-	//! Copy operator.
-	ExpComplex& operator=(const ExpComplex& inOriginal);
-
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

@@ -40,16 +40,6 @@ IsGreaterOrEqualComplex::IsGreaterOrEqualComplex(const IsGreaterOrEqualComplex& 
 {}
 
 /*!
- * \brief  Copy operator.
- * \return A reference to the current object.
- */
-IsGreaterOrEqualComplex& IsGreaterOrEqualComplex::operator=(const IsGreaterOrEqualComplex& inOriginal) {
-	schnaps_StackTraceBeginM();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::IsGreaterOrEqualComplex& SCHNAPS::Plugins::Operators::IsGreaterOrEqualComplex::operator=(const SCHNAPS::Plugins::Operators::IsGreaterOrEqualComplex&)");
-}
-
-/*!
  * \brief  Execute the primitive.
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.

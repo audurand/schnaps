@@ -52,7 +52,7 @@ PreventionCampaign::PreventionCampaign(const PreventionCampaign& inOriginal) :
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mCost = NULL;
 			break;
 		case '$':
@@ -71,7 +71,7 @@ PreventionCampaign::PreventionCampaign(const PreventionCampaign& inOriginal) :
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mDiscountRate = NULL;
 			break;
 		case '$':
@@ -83,6 +83,58 @@ PreventionCampaign::PreventionCampaign(const PreventionCampaign& inOriginal) :
 			mDiscountRate = Core::castHandleT<Core::Double>(inOriginal.mDiscountRate->clone());
 			break;
 	}
+}
+
+/*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
+PreventionCampaign& PreventionCampaign::operator=(const PreventionCampaign& inOriginal) {
+	schnaps_StackTraceBeginM();
+	mOutCost_Ref.assign(inOriginal.mOutCost_Ref.c_str());
+	mCost_Ref.assign(inOriginal.mCost_Ref.c_str());
+	mDiscountRate_Ref.assign(inOriginal.mDiscountRate_Ref.c_str());
+	
+	switch (mCost_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mCost = NULL;
+			break;
+		case '$':
+			// parameter value
+			mCost = inOriginal.mCost;
+			break;
+		default:
+			// direct value
+			mCost = Core::castHandleT<Core::Double>(inOriginal.mCost->clone());
+			break;
+	}
+	
+	switch (mDiscountRate_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mDiscountRate = NULL;
+			break;
+		case '$':
+			// parameter value
+			mDiscountRate = inOriginal.mDiscountRate;
+			break;
+		default:
+			// direct value
+			mDiscountRate = Core::castHandleT<Core::Double>(inOriginal.mDiscountRate->clone());
+			break;
+	}
+
+	return *this;
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Meds::PreventionCampaign& SCHNAPS::Plugins::Meds::PreventionCampaign::operator=(const SCHNAPS::Plugins::Meds::PreventionCampaign&)");
 }
 
 /*!

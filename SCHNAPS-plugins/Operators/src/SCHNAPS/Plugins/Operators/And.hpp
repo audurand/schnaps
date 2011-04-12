@@ -46,6 +46,9 @@ public:
 	And(const And& inOriginal);
 	virtual ~And() {}
 
+	//! Copy operator.
+	And& operator=(const And& inOriginal);
+
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

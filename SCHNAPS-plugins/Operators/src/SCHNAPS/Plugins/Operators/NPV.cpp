@@ -66,7 +66,7 @@ NPV::NPV(const NPV& inOriginal) :
  */
 NPV& NPV::operator=(const NPV& inOriginal) {
 	schnaps_StackTraceBeginM();
-	mRate_Ref.assign(inOriginal.mRate_Ref);
+	mRate_Ref.assign(inOriginal.mRate_Ref.c_str());
 	switch (mRate_Ref[0]) {
 		case '@':
 			// individual variable value

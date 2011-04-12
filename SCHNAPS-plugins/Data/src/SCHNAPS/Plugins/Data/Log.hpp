@@ -42,7 +42,11 @@ public:
 	typedef Core::ContainerT<Log, Core::Primitive::Bag> Bag;
 
 	Log();
+	Log(const Log& inOriginal);
 	virtual ~Log() {}
+
+	//! Copy operator.
+	Log& operator=(const Log& inOriginal);
 
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();

@@ -46,6 +46,9 @@ public:
 	IsBetween(const IsBetween& inOriginal);
 	virtual ~IsBetween() {}
 
+	//! Copy operator.
+	IsBetween& operator=(const IsBetween& inOriginal);
+
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

@@ -47,6 +47,9 @@ public:
 	ProcessPush(const ProcessPush& inOriginal);
 	virtual ~ProcessPush() {}
 
+	//! Copy operator.
+	ProcessPush& operator=(const ProcessPush& inOriginal);
+
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

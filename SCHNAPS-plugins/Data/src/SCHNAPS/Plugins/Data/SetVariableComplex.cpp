@@ -42,6 +42,17 @@ SetVariableComplex::SetVariableComplex(const SetVariableComplex& inOriginal) :
 {}
 
 /*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
+SetVariableComplex& SetVariableComplex::operator=(const SetVariableComplex& inOriginal) {
+	schnaps_StackTraceBeginM();
+	mVariable_Ref.assign(inOriginal.mVariable_Ref.c_str());
+	return *this;
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Data::SetVariableComplex& SCHNAPS::Plugins::Data::SetVariableComplex::operator=(const SCHNAPS::Plugins::Data::SetVariableComplex&)");
+}
+
+/*!
  * \brief Read object from XML using system.
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.

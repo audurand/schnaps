@@ -49,7 +49,7 @@ Event::Event(const Event& inOriginal) :
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mProbability = NULL;
 			break;
 		case '$':
@@ -61,6 +61,38 @@ Event::Event(const Event& inOriginal) :
 			mProbability = Core::castHandleT<Core::Double>(inOriginal.mProbability->clone());
 			break;
 	}
+}
+
+/*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
+Event& Event::operator=(const Event& inOriginal) {
+	schnaps_StackTraceBeginM();
+	mLabel.assign(inOriginal.mLabel.c_str());
+	mProbability_Ref.assign(inOriginal.mProbability_Ref.c_str());
+	
+	switch (mProbability_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mProbability = NULL;
+			break;
+		case '$':
+			// parameter value
+			mProbability = inOriginal.mProbability;
+			break;
+		default:
+			// direct value
+			mProbability = Core::castHandleT<Core::Double>(inOriginal.mProbability->clone());
+			break;
+	}
+
+	return *this;
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Meds::Event& SCHNAPS::Plugins::Meds::Event::operator=(const SCHNAPS::Plugins::Meds::Event&)");
 }
 
 /*!

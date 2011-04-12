@@ -46,9 +46,6 @@ public:
 	PowComplex(const PowComplex& inOriginal);
 	virtual ~PowComplex() {}
 
-	//! Copy operator.
-	PowComplex& operator=(const PowComplex& inOriginal);
-
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

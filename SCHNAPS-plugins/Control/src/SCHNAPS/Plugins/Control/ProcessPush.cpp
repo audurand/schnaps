@@ -47,6 +47,39 @@ ProcessPush::ProcessPush(const ProcessPush& inOriginal) :
 {}
 
 /*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
+ProcessPush& ProcessPush::operator=(const ProcessPush& inOriginal) {
+	schnaps_StackTraceBeginM();
+	mLabel.assign(inOriginal.mLabel.c_str());
+	mTarget = inOriginal.mTarget;
+	mDelay_Ref.assign(inOriginal.mDelay_Ref.c_str());
+	
+	switch (mDelay_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mDelay = NULL;
+			break;
+		case '$':
+			// parameter value
+			mDelay = inOriginal.mDelay;
+			break;
+		default:
+			// direct value
+			mDelay = Core::castHandleT<Core::ULong>(inOriginal.mDelay->clone());
+			break;
+	}
+
+	return *this;
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Control::ProcessPush& SCHNAPS::Plugins::Control::ProcessPush::operator=(const SCHNAPS::Plugins::Control::ProcessPush&)");
+}
+
+/*!
  * \brief Read object from XML using system.
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.

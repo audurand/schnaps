@@ -51,7 +51,7 @@ Treatment::Treatment(const Treatment& inOriginal) :
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mCompliance = NULL;
 			break;
 		case '$':
@@ -70,7 +70,7 @@ Treatment::Treatment(const Treatment& inOriginal) :
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mCost = NULL;
 			break;
 		case '$':
@@ -89,7 +89,7 @@ Treatment::Treatment(const Treatment& inOriginal) :
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mDiscountRate = NULL;
 			break;
 		case '$':
@@ -101,6 +101,80 @@ Treatment::Treatment(const Treatment& inOriginal) :
 			mDiscountRate = Core::castHandleT<Core::Double>(inOriginal.mDiscountRate->clone());
 			break;
 	}
+}
+
+/*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
+Treatment& Treatment::operator=(const Treatment& inOriginal) {
+	schnaps_StackTraceBeginM();
+	mLabel.assign(inOriginal.mLabel.c_str());
+	mOutCost_Ref.assign(inOriginal.mOutCost_Ref.c_str());
+	mCompliance_Ref.assign(inOriginal.mCompliance_Ref.c_str());
+	mCost_Ref.assign(inOriginal.mCost_Ref.c_str());
+	mDiscountRate_Ref.assign(inOriginal.mDiscountRate_Ref.c_str());
+	mChargeNonCompliant = inOriginal.mChargeNonCompliant;
+	
+	switch (mCompliance_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mCompliance = NULL;
+			break;
+		case '$':
+			// parameter value
+			mCompliance = inOriginal.mCompliance;
+			break;
+		default:
+			// direct value
+			mCompliance = Core::castHandleT<Core::Double>(inOriginal.mCompliance->clone());
+			break;
+	}
+	
+	switch (mCost_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mCost = NULL;
+			break;
+		case '$':
+			// parameter value
+			mCost = inOriginal.mCost;
+			break;
+		default:
+			// direct value
+			mCost = Core::castHandleT<Core::Double>(inOriginal.mCost->clone());
+			break;
+	}
+	
+	switch (mDiscountRate_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mDiscountRate = NULL;
+			break;
+		case '$':
+			// parameter value
+			mDiscountRate = inOriginal.mDiscountRate;
+			break;
+		default:
+			// direct value
+			mDiscountRate = Core::castHandleT<Core::Double>(inOriginal.mDiscountRate->clone());
+			break;
+	}
+
+	return *this;
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Meds::Treatment& SCHNAPS::Plugins::Meds::Treatment::operator=(const SCHNAPS::Plugins::Meds::Treatment&)");
 }
 
 /*!

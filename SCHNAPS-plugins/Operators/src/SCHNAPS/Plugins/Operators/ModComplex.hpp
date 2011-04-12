@@ -46,9 +46,6 @@ public:
 	ModComplex(const ModComplex& inOriginal);
 	virtual ~ModComplex() {}
 
-	//! Copy operator.
-	ModComplex& operator=(const ModComplex& inOriginal);
-
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

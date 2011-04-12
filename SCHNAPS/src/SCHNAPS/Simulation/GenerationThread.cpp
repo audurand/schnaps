@@ -1,8 +1,8 @@
 /*
  * GenerationThread.cpp
  *
- *  Created on: 2010-04-10
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,30 +40,16 @@ GenerationThread::~GenerationThread() {
 }
 
 void GenerationThread::main() {
-	bool lDone = false;
-
+	// wait for initialization by main thread
 	mParallel->lock();
 	mSequential->post();
 	mParallel->wait();
 	mParallel->unlock();
+	
+	// process
+	Generator::buildIndividuals(this);
 
-	do {
-		switch (mPosition) {
-		case eGENERATION:
-			Generator::buildIndividuals(this);
-
-			mParallel->lock();
-			mSequential->post();
-			mParallel->wait();
-			mParallel->unlock();
-			break;
-		default: // eEND;
-			lDone = true;
-			break;
-		}
-	} while (!lDone);
-
-	// Ready for deletion
+	// done
 	mParallel->lock();
 	mSequential->post();
 	mParallel->unlock();

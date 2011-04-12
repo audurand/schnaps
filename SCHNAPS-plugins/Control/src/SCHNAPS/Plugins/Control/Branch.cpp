@@ -66,7 +66,7 @@ Branch::Branch(const Branch& inOriginal) :
  */
 Branch& Branch::operator=(const Branch& inOriginal) {
 	schnaps_StackTraceBeginM();
-	mProbability_Ref.assign(inOriginal.mProbability_Ref);
+	mProbability_Ref.assign(inOriginal.mProbability_Ref.c_str());
 	
 	switch (mProbability_Ref[0]) {
 		case '@':

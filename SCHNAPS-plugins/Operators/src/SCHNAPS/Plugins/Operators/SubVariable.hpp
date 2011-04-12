@@ -46,6 +46,9 @@ public:
 	SubVariable(const SubVariable& inOriginal);
 	virtual ~SubVariable() {}
 
+	//! Copy operator.
+	SubVariable& operator=(const SubVariable& inOriginal);
+
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

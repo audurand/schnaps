@@ -45,9 +45,6 @@ public:
 	DivComplex(const DivComplex& inOriginal);
 	virtual ~DivComplex() {}
 
-	//! Copy operator.
-	DivComplex& operator=(const DivComplex& inOriginal);
-
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

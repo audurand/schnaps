@@ -40,16 +40,6 @@ AddComplex::AddComplex(const AddComplex& inOriginal) :
 {}
 
 /*!
- * \brief  Copy operator.
- * \return A reference to the current object.
- */
-AddComplex& AddComplex::operator=(const AddComplex& inOriginal) {
-	schnaps_StackTraceBeginM();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::AddComplex& SCHNAPS::Plugins::Operators::AddComplex::operator=(const SCHNAPS::Plugins::Operators::AddComplex&)");
-}
-
-/*!
  * \brief  Execute the primitive.
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.

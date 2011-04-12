@@ -46,9 +46,6 @@ public:
 	IsBetweenComplex(const IsBetweenComplex& inOriginal);
 	virtual ~IsBetweenComplex() {}
 
-	//! Copy operator.
-	IsBetweenComplex& operator=(const IsBetweenComplex& inOriginal);
-
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

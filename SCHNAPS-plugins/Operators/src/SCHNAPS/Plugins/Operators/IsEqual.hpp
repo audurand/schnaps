@@ -46,6 +46,9 @@ public:
 	IsEqual(const IsEqual& inOriginal);
 	virtual ~IsEqual() {}
 
+	//! Copy operator.
+	IsEqual& operator=(const IsEqual& inOriginal);
+
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

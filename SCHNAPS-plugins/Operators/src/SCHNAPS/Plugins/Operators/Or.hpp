@@ -46,6 +46,9 @@ public:
 	Or(const Or& inOriginal);
 	virtual ~Or() {}
 
+	//! Copy operator.
+	Or& operator=(const Or& inOriginal);
+
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

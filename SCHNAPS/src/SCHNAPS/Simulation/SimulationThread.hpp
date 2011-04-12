@@ -58,14 +58,18 @@ public:
 	 * \brief Wait for the blackboard to be available.
 	 */
 	void waitBlackBoard() {
+		schnaps_StackTraceBeginM();
 		mBlackBoardWrt->wait();
+		schnaps_StackTraceEndM("void SCHNAPS::Simulation::SimulationThread::waitBlackBoard()");
 	}
 
 	/*!
 	 * \brief Make the blackboard available to other threads.
 	 */
 	void postBlackBoard() {
+		schnaps_StackTraceBeginM();
 		mBlackBoardWrt->post();
+		schnaps_StackTraceEndM("void SCHNAPS::Simulation::SimulationThread::postBlackBoard()");
 	}
 
 	/*!
@@ -74,6 +78,7 @@ public:
 	 * \param inUpperBound The upper bound of indexes.
 	 */
 	void addNewIndexes(unsigned int inLowerBound, unsigned int inUpperBound) {
+		schnaps_StackTraceBeginM();
 		unsigned int lThreadNb = mContext->getThreadNb();
 		unsigned int lNbThreads = Core::castObjectT<const Core::UInt&>(mContext->getSystem().getParameters().getParameter("threads.simulator")).getValue();
 
@@ -82,6 +87,7 @@ public:
 				mNewIndexes.push_back(i);
 			}
 		}
+		schnaps_StackTraceEndM("void SCHNAPS::Simulation::SimulationThread::addNewIndexes(unsigned int, unsigned int)");
 	}
 
 	/*!
@@ -89,7 +95,9 @@ public:
 	 * \param inScenarioLabel A const reference to the scenario label.
 	 */
 	void setScenarioLabel(const std::string& inScenarioLabel) {
+		schnaps_StackTraceBeginM();
 		mScenarioLabel = inScenarioLabel;
+		schnaps_StackTraceEndM("void SCHNAPS::Simulation::SimulationThread::setScenarioLabel(const std::string&)");
 	}
 
 	/*!
@@ -97,15 +105,19 @@ public:
 	 * \param inPosition The position of thread in simulation.
 	 */
 	void setPosition(Position inPosition) {
+		schnaps_StackTraceBeginM();
 		mPosition = inPosition;
+		schnaps_StackTraceEndM("void SCHNAPS::Simulation::SimulationThread::setPosition(SCHNAPS::Simulation::SimulationThread::Position)");
 	}
 
 	/*!
 	 * \brief Reset the indexes of individuals to simulate.
 	 */
 	void resetIndexes() {
+		schnaps_StackTraceBeginM();
 		mIndexes.clear();
 		mNewIndexes.clear();
+		schnaps_StackTraceEndM("void SCHNAPS::Simulation::SimulationThread::resetIndexes()");
 	}
 
 	/*!
@@ -114,8 +126,10 @@ public:
 	 * \throw  SCHNAPS::Core::AssertException if the simulation context is NULL.
 	 */
 	SimulationContext& getContext() {
+		schnaps_StackTraceBeginM();
 		schnaps_NonNullPointerAssertM(mContext);
 		return *mContext;
+		schnaps_StackTraceEndM("SCHNAPS::Simulation::SimulationContext& SCHNAPS::Simulation::SimulationThread::getContext()");
 	}
 
 	/*!
@@ -124,8 +138,10 @@ public:
 	 * \throw  SCHNAPS::Core::AssertException if the blackboard is NULL.
 	 */
 	BlackBoard& getBlackBoard() {
+		schnaps_StackTraceBeginM();
 		schnaps_NonNullPointerAssertM(mBlackBoard);
 		return *mBlackBoard;
+		schnaps_StackTraceEndM("SCHNAPS::Simulation::BlackBoard& SCHNAPS::Simulation::SimulationThread::getBlackBoard()");
 	}
 
 	/*!
@@ -134,8 +150,10 @@ public:
 	 * \throw  SCHNAPS::Core::AssertException if the maps of waiting FIFOs is NULL.
 	 */
 	WaitingQMaps& getWaitingQMaps() {
+		schnaps_StackTraceBeginM();
 		schnaps_NonNullPointerAssertM(mWaitingQMaps);
 		return *mWaitingQMaps;
+		schnaps_StackTraceEndM("SCHNAPS::Simulation::WaitingQMaps& SCHNAPS::Simulation::SimulationThread::getWaitingQMaps()");
 	}
 
 	/*! 
@@ -143,7 +161,9 @@ public:
 	 * \return A const reference to the indexes of individuals to simulate.
 	 */
 	const std::vector<unsigned int>& getIndexes() const {
+		schnaps_StackTraceBeginM();
 		return mIndexes;
+		schnaps_StackTraceEndM("const std::vector<unsigned int>& SCHNAPS::Simulation::SimulationThread::getIndexes() const");
 	}
 
 	/*! 
@@ -151,7 +171,9 @@ public:
 	 * \return A const reference to the indexes of newly added individuals to simulate.
 	 */
 	const std::vector<unsigned int>& getNewIndexes() const {
+		schnaps_StackTraceBeginM();
 		return mNewIndexes;
+		schnaps_StackTraceEndM("const std::vector<unsigned int>& SCHNAPS::Simulation::SimulationThread::getNewIndexes() const");
 	}
 
 	/*!
@@ -159,7 +181,9 @@ public:
 	 * \return A const reference to the label of scenario to simulate.
 	 */
 	const std::string& getScenarioLabel() const {
+		schnaps_StackTraceBeginM();
 		return mScenarioLabel;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Simulation::SimulationThread::getScenarioLabel() const");
 	}
 
 protected:

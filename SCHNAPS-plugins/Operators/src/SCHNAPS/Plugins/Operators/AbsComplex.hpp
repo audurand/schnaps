@@ -46,9 +46,6 @@ public:
 	AbsComplex(const AbsComplex& inOriginal);
 	virtual ~AbsComplex() {}
 
-	//! Copy operator.
-	AbsComplex& operator=(const AbsComplex& inOriginal);
-
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

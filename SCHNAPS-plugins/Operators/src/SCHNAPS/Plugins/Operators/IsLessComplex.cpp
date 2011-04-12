@@ -40,16 +40,6 @@ IsLessComplex::IsLessComplex(const IsLessComplex& inOriginal) :
 {}
 
 /*!
- * \brief  Copy operator.
- * \return A reference to the current object.
- */
-IsLessComplex& IsLessComplex::operator=(const IsLessComplex& inOriginal) {
-	schnaps_StackTraceBeginM();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::IsLessComplex& SCHNAPS::Plugins::Operators::IsLessComplex::operator=(const SCHNAPS::Plugins::Operators::IsLessComplex&)");
-}
-
-/*!
  * \brief  Execute the primitive.
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.

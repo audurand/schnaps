@@ -276,8 +276,8 @@ Core::AnyType::Handle ChoiceIsBetween::execute(unsigned int inIndex, Core::Execu
 	}
 	
 	if (lValue->isLess(*(*mBounds)[0])) {
-		printf("Value: %s\n", lValue->writeStr().c_str());
-		printf("Lower bound: %s\n", (*mBounds)[0]->writeStr().c_str());
+		std::cout << "Value: " << lValue->writeStr() << "\n";
+		std::cout << "Lower bound: " << (*mBounds)[0]->writeStr() << "\n";
 		throw schnaps_RunTimeExceptionM("Value '" + lValue->writeStr() + "' is not in any range of choices!");
 	}
 

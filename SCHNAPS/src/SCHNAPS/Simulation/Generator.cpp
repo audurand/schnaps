@@ -68,18 +68,9 @@ Generator::Generator(Core::System::Handle inSystem, Clock::Handle inClock, Envir
 	mEnvironment(inEnvironment),
 	mParallel(new PACC::Threading::Condition()),
 	mSequential(new PACC::Threading::Semaphore(0))
-{}
-
-/*!
- * \brief Destructor.
- */
-Generator::~Generator() {
-	for (unsigned int i = 0; i < mSubThreads.size(); i++) {
-		mSubThreads[i]->setPosition(GenerationThread::eEND);
-	}
-	mParallel->lock();
-	mParallel->broadcast();
-	mParallel->unlock();
+{
+	mContext.push_back(new GenerationContext(inSystem, inClock, inEnvironment));
+	mContext.back()->setThreadNb(0);
 }
 
 /*!
@@ -163,13 +154,17 @@ Individual::Bag::Handle Generator::generate(const std::string& inProfile, unsign
 	Core::StringArray lBackupState;
 
 	// for computing threads sub-size to generate
-	unsigned int lQuotient = inSize / mSubThreads.size();
-	unsigned int lRemainder = inSize % mSubThreads.size();
+	unsigned int lQuotient = inSize / mContext.size();
+	unsigned int lRemainder = inSize % mContext.size();
 	unsigned int lSubSize;
 
-	// init Threads
-	for (unsigned int i = 0; i < mSubThreads.size(); i++) {
+	// create subthreads
+	for (unsigned int i = 0; i < mContext.size(); i++) {
 		mContext[i]->setGenProfile(Core::castHandleT<GenProfile>(lProfile->deepCopy(*mSystem)));
+		
+		// create subthread
+		mSubThreads.push_back(new GenerationThread(mParallel, mSequential, mContext[i]));
+		mSequential->wait();
 
 		// compute sub-size
 		lSubSize = lQuotient;
@@ -177,8 +172,7 @@ Individual::Bag::Handle Generator::generate(const std::string& inProfile, unsign
 			lSubSize++;
 		}
 
-		mSubThreads[i]->setPosition(GenerationThread::eGENERATION);
-		mSubThreads[i]->setGenerationInfo(lSubSize, inPrefix, inStartingIndex, lEraseVariable);
+		mSubThreads.back()->setGenerationInfo(lSubSize, inPrefix, inStartingIndex, lEraseVariable);
 		inStartingIndex += lSubSize;
 
 		// backup and reset randomizer info
@@ -189,8 +183,9 @@ Individual::Bag::Handle Generator::generate(const std::string& inProfile, unsign
 
 	// build individuals
 #ifdef SCHNAPS_FULL_DEBUG
-		printf("Generating %u individuals\n", inSize);
+		std::cout << "Generating " << inSize <<  " individuals\n";
 #endif
+	// launch subthreads and wait
 	mParallel->lock();
 	mParallel->broadcast();
 	mParallel->unlock();
@@ -198,6 +193,7 @@ Individual::Bag::Handle Generator::generate(const std::string& inProfile, unsign
 		mSequential->wait();
 	}
 
+	// store result for output
 	Individual::Bag::Handle lIndividuals = new Individual::Bag();
 	lIndividuals->reserve(inSize);
 	for (unsigned int i = 0; i < mSubThreads.size(); i++) {
@@ -208,6 +204,9 @@ Individual::Bag::Handle Generator::generate(const std::string& inProfile, unsign
 		mRandomizerCurrentState[i] = mSystem->getRandomizer(i).getState();
 		mSystem->getRandomizer(i).reset(lBackupSeed[i], lBackupState[i]);
 	}
+	
+	// terminate and destroy threads
+	mSubThreads.clear();
 
 	return lIndividuals;
 	schnaps_StackTraceEndM("SCHNAPS::Simulation::Individual::Bag::Handle SCHNAPS::Simulation::Generator::generate(const std::string&, unsigned int, const std::string&, unsigned int)");
@@ -289,24 +288,37 @@ void Generator::refresh() {
 	schnaps_StackTraceBeginM();
 	// create one context per thread + sub threads
 	unsigned int lNbThreads_new = Core::castObjectT<const Core::UInt&>(mSystem->getParameters().getParameter("threads.generator")).getValue();
+	if (lNbThreads_new < 1) {
+		std::ostringstream lOSS;
+		lOSS << "The number of generation threads must be higher or equal to 1 (current new value = " << lNbThreads_new << ");";
+		lOSS << "the number of generation threads could not be set.\n";
+		throw schnaps_RunTimeExceptionM(lOSS.str());
+	}
+	
 	unsigned int lNbThreads_old = mContext.size();
 
 	if (lNbThreads_old < lNbThreads_new) {
 		for (unsigned int i = lNbThreads_old; i < lNbThreads_new; i++) {
+			// create new contexts
 			mContext.push_back(new GenerationContext(mSystem, mClock, mEnvironment));
 			mContext.back()->setThreadNb(i);
-
-			mSubThreads.push_back(new GenerationThread(mParallel, mSequential, mContext.back()));
-			mSequential->wait();
+			
+			// add simulator randomizers information
+			mRandomizerInitSeed.push_back(0);
+			mRandomizerInitState.push_back("");
 		}
 	} else if (lNbThreads_new < lNbThreads_old) {
-		// TODO: remove unused contexts and subthreads
+		for (unsigned int i = lNbThreads_old; i > lNbThreads_new; i--) {
+			// remove unused contexts
+			mContext.pop_back();
+			
+			// remove unused randomizers information
+			mRandomizerInitSeed.pop_back();
+			mRandomizerInitState.pop_back();
+		}
 	}
 	
 	// update generator randomizers information
-	mRandomizerInitSeed.resize(lNbThreads_new, 0);
-	mRandomizerInitState.resize(lNbThreads_new, "");
-
 	mRandomizerCurrentSeed = mRandomizerInitSeed;
 	mRandomizerCurrentState = mRandomizerInitState;
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Generator::refresh()");

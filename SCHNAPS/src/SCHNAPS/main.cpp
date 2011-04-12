@@ -41,9 +41,9 @@ int main(int argc, char* argv[]) {
 		std::string lParameters = "";
 		std::string lScenario = "";
 
-		printf("start\n");
-
-		printf("- arguments parsing\n");
+#ifdef SCHNAPS_FULL_DEBUG
+		std::cout << "Argument parsing\n";
+#endif
 
 		while ((lOpt = getopt(argc, argv, "d:c:s:p:")) != -1) {
 			switch (lOpt) {
@@ -60,15 +60,17 @@ int main(int argc, char* argv[]) {
 				lScenario.assign(optarg);
 				break;
 			case '?':
-				fprintf(stderr, "Missing argument of option -%c.\n", optopt);
+				std::cerr << "Missing argument of option -" << optopt << ".\n";
 				break;
 			default:
-				fprintf(stderr, "Unknown option -%c.\n", optopt);
+				std::cerr << "Unknown option -" << optopt << ".\n";
 				break;
 			}
 		}
 
-		printf("- configuration\n");
+#ifdef SCHNAPS_FULL_DEBUG
+		std::cout << "Configuration\n";
+#endif
 		
 		if (lConfigurationFile.empty()) {
 			std::stringstream lOSS;
@@ -93,6 +95,9 @@ int main(int argc, char* argv[]) {
 		}
 
 		// configure simulator from file
+#ifdef SCHNAPS_FULL_DEBUG
+		std::cout << "Configure from file\n";
+#endif
 		PACC::XML::Document *lDocument = new PACC::XML::Document();
 		lDocument->parse(lConfigurationFile);
 		lSimulator.read(lDocument->getFirstDataTag());
@@ -100,14 +105,20 @@ int main(int argc, char* argv[]) {
 
 		// command-line parameters override configuration file.
 		if (lParameters.empty() == false) {
+#ifdef SCHNAPS_FULL_DEBUG
+			std::cout << "Configure from command line\n";
+#endif
 			lSimulator.configure(lParameters);
 		}
 
-		printf("- Simulation\n");
+#ifdef SCHNAPS_FULL_DEBUG
+		std::cout << "Simulating\n";
+#endif
 		// simulate
 		lSimulator.simulate(lScenario);
-
-		printf("end\n");
+#ifdef SCHNAPS_FULL_DEBUG
+		std::cout << "Simulating done\n";
+#endif
 
 		return 0;
 	} catch (Core::Exception& E) {

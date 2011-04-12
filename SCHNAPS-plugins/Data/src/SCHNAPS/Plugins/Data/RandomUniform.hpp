@@ -46,9 +46,6 @@ public:
 	RandomUniform(const RandomUniform& inOriginal);
 	virtual ~RandomUniform() {}
 
-	//! Copy operator.
-	RandomUniform& operator=(const RandomUniform& inOriginal);
-
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

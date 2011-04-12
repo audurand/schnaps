@@ -46,6 +46,9 @@ public:
 	DivVariable(const DivVariable& inOriginal);
 	virtual ~DivVariable() {}
 
+	//! Copy operator.
+	DivVariable& operator=(const DivVariable& inOriginal);
+
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

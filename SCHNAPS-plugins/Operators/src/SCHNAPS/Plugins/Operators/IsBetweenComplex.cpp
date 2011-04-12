@@ -40,16 +40,6 @@ IsBetweenComplex::IsBetweenComplex(const IsBetweenComplex& inOriginal) :
 {}
 
 /*!
- * \brief  Copy operator.
- * \return A reference to the current object.
- */
-IsBetweenComplex& IsBetweenComplex::operator=(const IsBetweenComplex& inOriginal) {
-	schnaps_StackTraceBeginM();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::IsBetweenComplex& SCHNAPS::Plugins::Operators::IsBetweenComplex::operator=(const SCHNAPS::Plugins::Operators::IsBetweenComplex&)");
-}
-
-/*!
  * \brief  Execute the primitive.
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.

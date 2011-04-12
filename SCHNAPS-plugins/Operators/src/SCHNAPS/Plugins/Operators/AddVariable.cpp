@@ -84,6 +84,56 @@ AddVariable::AddVariable(const AddVariable& inOriginal) :
 }
 
 /*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
+AddVariable& AddVariable::operator=(const AddVariable& inOriginal) {
+	schnaps_StackTraceBeginM();
+	mResult_Ref.assign(inOriginal.mResult_Ref.c_str());
+	mArgLeft_Ref.assign(inOriginal.mArgLeft_Ref.c_str());
+	mArgRight_Ref.assign(inOriginal.mArgRight_Ref.c_str());
+	
+	switch (mArgLeft_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mArgLeft = NULL;
+			break;
+		case '$':
+			// parameter value
+			mArgLeft = inOriginal.mArgLeft;
+			break;
+		default:
+			// direct value
+			mArgLeft = Core::castHandleT<Core::Number>(inOriginal.mArgLeft->clone());
+	}
+	
+	switch (mArgRight_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mArgRight = NULL;
+			break;
+		case '$':
+			// parameter value
+			mArgRight = inOriginal.mArgRight;
+			break;
+		default:
+			// direct value
+			mArgRight = Core::castHandleT<Core::Number>(inOriginal.mArgRight->clone());
+	}
+
+	return *this;
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::AddVariable& SCHNAPS::Plugins::Operators::AddVariable::operator=(const SCHNAPS::Plugins::Operators::AddVariable&)");
+}
+
+/*!
  * \brief Read object from XML using system.
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.

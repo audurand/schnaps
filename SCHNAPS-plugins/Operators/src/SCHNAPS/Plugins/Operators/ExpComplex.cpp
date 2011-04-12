@@ -40,16 +40,6 @@ ExpComplex::ExpComplex(const ExpComplex& inOriginal) :
 {}
 
 /*!
- * \brief  Copy operator.
- * \return A reference to the current object.
- */
-ExpComplex& ExpComplex::operator=(const ExpComplex& inOriginal) {
-	schnaps_StackTraceBeginM();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::ExpComplex& SCHNAPS::Plugins::Operators::ExpComplex::operator=(const SCHNAPS::Plugins::Operators::ExpComplex&)");
-}
-
-/*!
  * \brief  Execute the primitive.
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.

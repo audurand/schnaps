@@ -46,6 +46,9 @@ public:
 	AddVariable(const AddVariable& inOriginal);
 	virtual ~AddVariable() {}
 
+	//! Copy operator.
+	AddVariable& operator=(const AddVariable& inOriginal);
+
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

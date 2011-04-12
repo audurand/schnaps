@@ -149,8 +149,8 @@ void BranchMulti::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
 			
 #ifndef SCHNAPS_NDEBUG
 			if (lSum != 1) {
-				printf("Warning: multi branches probabilities must sum to 1 (current sum: %f)!\n", lSum);
-				printf("\tIn: void SCHNAPS::Plugins::Control::BranchMulti::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)\n");
+				std::cout << "Warning: multi branches probabilities must sum to 1 (current sum: " <<  lSum << "!";
+				std::cout << "\tIn: void SCHNAPS::Plugins::Control::BranchMulti::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)\n";
 			}
 #endif
 			break; }

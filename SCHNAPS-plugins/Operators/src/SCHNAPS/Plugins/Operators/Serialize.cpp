@@ -61,6 +61,36 @@ Serialize::Serialize(const Serialize& inOriginal) :
 }
 
 /*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
+Serialize& Serialize::operator=(const Serialize& inOriginal) {
+	schnaps_StackTraceBeginM();
+	mValue_Ref.assign(inOriginal.mValue_Ref.c_str());
+	
+	switch (mValue_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mValue = NULL;
+			break;
+		case '$':
+			// parameter value
+			mValue = inOriginal.mValue;
+			break;
+		default:
+			// direct value
+			mValue = Core::castHandleT<Core::String>(inOriginal.mValue->clone());
+	}
+
+	return *this;
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::Serialize& SCHNAPS::Plugins::Operators::Serialize::operator=(const SCHNAPS::Plugins::Operators::Serialize&)");
+}
+
+/*!
  * \brief Read object from XML using system.
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.

@@ -40,16 +40,6 @@ NotComplex::NotComplex(const NotComplex& inOriginal) :
 {}
 
 /*!
- * \brief  Copy operator.
- * \return A reference to the current object.
- */
-NotComplex& NotComplex::operator=(const NotComplex& inOriginal) {
-	schnaps_StackTraceBeginM();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::NotComplex& SCHNAPS::Plugins::Operators::NotComplex::operator=(const SCHNAPS::Plugins::Operators::NotComplex&)");
-}
-
-/*!
  * \brief  Execute the primitive.
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.

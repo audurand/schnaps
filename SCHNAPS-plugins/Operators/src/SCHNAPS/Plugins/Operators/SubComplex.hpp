@@ -46,9 +46,6 @@ public:
 	SubComplex(const SubComplex& inOriginal);
 	virtual ~SubComplex() {}
 
-	//! Copy operators.
-	SubComplex& operator=(const SubComplex& inOriginal);
-
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

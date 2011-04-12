@@ -46,6 +46,9 @@ public:
 	IsLessOrEqual(const IsLessOrEqual& inOriginal);
 	virtual ~IsLessOrEqual() {}
 
+	//! Copy operator.
+	IsLessOrEqual& operator=(const IsLessOrEqual& inOriginal);
+
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

@@ -46,6 +46,9 @@ public:
 	SetVariable(const SetVariable& inOriginal);
 	virtual ~SetVariable() {}
 
+	//! Copy operator.
+	SetVariable& operator=(const SetVariable& inOriginal);
+
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

@@ -40,16 +40,6 @@ AbsComplex::AbsComplex(const AbsComplex& inOriginal) :
 {}
 
 /*!
- * \brief  Copy operator.
- * \return A reference to the current object.
- */
-AbsComplex& AbsComplex::operator=(const AbsComplex& inOriginal) {
-	schnaps_StackTraceBeginM();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::AbsComplex& SCHNAPS::Plugins::Operators::AbsComplex::operator=(const SCHNAPS::Plugins::Operators::AbsComplex&)");
-}
-
-/*!
  * \brief  Execute the primitive.
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.

@@ -36,6 +36,104 @@ Log::Log() :
 {}
 
 /*!
+ * \brief Construct a log primitive as a copy of an original.
+ * \param inOriginal A const reference to the original log primitive.
+ */
+Log::Log(const Log& inOriginal) :
+	Primitive(0),
+	mType_Ref(inOriginal.mType_Ref.c_str()),
+	mMessage_Ref(inOriginal.mMessage_Ref.c_str())
+{
+	switch (mType_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mType = NULL;
+			break;
+		case '$':
+			// parameter value
+			mType = inOriginal.mType;
+			break;
+		default:
+			// direct value
+			mType = inOriginal.mType->clone();
+			break;
+	}
+	
+	switch (mMessage_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mMessage = NULL;
+			break;
+		case '$':
+			// parameter value
+			mMessage = inOriginal.mMessage;
+			break;
+		default:
+			// direct value
+			mMessage = inOriginal.mMessage->clone();
+			break;
+	}
+}
+
+/*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
+Log& Log::operator=(const Log& inOriginal) {
+	schnaps_StackTraceBeginM();
+	mType_Ref.assign(inOriginal.mType_Ref.c_str());
+	mMessage_Ref.assign(inOriginal.mMessage_Ref.c_str());
+	switch (mType_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mType = NULL;
+			break;
+		case '$':
+			// parameter value
+			mType = inOriginal.mType;
+			break;
+		default:
+			// direct value
+			mType = inOriginal.mType->clone();
+			break;
+	}
+	
+	switch (mMessage_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mMessage = NULL;
+			break;
+		case '$':
+			// parameter value
+			mMessage = inOriginal.mMessage;
+			break;
+		default:
+			// direct value
+			mMessage = inOriginal.mMessage->clone();
+			break;
+	}
+
+	return *this;
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Data::Log& SCHNAPS::Plugins::Data::Log::operator=(const SCHNAPS::Plugins::Data::Log&)");
+}
+
+/*!
  * \brief Read object from XML using system.
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.

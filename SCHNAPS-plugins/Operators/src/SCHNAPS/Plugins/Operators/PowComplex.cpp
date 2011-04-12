@@ -40,16 +40,6 @@ PowComplex::PowComplex(const PowComplex& inOriginal) :
 {}
 
 /*!
- * \brief  Copy operator.
- * \return A reference to the current object.
- */
-PowComplex& PowComplex::operator=(const PowComplex& inOriginal) {
-	schnaps_StackTraceBeginM();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::PowComplex& SCHNAPS::Plugins::Operators::PowComplex::operator=(const SCHNAPS::Plugins::Operators::PowComplex&)");
-}
-
-/*!
  * \brief  Execute the primitive.
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.

@@ -93,7 +93,7 @@ public:
 	 */
 	inline T& operator*() {
 		schnaps_StackTraceBeginM();
-			return static_cast<T&> (SCHNAPS::Core::Pointer::operator*());
+		return static_cast<T&> (SCHNAPS::Core::Pointer::operator*());
 		schnaps_StackTraceEndM("T& PointerT<T,BaseType>::operator*()");
 	}
 
@@ -115,7 +115,7 @@ public:
 	 */
 	inline T* operator->() {
 		schnaps_StackTraceBeginM();
-			return static_cast<T*> (SCHNAPS::Core::Pointer::operator->());
+		return static_cast<T*> (SCHNAPS::Core::Pointer::operator->());
 		schnaps_StackTraceEndM("T* PointerT<T,BaseType>::operator->()");
 	}
 

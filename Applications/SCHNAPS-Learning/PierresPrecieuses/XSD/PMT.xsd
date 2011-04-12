@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	
+	<xsd:annotation>
+		<xsd:documentation>
+			W3C XML Schema for SCHNAPS primitives specific tags in XSD definitions,
+			by Marc-Andre Gardner, May 2010.
+		</xsd:documentation>
+	</xsd:annotation>
+	
+	<xsd:element name="info">
+		<xsd:complexType mixed="true">
+			<xsd:attribute name="lang" type="xsd:string" default="en" use="optional"/>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="mappedName">
+		<xsd:complexType mixed="true">
+			<xsd:attribute name="lang" type="xsd:string" default="en" use="optional"/>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="returnType">
+		<xsd:complexType mixed="true">
+			<xsd:attribute name="definedBy" use="required">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="argument"/>
+						<xsd:enumeration value="staticType"/>
+						<xsd:enumeration value="processReturnValue"/>
+						<xsd:enumeration value="variableValue"/>
+						<xsd:enumeration value="parameterValue"/>
+						<xsd:enumeration value="attributeValue"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="childBranchTag">
+		<xsd:complexType mixed="true">
+			<xsd:attribute name="lang" type="xsd:string" default="en" use="optional"/>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="childType">
+		<xsd:complexType mixed="true">
+			<xsd:attribute name="definedBy" use="required">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="argument"/>
+						<xsd:enumeration value="staticType"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="attributeInfo">
+		<xsd:complexType mixed="true">
+			<xsd:attribute name="lang" type="xsd:string" default="en" use="optional"/>
+			<xsd:attribute name="reference" type="xsd:boolean" default="false" use ="optional"/>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="attributeMappedName">
+		<xsd:complexType mixed="true">
+			<xsd:attribute name="lang" type="xsd:string" default="en" use="optional"/>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="eventHandler">
+		<xsd:complexType>
+			<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="event">
+					<xsd:complexType mixed="true">
+						<xsd:sequence>
+							<xsd:element name="eventArg" minOccurs="0" maxOccurs="unbounded">
+								<xsd:complexType>
+									<xsd:attribute name="argIndex" type="xsd:nonNegativeInteger" use="required"/>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+						<xsd:attribute name="eventName" type="xsd:string" use="required"/>
+						<xsd:attribute name="gravity" use="required">
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:string">
+									<xsd:enumeration value="None"/>
+									<xsd:enumeration value="Notice"/>
+									<xsd:enumeration value="Warning"/>
+									<xsd:enumeration value="Error"/>
+									<xsd:enumeration value="Fatal Error"/>
+									<xsd:enumeration value="Sudden Destruction Of The Earth"/>
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:attribute>
+						<xsd:attribute name="forceCorrection" type="xsd:boolean" use="optional" default="false"/>
+						<xsd:attribute name="addComment" type="xsd:boolean" use="optional" default="false"/>
+						<xsd:attribute name="warn" type="xsd:boolean" use="optional" default="true"/>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

@@ -46,6 +46,9 @@ public:
 	Treatment(const Treatment& inOriginal);
 	virtual ~Treatment() {}
 
+	//! Copy operator.
+	Treatment& operator=(const Treatment& inOriginal);
+
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

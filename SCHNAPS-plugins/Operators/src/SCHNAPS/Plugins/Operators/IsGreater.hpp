@@ -46,6 +46,9 @@ public:
 	IsGreater(const IsGreater& inOriginal);
 	virtual ~IsGreater() {}
 
+	//! Copy operator.
+	IsGreater& operator=(const IsGreater& inOriginal);
+
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

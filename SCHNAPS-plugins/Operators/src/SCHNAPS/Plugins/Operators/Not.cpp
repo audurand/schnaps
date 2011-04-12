@@ -61,6 +61,36 @@ Not::Not(const Not& inOriginal) :
 }
 
 /*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
+Not& Not::operator=(const Not& inOriginal) {
+	schnaps_StackTraceBeginM();
+	mArg_Ref.assign(inOriginal.mArg_Ref.c_str());
+	
+	switch (mArg_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mArg = NULL;
+			break;
+		case '$':
+			// parameter value
+			mArg = inOriginal.mArg;
+			break;
+		default:
+			// direct value
+			mArg = Core::castHandleT<Core::Bool>(inOriginal.mArg->clone());
+	}
+
+	return *this;
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::Not& SCHNAPS::Plugins::Operators::Not::operator=(const SCHNAPS::Plugins::Operators::Not&)");
+}
+
+/*!
  * \brief Read object from XML using system.
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.

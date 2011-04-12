@@ -45,6 +45,9 @@ public:
 	ConcatVariable(const ConcatVariable& inOriginal);
 	virtual ~ConcatVariable() {}
 
+	//! Copy operator.
+	ConcatVariable& operator=(const ConcatVariable& inOriginal);
+
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

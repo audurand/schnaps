@@ -46,6 +46,9 @@ public:
 	MultVariable(const MultVariable& inOriginal);
 	virtual ~MultVariable() {}
 
+	//! Copy operator.
+	MultVariable& operator=(const MultVariable& inOriginal);
+
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

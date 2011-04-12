@@ -47,7 +47,7 @@ Value::Value(const Value& inOriginal) :
 		case '#':
 			// environment variable value
 		case '%':
-			// TODO: local variable value
+			// local variable value
 			mValue = NULL;
 			break;
 		case '$':
@@ -59,6 +59,37 @@ Value::Value(const Value& inOriginal) :
 			mValue = inOriginal.mValue->clone();
 			break;
 	}
+}
+
+/*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
+Value& Value::operator=(const Value& inOriginal) {
+	schnaps_StackTraceBeginM();
+	mValue_Ref.assign(inOriginal.mValue_Ref.c_str());
+	
+	switch (mValue_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mValue = NULL;
+			break;
+		case '$':
+			// parameter value
+			mValue = inOriginal.mValue;
+			break;
+		default:
+			// direct value
+			mValue = inOriginal.mValue->clone();
+			break;
+	}
+
+	return *this;
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Data::Value& SCHNAPS::Plugins::Data::Value::operator=(const SCHNAPS::Plugins::Data::Value&)");
 }
 
 /*!

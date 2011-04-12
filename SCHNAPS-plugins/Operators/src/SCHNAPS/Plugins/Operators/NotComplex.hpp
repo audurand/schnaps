@@ -46,9 +46,6 @@ public:
 	NotComplex(const NotComplex& inNotComplexComplexiginal);
 	virtual ~NotComplex() {}
 
-	//! Copy operator.
-	NotComplex& operator=(const NotComplex& inNotComplexComplexiginal);
-
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

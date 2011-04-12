@@ -40,16 +40,6 @@ DivComplex::DivComplex(const DivComplex& inOriginal) :
 {}
 
 /*!
- * \brief  Copy operator.
- * \return A reference to the current object.
- */
-DivComplex& DivComplex::operator=(const DivComplex& inOriginal) {
-	schnaps_StackTraceBeginM();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::DivComplex& SCHNAPS::Plugins::Operators::DivComplex::operator=(const SCHNAPS::Plugins::Operators::DivComplex&)");
-}
-
-/*!
  * \brief  Execute the primitive.
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.

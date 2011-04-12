@@ -55,12 +55,17 @@ Simulator::Simulator() :
 	mSystem->getParameters().insertParameter("print.conf", new Core::Bool(false));
 	mSystem->getParameters().insertParameter("threads.simulator", new Core::UInt(1));
 	mSystem->getParameters().insertParameter("threads.generator", new Core::UInt(1));
+	
+	// create default context
+	mContext.push_back(new SimulationContext(mSystem, mClock, mEnvironment));
+	mContext.back()->setThreadNb(0);
 }
 
 /*!
  * \brief Destructor.
  */
 Simulator::~Simulator() {
+	// ensure to terminate all subthreads
 	for (unsigned int i = 0; i < mSubThreads.size(); i++) {
 		mSubThreads[i]->setPosition(SimulationThread::eEND);
 	}
@@ -154,9 +159,23 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 	mWaitingQMaps->getEnvironmentWaitingQMap().clear();
 	mWaitingQMaps->getIndividualsWaitingQMaps().clear();
 
-	for (unsigned int i = 0; i < mSubThreads.size(); i++) {
-		mSubThreads[i]->resetIndexes();
+	// backup randomizer seeds
+	Core::ULongArray lBackupSeed;
+	Core::StringArray lBackupState;
+	
+	for (unsigned int i = 0; i < mContext.size(); i++) {
 		mContext[i]->reset();
+		
+		// create subthreads
+		mSubThreads.push_back(new SimulationThread(mParallel, mSequential, mBlackBoardWrt, mContext[i], mBlackBoard, mWaitingQMaps));
+		mSequential->wait();
+		mSubThreads.back()->resetIndexes();
+		mSubThreads.back()->setScenarioLabel(inScenarioLabel);
+
+		// reset randomizer info
+		lBackupSeed.push_back(mSystem->getRandomizer(i).getSeed());
+		lBackupState.push_back(mSystem->getRandomizer(i).getState());
+		mSystem->getRandomizer(i).reset(mRandomizerCurrentSeed[i], mRandomizerCurrentState[i]);
 	}
 
 	// current position in simulation
@@ -166,20 +185,6 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 
 	// population index bounds
 	unsigned int lNewIndividuals_LowerBound = 0;
-
-	// backup randomizer seeds
-	Core::ULongArray lBackupSeed;
-	Core::StringArray lBackupState;
-
-	for (unsigned int i = 0; i < mSubThreads.size(); i++) {
-		// set subthread on specific scenario
-		mSubThreads[i]->setScenarioLabel(inScenarioLabel);
-
-		// reset randomizer info
-		lBackupSeed.push_back(mSystem->getRandomizer(i).getSeed());
-		lBackupState.push_back(mSystem->getRandomizer(i).getState());
-		mSystem->getRandomizer(i).reset(mRandomizerCurrentSeed[i], mRandomizerCurrentState[i]);
-	}
 
 	// print info
 	std::string lPrintPrefix = Core::castObjectT<const Core::String&>(mSystem->getParameters().getParameter("print.prefix")).getValue();
@@ -206,7 +211,7 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 
 	do { // while (mClock->step(*mContext[0]))
 #ifdef SCHNAPS_FULL_DEBUG
-		printf("Time %lu\n", mClock->getValue());
+		std::cout << "Time " << mClock->getValue() << "\n";
 #endif
 
 		lPositionEnv = eSTEP;
@@ -237,7 +242,7 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 			lSubStep = false;
 
 #ifdef SCHNAPS_FULL_DEBUG
-			printf("Processing environment\n");
+			std::cout << "Processing environment\n";
 #endif
 			mContext[0]->setIndividual(mEnvironment);
 			switch (lPositionEnv) {
@@ -297,7 +302,7 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 			}
 
 #ifdef SCHNAPS_FULL_DEBUG
-			printf("Processing individuals\n");
+			std::cout << "Processing individuals\n";
 #endif
 			// process individuals
 			mParallel->lock();
@@ -338,6 +343,14 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 			mBlackBoard->clear();
 		} while (lSubStep == true);
 	} while (mClock->step(*mContext[0]));
+	
+	// terminate threads
+	for (unsigned int i = 0; i < mSubThreads.size(); i++) {
+		mSubThreads[i]->setPosition(SimulationThread::eEND);
+	}
+	mParallel->lock();
+	mParallel->broadcast();
+	mParallel->unlock();
 
 	// reset randomizers old info
 	for (unsigned int i = 0; i < mSubThreads.size(); i++) {
@@ -376,6 +389,9 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 		printSummary(lOGZS);
 		lOGZS.close();
 	}
+	
+	// destroy threads
+	mSubThreads.clear();
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::simulate(std::string, std::string, std::string)");
 }
 
@@ -385,38 +401,39 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 void Simulator::refresh() {
 	schnaps_StackTraceBeginM();
 	unsigned int lNbThreads_new = Core::castObjectT<const Core::UInt&>(mSystem->getParameters().getParameter("threads.simulator")).getValue();
-	unsigned int lNbThreads_old = mContext.size();
-	
-	// if no threads already, create one + context
-	if (lNbThreads_old == 0) {
-		mContext.push_back(new SimulationContext(mSystem, mClock, mEnvironment));
-		mContext.back()->setThreadNb(0);
-
-		mSubThreads.push_back(new SimulationThread(mParallel, mSequential, mBlackBoardWrt, mContext.back(), mBlackBoard, mWaitingQMaps));
-		mSequential->wait();
-		
-		lNbThreads_old = 1;
+	if (lNbThreads_new < 1) {
+		std::ostringstream lOSS;
+		lOSS << "The number of simulation threads must be higher or equal to 1 (current new value = " << lNbThreads_new << ");";
+		lOSS << "the number of simulation threads could not be set.\n";
+		throw schnaps_RunTimeExceptionM(lOSS.str());
 	}
+	
+	unsigned int lNbThreads_old = mContext.size();
 
-	// create one context per thread + sub threads
+	// create one context per thread
 	if (lNbThreads_new > lNbThreads_old) {
 		for (unsigned int i = lNbThreads_old; i < lNbThreads_new; i++) {
-			// create new threads as copies of the first one to copy process map.
+			// create new context as copy of the first one to copy process map
 			// TODO: does the simulator should own an original copy of the process map? 
 			mContext.push_back(mContext[0]->deepCopy());
 			mContext.back()->setThreadNb(i);
-
-			mSubThreads.push_back(new SimulationThread(mParallel, mSequential, mBlackBoardWrt, mContext.back(), mBlackBoard, mWaitingQMaps));
-			mSequential->wait();
+			
+			// add simulator randomizer information
+			mRandomizerInitSeed.push_back(0);
+			mRandomizerInitState.push_back("");
 		}
 	} else if (lNbThreads_new < lNbThreads_old) {
-		// TODO: remove unused contexts and subthreads
+		for (unsigned int i = lNbThreads_old; i > lNbThreads_new; i--) {
+			// remove unused context
+			mContext.pop_back();
+			
+			// remove unused randomizer information
+			mRandomizerInitSeed.pop_back();
+			mRandomizerInitState.pop_back();
+		}
 	}
 	
 	// update simulator randomizers information
-	mRandomizerInitSeed.resize(lNbThreads_new, 0);
-	mRandomizerInitState.resize(lNbThreads_new, "");
-
 	mRandomizerCurrentSeed = mRandomizerInitSeed;
 	mRandomizerCurrentState = mRandomizerInitState;
 	
@@ -553,7 +570,7 @@ void Simulator::readInput(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceBeginM();
 	schnaps_NonNullPointerAssertM(mSystem);
 #ifdef SCHNAPS_FULL_DEBUG
-	printf("Reading input\n");
+	std::cout << "Reading input\n";
 #endif
 	if (inIter->getType() != PACC::XML::eData) {
 		throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
@@ -593,7 +610,7 @@ void Simulator::readSimulation(PACC::XML::ConstIterator inIter) {
 	}
 	
 #ifdef SCHNAPS_FULL_DEBUG
-	printf("Reading simulation\n");
+	std::cout << "Reading simulation\n";
 #endif
 
 	PACC::XML::ConstIterator lChild = inIter->getFirstChild();
@@ -711,7 +728,7 @@ void Simulator::readEnvironmentOutput(PACC::XML::ConstIterator inIter) {
 	}
 	
 #ifdef SCHNAPS_FULL_DEBUG
-	printf("- environment\n");
+	std::cout << "- environment\n";
 #endif
 
 	mOutputParameters.mEnvironment.clear();
@@ -752,7 +769,7 @@ void Simulator::readPopulationOutput(PACC::XML::ConstIterator inIter) {
 	}
 	
 #ifdef SCHNAPS_FULL_DEBUG
-	printf("- population\n");
+	std::cout << "- population\n";
 #endif
 
 	mOutputParameters.mPopulation.clear();

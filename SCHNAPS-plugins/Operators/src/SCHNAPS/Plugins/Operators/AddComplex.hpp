@@ -46,9 +46,6 @@ public:
 	AddComplex(const AddComplex& inOriginal);
 	virtual ~AddComplex() {}
 
-	//! Copy operator.
-	AddComplex& operator=(const AddComplex& inOriginal);
-
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

@@ -1,0 +1,10 @@
+<FunctionState>
+	<LocalVariables/>
+	<PrimitiveTree>
+	  <Operators_ConcatComplex>
+		<Operators_Serialize inValue="@Age_Depart"/>
+		<Data_Value inValue="_" inValue_Type="String"/>
+	    <Operators_Serialize inValue="@Age_Fin"/>
+	  </Operators_ConcatComplex>
+	</PrimitiveTree>
+</FunctionState>

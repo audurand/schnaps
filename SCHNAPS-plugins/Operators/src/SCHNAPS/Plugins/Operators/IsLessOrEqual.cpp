@@ -82,6 +82,55 @@ IsLessOrEqual::IsLessOrEqual(const IsLessOrEqual& inOriginal) :
 }
 
 /*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
+IsLessOrEqual& IsLessOrEqual::operator=(const IsLessOrEqual& inOriginal) {
+	schnaps_StackTraceBeginM();
+	mArgLeft_Ref.assign(inOriginal.mArgLeft_Ref.c_str());
+	mArgRight_Ref.assign(inOriginal.mArgRight_Ref.c_str());
+	
+	switch (mArgLeft_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mArgLeft = NULL;
+			break;
+		case '$':
+			// parameter value
+			mArgLeft = inOriginal.mArgLeft;
+			break;
+		default:
+			// direct value
+			mArgLeft = Core::castHandleT<Core::Number>(inOriginal.mArgLeft->clone());
+	}
+	
+	switch (mArgRight_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mArgRight = NULL;
+			break;
+		case '$':
+			// parameter value
+			mArgRight = inOriginal.mArgRight;
+			break;
+		default:
+			// direct value
+			mArgRight = Core::castHandleT<Core::Number>(inOriginal.mArgRight->clone());
+	}
+
+	return *this;
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::IsLessOrEqual& SCHNAPS::Plugins::Operators::IsLessOrEqual::operator=(const SCHNAPS::Plugins::Operators::IsLessOrEqual&)");
+}
+
+/*!
  * \brief Read object from XML using system.
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.

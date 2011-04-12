@@ -107,6 +107,11 @@ public:
 		schnaps_StackTraceBeginM();
 		VariablesMap::const_iterator lIterVariables = mVariables.find(inLabel);
 		if (lIterVariables == mVariables.end()) {
+			for (VariablesMap::const_iterator lIt = mVariables.begin(); lIt != mVariables.end(); lIt++) {
+				std::cout << lIt->first << " = " << lIt->second->writeStr() << "\n";
+			}
+			std::cout << "------------\n";
+			
 			std::ostringstream lOSS;
 			lOSS << "The variable '" << inLabel << "' does not exist; ";
 			lOSS << "could not get it.";
@@ -127,6 +132,11 @@ public:
 		schnaps_StackTraceBeginM();
 		VariablesMap::const_iterator lIterVariables = mVariables.find(inLabel);
 		if (lIterVariables == mVariables.end()) {
+			for (VariablesMap::const_iterator lIt = mVariables.begin(); lIt != mVariables.end(); lIt++) {
+				std::cout << lIt->first << " = " << lIt->second->writeStr() << "\n";
+			}
+			std::cout << "------------\n";
+			
 			std::ostringstream lOSS;
 			lOSS << "The variable '" << inLabel << "' does not exist; ";
 			lOSS << "could not get it.";

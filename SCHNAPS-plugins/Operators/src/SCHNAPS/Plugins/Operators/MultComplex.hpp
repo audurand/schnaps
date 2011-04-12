@@ -46,9 +46,6 @@ public:
 	MultComplex(const MultComplex& inOriginal);
 	virtual ~MultComplex() {}
 
-	//! Copy operator.
-	MultComplex& operator=(const MultComplex& inOriginal);
-
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

@@ -46,6 +46,9 @@ public:
 	SetVariableComplex(const SetVariableComplex& inOriginal);
 	virtual ~SetVariableComplex() {}
 
+	//! Copy operator.
+	SetVariableComplex& operator=(const SetVariableComplex& inOriginal);
+
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.

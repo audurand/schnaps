@@ -103,6 +103,74 @@ IsBetween::IsBetween(const IsBetween& inOriginal) :
 }
 
 /*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
+IsBetween& IsBetween::operator=(const IsBetween& inOriginal) {
+	schnaps_StackTraceBeginM();
+	mValue_Ref.assign(inOriginal.mValue_Ref.c_str());
+	mArgLeft_Ref.assign(inOriginal.mArgLeft_Ref.c_str());
+	mArgRight_Ref.assign(inOriginal.mArgRight_Ref.c_str());
+	
+	switch (mValue_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mValue = NULL;
+			break;
+		case '$':
+			// parameter value
+			mValue = inOriginal.mValue;
+			break;
+		default:
+			// direct value
+			mValue = Core::castHandleT<Core::Number>(inOriginal.mValue->clone());
+	}
+	
+	switch (mArgLeft_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mArgLeft = NULL;
+			break;
+		case '$':
+			// parameter value
+			mArgLeft = inOriginal.mArgLeft;
+			break;
+		default:
+			// direct value
+			mArgLeft = Core::castHandleT<Core::Number>(inOriginal.mArgLeft->clone());
+	}
+	
+	switch (mArgRight_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mArgRight = NULL;
+			break;
+		case '$':
+			// parameter value
+			mArgRight = inOriginal.mArgRight;
+			break;
+		default:
+			// direct value
+			mArgRight = Core::castHandleT<Core::Number>(inOriginal.mArgRight->clone());
+	}
+
+	return *this;
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::IsBetween& SCHNAPS::Plugins::Operators::IsBetween::operator=(const SCHNAPS::Plugins::Operators::IsBetween&)");
+}
+
+/*!
  * \brief Read object from XML using system.
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.

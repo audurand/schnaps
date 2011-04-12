@@ -46,6 +46,9 @@ public:
 	PreventionCampaign(const PreventionCampaign& inOriginal);
 	virtual ~PreventionCampaign() {}
 
+	//! Copy operator.
+	PreventionCampaign& operator=(const PreventionCampaign& inOriginal);
+
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.
