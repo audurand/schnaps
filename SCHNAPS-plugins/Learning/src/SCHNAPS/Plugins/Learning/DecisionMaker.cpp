@@ -168,8 +168,12 @@ void DecisionMaker::close() {
  */
 void DecisionMaker::update(const std::string& inDecisionNode, const std::string& inState, unsigned int inActionID, unsigned int inIndividualID) {
 	schnaps_StackTraceBeginM();
+	DecisionMaker::iterator lIterDecisionNode = this->find(inDecisionNode);
+	if (lIterDecisionNode == this->end()) {
+		throw schnaps_RunTimeExceptionM("Decision node '" + inDecisionNode + "' is not in decision maker; could not update choice.");
+	}
 	// get choice learning data
-	Choice& lChoice = *(this->find(inDecisionNode)->second);
+	Choice& lChoice = *(lIterDecisionNode->second);
 	std::vector<Action>& lActions = lChoice.getActions(inState);
 	
 	// set individual (using the absolute index part of its ID)

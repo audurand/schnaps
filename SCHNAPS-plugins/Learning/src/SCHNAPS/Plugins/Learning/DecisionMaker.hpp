@@ -147,7 +147,7 @@ public:
 				double lVariance, lCoeff, lMean, lCurrentValue, lMaxValue;
 				std::vector<unsigned int> lMaxActions;
 				
-				lVariance = abs(lSum2/lN - pow(lSum/lN, 2));
+				lVariance = fabs(lSum2/lN - pow(lSum/lN, 2));
 				
 				lMean = lActions[0].getReward()/lActions[0].getUpdatedTimes();
 				lCoeff = pow((log(lN)/lActions[0].getUpdatedTimes()), mGEAS_Alpha->getValue());
