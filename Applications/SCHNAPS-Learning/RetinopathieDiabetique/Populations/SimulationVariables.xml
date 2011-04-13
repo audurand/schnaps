@@ -156,16 +156,16 @@
   <Data_Value inValue_Type="Int" inValue="0"/>
   </PrimitiveTree>
  </Variable>
- <Variable gui.position="14" type="Int" label="Optometriste_Intervalle">
+ <Variable gui.position="14" type="ULong" label="Optometriste_Intervalle">
   <LocalVariables/>
   <PrimitiveTree>
-  <Data_Value inValue_Type="Int" inValue="0"/>
+  <Data_Value inValue_Type="ULong" inValue="0"/>
   </PrimitiveTree>
  </Variable>
- <Variable gui.position="15" type="Int" label="Ophtalmologiste_Intervalle">
+ <Variable gui.position="15" type="ULong" label="Ophtalmologiste_Intervalle">
   <LocalVariables/>
   <PrimitiveTree>
-  <Data_Value inValue_Type="Int" inValue="0"/>
+  <Data_Value inValue_Type="ULong" inValue="0"/>
   </PrimitiveTree>
  </Variable>
  <Variable gui.position="16" type="Double" label="Cout_Aveugle">

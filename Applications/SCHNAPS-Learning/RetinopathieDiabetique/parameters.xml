@@ -481,7 +481,7 @@
           </Profiles>
         </Generator>
         <Population>
-          <SubPopulation profile="EnglandWales_1991" size="50" time="0"/>
+          <SubPopulation profile="EnglandWales_1991" size="10000" time="0"/>
         </Population>
       </PopulationManager>
     </Input>

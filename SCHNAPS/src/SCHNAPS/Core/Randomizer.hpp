@@ -29,11 +29,11 @@
 #ifndef SCHNAPS_Core_Randomizer_hpp
 #define SCHNAPS_Core_Randomizer_hpp
 
-#include <fstream>
+#include "SCHNAPS/Core/Object.hpp"
 
 #include "PACC/PACC.hpp"
 
-#include "SCHNAPS/Core/Object.hpp"
+#include <fstream>
 
 namespace SCHNAPS {
 	
@@ -97,10 +97,10 @@ public:
 	 *  \param inMean Mean of the Gaussain distribution.
 	 *  \param inStdDev Standard-error of the Gaussian distribution.
 	 */
-	inline double rollGaussian(double inMean = 0.0, double inStdDev = 1.0) {
+	double rollGaussian(double inMean = 0.0, double inStdDev = 1.0) {
 		schnaps_StackTraceBeginM();
-			schnaps_AssertM(inStdDev >= 0.0);
-			return randNorm(inMean, inStdDev);
+		schnaps_AssertM(inStdDev >= 0.0);
+		return randNorm(inMean, inStdDev);
 		schnaps_StackTraceEndM("double Randomizer::rollGaussian(double, double)");
 	}
 
@@ -110,10 +110,10 @@ public:
 	 *  \param inUpper Upper bound of the distribution.
 	 *  \return Random positive integer generated in [inLower, inUpper].
 	 */
-	inline unsigned long rollInteger(unsigned long inLower = 0, unsigned long inUpper = ULONG_MAX) {
+	unsigned long rollInteger(unsigned long inLower = 0, unsigned long inUpper = ULONG_MAX) {
 		schnaps_StackTraceBeginM();
-			schnaps_AssertM(inLower <= inUpper);
-			return randInt(inUpper - inLower) + inLower;
+		schnaps_AssertM(inLower <= inUpper);
+		return randInt(inUpper - inLower) + inLower;
 		schnaps_StackTraceEndM("unsigned long Randomizer::rollInteger(unsigned long, unsigned long)");
 	}
 
@@ -123,10 +123,10 @@ public:
 	 *  \param inUpper Upper bound of the uniform distribution.
 	 *  \return Random number generated in [inLower,inUpper).
 	 */
-	inline double rollUniform(double inLower = 0.0, double inUpper = 1.0) {
+	double rollUniform(double inLower = 0.0, double inUpper = 1.0) {
 		schnaps_StackTraceBeginM();
-			schnaps_AssertM(inLower <= inUpper);
-			return getFloat(inLower, inUpper);
+		schnaps_AssertM(inLower <= inUpper);
+		return getFloat(inLower, inUpper);
 		schnaps_StackTraceEndM("double Randomizer::rollUniform(double, double)");
 	}
 

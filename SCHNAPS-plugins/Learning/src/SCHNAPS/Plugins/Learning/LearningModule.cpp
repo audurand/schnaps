@@ -28,7 +28,10 @@ using namespace Learning;
  * \brief Default constructor.
  */
 LearningModule::LearningModule()
-{}
+{
+	mDecisionMakers.push_back(new DecisionMaker());
+	mDecisionMakers.back()->setThreadNb(0);
+}
 
 /*!
  * \brief Construct a branching primitive as a copy of an original.
@@ -60,13 +63,15 @@ void LearningModule::readWithSystem(PACC::XML::ConstIterator inIter, Core::Syste
 	std::cout << "Reading learning module\n";
 #endif
 
+	if (mDecisionMakers.size() > 1) {
+		mDecisionMakers.erase(mDecisionMakers.begin()+1, mDecisionMakers.end());
+	}
+	mDecisionMakers[0]->readWithSystem(inIter->getFirstChild(), ioSystem);
+	
 	unsigned int lNbThreads = Core::castHandleT<Core::UInt>(ioSystem.getParameters().getParameterHandle("threads.simulator"))->getValue();
-	mDecisionMakers.clear();
-	mDecisionMakers.push_back(new DecisionMaker());
-	mDecisionMakers.back()->readWithSystem(inIter->getFirstChild(), ioSystem);
-	mDecisionMakers.back()->setThreadNb(0);
 	for (unsigned int i = 1; i < lNbThreads; i++) {
 		mDecisionMakers.push_back(Core::castHandleT<DecisionMaker>(mDecisionMakers[0]->deepCopy(ioSystem)));
+		mDecisionMakers.back()->setThreadNb(i);
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Learning::LearningModule::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
@@ -99,7 +104,7 @@ void LearningModule::init(Core::System& ioSystem) {
 		}
 	} else {
 		// remove unused decision makers
-		for (unsigned int i = lThreads_New; i < lThreads_Old; i++) {
+		for (unsigned int i = lThreads_Old; i > lThreads_New; i--) {
 			mDecisionMakers.pop_back();
 		}
 	}

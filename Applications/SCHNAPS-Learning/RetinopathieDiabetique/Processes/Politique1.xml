@@ -199,12 +199,12 @@
 			</Learning_DecisionNode>
 			<!--Assigner un intervalle de depistage chez l'optometriste.-->
 			<Learning_DecisionNode inLabel="Optometriste_Intervalle">
-				<Data_SetVariable inValue="6" inValue_Type="Int" outVariable="@Optometriste_Intervalle"/>
-				<Data_SetVariable inValue="12" inValue_Type="Int" outVariable="@Optometriste_Intervalle"/>
-				<Data_SetVariable inValue="18" inValue_Type="Int" outVariable="@Optometriste_Intervalle"/>
-				<Data_SetVariable inValue="24" inValue_Type="Int" outVariable="@Optometriste_Intervalle"/>
-				<Data_SetVariable inValue="30" inValue_Type="Int" outVariable="@Optometriste_Intervalle"/>
-				<Data_SetVariable inValue="36" inValue_Type="Int" outVariable="@Optometriste_Intervalle"/>
+				<Data_SetVariable inValue="6" inValue_Type="ULong" outVariable="@Optometriste_Intervalle"/>
+				<Data_SetVariable inValue="12" inValue_Type="ULong" outVariable="@Optometriste_Intervalle"/>
+				<Data_SetVariable inValue="18" inValue_Type="ULong" outVariable="@Optometriste_Intervalle"/>
+				<Data_SetVariable inValue="24" inValue_Type="ULong" outVariable="@Optometriste_Intervalle"/>
+				<Data_SetVariable inValue="30" inValue_Type="ULong" outVariable="@Optometriste_Intervalle"/>
+				<Data_SetVariable inValue="36" inValue_Type="ULong" outVariable="@Optometriste_Intervalle"/>
 			</Learning_DecisionNode>
 			<Control_ProcessCall inLabel="Pre-Detection"/>
         </Control_Sequential>

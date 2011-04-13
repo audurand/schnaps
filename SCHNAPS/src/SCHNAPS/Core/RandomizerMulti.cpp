@@ -1,8 +1,8 @@
 /*
  * RandomizerMulti.cpp
  *
- *  Created on: 2010-05-20
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,9 +28,10 @@ using namespace Core;
  *  \param inRandomizers Bag containing the randomizers to use by the RandomizerMulti.
  */
 RandomizerMulti::RandomizerMulti() :
-	Component("RandomizerMulti"),
-	mRandomizers(new Randomizer::Bag())
-{}
+	Component("RandomizerMulti")
+{
+	mRandomizers.push_back(new Randomizer());
+}
 
 void RandomizerMulti::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
@@ -42,18 +43,24 @@ void RandomizerMulti::init(System& ioSystem) {
 	schnaps_StackTraceBeginM();
 	unsigned int lThreads_Simulator = castObjectT<const UInt&>(ioSystem.getParameters().getParameter("threads.simulator")).getValue();
 	unsigned int lThreads_Generator = castObjectT<const UInt&>(ioSystem.getParameters().getParameter("threads.generator")).getValue();
-	unsigned int lThreads_Max;
+	unsigned int lThreads_New;
 
 	if (lThreads_Simulator >= lThreads_Generator) {
-		lThreads_Max = lThreads_Simulator;
+		lThreads_New = lThreads_Simulator;
 	} else {
-		lThreads_Max = lThreads_Generator;
+		lThreads_New = lThreads_Generator;
 	}
-
-	mRandomizers->clear();
-	mRandomizers->reserve(lThreads_Max);
-	for (unsigned int i = 0; i < lThreads_Max; ++i) {
-		mRandomizers->push_back(new Randomizer());
+	
+	unsigned int lThreads_Old = mRandomizers.size();
+	
+	if (lThreads_New > lThreads_Old) {
+		for (unsigned int i = lThreads_Old; i < lThreads_New; i++) {
+			mRandomizers.push_back(new Randomizer());
+		}
+	} else {
+		for (unsigned int i = lThreads_New; i > lThreads_Old; i--) {
+			mRandomizers.pop_back();
+		}
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Core::RandomizerMulti::init(SCHNAPS::Core::System&)");
 }
