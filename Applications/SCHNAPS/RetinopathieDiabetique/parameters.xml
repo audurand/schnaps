@@ -8,10 +8,10 @@
       </Plugins>
       <Parameters>
         <Entry label="threads.simulator">
-          <UInt value="1"/>
+          <UInt value="4"/>
         </Entry>
         <Entry label="threads.generator">
-          <UInt value="1"/>
+          <UInt value="4"/>
         </Entry>
         <Entry label="Traitement_PDR_Efficacite">
           <Double value="0.80"/>
@@ -143,7 +143,7 @@
           </Profiles>
         </Generator>
         <Population>
-          <SubPopulation profile="EnglandWales_1991" size="10000" time="0"/>
+          <SubPopulation profile="EnglandWales_1991" size="500000" time="0"/>
         </Population>
       </PopulationManager>
     </Input>
