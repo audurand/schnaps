@@ -35,31 +35,7 @@
   <Data_Value inValue_Type="Bool" inValue="false"/>
   </PrimitiveTree>
  </Variable>
- <Variable gui.position="6" type="Bool" label="Traitement_PDR_D">
-  <LocalVariables/>
-  <PrimitiveTree>
-  <Data_Value inValue_Type="Bool" inValue="false"/>
-  </PrimitiveTree>
- </Variable>
- <Variable gui.position="7" type="Bool" label="Traitement_PDR_G">
-  <LocalVariables/>
-  <PrimitiveTree>
-  <Data_Value inValue_Type="Bool" inValue="false"/>
-  </PrimitiveTree>
- </Variable>
- <Variable gui.position="8" type="Bool" label="Traitement_CSMO_D">
-  <LocalVariables/>
-  <PrimitiveTree>
-  <Data_Value inValue_Type="Bool" inValue="false"/>
-  </PrimitiveTree>
- </Variable>
- <Variable gui.position="9" type="Bool" label="Traitement_CSMO_G">
-  <LocalVariables/>
-  <PrimitiveTree>
-  <Data_Value inValue_Type="Bool" inValue="false"/>
-  </PrimitiveTree>
- </Variable>
- <Variable gui.position="10" type="Double" label="Taux_Mortalite">
+ <Variable gui.position="6" type="Double" label="Taux_Mortalite">
   <LocalVariables/>
   <PrimitiveTree>
   <Operators_MultComplex>
@@ -138,7 +114,7 @@
   </Operators_MultComplex>
   </PrimitiveTree>
  </Variable>
- <Variable gui.position="11" type="Bool" label="Mort">
+ <Variable gui.position="7" type="Bool" label="Mort">
   <LocalVariables/>
   <PrimitiveTree>
   <Data_Value inValue_Type="Bool" inValue="false"/>

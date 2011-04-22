@@ -2,5 +2,7 @@
     <State>
       <Variable type="Int" value="0" label="Total_Optometriste"/>
       <Variable type="Int" value="0" label="Total_Ophtalmologiste"/>
+      <Variable type="Int" value="0" label="Total_Traitement_PDR"/>
+      <Variable type="Int" value="0" label="Total_Traitement_CSMO"/>
     </State>
   </Environment>

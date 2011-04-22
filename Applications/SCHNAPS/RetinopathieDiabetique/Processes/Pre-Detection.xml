@@ -28,52 +28,52 @@
                     <!--Traitement PDR oeil droit?-->
                     <Data_Value inValue="@Resultat_GoldStandard_PDR_D"/>
                     <Control_Sequential>
-                      <Data_SetVariable inValue="true" inValue_Type="Bool" outVariable="@Traitement_PDR_D"/>
-                      <Control_IfThenElse>
-                        <Control_ProcessCall inLabel="Traitement_PDR"/>
-                        <Data_SetVariable inValue="Traite" inValue_Type="String" outVariable="@BDR_D"/>
-                        <Control_Nothing/>
-                      </Control_IfThenElse>
-                    </Control_Sequential>
+                    	<Control_ProcessPush inTarget="environment" inDelay="0" inLabel="Ajouter_Traitement_PDR"/>
+		                  <Control_IfThenElse>
+		                    <Control_ProcessCall inLabel="Traitement_PDR"/>
+		                    <Data_SetVariable inValue="Traite" inValue_Type="String" outVariable="@BDR_D"/>
+		                    <Control_Nothing/>
+		                  </Control_IfThenElse>
+		                </Control_Sequential>
                     <Control_Nothing/>
                   </Control_IfThenElse>
                   <Control_IfThenElse>
                     <!--Traitement PDR oeil gauche?-->
                     <Data_Value inValue="@Resultat_GoldStandard_PDR_G"/>
                     <Control_Sequential>
-                      <Data_SetVariable inValue="true" inValue_Type="Bool" outVariable="@Traitement_PDR_G"/>
-                      <Control_IfThenElse>
-                        <Control_ProcessCall inLabel="Traitement_PDR"/>
-                        <Data_SetVariable inValue="Traite" inValue_Type="String" outVariable="@BDR_G"/>
-                        <Control_Nothing/>
-                      </Control_IfThenElse>
-                    </Control_Sequential>
+                    	<Control_ProcessPush inTarget="environment" inDelay="0" inLabel="Ajouter_Traitement_PDR"/>
+		                  <Control_IfThenElse>
+		                    <Control_ProcessCall inLabel="Traitement_PDR"/>
+		                    <Data_SetVariable inValue="Traite" inValue_Type="String" outVariable="@BDR_G"/>
+		                    <Control_Nothing/>
+		                  </Control_IfThenElse>
+		                </Control_Sequential>
                     <Control_Nothing/>
                   </Control_IfThenElse>
                   <Control_IfThenElse>
                     <!--Traitement CSMO oeil droit?-->
                     <Data_Value inValue="@Resultat_GoldStandard_CSMO_D"/>
                     <Control_Sequential>
-                      <Data_SetVariable inValue="true" inValue_Type="Bool" outVariable="@Traitement_CSMO_D"/>
-                      <Control_IfThenElse>
-                        <Control_ProcessCall inLabel="Traitement_CSMO"/>
-                        <Data_SetVariable inValue="Traite" inValue_Type="String" outVariable="@DMO_D"/>
-                        <Control_Nothing/>
-                      </Control_IfThenElse>
-                    </Control_Sequential>
+                    	<Control_ProcessPush inTarget="environment" inDelay="0" inLabel="Ajouter_Traitement_CSMO"/>
+		                  <Control_IfThenElse>
+		                    <Control_ProcessCall inLabel="Traitement_CSMO"/>
+		                    <Data_SetVariable inValue="Traite" inValue_Type="String" outVariable="@DMO_D"/>
+		                    <Control_Nothing/>
+		                  </Control_IfThenElse>
+		                </Control_Sequential>
                     <Control_Nothing/>
                   </Control_IfThenElse>
                   <Control_IfThenElse>
                     <!--Traitement CSMO oeil gauche?-->
                     <Data_Value inValue="@Resultat_GoldStandard_CSMO_G"/>
                     <Control_Sequential>
-                      <Data_SetVariable inValue="true" inValue_Type="Bool" outVariable="@Traitement_CSMO_G"/>
-                      <Control_IfThenElse>
-                        <Control_ProcessCall inLabel="Traitement_CSMO"/>
-                        <Data_SetVariable inValue="Traite" inValue_Type="String" outVariable="@DMO_G"/>
-                        <Control_Nothing/>
-                      </Control_IfThenElse>
-                    </Control_Sequential>
+                    	<Control_ProcessPush inTarget="environment" inDelay="0" inLabel="Ajouter_Traitement_CSMO"/>
+		                  <Control_IfThenElse>
+		                    <Control_ProcessCall inLabel="Traitement_CSMO"/>
+		                    <Data_SetVariable inValue="Traite" inValue_Type="String" outVariable="@DMO_G"/>
+		                    <Control_Nothing/>
+		                  </Control_IfThenElse>
+		                </Control_Sequential>
                     <Control_Nothing/>
                   </Control_IfThenElse>
                   <Control_ProcessPush inTarget="current" inDelay="6" inLabel="Post-Detection"/>

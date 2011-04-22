@@ -498,6 +498,8 @@
       <Processes>
         <Process file="Processes/Ajouter_Optometriste.xml" label="Ajouter_Optometriste"/>
         <Process file="Processes/Ajouter_Ophtalmologiste.xml" label="Ajouter_Ophtalmologiste"/>
+        <Process file="Processes/Ajouter_Traitement_PDR.xml" label="Ajouter_Traitement_PDR"/>
+        <Process file="Processes/Ajouter_Traitement_CSMO.xml" label="Ajouter_Traitement_CSMO"/>
         <Process file="Processes/Optometriste.xml" label="Optometriste"/>
         <Process file="Processes/Ophtalmologiste.xml" label="Ophtalmologiste"/>
         <Process file="Processes/Confirmation_Detection.xml" label="Confirmation_Detection"/>
@@ -523,16 +525,14 @@
       <Environment>
         <Variable label="Total_Ophtalmologiste"/>
         <Variable label="Total_Optometriste"/>
+        <Variable label="Total_Traitement_PDR"/>
+        <Variable label="Total_Traitement_CSMO"/>
       </Environment>
       <Population>
         <SubPopulation profile="EnglandWales_1991">
           <Variable label="Cout"/>
           <Variable label="Cout_Aveugle"/>
           <Variable label="Annees_Aveugle"/>
-          <Variable label="Traitement_CSMO_D"/>
-          <Variable label="Traitement_CSMO_G"/>
-          <Variable label="Traitement_PDR_D"/>
-          <Variable label="Traitement_PDR_G"/>
           <Variable label="BDR_D"/>
           <Variable label="DMO_D"/>
           <Variable label="BDR_G"/>
@@ -542,10 +542,6 @@
           <Variable label="Cout"/>
           <Variable label="Cout_Aveugle"/>
           <Variable label="Annees_Aveugle"/>
-          <Variable label="Traitement_CSMO_D"/>
-          <Variable label="Traitement_CSMO_G"/>
-          <Variable label="Traitement_PDR_D"/>
-          <Variable label="Traitement_PDR_G"/>
         </SubPopulation>
       </Population>
     </Output>
