@@ -125,7 +125,7 @@ AnyType::Handle Int::clone() const {
  */
 Number::Handle Int::abs() {
 	schnaps_StackTraceBeginM();
-	return new Int(std::fabs(mValue));
+	return new Int(std::abs(mValue));
 	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Int::abs()");
 }
 
