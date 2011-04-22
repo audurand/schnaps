@@ -124,7 +124,7 @@ AnyType::Handle UInt::clone() const {
  */
 Number::Handle UInt::abs() {
 	schnaps_StackTraceBeginM();
-	return new UInt(std::fabs(mValue));
+	return new UInt(mValue);
 	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::UInt::abs()");
 }
 

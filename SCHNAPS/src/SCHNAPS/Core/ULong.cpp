@@ -125,7 +125,7 @@ AnyType::Handle ULong::clone() const {
  */
 Number::Handle ULong::abs() {
 	schnaps_StackTraceBeginM();
-	return new ULong(std::fabs(mValue));
+	return new ULong(mValue);
 	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::ULong::abs()");
 }
 
