@@ -132,7 +132,7 @@ public:
 	 * \brief Set the value of long.
 	 * \param inValue A const reference to the new value of long.
 	 */
-	void setValue(const float& inValue) {
+	void setValue(const long& inValue) {
 		mValue = inValue;
 	}
 
