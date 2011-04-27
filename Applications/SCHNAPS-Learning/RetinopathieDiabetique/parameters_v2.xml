@@ -602,6 +602,14 @@
 						<FunctionReward file="Recompense.xml"/>
 						<ChoiceMap/>
 					</Choice>
+					<Choice label="Ophtalmologiste_Sensibilite_100">
+						<Options>
+						  <Option label="1.00"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Sensibilite.xml"/>
+						<FunctionReward file="Recompense.xml"/>
+						<ChoiceMap/>
+					</Choice>
 					<Choice label="Ophtalmologiste_Specificite_50">
 						<Options>
 						  <Option label="0.50"/>
@@ -731,6 +739,14 @@
 					<Choice label="Ophtalmologiste_Specificite_95">
 						<Options>
 						  <Option label="0.95"/>
+						  <Option label="1.00"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Specificite.xml"/>
+						<FunctionReward file="Recompense.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Specificite_100">
+						<Options>
 						  <Option label="1.00"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Specificite.xml"/>

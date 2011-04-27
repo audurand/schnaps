@@ -210,7 +210,9 @@
 														<Data_SetVariable inValue="0.95" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
 														<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
 													</Learning_DecisionNode>
-													<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+													<Learning_DecisionNode inLabel="Ophtalmologiste_Sensibilite_100">
+														<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+													</Learning_DecisionNode>
 												</Control_ChoiceIsEqual>
 												<!--Assigner la specificite de l'ophtalmologiste.-->
 												<Control_ChoiceIsEqual inChoices="0.50|0.55|0.60|0.65|0.70|0.75|0.80|0.85|0.90|0.95|1.00" inChoices_Type="Double" inValue="@Optometriste_Specificite">
@@ -299,7 +301,9 @@
 														<Data_SetVariable inValue="0.95" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
 														<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
 													</Learning_DecisionNode>
-													<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+													<Learning_DecisionNode inLabel="Ophtalmologiste_Specificite_100">
+														<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+													</Learning_DecisionNode>
 												</Control_ChoiceIsEqual>
 												<!--Assigner le cout de l'ophtalmologiste.-->
 												<Data_SetVariableComplex outVariable="@Ophtalmologiste_Cout">
