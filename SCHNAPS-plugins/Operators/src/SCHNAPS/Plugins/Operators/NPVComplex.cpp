@@ -1,5 +1,5 @@
 /*
- * NPV.cpp
+ * NPVComplex.cpp
  *
  * SCHNAPS
  * Copyright (C) 2009-2011 by Audrey Durand
@@ -27,35 +27,35 @@ using namespace Operators;
 /*!
  * \brief Default constructor.
  */
-NPV::NPV() :
+NPVComplex::NPVComplex() :
 	Core::Primitive(1),
-	mRate_Ref(""),
-	mRate(NULL)
+	mDiscountRate_Ref(""),
+	mDiscountRate(NULL)
 {}
 
 /*!
  * \brief Construct a nearest present value operator with specific rate as a copy of an original.
  * \param inOriginal A const reference to the original  nearest present value operator with specific rate.
  */
-NPV::NPV(const NPV& inOriginal) :
+NPVComplex::NPVComplex(const NPVComplex& inOriginal) :
 	Core::Primitive(1),
-	mRate_Ref(inOriginal.mRate_Ref.c_str())
+	mDiscountRate_Ref(inOriginal.mDiscountRate_Ref.c_str())
 {
-	switch (mRate_Ref[0]) {
+	switch (mDiscountRate_Ref[0]) {
 		case '@':
 			// individual variable value
 		case '#':
 			// environment variable value
 		case '%':
 			// local variable value
-			mRate = NULL;
+			mDiscountRate = NULL;
 			break;
 		case '$':
 			// parameter value
-			mRate = inOriginal.mRate;
+			mDiscountRate = inOriginal.mDiscountRate;
 		default:
 			// direct value
-			mRate = Core::castHandleT<Core::Double>(inOriginal.mRate->clone());
+			mDiscountRate = Core::castHandleT<Core::Double>(inOriginal.mDiscountRate->clone());
 			break;
 	}
 }
@@ -64,28 +64,28 @@ NPV::NPV(const NPV& inOriginal) :
  * \brief  Copy operator.
  * \return A reference to the current object.
  */
-NPV& NPV::operator=(const NPV& inOriginal) {
+NPVComplex& NPVComplex::operator=(const NPVComplex& inOriginal) {
 	schnaps_StackTraceBeginM();
-	mRate_Ref.assign(inOriginal.mRate_Ref.c_str());
-	switch (mRate_Ref[0]) {
+	mDiscountRate_Ref.assign(inOriginal.mDiscountRate_Ref.c_str());
+	switch (mDiscountRate_Ref[0]) {
 		case '@':
 			// individual variable value
 		case '#':
 			// environment variable value
 		case '%':
 			// local variable value
-			mRate = NULL;
+			mDiscountRate = NULL;
 			break;
 		case '$':
 			// parameter value
-			mRate = inOriginal.mRate;
+			mDiscountRate = inOriginal.mDiscountRate;
 		default:
 			// direct value
-			mRate = Core::castHandleT<Core::Double>(inOriginal.mRate->clone());
+			mDiscountRate = Core::castHandleT<Core::Double>(inOriginal.mDiscountRate->clone());
 			break;
 	}
 	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::NPV& SCHNAPS::Plugins::Operators::NPV::operator=(const SCHNAPS::Plugins::Operators::NPV&)");
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::NPVComplex& SCHNAPS::Plugins::Operators::NPVComplex::operator=(const SCHNAPS::Plugins::Operators::NPVComplex&)");
 }
 
 /*!
@@ -95,7 +95,7 @@ NPV& NPV::operator=(const NPV& inOriginal) {
  * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
  * \throw SCHNAPS::Core::IOException if inRate attribute is missing.
  */
-void NPV::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
+void NPVComplex::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
 	if (inIter->getType() != PACC::XML::eData) {
 		throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
@@ -108,29 +108,29 @@ void NPV::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem
 	}
 
 	// retrieve actualization rate
-	if (inIter->getAttribute("inRate").empty()) {
+	if (inIter->getAttribute("inDiscountRate").empty()) {
 		throw schnaps_IOExceptionNodeM(*inIter, "discount rate expected!");
 	}
-	mRate_Ref.assign(inIter->getAttribute("inRate"));
+	mDiscountRate_Ref.assign(inIter->getAttribute("inDiscountRate"));
 	
-	switch (mRate_Ref[0]) {
+	switch (mDiscountRate_Ref[0]) {
 		case '@':
 			// individual variable value
 		case '#':
 			// environment variable value
 		case '%':
 			// local variable value
-			mRate = NULL;
+			mDiscountRate = NULL;
 			break;
 		case '$':
 			// parameter value
-			mRate = Core::castHandleT<Core::Double>(ioSystem.getParameters().getParameterHandle(mRate_Ref.substr(1)));
+			mDiscountRate = Core::castHandleT<Core::Double>(ioSystem.getParameters().getParameterHandle(mDiscountRate_Ref.substr(1)));
 		default:
 			// direct value
-			mRate = new Core::Double(SCHNAPS::str2dbl(mRate_Ref));
+			mDiscountRate = new Core::Double(SCHNAPS::str2dbl(mDiscountRate_Ref));
 			break;
 	}
-	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Operators::NPV::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
+	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Operators::NPVComplex::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
 /*!
@@ -138,10 +138,10 @@ void NPV::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem
  * \param ioStreamer XML streamer to output document.
  * \param inIndent Wether to indent or not.
  */
-void NPV::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
+void NPVComplex::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-	ioStreamer.insertAttribute("inRate", mRate_Ref);
-	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Operators::NPV::writeContent(PACC::XML::Streamer&, bool) const");
+	ioStreamer.insertAttribute("inDiscountRate", mDiscountRate_Ref);
+	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Operators::NPVComplex::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
 /*!
@@ -151,26 +151,26 @@ void NPV::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
  * \return A handle to the execution result.
  * \throw  SCHNAPS::Core::RunTimeException if the primitive is not defined for the specific rate source.
  */
-Core::AnyType::Handle NPV::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
+Core::AnyType::Handle NPVComplex::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
 	double lTime = lContext.getClock().getValue();
-	double lRate;
+	double lDiscountRate;
 	Core::Double::Handle lDenum;
 	
-	if (mRate == NULL) {
-		switch (mRate_Ref[0]) {
+	if (mDiscountRate == NULL) {
+		switch (mDiscountRate_Ref[0]) {
 			case '@':
 				// individual variable value
-				lRate = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mRate_Ref.substr(1))).getValue();
+				lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mDiscountRate_Ref.substr(1))).getValue();
 				break;
 			case '#':
 				// environment variable value
-				lRate = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mRate_Ref.substr(1))).getValue();
+				lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mDiscountRate_Ref.substr(1))).getValue();
 				break;
 			case '%':
 				// local variable value
-				lRate = Core::castObjectT<const Core::Double&>(lContext.getLocalVariable(mRate_Ref.substr(1))).getValue();
+				lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getLocalVariable(mDiscountRate_Ref.substr(1))).getValue();
 				break;
 			default:
 				throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific rate source.");
@@ -178,13 +178,13 @@ Core::AnyType::Handle NPV::execute(unsigned int inIndex, Core::ExecutionContext&
 		}
 	} else {
 		// parameter value or direct value
-		lRate = mRate->getValue();
+		lDiscountRate = mDiscountRate->getValue();
 	}
-	lDenum = new Core::Double(std::pow(lRate + 1, lTime));
+	lDenum = new Core::Double(std::pow(lDiscountRate + 1, lTime));
 	
 	Core::Number::Handle lArg = Core::castHandleT<Core::Number>(getArgument(inIndex, 0, ioContext));
 	return lArg->div(*lDenum);
-	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Operators::NPV::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
+	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Operators::NPVComplex::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 
 /*!
@@ -195,12 +195,12 @@ Core::AnyType::Handle NPV::execute(unsigned int inIndex, Core::ExecutionContext&
  * \return A const reference to the type of the nth argument.
  * \throw  SCHNAPS::Core::AssertException if the argument index is out of bounds.
  */
-const std::string& NPV::getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const {
+const std::string& NPVComplex::getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	schnaps_UpperBoundCheckAssertM(inN, 0);
 	const static std::string lType("Number");
 	return lType;
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::NPV::getArgType(unsigned int, unsigned int, SCHNAPS::Core::ExecutionContext&) const");
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::NPVComplex::getArgType(unsigned int, unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 
 /*!
@@ -209,9 +209,9 @@ const std::string& NPV::getArgType(unsigned int inIndex, unsigned int inN, Core:
  * \param  ioContext A reference to the execution context.
  * \return A const reference to the return type.
  */
-const std::string& NPV::getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
+const std::string& NPVComplex::getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	unsigned int lNodeIndex = getArgumentIndex(inIndex, 0, ioContext);
 	return ioContext.getPrimitiveTree()[lNodeIndex].mPrimitive->getReturnType(inIndex, ioContext);
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::NPV::getReturnType(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::NPVComplex::getReturnType(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }

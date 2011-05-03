@@ -55,7 +55,7 @@ public:
 	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-		const static std::string lName("Osteo_PreventionCampaign");
+		const static std::string lName("Meds_PreventionCampaign");
 		return lName;
 		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Meds::PreventionCampaign::getName() const");
 	}

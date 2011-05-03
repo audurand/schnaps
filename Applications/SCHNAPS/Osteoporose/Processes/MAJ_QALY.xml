@@ -1,0 +1,58 @@
+  <Process label="MAJ_QALY">
+	<LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_IfThenElse>
+        <Operators_OrComplex>
+          <Operators_IsGreater inArgLeft="@Nb_Fracture_Colonne" inArgRight="0" inArgRight_Type="Int"/>
+          <Operators_IsGreater inArgLeft="@Nb_Fracture_Hanche" inArgRight="0" inArgRight_Type="Int"/>
+        </Operators_OrComplex>
+        <Control_Sequential>
+          <Data_SetVariableComplex outVariable="@QALY">
+            <Operators_AddComplex>
+              <Data_Value inValue="@QALY"/>
+              <Operators_NPVComplex inDiscountRate="$ref.taux_actualisation">
+                <Operators_MultComplex>
+                  <Data_Value inValue_Type="Double" inValue="0.85"/>
+                  <Operators_SubComplex>
+                    <Operators_AddComplex>
+                      <Data_Value inValue_Type="Double" inValue="1"/>
+                      <Data_Clock/>
+                    </Operators_AddComplex>
+                    <Data_Value inValue="@QALY_Temps_MAJ"/>
+                  </Operators_SubComplex>
+                </Operators_MultComplex>
+              </Operators_NPVComplex>
+            </Operators_AddComplex>
+          </Data_SetVariableComplex>
+          <Data_SetVariableComplex outVariable="@QALY_Temps_MAJ">
+            <Operators_AddComplex>
+              <Data_Value inValue_Type="Double" inValue="1"/>
+              <Data_Clock/>
+            </Operators_AddComplex>
+          </Data_SetVariableComplex>
+        </Control_Sequential>
+        <Control_Sequential>
+          <Data_SetVariableComplex outVariable="@QALY">
+            <Operators_AddComplex>
+              <Data_Value inValue="@QALY"/>
+              <Operators_NPVComplex inDiscountRate="$ref.taux_actualisation">
+                <Operators_SubComplex>
+                  <Operators_AddComplex>
+                    <Data_Value inValue_Type="Double" inValue="1"/>
+                    <Data_Clock/>
+                  </Operators_AddComplex>
+                  <Data_Value inValue="@QALY_Temps_MAJ"/>
+                </Operators_SubComplex>
+              </Operators_NPVComplex>
+            </Operators_AddComplex>
+          </Data_SetVariableComplex>
+          <Data_SetVariableComplex outVariable="@QALY_Temps_MAJ">
+            <Operators_AddComplex>
+              <Data_Value inValue_Type="Double" inValue="1"/>
+              <Data_Clock/>
+            </Operators_AddComplex>
+          </Data_SetVariableComplex>
+        </Control_Sequential>
+      </Control_IfThenElse>
+    </PrimitiveTree>
+  </Process>

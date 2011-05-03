@@ -2,7 +2,7 @@
   <LocalVariables/>
   <PrimitiveTree size="1">
    <Control_Sequential>
-    <Control_ChoiceIsEqual inChoices="$Genre" inValue="@Genre">
+    <Control_ChoiceIsEqual inChoices="$ref.Genre" inValue="@ref.Genre">
      <Control_ChoiceIsBetween inBounds_Type="Int" inValue="@Age" inBounds="0|1|5|10|15|20|25|35|45|55|65|75|85">
       <Data_SetVariable inValue_Type="Double" inValue="0.0080" outVariable="@Taux_Mortalite"/>
       <Data_SetVariable inValue_Type="Double" inValue="0.0004" outVariable="@Taux_Mortalite"/>
@@ -37,7 +37,7 @@
     <Control_IfThenElse>
      <Data_Value inValue="@NIDDM"/>
      <Control_Sequential>
-      <Control_ChoiceIsEqual inChoices="$BDR" inValue="@BDR_D">
+      <Control_ChoiceIsEqual inChoices="$ref.BDR" inValue="@BDR_D">
        <Operators_MultVariable inArgRight_Type="Double" inArgRight="1.01" inArgLeft="@Taux_Mortalite" outResult="@Taux_Mortalite"/>
        <Operators_MultVariable inArgRight_Type="Double" inArgRight="1.5" inArgLeft="@Taux_Mortalite" outResult="@Taux_Mortalite"/>
        <Operators_MultVariable inArgRight_Type="Double" inArgRight="1.5" inArgLeft="@Taux_Mortalite" outResult="@Taux_Mortalite"/>
@@ -45,7 +45,7 @@
        <Control_Nothing/>
        <Control_Nothing/>
       </Control_ChoiceIsEqual>
-      <Control_ChoiceIsEqual inChoices="$BDR" inValue="@BDR_G">
+      <Control_ChoiceIsEqual inChoices="$ref.BDR" inValue="@BDR_G">
        <Operators_MultVariable inArgRight_Type="Double" inArgRight="1.01" inArgLeft="@Taux_Mortalite" outResult="@Taux_Mortalite"/>
        <Operators_MultVariable inArgRight_Type="Double" inArgRight="1.5" inArgLeft="@Taux_Mortalite" outResult="@Taux_Mortalite"/>
        <Operators_MultVariable inArgRight_Type="Double" inArgRight="1.5" inArgLeft="@Taux_Mortalite" outResult="@Taux_Mortalite"/>
@@ -53,14 +53,14 @@
        <Control_Nothing/>
        <Control_Nothing/>
       </Control_ChoiceIsEqual>
-      <Control_ChoiceIsEqual inChoices="$DMO" inValue="@DMO_D">
+      <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO_D">
        <Control_Nothing/>
        <Operators_MultVariable inArgRight_Type="Double" inArgRight="2" inArgLeft="@Taux_Mortalite" outResult="@Taux_Mortalite"/>
        <Operators_MultVariable inArgRight_Type="Double" inArgRight="2" inArgLeft="@Taux_Mortalite" outResult="@Taux_Mortalite"/>
        <Control_Nothing/>
        <Control_Nothing/>
       </Control_ChoiceIsEqual>
-      <Control_ChoiceIsEqual inChoices="$DMO" inValue="@DMO_G">
+      <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO_G">
        <Control_Nothing/>
        <Operators_MultVariable inArgRight_Type="Double" inArgRight="2" inArgLeft="@Taux_Mortalite" outResult="@Taux_Mortalite"/>
        <Operators_MultVariable inArgRight_Type="Double" inArgRight="2" inArgLeft="@Taux_Mortalite" outResult="@Taux_Mortalite"/>

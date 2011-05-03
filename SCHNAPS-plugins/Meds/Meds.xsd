@@ -72,11 +72,11 @@
 		</xsd:complexType>
 	</xsd:element>
 	
-	<xsd:element name="Meds_PreventionCampain" substitutionGroup="_primitive">
+	<xsd:element name="Meds_PreventionCampaign" substitutionGroup="_primitive">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<pmt:info lang="en"></pmt:info>
-				<pmt:mappedName lang="en">Prevention campain</pmt:mappedName>
+				<pmt:mappedName lang="en">Prevention campaign</pmt:mappedName>
 				<pmt:returnType definedBy="staticType">Void</pmt:returnType>
 			</xsd:appinfo>
 		</xsd:annotation>

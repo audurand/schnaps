@@ -1,5 +1,5 @@
 /*
- * NPV.hpp
+ * NPVComplex.hpp
  *
  * SCHNAPS
  * Copyright (C) 2009-2011 by Audrey Durand
@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SCHNAPS_Plugins_Operators_NPV_hpp
-#define SCHNAPS_Plugins_Operators_NPV_hpp
+#ifndef SCHNAPS_Plugins_Operators_NPVComplex_hpp
+#define SCHNAPS_Plugins_Operators_NPVComplex_hpp
 
 #include "SCHNAPS/SCHNAPS.hpp"
 
@@ -30,24 +30,24 @@ namespace Plugins {
 namespace Operators {
 
 /*!
- *  \class NPV SCHNAPS/Plugins/Operators/NPV.hpp "SCHNAPS/Plugins/Operators/NPV.hpp"
+ *  \class NPVComplex SCHNAPS/Plugins/Operators/NPVComplex.hpp "SCHNAPS/Plugins/Operators/NPVComplex.hpp"
  *  \brief Nearest present value operator with specific rate to compute actualisation relative to the simulation time.
  */
-class NPV: public Core::Primitive {
+class NPVComplex: public Core::Primitive {
 public:
-	//! NPV allocator type.
-	typedef Core::AllocatorT<NPV, Core::Primitive::Alloc> Alloc;
-	//! NPV handle type.
-	typedef Core::PointerT<NPV, Core::Primitive::Handle> Handle;
-	//! NPV bag type.
-	typedef Core::ContainerT<NPV, Core::Primitive::Bag> Bag;
+	//! NPVComplex allocator type.
+	typedef Core::AllocatorT<NPVComplex, Core::Primitive::Alloc> Alloc;
+	//! NPVComplex handle type.
+	typedef Core::PointerT<NPVComplex, Core::Primitive::Handle> Handle;
+	//! NPVComplex bag type.
+	typedef Core::ContainerT<NPVComplex, Core::Primitive::Bag> Bag;
 
-	NPV();
-	NPV(const NPV& inOriginal);
-	virtual ~NPV() {}
+	NPVComplex();
+	NPVComplex(const NPVComplex& inOriginal);
+	virtual ~NPVComplex() {}
 
 	//! Copy operator.
-	NPV& operator=(const NPV& inOriginal);
+	NPVComplex& operator=(const NPVComplex& inOriginal);
 
 	/*!
 	 * \brief  Return a const reference to the name of object.
@@ -55,9 +55,9 @@ public:
 	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-		const static std::string lName("Operators_NPV");
+		const static std::string lName("Operators_NPVComplex");
 		return lName;
-		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::NPV::getName() const");
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::NPVComplex::getName() const");
 	}
 
 	//! Read object from XML using system.
@@ -73,11 +73,11 @@ public:
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
-	std::string mRate_Ref;		//!< Reference to actualization rate.
-	Core::Double::Handle mRate;	//!< A handle to the actualization rate.
+	std::string mDiscountRate_Ref;		//!< Reference to actualization rate.
+	Core::Double::Handle mDiscountRate;	//!< A handle to the actualization rate.
 };
 } // end of Operators namespace
 } // end of Plugins namespace
 } // end of SCHNAPS namespace
 
-#endif /* SCHNAPS_Plugins_Operators_NPV_hpp */
+#endif /* SCHNAPS_Plugins_Operators_NPVComplex_hpp */

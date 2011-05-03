@@ -28,53 +28,38 @@
 	<xsd:element name="Data_Log" substitutionGroup="_primitive">
 		<xsd:annotation>
 			<xsd:appinfo>
-				<pmt:info lang="en">Logarithm</pmt:info>
+				<pmt:info lang="en">Log message to file.</pmt:info>
 				<pmt:mappedName lang="en">Log</pmt:mappedName>
 				<pmt:returnType definedBy="staticType">Void</pmt:returnType>
 			</xsd:appinfo>
 		</xsd:annotation>
 		<xsd:complexType>
-			<xsd:attribute name="type" type="xsd:string" use="required">
+			<xsd:attribute name="inType" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Type</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="message" type="xsd:string" use="required">
+			<xsd:attribute name="inMessage" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Message</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-		</xsd:complexType>
-	</xsd:element>
-	
-	<xsd:element name="Data_Parameter" substitutionGroup="_staticTk">
-		<xsd:annotation>
-			<xsd:appinfo>
-				<pmt:info lang="en">Reference to the actual value of a parameter.</pmt:info>
-				<pmt:mappedName lang="en">Parameter</pmt:mappedName>
-				<pmt:returnType definedBy="parameterValue">label</pmt:returnType>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexType>
-			<xsd:complexContent>
-				<xsd:extension base="_staticTkComplexType">
-					<xsd:attribute name="label" type="xsd:string" use="required">
-						<xsd:annotation>
-							<xsd:appinfo>
-								<gui:attributeBehavior>
-									<gui:list type="allParameters" allowEdition="False"/>
-									<gui:displayValue  position="br"/>
-								</gui:attributeBehavior>
-								<pmt:attributeMappedName lang="en">Parameter</pmt:attributeMappedName>
-							</xsd:appinfo>
-						</xsd:annotation>
-					</xsd:attribute>
-				</xsd:extension>
-			</xsd:complexContent>
 		</xsd:complexType>
 	</xsd:element>
 	
@@ -119,31 +104,46 @@
 	<xsd:element name="Data_SetVariable" substitutionGroup="_modifierOp">
 		<xsd:annotation>
 			<xsd:appinfo>
-				<pmt:info lang="en">Set variable to a specified value.</pmt:info>
+				<pmt:info lang="en">Set a variable to a specified value.</pmt:info>
 				<pmt:mappedName lang="en">Set variable value</pmt:mappedName>
 				<pmt:returnType definedBy="staticType">Void</pmt:returnType>
 			</xsd:appinfo>
 		</xsd:annotation>
 		<xsd:complexType>
-			<xsd:attribute name="label" type="xsd:string" use="required">
+			<xsd:attribute name="outVariable" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="allVariables" allowEdition="false"/>
-							<gui:displayValue position="br" showAttr="value" delimiter="="/>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:displayValue position="br" showAttr="inValue" delimiter="="/>
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="valueType" type="xsd:string" use="optional">
+			<xsd:attribute name="inValue" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en" pairedAttr="inValue_Type"/>
+						<pmt:attributeMappedName lang="en">Value</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="inValue_Type" use="optional">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
 							<gui:list type="atomTypes" allowEdition="False"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en">Type of value to set. WARNING: type must be the same as variable!</pmt:attributeInfo>
-						<pmt:attributeMappedName lang="en">Type</pmt:attributeMappedName>
+						<pmt:attributeMappedName lang="en">Value type</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
 				<xsd:simpleType>
@@ -160,24 +160,6 @@
 					</xsd:restriction>
 				</xsd:simpleType>
 			</xsd:attribute>
-			<xsd:attribute name="value" type="xsd:string" use="optional">
-				<xsd:annotation>
-					<xsd:appinfo>
-						<pmt:attributeInfo lang="en" pairedAttr="valueType"/>
-						<pmt:attributeMappedName lang="en">Value</pmt:attributeMappedName>
-					</xsd:appinfo>
-				</xsd:annotation>
-			</xsd:attribute>
-			<xsd:attribute name="value.ref" type="xsd:string" use="required">
-				<xsd:annotation>
-					<xsd:appinfo>
-						<gui:attributeBehavior>
-							<gui:list type="allParameters"/>
-						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en" reference="true"/>
-					</xsd:appinfo>
-				</xsd:annotation>
-			</xsd:attribute>
 		</xsd:complexType>
 	</xsd:element>
 	
@@ -190,24 +172,24 @@
 			</xsd:appinfo>
 		</xsd:annotation>
 		<xsd:complexType>
-				<xsd:choice>
-					<xsd:annotation>
-						<xsd:appinfo>
-							<pmt:childType definedBy="variableValue">label</pmt:childType>
-							<pmt:childBranchTag lang="en">New value</pmt:childBranchTag>
-						</xsd:appinfo>
-					</xsd:annotation>
-					<xsd:element ref="_multiBranchesConditionOp"/>
-					<xsd:element ref="_operator"/>
-					<xsd:element ref="Data_Token"/>
-					<xsd:element ref="Data_Clock"/>
-					<xsd:element ref="Data_Variable"/>
-				</xsd:choice>
-			<xsd:attribute name="label" type="xsd:string" use="required">
+			<xsd:choice>
+				<xsd:annotation>
+					<xsd:appinfo>
+						<pmt:childType definedBy="variableValue">outVariable</pmt:childType>
+						<pmt:childBranchTag lang="en">New value</pmt:childBranchTag>
+					</xsd:appinfo>
+				</xsd:annotation>
+				<xsd:element ref="_multiBranchesConditionOp"/>
+				<xsd:element ref="_operator"/>
+				<xsd:element ref="Data_Value"/>
+				<xsd:element ref="Data_Clock"/>
+			</xsd:choice>
+			<xsd:attribute name="outVariable" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="allVariables" allowEdition="false"/>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
 							<gui:displayValue position="br"/>
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
@@ -217,24 +199,39 @@
 		</xsd:complexType>
 	</xsd:element>
 	
-	<xsd:element name="Data_Token" substitutionGroup="_staticTk">
+	<xsd:element name="Data_Value" substitutionGroup="_staticTk">
 		<xsd:annotation>
 			<xsd:appinfo>
-				<pmt:info lang="en">Reference to a Data type element.</pmt:info>
+				<pmt:info lang="en">Return a single element.</pmt:info>
 				<pmt:mappedName lang="en">Value</pmt:mappedName>
-				<pmt:returnType definedBy="attributeValue">type</pmt:returnType>
+				<pmt:returnType definedBy="attributeValue">inValue_Type</pmt:returnType>
 			</xsd:appinfo>
 		</xsd:annotation>
 		<xsd:complexType>
 			<xsd:complexContent>
 				<xsd:extension base="_staticTkComplexType">
-					<xsd:attribute name="type" type="xsd:string" use="required">
+					<xsd:attribute name="inValue" use="required" type="xsd:string">
+						<xsd:annotation>
+							<xsd:appinfo>
+								<gui:attributeBehavior>
+									<gui:list type="indVariables" allowEdition="False"/>
+									<gui:list type="envVariables" allowEdition="False"/>
+									<gui:list type="locVariables" allowEdition="False"/>
+									<gui:list type="allParameters" allowEdition="False"/>
+									<gui:displayValue  position="br"/>
+								</gui:attributeBehavior>
+								<pmt:attributeMappedName lang="en">Value</pmt:attributeMappedName>
+								<pmt:attributeInfo lang="en" pairedAttr="inValue_Type"/>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="inValue_Type" use="optional">
 						<xsd:annotation>
 							<xsd:appinfo>
 								<gui:attributeBehavior>
 									<gui:list type="allTypes" allowEdition="False"/>
 								</gui:attributeBehavior>
-								<pmt:attributeMappedName lang="en">Type</pmt:attributeMappedName>
+								<pmt:attributeMappedName lang="en">Value type</pmt:attributeMappedName>
 							</xsd:appinfo>
 						</xsd:annotation>
 						<xsd:simpleType>
@@ -251,72 +248,9 @@
 							</xsd:restriction>
 						</xsd:simpleType>
 					</xsd:attribute>
-					<xsd:attribute name="value" use="required" type="xsd:string">
-						<xsd:annotation>
-							<xsd:appinfo>
-								<gui:attributeBehavior>
-									<gui:displayValue  position="br"/>
-								</gui:attributeBehavior>
-								<pmt:attributeMappedName lang="en">Value</pmt:attributeMappedName>
-							</xsd:appinfo>
-						</xsd:annotation>
-					</xsd:attribute>
 				</xsd:extension>
 			</xsd:complexContent>
 		</xsd:complexType>
 	</xsd:element>
 
-	<xsd:element name="Data_Variable" substitutionGroup="_staticTk">
-		<xsd:annotation>
-			<xsd:appinfo>
-				<pmt:info lang="en">Reference to a variable from the current individual.</pmt:info>
-				<pmt:mappedName lang="en">Variable (individual)</pmt:mappedName>
-				<pmt:returnType definedBy="variableValue">label</pmt:returnType>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexType>
-			<xsd:complexContent>
-				<xsd:extension base="_staticTkComplexType">
-					<xsd:attribute name="label" type="xsd:string" use="required">
-						<xsd:annotation>
-							<xsd:appinfo>
-								<gui:attributeBehavior>
-									<gui:list type="allVariables" allowEdition="False"/>
-									<gui:displayValue  position="br"/>
-								</gui:attributeBehavior>
-								<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
-							</xsd:appinfo>
-						</xsd:annotation>
-					</xsd:attribute>
-				</xsd:extension>
-			</xsd:complexContent>
-		</xsd:complexType>
-	</xsd:element>
-	
-	<xsd:element name="Data_VariableEnvironment" substitutionGroup="_staticTk">
-		<xsd:annotation>
-			<xsd:appinfo>
-				<pmt:info lang="en">Reference to an environment variable.</pmt:info>
-				<pmt:mappedName lang="en">Variable (environment)</pmt:mappedName>
-				<pmt:returnType definedBy="variableValue">label</pmt:returnType>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexType>
-			<xsd:complexContent>
-				<xsd:extension base="_staticTkComplexType">
-					<xsd:attribute name="label" type="xsd:string" use="required">
-						<xsd:annotation>
-							<xsd:appinfo>
-								<gui:attributeBehavior>
-									<gui:list type="envVariables" allowEdition="False"/>
-									<gui:displayValue  position="br"/>
-								</gui:attributeBehavior>
-								<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
-							</xsd:appinfo>
-						</xsd:annotation>
-					</xsd:attribute>
-				</xsd:extension>
-			</xsd:complexContent>
-		</xsd:complexType>
-	</xsd:element>
 </xsd:schema>

@@ -13,52 +13,52 @@
         <Entry label="threads.generator">
           <UInt value="4"/>
         </Entry>
-        <Entry label="Traitement_PDR_Efficacite">
+        <Entry label="ref.Traitement_PDR_Efficacite">
           <Double value="0.80"/>
         </Entry>
-        <Entry label="Traitement_PDR_Cout">
+        <Entry label="ref.Traitement_PDR_Cout">
           <Double value="180.00"/>
         </Entry>
-        <Entry label="Traitement_CSMO_Efficacite">
+        <Entry label="ref.Traitement_CSMO_Efficacite">
           <Double value="0.62"/>
         </Entry>
-        <Entry label="Traitement_CSMO_Cout">
+        <Entry label="ref.Traitement_CSMO_Cout">
           <Double value="180.00"/>
         </Entry>
-        <Entry label="Optometriste_Specificite">
+        <Entry label="ref.Optometriste_Specificite">
           <Double value="0.93"/>
         </Entry>
-        <Entry label="Optometriste_Sensibilite">
+        <Entry label="ref.Optometriste_Sensibilite">
           <Double value="0.73"/>
         </Entry>
-        <Entry label="Optometriste_Cout">
+        <Entry label="ref.Optometriste_Cout">
           <Double value="20.00"/>
         </Entry>
-        <Entry label="Optometriste_Compliance">
+        <Entry label="ref.Optometriste_Compliance">
           <Double value="0.80"/>
         </Entry>
-        <Entry label="GoldStandard_Sensibilite">
+        <Entry label="ref.GoldStandard_Sensibilite">
           <Double value="0.98"/>
         </Entry>
-        <Entry label="GoldStandard_Cout">
+        <Entry label="ref.GoldStandard_Cout">
           <Double value="60.00"/>
         </Entry>
-        <Entry label="GoldStandard_Compliance">
+        <Entry label="ref.GoldStandard_Compliance">
           <Double value="0.95"/>
         </Entry>
-        <Entry label="Genre">
+        <Entry label="ref.Genre">
           <Vector>
             <String value="Homme"/>
             <String value="Femme"/>
           </Vector>
         </Entry>
-        <Entry label="Ethnie">
+        <Entry label="ref.Ethnie">
           <Vector>
             <String value="Caucasien"/>
             <String value="Autre"/>
           </Vector>
         </Entry>
-        <Entry label="DMO">
+        <Entry label="ref.DMO">
           <Vector>
             <String value="Aucune"/>
             <String value="DMO"/>
@@ -67,7 +67,7 @@
             <String value="Traite"/>
           </Vector>
         </Entry>
-        <Entry label="BDR">
+        <Entry label="ref.BDR">
           <Vector>
             <String value="Aucune"/>
             <String value="BDR1"/>
@@ -77,7 +77,7 @@
             <String value="Traite"/>
           </Vector>
         </Entry>
-        <Entry label="Age_5ans">
+        <Entry label="ref.Age_5ans">
           <Vector>
             <Int value="0"/>
             <Int value="5"/>
@@ -99,7 +99,7 @@
             <Int value="85"/>
           </Vector>
         </Entry>
-        <Entry label="Age_10ans">
+        <Entry label="ref.Age_10ans">
           <Vector>
             <Int value="0"/>
             <Int value="10"/>

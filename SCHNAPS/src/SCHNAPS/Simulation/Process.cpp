@@ -151,7 +151,9 @@ void Process::readLocalVariables(PACC::XML::ConstIterator inIter, Core::System& 
 	}
 	
 	mLocalVariables.clear();
-	Core::AnyType::Alloc::Handle lAlloc;
+	
+	Core::AnyType::Handle lValue;
+	Core::Object::Alloc::Handle lAlloc;
 	for (PACC::XML::ConstIterator lChild = inIter->getFirstChild(); lChild; lChild++) {
 		if (lChild->getValue() != "LocalVariable") {
 			std::ostringstream lOSS;
@@ -164,22 +166,16 @@ void Process::readLocalVariables(PACC::XML::ConstIterator inIter, Core::System& 
 		if (lChild->getAttribute("label").empty()) {
 			throw schnaps_IOExceptionNodeM(*lChild, "label attribute expected!");
 		}
-		mLocalVariables.push_back(std::pair<std::string, Core::AnyType::Handle>(lChild->getAttribute("label"), NULL));
 		
 #ifdef SCHNAPS_FULL_DEBUG
 		printf("\tReading local variable: %s\n", mLocalVariables.back().first.c_str());
 #endif
 
-		// retrieve value
-		if (lChild->getAttribute("type").empty()) {
-			throw schnaps_IOExceptionNodeM(*lChild, "type attribute expected!");
-		}
-		if (lChild->getAttribute("value").empty()) {
-			throw schnaps_IOExceptionNodeM(*lChild, "value attribute expected!");
-		}
-		lAlloc = Core::castHandleT<Core::AnyType::Alloc>(ioSystem.getFactory().getAllocator(lChild->getAttribute("type")));
-		mLocalVariables.back().second = Core::castHandleT<Core::AnyType>(lAlloc->allocate());
-		mLocalVariables.back().second->readStr(lChild->getAttribute("value"));
+		lAlloc = ioSystem.getFactory().getAllocator(lChild->getFirstChild()->getValue());
+		lValue = Core::castHandleT<Core::AnyType>(lAlloc->allocate());
+		lValue->readWithSystem(lChild->getFirstChild(), ioSystem);
+		
+		mLocalVariables.push_back(std::pair<std::string, Core::AnyType::Handle>(lChild->getAttribute("label"), lValue));
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Process::readLocalVariables(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }

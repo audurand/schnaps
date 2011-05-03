@@ -1,0 +1,526 @@
+  <SimulationVariables>
+    <Variable gui.position="0" type="String" label="DMO">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Control_ChoiceIsBetween inBounds_Type="Int" inValue="@Age" inBounds="40|50|60|70|80|90">
+          <Control_BranchMulti inProbabilities="0.047|0.44|0.513">
+            <Data_Value inValue_Type="String" inValue="Osteoporose"/>
+            <Data_Value inValue_Type="String" inValue="Osteopenie"/>
+            <Data_Value inValue_Type="String" inValue="Normale"/>
+          </Control_BranchMulti>
+          <Control_BranchMulti inProbabilities="0.087|0.463|0.45">
+            <Data_Value inValue_Type="String" inValue="Osteoporose"/>
+            <Data_Value inValue_Type="String" inValue="Osteopenie"/>
+            <Data_Value inValue_Type="String" inValue="Normale"/>
+          </Control_BranchMulti>
+          <Control_BranchMulti inProbabilities="0.272|0.429|0.299">
+            <Data_Value inValue_Type="String" inValue="Osteoporose"/>
+            <Data_Value inValue_Type="String" inValue="Osteopenie"/>
+            <Data_Value inValue_Type="String" inValue="Normale"/>
+          </Control_BranchMulti>
+          <Control_BranchMulti inProbabilities="0.344|0.48|0.176">
+            <Data_Value inValue_Type="String" inValue="Osteoporose"/>
+            <Data_Value inValue_Type="String" inValue="Osteopenie"/>
+            <Data_Value inValue_Type="String" inValue="Normale"/>
+          </Control_BranchMulti>
+          <Control_BranchMulti inProbabilities="0.451|0.45|0.099">
+            <Data_Value inValue_Type="String" inValue="Osteoporose"/>
+            <Data_Value inValue_Type="String" inValue="Osteopenie"/>
+            <Data_Value inValue_Type="String" inValue="Normale"/>
+          </Control_BranchMulti>
+          <Control_BranchMulti inProbabilities="0.66|0.33|0.01">
+            <Data_Value inValue_Type="String" inValue="Osteoporose"/>
+            <Data_Value inValue_Type="String" inValue="Osteopenie"/>
+            <Data_Value inValue_Type="String" inValue="Normale"/>
+          </Control_BranchMulti>
+        </Control_ChoiceIsBetween>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="4" type="Int" label="Nb_Fracture_Colonne">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue_Type="Int" inValue="0"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="5" type="Int" label="Nb_Fracture_Hanche">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue_Type="Int" inValue="0"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="6" type="Int" label="Nb_Fracture_Poignet">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue_Type="Int" inValue="0"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="7" type="Double" label="Cout">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue_Type="Double" inValue="0"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="8" type="Double" label="QALY_Temps_MAJ">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue_Type="Double" inValue="0"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="9" type="Double" label="QALY">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue_Type="Double" inValue="0"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="10" type="Bool" label="Depistage">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue_Type="Bool" inValue="false"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="11" type="Bool" label="Prevention">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue_Type="Bool" inValue="false"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="12" type="Bool" label="Traitement">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue_Type="Bool" inValue="false"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="13" type="Double" label="Taux_Mortalite">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Control_ChoiceIsBetween inValue="@Age" inBounds="40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|56|57|58|59|60|61|62|63|64|65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98|99|100" inBounds_Type="Int">
+          <Data_Value inValue_Type="Double" inValue="0.00088"/>
+          <!-- 40 -->
+          <Data_Value inValue_Type="Double" inValue="0.00084"/>
+          <!-- 41 -->
+          <Data_Value inValue_Type="Double" inValue="0.00091"/>
+          <!-- 42 -->
+          <Data_Value inValue_Type="Double" inValue="0.00101"/>
+          <!-- 43 -->
+          <Data_Value inValue_Type="Double" inValue="0.00120"/>
+          <!-- 44 -->
+          <Data_Value inValue_Type="Double" inValue="0.00164"/>
+          <!-- 45 -->
+          <Data_Value inValue_Type="Double" inValue="0.00180"/>
+          <!-- 46 -->
+          <Data_Value inValue_Type="Double" inValue="0.00166"/>
+          <!-- 47 -->
+          <Data_Value inValue_Type="Double" inValue="0.00198"/>
+          <!-- 48 -->
+          <Data_Value inValue_Type="Double" inValue="0.00227"/>
+          <!-- 49 -->
+          <Data_Value inValue_Type="Double" inValue="0.00231"/>
+          <!-- 50 -->
+          <Data_Value inValue_Type="Double" inValue="0.00251"/>
+          <!-- 51 -->
+          <Data_Value inValue_Type="Double" inValue="0.00272"/>
+          <!-- 52 -->
+          <Data_Value inValue_Type="Double" inValue="0.00290"/>
+          <!-- 53 -->
+          <Data_Value inValue_Type="Double" inValue="0.00327"/>
+          <!-- 54 -->
+          <Data_Value inValue_Type="Double" inValue="0.00367"/>
+          <!-- 55 -->
+          <Data_Value inValue_Type="Double" inValue="0.00367"/>
+          <!-- 56 -->
+          <Data_Value inValue_Type="Double" inValue="0.00425"/>
+          <!-- 57 -->
+          <Data_Value inValue_Type="Double" inValue="0.00460"/>
+          <!-- 58 -->
+          <Data_Value inValue_Type="Double" inValue="0.00519"/>
+          <!-- 59 -->
+          <Data_Value inValue_Type="Double" inValue="0.00525"/>
+          <!-- 60 -->
+          <Data_Value inValue_Type="Double" inValue="0.00587"/>
+          <!-- 61 -->
+          <Data_Value inValue_Type="Double" inValue="0.00608"/>
+          <!-- 62 -->
+          <Data_Value inValue_Type="Double" inValue="0.00733"/>
+          <!-- 63 -->
+          <Data_Value inValue_Type="Double" inValue="0.00792"/>
+          <!-- 64 -->
+          <Data_Value inValue_Type="Double" inValue="0.00790"/>
+          <!-- 65 -->
+          <Data_Value inValue_Type="Double" inValue="0.00901"/>
+          <!-- 66 -->
+          <Data_Value inValue_Type="Double" inValue="0.01080"/>
+          <!-- 67 -->
+          <Data_Value inValue_Type="Double" inValue="0.01204"/>
+          <!-- 68 -->
+          <Data_Value inValue_Type="Double" inValue="0.01266"/>
+          <!-- 69 -->
+          <Data_Value inValue_Type="Double" inValue="0.01366"/>
+          <!-- 70 -->
+          <Data_Value inValue_Type="Double" inValue="0.01535"/>
+          <!-- 71 -->
+          <Data_Value inValue_Type="Double" inValue="0.01702"/>
+          <!-- 72 -->
+          <Data_Value inValue_Type="Double" inValue="0.01843"/>
+          <!-- 73 -->
+          <Data_Value inValue_Type="Double" inValue="0.02039"/>
+          <!-- 74 -->
+          <Data_Value inValue_Type="Double" inValue="0.02303"/>
+          <!-- 75 -->
+          <Data_Value inValue_Type="Double" inValue="0.02484"/>
+          <!-- 76 -->
+          <Data_Value inValue_Type="Double" inValue="0.02947"/>
+          <!-- 77 -->
+          <Data_Value inValue_Type="Double" inValue="0.03230"/>
+          <!-- 78 -->
+          <Data_Value inValue_Type="Double" inValue="0.03574"/>
+          <!-- 79 -->
+          <Data_Value inValue_Type="Double" inValue="0.03885"/>
+          <!-- 80 -->
+          <Data_Value inValue_Type="Double" inValue="0.04348"/>
+          <!-- 81 -->
+          <Data_Value inValue_Type="Double" inValue="0.05237"/>
+          <!-- 82 -->
+          <Data_Value inValue_Type="Double" inValue="0.05669"/>
+          <!-- 83 -->
+          <Data_Value inValue_Type="Double" inValue="0.06655"/>
+          <!-- 84 -->
+          <Data_Value inValue_Type="Double" inValue="0.07290"/>
+          <!-- 85 -->
+          <Data_Value inValue_Type="Double" inValue="0.07748"/>
+          <!-- 86 -->
+          <Data_Value inValue_Type="Double" inValue="0.09511"/>
+          <!-- 87 -->
+          <Data_Value inValue_Type="Double" inValue="0.10575"/>
+          <!-- 88 -->
+          <Data_Value inValue_Type="Double" inValue="0.11555"/>
+          <!-- 89 -->
+          <Data_Value inValue_Type="Double" inValue="0.13160"/>
+          <!-- 90 -->
+          <Data_Value inValue_Type="Double" inValue="0.14936"/>
+          <!-- 91 -->
+          <Data_Value inValue_Type="Double" inValue="0.16039"/>
+          <!-- 92 -->
+          <Data_Value inValue_Type="Double" inValue="0.18002"/>
+          <!-- 93 -->
+          <Data_Value inValue_Type="Double" inValue="0.20564"/>
+          <!-- 94 -->
+          <Data_Value inValue_Type="Double" inValue="0.23451"/>
+          <!-- 95 -->
+          <Data_Value inValue_Type="Double" inValue="0.24411"/>
+          <!-- 96 -->
+          <Data_Value inValue_Type="Double" inValue="0.27344"/>
+          <!-- 97-->
+          <Data_Value inValue_Type="Double" inValue="0.29880"/>
+          <!-- 98-->
+          <Data_Value inValue_Type="Double" inValue="0.33351"/>
+          <!-- 99-->
+          <Data_Value inValue_Type="Double" inValue="0.5"/>
+          <!-- Default: 100+ -->
+        </Control_ChoiceIsBetween>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="14" type="Bool" label="Mort">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue_Type="Bool" inValue="false"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="15" type="Int" label="Duree_Vie">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue_Type="Int" inValue="1"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="16" type="Bool" label="Pratiquant">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue_Type="Bool" inValue="false"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="17" type="Bool" label="ActPhys_Pratiquant">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Control_ChoiceIsBetween inBounds="$ref.tranche_age_40_90_5ans" inValue="@Age">
+          <Control_Branch inProbability="0.317">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.325">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.388">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.413">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.409">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.397">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.376">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.272">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.223">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.154">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.133">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+        </Control_ChoiceIsBetween>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="18" type="Bool" label="VitDCalcium_Pratiquant">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Control_ChoiceIsBetween inBounds="$ref.tranche_age_40_90_5ans" inValue="@Age">
+          <Control_Branch inProbability="0.3">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.34">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.377">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.392">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.301">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.233">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.224">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.208">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.133">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.133">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Data_Value inValue_Type="Bool" inValue="false"/>
+        </Control_ChoiceIsBetween>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="19" type="Bool" label="ActPhys+VitDCalcium_Pratiquant">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Control_ChoiceIsBetween inBounds="$ref.tranche_age_40_90_5ans" inValue="@Age">
+          <Control_Branch inProbability="0.2782">
+            <!--Verifier si l'individu prend deja de la Vitamine D Calcium et pratique deja l'activite physique-->
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.3071">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.3343">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.3656">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.2922">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.2157">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.2061">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.1813">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.1148">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.0732">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
+          <Data_Value inValue_Type="Bool" inValue="false"/>
+        </Control_ChoiceIsBetween>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="1" type="Double" label="Probabilite_Fracture_Colonne">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
+          <Control_ChoiceIsBetween inBounds="$ref.tranche_age_40_90_5ans" inValue="@Age">
+            <Data_Value inValue_Type="Double" inValue="0.00021"/>
+            <Data_Value inValue_Type="Double" inValue="0.00067"/>
+            <Data_Value inValue_Type="Double" inValue="0.00054"/>
+            <Data_Value inValue_Type="Double" inValue="0.0015"/>
+            <Data_Value inValue_Type="Double" inValue="0.0015"/>
+            <Data_Value inValue_Type="Double" inValue="0.0028"/>
+            <Data_Value inValue_Type="Double" inValue="0.0028"/>
+            <Data_Value inValue_Type="Double" inValue="0.0044"/>
+            <Data_Value inValue_Type="Double" inValue="0.0044"/>
+            <Data_Value inValue_Type="Double" inValue="0.0054"/>
+            <Data_Value inValue_Type="Double" inValue="0.0054"/>
+          </Control_ChoiceIsBetween>
+          <Control_ChoiceIsBetween inBounds="$ref.tranche_age_40_90_5ans" inValue="@Age">
+            <Data_Value inValue_Type="Double" inValue="0.00042"/>
+            <Data_Value inValue_Type="Double" inValue="0.0013"/>
+            <Data_Value inValue_Type="Double" inValue="0.001"/>
+            <Data_Value inValue_Type="Double" inValue="0.003"/>
+            <Data_Value inValue_Type="Double" inValue="0.003"/>
+            <Data_Value inValue_Type="Double" inValue="0.004"/>
+            <Data_Value inValue_Type="Double" inValue="0.004"/>
+            <Data_Value inValue_Type="Double" inValue="0.0063"/>
+            <Data_Value inValue_Type="Double" inValue="0.0063"/>
+            <Data_Value inValue_Type="Double" inValue="0.0077"/>
+            <Data_Value inValue_Type="Double" inValue="0.0077"/>
+          </Control_ChoiceIsBetween>
+          <Control_ChoiceIsBetween inBounds="$ref.tranche_age_40_90_5ans" inValue="@Age">
+            <Data_Value inValue_Type="Double" inValue="0.00077"/>
+            <Data_Value inValue_Type="Double" inValue="0.0024"/>
+            <Data_Value inValue_Type="Double" inValue="0.0019"/>
+            <Data_Value inValue_Type="Double" inValue="0.0055"/>
+            <Data_Value inValue_Type="Double" inValue="0.0055"/>
+            <Data_Value inValue_Type="Double" inValue="0.01"/>
+            <Data_Value inValue_Type="Double" inValue="0.01"/>
+            <Data_Value inValue_Type="Double" inValue="0.016"/>
+            <Data_Value inValue_Type="Double" inValue="0.016"/>
+            <Data_Value inValue_Type="Double" inValue="0.019"/>
+            <Data_Value inValue_Type="Double" inValue="0.019"/>
+          </Control_ChoiceIsBetween>
+        </Control_ChoiceIsEqual>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="2" type="Double" label="Probabilite_Fracture_Hanche">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
+          <Control_ChoiceIsBetween inBounds="$ref.tranche_age_40_90_5ans" inValue="@Age">
+            <Data_Value inValue_Type="Double" inValue="0.000088"/>
+            <Data_Value inValue_Type="Double" inValue="0.00016"/>
+            <Data_Value inValue_Type="Double" inValue="0.00032"/>
+            <Data_Value inValue_Type="Double" inValue="0.0004"/>
+            <Data_Value inValue_Type="Double" inValue="0.0008"/>
+            <Data_Value inValue_Type="Double" inValue="0.00095"/>
+            <Data_Value inValue_Type="Double" inValue="0.0012"/>
+            <Data_Value inValue_Type="Double" inValue="0.0037"/>
+            <Data_Value inValue_Type="Double" inValue="0.0078"/>
+            <Data_Value inValue_Type="Double" inValue="0.01"/>
+            <Data_Value inValue_Type="Double" inValue="0.01"/>
+          </Control_ChoiceIsBetween>
+          <Control_ChoiceIsBetween inBounds="$ref.tranche_age_40_90_5ans" inValue="@Age">
+            <Data_Value inValue_Type="Double" inValue="0.00017"/>
+            <Data_Value inValue_Type="Double" inValue="0.0003"/>
+            <Data_Value inValue_Type="Double" inValue="0.00063"/>
+            <Data_Value inValue_Type="Double" inValue="0.00079"/>
+            <Data_Value inValue_Type="Double" inValue="0.0016"/>
+            <Data_Value inValue_Type="Double" inValue="0.0017"/>
+            <Data_Value inValue_Type="Double" inValue="0.0017"/>
+            <Data_Value inValue_Type="Double" inValue="0.0052"/>
+            <Data_Value inValue_Type="Double" inValue="0.011"/>
+            <Data_Value inValue_Type="Double" inValue="0.015"/>
+            <Data_Value inValue_Type="Double" inValue="0.015"/>
+          </Control_ChoiceIsBetween>
+          <Control_ChoiceIsBetween inBounds="$ref.tranche_age_40_90_5ans" inValue="@Age">
+            <Data_Value inValue_Type="Double" inValue="0.00031"/>
+            <Data_Value inValue_Type="Double" inValue="0.00056"/>
+            <Data_Value inValue_Type="Double" inValue="0.0011"/>
+            <Data_Value inValue_Type="Double" inValue="0.0014"/>
+            <Data_Value inValue_Type="Double" inValue="0.0029"/>
+            <Data_Value inValue_Type="Double" inValue="0.0034"/>
+            <Data_Value inValue_Type="Double" inValue="0.0042"/>
+            <Data_Value inValue_Type="Double" inValue="0.013"/>
+            <Data_Value inValue_Type="Double" inValue="0.027"/>
+            <Data_Value inValue_Type="Double" inValue="0.037"/>
+            <Data_Value inValue_Type="Double" inValue="0.037"/>
+          </Control_ChoiceIsBetween>
+        </Control_ChoiceIsEqual>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="3" type="Double" label="Probabilite_Fracture_Poignet">
+	  <LocalVariables/>
+      <PrimitiveTree>
+        <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
+          <Control_ChoiceIsBetween inBounds="$ref.tranche_age_40_90_5ans" inValue="@Age">
+            <Data_Value inValue_Type="Double" inValue="0.00077"/>
+            <Data_Value inValue_Type="Double" inValue="0.00077"/>
+            <Data_Value inValue_Type="Double" inValue="0.0014"/>
+            <Data_Value inValue_Type="Double" inValue="0.002"/>
+            <Data_Value inValue_Type="Double" inValue="0.0039"/>
+            <Data_Value inValue_Type="Double" inValue="0.0035"/>
+            <Data_Value inValue_Type="Double" inValue="0.0035"/>
+            <Data_Value inValue_Type="Double" inValue="0.0036"/>
+            <Data_Value inValue_Type="Double" inValue="0.0037"/>
+            <Data_Value inValue_Type="Double" inValue="0.0036"/>
+            <Data_Value inValue_Type="Double" inValue="0.0036"/>
+          </Control_ChoiceIsBetween>
+          <Control_ChoiceIsBetween inBounds="$ref.tranche_age_40_90_5ans" inValue="@Age">
+            <Data_Value inValue_Type="Double" inValue="0.0015"/>
+            <Data_Value inValue_Type="Double" inValue="0.0015"/>
+            <Data_Value inValue_Type="Double" inValue="0.0028"/>
+            <Data_Value inValue_Type="Double" inValue="0.004"/>
+            <Data_Value inValue_Type="Double" inValue="0.0077"/>
+            <Data_Value inValue_Type="Double" inValue="0.005"/>
+            <Data_Value inValue_Type="Double" inValue="0.005"/>
+            <Data_Value inValue_Type="Double" inValue="0.005"/>
+            <Data_Value inValue_Type="Double" inValue="0.0053"/>
+            <Data_Value inValue_Type="Double" inValue="0.0052"/>
+            <Data_Value inValue_Type="Double" inValue="0.0052"/>
+          </Control_ChoiceIsBetween>
+          <Control_ChoiceIsBetween inBounds="$ref.tranche_age_40_90_5ans" inValue="@Age">
+            <Data_Value inValue_Type="Double" inValue="0.0027"/>
+            <Data_Value inValue_Type="Double" inValue="0.0027"/>
+            <Data_Value inValue_Type="Double" inValue="0.005"/>
+            <Data_Value inValue_Type="Double" inValue="0.0075"/>
+            <Data_Value inValue_Type="Double" inValue="0.014"/>
+            <Data_Value inValue_Type="Double" inValue="0.012"/>
+            <Data_Value inValue_Type="Double" inValue="0.012"/>
+            <Data_Value inValue_Type="Double" inValue="0.013"/>
+            <Data_Value inValue_Type="Double" inValue="0.013"/>
+            <Data_Value inValue_Type="Double" inValue="0.013"/>
+            <Data_Value inValue_Type="Double" inValue="0.013"/>
+          </Control_ChoiceIsBetween>
+        </Control_ChoiceIsEqual>
+      </PrimitiveTree>
+    </Variable>
+  </SimulationVariables>

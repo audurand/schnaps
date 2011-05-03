@@ -25,7 +25,7 @@
             </Operators_OrComplex>
           </Operators_AndComplex>
           <Control_Nothing/>
-          <Control_Branch inProbability="$GoldStandard_Compliance">
+          <Control_Branch inProbability="$ref.GoldStandard_Compliance">
             <Control_Sequential>
               <Control_ProcessCall inLabel="Ophtalmologiste"/>
               <Control_IfThenElse>

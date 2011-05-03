@@ -17,7 +17,7 @@
             </Operators_OrComplex>
           </Operators_AndComplex>
           <Control_Nothing/>
-          <Control_Branch inProbability="$Optometriste_Compliance">
+          <Control_Branch inProbability="$ref.Optometriste_Compliance">
             <Control_IfThenElse>
               <Control_ProcessCall inLabel="Optometriste"/>
               <Control_IfThenElse>

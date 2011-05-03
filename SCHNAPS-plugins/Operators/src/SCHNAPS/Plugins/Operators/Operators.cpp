@@ -62,7 +62,7 @@ SCHNAPS_Plugin_AddAllocM("Operators_OrComplex", SCHNAPS::Plugins::Operators::OrC
 // others
 SCHNAPS_Plugin_AddAllocM("Operators_ConcatComplex", SCHNAPS::Plugins::Operators::ConcatComplex::Alloc);
 SCHNAPS_Plugin_AddAllocM("Operators_ConcatVariable", SCHNAPS::Plugins::Operators::ConcatVariable::Alloc);
-SCHNAPS_Plugin_AddAllocM("Operators_NPV", SCHNAPS::Plugins::Operators::NPV::Alloc);
+SCHNAPS_Plugin_AddAllocM("Operators_NPVComplex", SCHNAPS::Plugins::Operators::NPVComplex::Alloc);
 SCHNAPS_Plugin_AddAllocM("Operators_Serialize", SCHNAPS::Plugins::Operators::Serialize::Alloc);
 
 SCHNAPS_Plugin_EndDefinitionM();

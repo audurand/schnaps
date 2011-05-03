@@ -10,7 +10,7 @@
       <Data_Value inValue_Type="ULong" inValue="11"/>
      </Operators_IsGreaterComplex>
      <Control_Sequential>
-      <Operators_AddVariable inArgRight="$GoldStandard_Cout" inArgLeft="@Cout" outResult="@Cout"/>
+      <Operators_AddVariable inArgRight="$ref.GoldStandard_Cout" inArgLeft="@Cout" outResult="@Cout"/>
       <Control_ProcessPush inTarget="environment" inDelay="0" inLabel="Ajouter_Ophtalmologiste"/>
      </Control_Sequential>
      <Control_Nothing/>
@@ -18,7 +18,7 @@
     <Control_IfThenElse>
      <!--Detection PDR oeil droit-->
      <Operators_IsEqual inArgRight_Type="String" inArgRight="PDR" inArgLeft="@BDR_D"/>
-     <Control_Branch inProbability="$GoldStandard_Sensibilite">
+     <Control_Branch inProbability="$ref.GoldStandard_Sensibilite">
       <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_PDR_D"/>
       <Data_SetVariable inValue_Type="Bool" inValue="false" outVariable="@Resultat_GoldStandard_PDR_D"/>
      </Control_Branch>
@@ -27,7 +27,7 @@
     <Control_IfThenElse>
      <!--Detection PDR oeil gauche-->
      <Operators_IsEqual inArgRight_Type="String" inArgRight="PDR" inArgLeft="@BDR_G"/>
-     <Control_Branch inProbability="$GoldStandard_Sensibilite">
+     <Control_Branch inProbability="$ref.GoldStandard_Sensibilite">
       <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_PDR_G"/>
       <Data_SetVariable inValue_Type="Bool" inValue="false" outVariable="@Resultat_GoldStandard_PDR_G"/>
      </Control_Branch>
@@ -36,7 +36,7 @@
     <Control_IfThenElse>
      <!--Detection CSMO oeil droit-->
      <Operators_IsEqual inArgRight_Type="String" inArgRight="CSMO" inArgLeft="@DMO_D"/>
-     <Control_Branch inProbability="$GoldStandard_Sensibilite">
+     <Control_Branch inProbability="$ref.GoldStandard_Sensibilite">
       <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_CSMO_D"/>
       <Data_SetVariable inValue_Type="Bool" inValue="false" outVariable="@Resultat_GoldStandard_CSMO_D"/>
      </Control_Branch>
@@ -45,7 +45,7 @@
     <Control_IfThenElse>
      <!--Detection CSMO oeil gauche-->
      <Operators_IsEqual inArgRight_Type="String" inArgRight="CSMO" inArgLeft="@DMO_G"/>
-     <Control_Branch inProbability="$GoldStandard_Sensibilite">
+     <Control_Branch inProbability="$ref.GoldStandard_Sensibilite">
       <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_CSMO_G"/>
       <Data_SetVariable inValue_Type="Bool" inValue="false" outVariable="@Resultat_GoldStandard_CSMO_G"/>
      </Control_Branch>

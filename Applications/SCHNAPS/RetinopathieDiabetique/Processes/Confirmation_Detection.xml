@@ -10,7 +10,7 @@
       <Data_Value inValue_Type="ULong" inValue="11"/>
      </Operators_IsGreaterComplex>
      <Control_Sequential>
-      <Operators_AddVariable inArgRight="$GoldStandard_Cout" inArgLeft="@Cout" outResult="@Cout"/>
+      <Operators_AddVariable inArgRight="$ref.GoldStandard_Cout" inArgLeft="@Cout" outResult="@Cout"/>
       <Control_ProcessPush inTarget="environment" inDelay="0" inLabel="Ajouter_Ophtalmologiste"/>
      </Control_Sequential>
      <Control_Nothing/>
@@ -20,15 +20,15 @@
     <Data_SetVariable inValue_Type="Bool" inValue="false" outVariable="@Resultat_GoldStandard_CSMO_D"/>
     <Data_SetVariable inValue_Type="Bool" inValue="false" outVariable="@Resultat_GoldStandard_CSMO_G"/>
     <Operators_OrComplex>
-     <Control_ChoiceIsEqual inChoices="$BDR" inValue="@BDR_D">
+     <Control_ChoiceIsEqual inChoices="$ref.BDR" inValue="@BDR_D">
       <!--Detection BDR/PDR oeil droit-->
       <Data_Value inValue_Type="Bool" inValue="false"/>
       <Data_Value inValue_Type="Bool" inValue="false"/>
-      <Control_Branch inProbability="$GoldStandard_Sensibilite">
+      <Control_Branch inProbability="$ref.GoldStandard_Sensibilite">
        <Data_Value inValue_Type="Bool" inValue="true"/>
        <Data_Value inValue_Type="Bool" inValue="false"/>
       </Control_Branch>
-      <Control_Branch inProbability="$GoldStandard_Sensibilite">
+      <Control_Branch inProbability="$ref.GoldStandard_Sensibilite">
        <Control_Sequential>
         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_PDR_D"/>
         <Data_Value inValue_Type="Bool" inValue="true"/>
@@ -38,15 +38,15 @@
       <Data_Value inValue_Type="Bool" inValue="false"/>
       <Data_Value inValue_Type="Bool" inValue="false"/>
      </Control_ChoiceIsEqual>
-     <Control_ChoiceIsEqual inChoices="$BDR" inValue="@BDR_G">
+     <Control_ChoiceIsEqual inChoices="$ref.BDR" inValue="@BDR_G">
       <!--Detection BDR/PDR oeil gauche-->
       <Data_Value inValue_Type="Bool" inValue="false"/>
       <Data_Value inValue_Type="Bool" inValue="false"/>
-      <Control_Branch inProbability="$GoldStandard_Sensibilite">
+      <Control_Branch inProbability="$ref.GoldStandard_Sensibilite">
        <Data_Value inValue_Type="Bool" inValue="true"/>
        <Data_Value inValue_Type="Bool" inValue="false"/>
       </Control_Branch>
-      <Control_Branch inProbability="$GoldStandard_Sensibilite">
+      <Control_Branch inProbability="$ref.GoldStandard_Sensibilite">
        <Control_Sequential>
         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_PDR_G"/>
         <Data_Value inValue_Type="Bool" inValue="true"/>
@@ -56,11 +56,11 @@
       <Data_Value inValue_Type="Bool" inValue="false"/>
       <Data_Value inValue_Type="Bool" inValue="false"/>
      </Control_ChoiceIsEqual>
-     <Control_ChoiceIsEqual inChoices="$DMO" inValue="@DMO_D">
+     <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO_D">
       <!--Detection DMO/CSMO oeil droit-->
       <Data_Value inValue_Type="Bool" inValue="false"/>
       <Data_Value inValue_Type="Bool" inValue="false"/>
-      <Control_Branch inProbability="$GoldStandard_Sensibilite">
+      <Control_Branch inProbability="$ref.GoldStandard_Sensibilite">
        <Control_Sequential>
         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_CSMO_D"/>
         <Data_Value inValue_Type="Bool" inValue="true"/>
@@ -70,11 +70,11 @@
       <Data_Value inValue_Type="Bool" inValue="false"/>
       <Data_Value inValue_Type="Bool" inValue="false"/>
      </Control_ChoiceIsEqual>
-     <Control_ChoiceIsEqual inChoices="$DMO" inValue="@DMO_G">
+     <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO_G">
       <!--Detection DMO/CSMO oeil gauche-->
       <Data_Value inValue_Type="Bool" inValue="false"/>
       <Data_Value inValue_Type="Bool" inValue="false"/>
-      <Control_Branch inProbability="$GoldStandard_Sensibilite">
+      <Control_Branch inProbability="$ref.GoldStandard_Sensibilite">
        <Control_Sequential>
         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_CSMO_G"/>
         <Data_Value inValue_Type="Bool" inValue="true"/>

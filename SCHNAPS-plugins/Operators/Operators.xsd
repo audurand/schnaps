@@ -1338,7 +1338,7 @@
 		</xsd:complexType>
 	</xsd:element>
 	
-	<xsd:element name="Operators_NPV" substitutionGroup="_unaryOp">
+	<xsd:element name="Operators_NPVComplex" substitutionGroup="_unaryOp">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<pmt:info lang="en">Compute the Nearest Present Value of the child (number).</pmt:info>
@@ -1348,7 +1348,7 @@
 		<xsd:complexType>
 			<xsd:complexContent>
 				<xsd:extension base="_unaryOpComplexType">
-					<xsd:attribute name="rate" type="xsd:string" use="required">
+					<xsd:attribute name="inDiscountRate" type="xsd:string" use="required">
 						<xsd:annotation>
 							<xsd:appinfo>
 								<gui:attributeBehavior>

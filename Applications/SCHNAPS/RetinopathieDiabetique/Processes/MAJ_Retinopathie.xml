@@ -2,7 +2,7 @@
   <LocalVariables/>
   <PrimitiveTree size="1">
    <Control_Sequential>
-    <Control_ChoiceIsEqual inChoices="$BDR" inValue="@BDR_D">
+    <Control_ChoiceIsEqual inChoices="$ref.BDR" inValue="@BDR_D">
      <!--Mise a jour oeil droit-->
      <Control_Branch inProbability="0.07">
       <Data_SetVariable inValue_Type="String" inValue="BDR1" outVariable="@BDR_D"/>
@@ -13,7 +13,7 @@
        <Data_SetVariable inValue_Type="String" inValue="BDR2" outVariable="@BDR_D"/>
        <Control_Nothing/>
       </Control_Branch>
-      <Control_ChoiceIsEqual inChoices="$DMO" inValue="@DMO_D">
+      <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO_D">
        <Control_Branch inProbability="0.03">
         <Data_SetVariable inValue_Type="String" inValue="DMO" outVariable="@DMO_D"/>
         <Control_Nothing/>
@@ -38,7 +38,7 @@
        <Data_SetVariable inValue_Type="String" inValue="PDR" outVariable="@BDR_D"/>
        <Control_Nothing/>
       </Control_Branch>
-      <Control_ChoiceIsEqual inChoices="$DMO" inValue="@DMO_D">
+      <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO_D">
        <Control_Branch inProbability="0.03">
         <Data_SetVariable inValue_Type="String" inValue="DMO" outVariable="@DMO_D"/>
         <Control_Nothing/>
@@ -63,7 +63,7 @@
 		<Data_SetVariable inValue_Type="String" inValue="Aveugle" outVariable="@BDR_D"/>
 		<Data_SetVariable inValue_Type="String" inValue="Aveugle" outVariable="@DMO_D"/>
 	  </Control_Sequential>
-      <Control_ChoiceIsEqual inChoices="$DMO" inValue="@DMO_D">
+      <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO_D">
        <Control_Branch inProbability="0.03">
         <Data_SetVariable inValue_Type="String" inValue="DMO" outVariable="@DMO_D"/>
         <Control_Nothing/>
@@ -84,7 +84,7 @@
       </Control_ChoiceIsEqual>
      </Control_Branch>
      <Control_Nothing/>
-     <Control_ChoiceIsEqual inChoices="$DMO" inValue="@DMO_D">
+     <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO_D">
       <Control_Branch inProbability="0.03">
        <Data_SetVariable inValue_Type="String" inValue="DMO" outVariable="@DMO_D"/>
        <Control_Nothing/>
@@ -104,7 +104,7 @@
       <Control_Nothing/>
      </Control_ChoiceIsEqual>
     </Control_ChoiceIsEqual>
-    <Control_ChoiceIsEqual inChoices="$BDR" inValue="@BDR_G">
+    <Control_ChoiceIsEqual inChoices="$ref.BDR" inValue="@BDR_G">
      <!--Mise a jour oeil gauche-->
      <Control_Branch inProbability="0.07">
       <Data_SetVariable inValue_Type="String" inValue="BDR1" outVariable="@BDR_G"/>
@@ -115,7 +115,7 @@
        <Data_SetVariable inValue_Type="String" inValue="BDR2" outVariable="@BDR_G"/>
        <Control_Nothing/>
       </Control_Branch>
-      <Control_ChoiceIsEqual inChoices="$DMO" inValue="@DMO_G">
+      <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO_G">
        <Control_Branch inProbability="0.03">
         <Data_SetVariable inValue_Type="String" inValue="DMO" outVariable="@DMO_G"/>
         <Control_Nothing/>
@@ -140,7 +140,7 @@
        <Data_SetVariable inValue_Type="String" inValue="PDR" outVariable="@BDR_G"/>
        <Control_Nothing/>
       </Control_Branch>
-      <Control_ChoiceIsEqual inChoices="$DMO" inValue="@DMO_G">
+      <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO_G">
        <Control_Branch inProbability="0.03">
         <Data_SetVariable inValue_Type="String" inValue="DMO" outVariable="@DMO_G"/>
         <Control_Nothing/>
@@ -165,7 +165,7 @@
 		<Data_SetVariable inValue_Type="String" inValue="Aveugle" outVariable="@BDR_G"/>
 		<Data_SetVariable inValue_Type="String" inValue="Aveugle" outVariable="@DMO_G"/>
 	  </Control_Sequential>
-      <Control_ChoiceIsEqual inChoices="$DMO" inValue="@DMO_G">
+      <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO_G">
        <Control_Branch inProbability="0.03">
         <Data_SetVariable inValue_Type="String" inValue="DMO" outVariable="@DMO_G"/>
         <Control_Nothing/>
@@ -186,7 +186,7 @@
       </Control_ChoiceIsEqual>
      </Control_Branch>
      <Control_Nothing/>
-     <Control_ChoiceIsEqual inChoices="$DMO" inValue="@DMO_G">
+     <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO_G">
       <Control_Branch inProbability="0.03">
        <Data_SetVariable inValue_Type="String" inValue="DMO" outVariable="@DMO_G"/>
        <Control_Nothing/>

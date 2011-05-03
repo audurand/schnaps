@@ -184,7 +184,10 @@ void Demography::readLocalVariables(PACC::XML::ConstIterator inIter, Core::Syste
 		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
 	}
 	
-	Core::AnyType::Alloc::Handle lAlloc;
+	mVariables.back().mLocalVariables.clear();
+	
+	Core::AnyType::Handle lValue;
+	Core::Object::Alloc::Handle lAlloc;
 	for (PACC::XML::ConstIterator lChild = inIter->getFirstChild(); lChild; lChild++) {
 		if (lChild->getValue() != "LocalVariable") {
 			std::ostringstream lOSS;
@@ -197,22 +200,16 @@ void Demography::readLocalVariables(PACC::XML::ConstIterator inIter, Core::Syste
 		if (lChild->getAttribute("label").empty()) {
 			throw schnaps_IOExceptionNodeM(*lChild, "label attribute expected!");
 		}
-		mVariables.back().mLocalVariables.push_back(std::pair<std::string, Core::AnyType::Handle>(lChild->getAttribute("label"), NULL));
 		
 #ifdef SCHNAPS_FULL_DEBUG
 		printf("\tReading local variable: %s\n", mVariables.back().mLocalVariables.back().first.c_str());
 #endif
 
-		// retrieve value
-		if (lChild->getAttribute("type").empty()) {
-			throw schnaps_IOExceptionNodeM(*lChild, "type attribute expected!");
-		}
-		if (lChild->getAttribute("value").empty()) {
-			throw schnaps_IOExceptionNodeM(*lChild, "value attribute expected!");
-		}
-		lAlloc = Core::castHandleT<Core::AnyType::Alloc>(ioSystem.getFactory().getAllocator(lChild->getAttribute("type")));
-		mVariables.back().mLocalVariables.back().second = Core::castHandleT<Core::AnyType>(lAlloc->allocate());
-		mVariables.back().mLocalVariables.back().second->readStr(lChild->getAttribute("value"));
+		lAlloc = ioSystem.getFactory().getAllocator(lChild->getFirstChild()->getValue());
+		lValue = Core::castHandleT<Core::AnyType>(lAlloc->allocate());
+		lValue->readWithSystem(lChild->getFirstChild(), ioSystem);
+		
+		mVariables.back().mLocalVariables.push_back(std::pair<std::string, Core::AnyType::Handle>(lChild->getAttribute("label"), lValue));
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Demography::readLocalVariables(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }

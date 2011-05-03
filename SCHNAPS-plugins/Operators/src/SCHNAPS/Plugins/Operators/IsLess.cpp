@@ -205,7 +205,7 @@ void IsLess::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSys
 			if (inIter->getAttribute("inArgRight_Type").empty()) {
 				throw schnaps_IOExceptionNodeM(*inIter, "type of right argument expected!");
 			}
-			Core::Number::Alloc::Handle lAlloc = Core::castHandleT<Core::Number::Alloc>(ioSystem.getFactory().getAllocator(inIter->getAttribute("inArgLeft_Type")));
+			Core::Number::Alloc::Handle lAlloc = Core::castHandleT<Core::Number::Alloc>(ioSystem.getFactory().getAllocator(inIter->getAttribute("inArgRight_Type")));
 			mArgRight = Core::castHandleT<Core::Number>(lAlloc->allocate());
 			mArgRight->readStr(mArgRight_Ref);
 			break; }

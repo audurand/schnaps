@@ -1,0 +1,25 @@
+  <Process label="Effets_ActPhys+VitDCalcium">
+	<LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
+        <Control_Sequential>
+          <Control_IfThenElse>
+            <Operators_IsLess inArgLeft="$ref.effet_vitDcalcium_hanche_normale" inArgRight="$ref.effet_actphys_hanche_normale"/>
+            <Operators_MultVariable inArgLeft="@Probabilite_Fracture_Hanche" inArgRight="$ref.effet_vitDcalcium_hanche_normale" outResult="@Probabilite_Fracture_Hanche"/>
+            <Operators_MultVariable inArgLeft="@Probabilite_Fracture_Hanche" inArgRight="$ref.effet_actphys_hanche_normale" outResult="@Probabilite_Fracture_Hanche"/>
+          </Control_IfThenElse>
+          <Operators_MultVariable inArgLeft="@Probabilite_Fracture_Poignet" inArgRight="$ref.effet_vitDcalcium_poignet_normale" outResult="@Probabilite_Fracture_Poignet"/>
+        </Control_Sequential>
+        <Control_Sequential>
+          <Operators_MultVariable inArgLeft="@Probabilite_Fracture_Hanche" inArgRight="$ref.effet_actphys_hanche_osteo" outResult="@Probabilite_Fracture_Hanche"/>
+          <Operators_MultVariable inArgLeft="@Probabilite_Fracture_Poignet" inArgRight="$ref.effet_vitDCalcium_poignet_osteo" outResult="@Probabilite_Fracture_Poignet"/>
+          <Operators_MultVariable inArgLeft="@Probabilite_Fracture_Colonne" inArgRight="$ref.effet_vitDCalcium_colonne_osteo" outResult="@Probabilite_Fracture_Colonne"/>
+        </Control_Sequential>
+        <Control_Sequential>
+          <Operators_MultVariable inArgLeft="@Probabilite_Fracture_Hanche" inArgRight="$ref.effet_actphys_hanche_osteo" outResult="@Probabilite_Fracture_Hanche"/>
+          <Operators_MultVariable inArgLeft="@Probabilite_Fracture_Poignet" inArgRight="$ref.effet_vitDCalcium_poignet_osteo" outResult="@Probabilite_Fracture_Poignet"/>
+          <Operators_MultVariable inArgLeft="@Probabilite_Fracture_Colonne" inArgRight="$ref.effet_vitDCalcium_colonne_osteo" outResult="@Probabilite_Fracture_Colonne"/>
+        </Control_Sequential>
+      </Control_ChoiceIsEqual>
+    </PrimitiveTree>
+  </Process>
