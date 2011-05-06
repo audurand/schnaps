@@ -1,0 +1,5 @@
+  <Environment>
+    <State>
+      <Variable type="Int" value="500000" label="IndividusVivants"/>
+    </State>
+  </Environment>

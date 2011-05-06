@@ -1,0 +1,69 @@
+  <Process label="Fracture_Colonne">
+	<LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Data_Log inMessage="Fracture_Colonne" inType="Event"/>
+        <Meds_Treatment outCost="@Cout" inDiscountRate="$ref.taux_actualisation" inCost="256.69" inLabel="Urgence" inCompliance="1" inChargeNonCompliant="false">
+          <Control_Nothing/>
+          <Control_Nothing/>
+        </Meds_Treatment>
+        <Meds_Treatment outCost="@Cout" inDiscountRate="$ref.taux_actualisation" inCost="$ref.cout_hospitalisation_colonne" inLabel="Hospitalisation" inCompliance="0.10" inChargeNonCompliant="true">
+          <Control_Sequential>
+            <Data_SetVariableComplex outVariable="@QALY">
+              <Operators_AddComplex>
+                <Data_Value inValue="@QALY"/>
+                <Operators_NPVComplex inDiscountRate="$ref.taux_actualisation">
+                  <Data_Value inValue_Type="Double" inValue="0.19115">
+                    <!--0.33*0.027 annee (hospitalisation) + 0.68+0.134 annee (post-hospitalisation) + 0.68*0.134 annee (physio)-->
+                  </Data_Value>
+                </Operators_NPVComplex>
+              </Operators_AddComplex>
+            </Data_SetVariableComplex>
+            <Data_SetVariableComplex outVariable="@QALY_Temps_MAJ">
+              <Operators_AddComplex>
+                <Data_Value inValue="@QALY_Temps_MAJ"/>
+                <Data_Value inValue_Type="Double" inValue="0.295">
+                  <!--0.027 annee + 0.134 annee-->
+                </Data_Value>
+              </Operators_AddComplex>
+            </Data_SetVariableComplex>
+          </Control_Sequential>
+          <Control_Sequential>
+            <Data_SetVariableComplex outVariable="@QALY">
+              <Operators_AddComplex>
+                <Data_Value inValue="@QALY"/>
+                <Operators_NPVComplex inDiscountRate="$ref.taux_actualisation">
+                  <Data_Value inValue_Type="Double" inValue="0.09739">
+                    <!--0.33*0.019 annee (fracture) + 0.68+0.134 annee (physio)-->
+                  </Data_Value>
+                </Operators_NPVComplex>
+              </Operators_AddComplex>
+            </Data_SetVariableComplex>
+            <Data_SetVariableComplex outVariable="@QALY_Temps_MAJ">
+              <Operators_AddComplex>
+                <Data_Value inValue="@QALY_Temps_MAJ"/>
+                <Data_Value inValue_Type="Double" inValue="0.161">
+                  <!--0.027 annee + 0.134 annee-->
+                </Data_Value>
+              </Operators_AddComplex>
+            </Data_SetVariableComplex>
+          </Control_Sequential>
+        </Meds_Treatment>
+        <Meds_Treatment outCost="@Cout" inDiscountRate="$ref.taux_actualisation" inCost="455.28" inLabel="Suivi" inCompliance="1" inChargeNonCompliant="false">
+          <Control_Nothing/>
+          <Control_Nothing/>
+        </Meds_Treatment>
+        <Meds_Treatment outCost="@Cout" inDiscountRate="$ref.taux_actualisation" inCost="536.69" inLabel="Physio" inCompliance="1" inChargeNonCompliant="false">
+          <Control_Nothing/>
+          <Control_Nothing/>
+        </Meds_Treatment>
+        <Meds_Treatment outCost="@Cout" inDiscountRate="$ref.taux_actualisation" inCost="2328.48" inLabel="Prevention_Chutes" inCompliance="1" inChargeNonCompliant="false">
+          <Control_Nothing/>
+          <Control_Nothing/>
+        </Meds_Treatment>
+        <Operators_AddVariable inArgLeft="@Nb_Fracture_Colonne" inArgRight="1" inArgRight_Type="Int" outResult="@Nb_Fracture_Colonne"/>
+        <Control_ProcessPush inTarget="current" inDelay="1" inLabel="MAJ_TauxMortalite_PostColonne_1ereAnnee"/>
+        <Control_ProcessPush inTarget="current" inDelay="2" inLabel="MAJ_TauxMortalite_PostColonne_2eAnnee"/>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:annotation>
+		<xsd:documentation>
+			W3C XML Schema for SCHNAPS Simulator files by Audrey Durand, May 2010.
+		</xsd:documentation>
+	</xsd:annotation>
+	
+	<xsd:include schemaLocation="BaseTypes.xsd" />
+	
+	<!-- Root tag Simulator -->
+	
+	<xsd:element name="Simulator">
+		<xsd:annotation>
+			<xsd:documentation>
+				Root XML tag of parameters file. SCHNAPS contains a system, processes, observers, scenarios, an environment and a clock. Each of these components must be defined.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="System" minOccurs="1" maxOccurs="1"/>
+				<xsd:element ref="Input" minOccurs="1" maxOccurs="1"/>
+				<xsd:element ref="Simulation" minOccurs="1" maxOccurs="1"/>
+				<xsd:element ref="Output" minOccurs="1" maxOccurs="1"/>
+			</xsd:sequence>
+			<xsd:attribute name="version" type="xsd:string" use="optional"/>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<!-- System -->
+	
+	<xsd:element name="System">
+		<xsd:annotation>
+			<xsd:documentation>
+				The system randomizer and plugins components can be defined here.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="Plugins" minOccurs="0" maxOccurs="1"/>
+				<xsd:element ref="Parameters" minOccurs="1" maxOccurs="1"/>
+				<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+					<xsd:element ref="_component"/>
+				</xsd:sequence>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="Plugins">
+		<xsd:annotation>
+			<xsd:documentation>
+				Plugins contains the list of plugins needed for the specified simulations.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Plugin" minOccurs="1" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>
+							External library needed for the specified simulations.
+							May be associated with a specific XSD, specified in optionnal attribute xsdfile
+						</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:attribute name="source" type="xsd:string" use="required"/>
+						<xsd:attribute name="xsdfile" type="xsd:string" use="optional"/>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="Parameters">
+		<xsd:annotation>
+			<xsd:documentation>
+				Parameters contains some simulator parameters about threading and output configuration.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Entry" minOccurs="0" maxOccurs="unbounded">
+					<xsd:complexType>
+						<xsd:choice>
+							<xsd:element ref="_genericType"/>
+						</xsd:choice>
+						<xsd:attribute name="label" type="xsd:string" use="required"/>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+				
+	<!-- Input configuration -->
+	
+	<xsd:element name="Input">
+		<xsd:annotation>
+			<xsd:documentation>
+				Configuration of simulation input.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="Environment" minOccurs="1" maxOccurs="1"/>
+				<xsd:element ref="PopulationManager" minOccurs="1" maxOccurs="1"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="Environment">
+		<xsd:annotation>
+			<xsd:documentation>
+				The description of the environment.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="State">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="Variable" minOccurs="0" maxOccurs="unbounded">
+								<xsd:complexType>
+									<xsd:attribute name="label" use="required" type="xsd:string"/>
+									<xsd:attribute name="type" use="required">
+										<xsd:simpleType>
+											<xsd:restriction base="xsd:string">
+												<xsd:enumeration value="Bool"/>
+												<xsd:enumeration value="Char"/>
+												<xsd:enumeration value="String"/>
+												<xsd:enumeration value="Int"/>
+												<xsd:enumeration value="UInt"/>
+												<xsd:enumeration value="Long"/>
+												<xsd:enumeration value="ULong"/>
+												<xsd:enumeration value="Double"/>
+												<xsd:enumeration value="Float"/>
+											</xsd:restriction>
+										</xsd:simpleType>
+									</xsd:attribute>
+									<xsd:attribute name="value" type="xsd:string"/>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="PopulationManager">
+		<xsd:annotation>
+			<xsd:documentation>
+				The description of the population.
+				This part describe not only the initial population, but
+				also the individual that will be generate after the beginning.
+				This feature is mainly used when working with population projections
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Generator" minOccurs="1" maxOccurs="1">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element ref="RandomizerInfo" minOccurs="1" maxOccurs="1"/>
+							<xsd:element name="Profiles" minOccurs="1" maxOccurs="1">
+								<xsd:complexType>
+									<xsd:sequence minOccurs="1" maxOccurs="unbounded">
+										<xsd:element name="GenProfile">
+											<xsd:complexType>
+												<xsd:sequence>
+													<xsd:element name="Demography">
+														<xsd:annotation>
+															<xsd:documentation>
+																Description of a demography from which a population can be extracted.
+															</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:sequence>
+																<xsd:element name="Variable" maxOccurs="unbounded">
+																	<xsd:annotation>
+																		<xsd:documentation>
+																			Defines a population variable.
+																		</xsd:documentation>
+																	</xsd:annotation>
+																	<xsd:complexType>
+																		<xsd:sequence>
+																			<xsd:element ref="LocalVariables" minOccurs="1" maxOccurs="1"/>
+																			<xsd:element ref="PrimitiveTree" minOccurs="1" maxOccurs="1"/>
+																		</xsd:sequence>
+																		<xsd:attribute name="label" use="required" type="xsd:string"/>
+																	</xsd:complexType>
+																</xsd:element>
+															</xsd:sequence>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="AcceptFunction">
+														<xsd:annotation>
+															<xsd:documentation>
+																An individual is accepted when this function returns true.
+															</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:sequence>
+																<xsd:element ref="PrimitiveTree"/>
+															</xsd:sequence>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="IndividualModel">
+														<xsd:annotation>
+															<xsd:documentation>
+																Variables from demography kept for simulation.
+															</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:sequence>
+																<xsd:element name="Variable">
+																	<xsd:complexType>
+																		<xsd:attribute name="label" use="required" type="xsd:string"/>
+																	</xsd:complexType>
+																</xsd:element>
+															</xsd:sequence>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="SimulationVariables">
+														<xsd:annotation>
+															<xsd:documentation>
+																Description of the simulation-specific variables.
+															</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:sequence maxOccurs="unbounded">
+																<xsd:element name="Variable">
+																	<xsd:annotation>
+																		<xsd:documentation>
+																			Defines a population variable.
+																		</xsd:documentation>
+																	</xsd:annotation>
+																	<xsd:complexType>
+																		<xsd:sequence>
+																			<xsd:element ref="LocalVariables" minOccurs="1" maxOccurs="1"/>
+																			<xsd:element ref="PrimitiveTree" minOccurs="1" maxOccurs="1"/>
+																		</xsd:sequence>
+																		<xsd:attribute name="label" use="required" type="xsd:string"/>
+																	</xsd:complexType>
+																</xsd:element>
+															</xsd:sequence>
+														</xsd:complexType>
+													</xsd:element>
+												</xsd:sequence>
+											</xsd:complexType>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="Population" minOccurs="1" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:documentation>
+							Defines the whole population.
+						</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="SubPopulation" minOccurs="1" maxOccurs="unbounded">
+								<xsd:annotation>
+									<xsd:documentation>
+										Defines a sub-population part of whole population using the time step to insert it in simulation,
+										the profile used to generate it and its size.
+									</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:attribute name="time" type="xsd:unsignedLong" use="required"/>
+									<xsd:attribute name="profile" type="xsd:string" use="required"/>
+									<xsd:attribute name="size" type="xsd:unsignedLong" use="required"/>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<!-- Simulation configuration -->
+	
+	<xsd:element name="Simulation">
+		<xsd:annotation>
+			<xsd:documentation>
+				Configuration of simulation.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="RandomizerInfo" minOccurs="1" maxOccurs="1"/>
+				<xsd:element ref="Clock" minOccurs="1" maxOccurs="1"/>
+				<xsd:element ref="Processes" minOccurs="1" maxOccurs="1"/>
+				<xsd:element ref="Scenarios" minOccurs="1" maxOccurs="1"/>
+				<xsd:element ref="ClockObservers" minOccurs="1" maxOccurs="1"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="RandomizerInfo">
+		<xsd:annotation>
+			<xsd:documentation>
+				Parameters contains some simulator parameters about threading and output configuration.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Randomizer" minOccurs="0" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:documentation>
+							The randomizer contains the state of the Mersenne random number generator.
+						</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:simpleContent>
+							<xsd:extension base="xsd:integer">
+								<xsd:attribute name="seed" use="required" type="xsd:nonNegativeInteger"/>
+								<xsd:attribute name="state" use="required">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:nonNegativeInteger">
+											<xsd:pattern value="(([0-9])*,)*(([0-9])*)"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:attribute>
+							</xsd:extension>
+						</xsd:simpleContent>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="Clock">
+		<xsd:annotation>
+			<xsd:documentation>
+				The simulation clock contains its stop condition as a primitive tree.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="PrimitiveTree"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>	
+	
+	<xsd:element name="Processes">
+		<xsd:annotation>
+			<xsd:documentation>
+				The simulation processes list.
+				A file can be specified if the process is described in another file.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Process">
+					<xsd:annotation>
+						<xsd:documentation>
+							A process.
+						</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element ref="LocalVariables" minOccurs="1" maxOccurs="1"/>
+							<xsd:element ref="PrimitiveTree" minOccurs="1" maxOccurs="1"/>
+						</xsd:sequence>
+						<xsd:attribute name="label" type="xsd:string" use="required"/>
+						<xsd:attribute name="file" type="xsd:string" use="optional"/>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="Scenarios">
+		<xsd:annotation>
+			<xsd:documentation>
+				All possible scenarios.
+				A scenario is a process executed at time 0.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Scenario" minOccurs="1" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>
+							A scenario is the label of the process ot be executed at time 0.
+							The target determines on which to launch the observer.
+							If target is set to individuals, all individuals will be targeted by the process sequentially.
+						</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:attribute name="label" type="xsd:string" use="required"/>
+						<xsd:attribute name="processIndividual" use="optional" type="xsd:string"/>
+						<xsd:attribute name="processEnvironment" use="optional" type="xsd:string"/>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="ClockObservers">
+		<xsd:annotation>
+			<xsd:documentation>
+				Listing of all clock observers (those which will be triggered at each clock count)
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Observer" minOccurs="0" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>
+							An observer is the label of the observer process and the target determines on which to launch the observer.
+							Current individual means the current individual processing, including the environment.
+							If target is set to individuals, all individuals will be targeted by the process sequentially.
+						</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:attribute name="process" type="xsd:string" use="required"/>
+						<xsd:attribute name="target" use="optional" default="current_individual">
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:string">
+									<xsd:enumeration value="current_individual"/>
+									<xsd:enumeration value="environment"/>
+									<xsd:enumeration value="individuals"/>
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:attribute>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<!-- Output configuration -->
+	
+	<xsd:element name="Output">
+		<xsd:annotation>
+			<xsd:documentation>
+				Configuration of simulation output.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Environment" minOccurs="1" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:documentation>
+							List of environment variables to print when outputing.
+						</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="Variable" minOccurs="0" maxOccurs="unbounded">
+								<xsd:complexType>
+									<xsd:attribute name="label" type="xsd:string"/>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="Population" minOccurs="1" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:documentation>
+							List of sub-populations (profiles) variables to print when outputing.
+						</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="SubPopulation" minOccurs="0" maxOccurs="unbounded">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="Variable" minOccurs="0" maxOccurs="unbounded">
+											<xsd:complexType>
+												<xsd:attribute name="label" type="xsd:string"/>
+											</xsd:complexType>
+										</xsd:element>
+									</xsd:sequence>
+									<xsd:attribute name="profile" type="xsd:string"/>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<!-- Generic structures -->
+	
+	<xsd:element name="PrimitiveTree">
+		<xsd:annotation>
+			<xsd:documentation>
+				Boolean, mathematical, logical or function operations represented as a tree of basic primitives.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="_primitive"/>
+			</xsd:sequence>
+			<xsd:attribute name="size" type="xsd:nonNegativeInteger" use="required"/>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="LocalVariables">
+		<xsd:annotation>
+			<xsd:documentation>
+				Defines variables local to some process or variable initialization.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="LocalVariable">
+					<xsd:annotation>
+						<xsd:documentation>
+							Defines a local variable.
+						</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:attribute name="label" use="required" type="xsd:string"/>
+						<xsd:attribute name="type" use="required" type="xsd:string"/>
+						<xsd:attribute name="value" use="required" type="xsd:string"/>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+</xsd:schema>

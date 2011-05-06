@@ -1,0 +1,17 @@
+  <Process label="Scenario_VitamineDCalcium">
+	<LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Control_IfThenElse>
+          <Data_Value inValue="@VitDCalcium_Pratiquant"/>
+          <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Pratiquant"/>
+          <Control_Branch inProbability="$ref.compliance_depistage">
+            <!--Verifier si l'individu est rejoint par la campagne de prevention-->
+            <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Prevention"/>
+            <Control_Nothing/>
+          </Control_Branch>
+        </Control_IfThenElse>
+        <Control_ProcessCall inLabel="Evenements_VitDCalcium"/>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

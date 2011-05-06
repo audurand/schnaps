@@ -1,0 +1,135 @@
+  <Process label="MAJ_TauxMortalite">
+	<LocalVariables/>
+    <PrimitiveTree>
+      <Control_IfThenElse>
+        <Data_Value inValue="@Mort"/>
+        <Control_Nothing/>
+        <Data_SetVariableComplex outVariable="@Taux_Mortalite">
+          <Control_ChoiceIsBetween inBounds="40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|56|57|58|59|60|61|62|63|64|65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98|99|100" inBounds_Type="Int" inValue="@Age">
+            <Data_Value inValue_Type="Double" inValue="0.00088"/>
+            <!-- 40 -->
+            <Data_Value inValue_Type="Double" inValue="0.00084"/>
+            <!-- 41 -->
+            <Data_Value inValue_Type="Double" inValue="0.00091"/>
+            <!-- 42 -->
+            <Data_Value inValue_Type="Double" inValue="0.00101"/>
+            <!-- 43 -->
+            <Data_Value inValue_Type="Double" inValue="0.00120"/>
+            <!-- 44 -->
+            <Data_Value inValue_Type="Double" inValue="0.00164"/>
+            <!-- 45 -->
+            <Data_Value inValue_Type="Double" inValue="0.00180"/>
+            <!-- 46 -->
+            <Data_Value inValue_Type="Double" inValue="0.00166"/>
+            <!-- 47 -->
+            <Data_Value inValue_Type="Double" inValue="0.00198"/>
+            <!-- 48 -->
+            <Data_Value inValue_Type="Double" inValue="0.00227"/>
+            <!-- 49 -->
+            <Data_Value inValue_Type="Double" inValue="0.00231"/>
+            <!-- 50 -->
+            <Data_Value inValue_Type="Double" inValue="0.00251"/>
+            <!-- 51 -->
+            <Data_Value inValue_Type="Double" inValue="0.00272"/>
+            <!-- 52 -->
+            <Data_Value inValue_Type="Double" inValue="0.00290"/>
+            <!-- 53 -->
+            <Data_Value inValue_Type="Double" inValue="0.00327"/>
+            <!-- 54 -->
+            <Data_Value inValue_Type="Double" inValue="0.00367"/>
+            <!-- 55 -->
+            <Data_Value inValue_Type="Double" inValue="0.00367"/>
+            <!-- 56 -->
+            <Data_Value inValue_Type="Double" inValue="0.00425"/>
+            <!-- 57 -->
+            <Data_Value inValue_Type="Double" inValue="0.00460"/>
+            <!-- 58 -->
+            <Data_Value inValue_Type="Double" inValue="0.00519"/>
+            <!-- 59 -->
+            <Data_Value inValue_Type="Double" inValue="0.00525"/>
+            <!-- 60 -->
+            <Data_Value inValue_Type="Double" inValue="0.00587"/>
+            <!-- 61 -->
+            <Data_Value inValue_Type="Double" inValue="0.00608"/>
+            <!-- 62 -->
+            <Data_Value inValue_Type="Double" inValue="0.00733"/>
+            <!-- 63 -->
+            <Data_Value inValue_Type="Double" inValue="0.00792"/>
+            <!-- 64 -->
+            <Data_Value inValue_Type="Double" inValue="0.00790"/>
+            <!-- 65 -->
+            <Data_Value inValue_Type="Double" inValue="0.00901"/>
+            <!-- 66 -->
+            <Data_Value inValue_Type="Double" inValue="0.01080"/>
+            <!-- 67 -->
+            <Data_Value inValue_Type="Double" inValue="0.01204"/>
+            <!-- 68 -->
+            <Data_Value inValue_Type="Double" inValue="0.01266"/>
+            <!-- 69 -->
+            <Data_Value inValue_Type="Double" inValue="0.01366"/>
+            <!-- 70 -->
+            <Data_Value inValue_Type="Double" inValue="0.01535"/>
+            <!-- 71 -->
+            <Data_Value inValue_Type="Double" inValue="0.01702"/>
+            <!-- 72 -->
+            <Data_Value inValue_Type="Double" inValue="0.01843"/>
+            <!-- 73 -->
+            <Data_Value inValue_Type="Double" inValue="0.02039"/>
+            <!-- 74 -->
+            <Data_Value inValue_Type="Double" inValue="0.02303"/>
+            <!-- 75 -->
+            <Data_Value inValue_Type="Double" inValue="0.02484"/>
+            <!-- 76 -->
+            <Data_Value inValue_Type="Double" inValue="0.02947"/>
+            <!-- 77 -->
+            <Data_Value inValue_Type="Double" inValue="0.03230"/>
+            <!-- 78 -->
+            <Data_Value inValue_Type="Double" inValue="0.03574"/>
+            <!-- 79 -->
+            <Data_Value inValue_Type="Double" inValue="0.03885"/>
+            <!-- 80 -->
+            <Data_Value inValue_Type="Double" inValue="0.04348"/>
+            <!-- 81 -->
+            <Data_Value inValue_Type="Double" inValue="0.05237"/>
+            <!-- 82 -->
+            <Data_Value inValue_Type="Double" inValue="0.05669"/>
+            <!-- 83 -->
+            <Data_Value inValue_Type="Double" inValue="0.06655"/>
+            <!-- 84 -->
+            <Data_Value inValue_Type="Double" inValue="0.07290"/>
+            <!-- 85 -->
+            <Data_Value inValue_Type="Double" inValue="0.07748"/>
+            <!-- 86 -->
+            <Data_Value inValue_Type="Double" inValue="0.09511"/>
+            <!-- 87 -->
+            <Data_Value inValue_Type="Double" inValue="0.10575"/>
+            <!-- 88 -->
+            <Data_Value inValue_Type="Double" inValue="0.11555"/>
+            <!-- 89 -->
+            <Data_Value inValue_Type="Double" inValue="0.13160"/>
+            <!-- 90 -->
+            <Data_Value inValue_Type="Double" inValue="0.14936"/>
+            <!-- 91 -->
+            <Data_Value inValue_Type="Double" inValue="0.16039"/>
+            <!-- 92 -->
+            <Data_Value inValue_Type="Double" inValue="0.18002"/>
+            <!-- 93 -->
+            <Data_Value inValue_Type="Double" inValue="0.20564"/>
+            <!-- 94 -->
+            <Data_Value inValue_Type="Double" inValue="0.23451"/>
+            <!-- 95 -->
+            <Data_Value inValue_Type="Double" inValue="0.24411"/>
+            <!-- 96 -->
+            <Data_Value inValue_Type="Double" inValue="0.27344"/>
+            <!-- 97 -->
+            <Data_Value inValue_Type="Double" inValue="0.29880"/>
+            <!-- 98 -->
+            <Data_Value inValue_Type="Double" inValue="0.33351"/>
+            <!-- 99 -->
+            <Data_Value inValue_Type="Double" inValue="0.5"/>
+            <!-- Default: 100+ -->
+          </Control_ChoiceIsBetween>
+        </Data_SetVariableComplex>
+      </Control_IfThenElse>
+    </PrimitiveTree>
+  </Process>

@@ -1,0 +1,30 @@
+  <Process label="Scenario_ORAI_VitamineDCalcium">
+	<LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Control_IfThenElse>
+          <Data_Value inValue="@VitDCalcium_Pratiquant"/>
+          <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Pratiquant"/>
+          <Control_Nothing/>
+        </Control_IfThenElse>
+        <Control_Branch inProbability="$ref.compliance_depistage">
+          <Control_Sequential>
+            <Control_IfThenElse>
+              <Operators_IsLess inArgLeft="@Age" inArgRight="70" inArgRight_Type="Int"/>
+              <Meds_Treatment outCost="@Cout" inDiscountRate="$ref.taux_actualisation" inCost="99.53" inLabel="Visite_Medicale" inCompliance="1" inChargeNonCompliant="false">
+				  <Control_Nothing/>
+				  <Control_Nothing/>
+			  </Meds_Treatment>
+              <Meds_Treatment outCost="@Cout" inDiscountRate="$ref.taux_actualisation" inCost="102.78" inLabel="Visite_Medicale" inCompliance="1" inChargeNonCompliant="false">
+				  <Control_Nothing/>
+				  <Control_Nothing/>
+			  </Meds_Treatment>
+            </Control_IfThenElse>
+            <Control_ProcessCall inLabel="ORAI"/>
+          </Control_Sequential>
+          <Control_Nothing/>
+        </Control_Branch>
+        <Control_ProcessCall inLabel="Evenements_VitDCalcium"/>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

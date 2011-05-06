@@ -1,0 +1,16 @@
+  <Process label="VitDCalcium">
+	<LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_IfThenElse>
+        <Operators_IsLess inArgLeft="@Age" inArgRight="50" inArgRight_Type="Int"/>
+        <Meds_Treatment outCost="@Cout" inDiscountRate="$ref.taux_actualisation" inCost="149.65" inLabel="VitamineD+Calcium" inCompliance="0.49" inChargeNonCompliant="true">
+          <Control_ProcessCall inLabel="Effets_VitDCalcium"/>
+          <Control_Nothing/>
+        </Meds_Treatment>
+        <Meds_Treatment outCost="@Cout" inDiscountRate="$ref.taux_actualisation" inCost="164.25" inLabel="VitamineD+Calcium" inCompliance="0.49" inChargeNonCompliant="true">
+          <Control_ProcessCall inLabel="Effets_VitDCalcium"/>
+          <Control_Nothing/>
+        </Meds_Treatment>
+      </Control_IfThenElse>
+    </PrimitiveTree>
+  </Process>

@@ -1,0 +1,63 @@
+  <Process label="SCORE">
+	<LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_IfThenElse>
+        <Data_Value inValue="@Mort"/>
+        <Control_Nothing/>
+        <Control_IfThenElse>
+          <Operators_OrComplex>
+            <Data_Value inValue="@Depistage"/>
+            <Data_Value inValue="@Traitement"/>
+          </Operators_OrComplex>
+          <Control_Nothing/>
+          <Control_Sequential>
+            <Data_Log inMessage="SCORE" inType="Test"/>
+            <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
+              <Control_Branch inProbability="$ref.SCORE_specificite">
+                <Control_Branch inProbability="0.09">
+                  <Control_Sequential>
+                    <Control_IfThenElse>
+                      <Data_Value inValue="@Pratiquant"/>
+                      <Control_Nothing/>
+                      <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Prevention"/>
+                    </Control_IfThenElse>
+                    <Control_ProcessPush inTarget="current" inDelay="5" inLabel="SCORE"/>
+                  </Control_Sequential>
+                  <Control_ProcessPush inTarget="current" inDelay="5" inLabel="SCORE"/>
+                </Control_Branch>
+                <Control_ProcessCall inLabel="CAROC_Initial"/>
+              </Control_Branch>
+              <Control_Branch inProbability="$ref.SCORE_sensibilite">
+                <Control_ProcessCall inLabel="CAROC_Initial"/>
+                <Control_Branch inProbability="0.09">
+                  <Control_Sequential>
+                    <Control_IfThenElse>
+                      <Data_Value inValue="@Pratiquant"/>
+                      <Control_Nothing/>
+                      <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Prevention"/>
+                    </Control_IfThenElse>
+                    <Control_ProcessPush inTarget="current" inDelay="5" inLabel="SCORE"/>
+                  </Control_Sequential>
+                  <Control_ProcessPush inTarget="current" inDelay="5" inLabel="SCORE"/>
+                </Control_Branch>
+              </Control_Branch>
+              <Control_Branch inProbability="$ref.SCORE_sensibilite">
+                <Control_ProcessCall inLabel="CAROC_Initial"/>
+                <Control_Branch inProbability="0.09">
+                  <Control_Sequential>
+                    <Control_IfThenElse>
+                      <Data_Value inValue="@Pratiquant"/>
+                      <Control_Nothing/>
+                      <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Prevention"/>
+                    </Control_IfThenElse>
+                    <Control_ProcessPush inTarget="current" inDelay="5" inLabel="SCORE"/>
+                  </Control_Sequential>
+                  <Control_ProcessPush inTarget="current" inDelay="5" inLabel="SCORE"/>
+                </Control_Branch>
+              </Control_Branch>
+            </Control_ChoiceIsEqual>
+          </Control_Sequential>
+        </Control_IfThenElse>
+      </Control_IfThenElse>
+    </PrimitiveTree>
+  </Process>

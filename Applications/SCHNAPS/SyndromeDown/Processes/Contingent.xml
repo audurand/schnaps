@@ -1,0 +1,82 @@
+  <Process label="Contingent">
+	<LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_IfThenElse>
+        <Control_ProcessCall inLabel="Evenements_Trimestre_1"/>
+        <Control_Nothing/>
+        <Control_Branch inProbability="$Consentement_Depistage">
+          <!--Consentement au depistage-->
+          <Meds_Test inState="@SD" outCost="@Cout" inSpecificity="0.999" inCost="30.00" inDiscountRate="0" inLabel="Contingent_High" inSensitivity="0.51" inCompliance="1">
+            <Control_Sequential>
+              <Control_ProcessCall inLabel="Visite_Conseiller"/>
+              <Control_Branch inProbability="$Consentement_Diagnostique">
+                <!--Consentement au diagnostique-->
+                <Control_Sequential>
+                  <Control_ProcessPush inTarget="environment" inDelay="0" inLabel="Ajouter_CVS"/>
+                  <Meds_Test inState="@SD" outCost="@Cout" inSpecificity="1.0" inCost="$Cout_Diagnostique" inDiscountRate="0" inLabel="CVS_QF-PCR" inSensitivity="0.993" inCompliance="1">
+                    <Meds_Event inProbability="@Probabilite_PF_CVS" inLabel="PF_CVS">
+                      <Control_ProcessPush inTarget="environment" inDelay="0" inLabel="Ajouter_PF_Diagnostique"/>
+                      <Meds_Event inProbability="@Probabilite_IVG_D" inLabel="IVG_D">
+                        <Control_Sequential>
+                          <Operators_AddVariable inArgLeft="@Cout" inArgRight="$Cout_IVG_Diagnostique" outResult="@Cout"/>
+                          <Control_ProcessPush inTarget="environment" inDelay="0" inLabel="Ajouter_IVG_Diagnostique"/>
+                        </Control_Sequential>
+                        <Control_Nothing/>
+                      </Meds_Event>
+                    </Meds_Event>
+                    <Meds_Event inProbability="@Probabilite_PF_CVS" inLabel="PF_CVS">
+                      <Control_ProcessPush inTarget="environment" inDelay="0" inLabel="Ajouter_PF_Diagnostique"/>
+                      <Control_Nothing/>
+                    </Meds_Event>
+                    <Control_Nothing/>
+                  </Meds_Test>
+                </Control_Sequential>
+                <Control_Nothing/>
+              </Control_Branch>
+            </Control_Sequential>
+            <Meds_Test inState="@SD" outCost="@Cout" inSpecificity="0.7798" inCost="15.00" inDiscountRate="0" inLabel="Contingent_Middle" inSensitivity="0.91892" inCompliance="1">
+              <Control_IfThenElse>
+                <Control_ProcessCall inLabel="Evenements_Trimestre_2"/>
+                <Control_Nothing/>
+                <Meds_Test inState="@SD" outCost="@Cout" inSpecificity="0.9005" inCost="10.00" inDiscountRate="0" inLabel="Contingent_Integrated" inSensitivity="0.86275" inCompliance="1">
+                  <Control_Sequential>
+                    <Control_ProcessCall inLabel="Visite_Conseiller"/>
+                    <Control_Branch inProbability="$Consentement_Diagnostique">
+                      <!--Consentement au diagnostique-->
+                      <Control_Sequential>
+                        <Control_ProcessPush inTarget="environment" inDelay="0" inLabel="Ajouter_Amnio"/>
+                        <Meds_Test inState="@SD" outCost="@Cout" inSpecificity="1.0" inCost="$Cout_Diagnostique" inDiscountRate="0" inLabel="Amnio_QF-PCR" inSensitivity="0.993" inCompliance="1">
+                          <Meds_Event inProbability="@Probabilite_PF_Amnio" inLabel="PF_Amnio">
+                            <Control_ProcessPush inTarget="environment" inDelay="0" inLabel="Ajouter_PF_Diagnostique"/>
+                            <Meds_Event inProbability="@Probabilite_IVG_D" inLabel="IVG_D">
+                              <Control_Sequential>
+                                <Operators_AddVariable inArgLeft="@Cout" inArgRight="$Cout_IVG_Diagnostique" outResult="@Cout"/>
+                                <Control_ProcessPush inTarget="environment" inDelay="0" inLabel="Ajouter_IVG_Diagnostique"/>
+                              </Control_Sequential>
+                              <Control_Nothing/>
+                            </Meds_Event>
+                          </Meds_Event>
+                          <Meds_Event inProbability="@Probabilite_PF_Amnio" inLabel="PF_Amnio">
+                            <Control_ProcessPush inTarget="environment" inDelay="0" inLabel="Ajouter_PF_Diagnostique"/>
+                            <Control_Nothing/>
+                          </Meds_Event>
+                          <Control_Nothing/>
+                        </Meds_Test>
+                      </Control_Sequential>
+                      <Control_Nothing/>
+                    </Control_Branch>
+                  </Control_Sequential>
+                  <Control_Nothing/>
+                  <Control_Nothing/>
+                </Meds_Test>
+              </Control_IfThenElse>
+              <Control_Nothing/>
+              <Control_Nothing/>
+            </Meds_Test>
+            <Control_Nothing/>
+          </Meds_Test>
+          <Control_Nothing/>
+        </Control_Branch>
+      </Control_IfThenElse>
+    </PrimitiveTree>
+  </Process>

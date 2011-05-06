@@ -1,0 +1,24 @@
+ <SimulationVariables>
+	 <Variable position="0" inType="Double" label="Cout">
+		 <LocalVariables/>
+		 <PrimitiveTree>
+			<Data_Value inValue_Type="Double" inValue="0"/>
+		 </PrimitiveTree>
+	 </Variable>
+	 <Variable position="1" inType="Bool" label="Classee_Precieuse">
+		 <LocalVariables/>
+		 <PrimitiveTree>
+			<Control_ChoiceIsEqual inChoices="$Couleur" inValue="@Couleur">
+				<Data_Value inValue_Type="Bool" inValue="true"/>
+				<Data_Value inValue_Type="Bool" inValue="false"/>
+				<Data_Value inValue_Type="Bool" inValue="false"/>
+			</Control_ChoiceIsEqual>
+		</PrimitiveTree>
+	</Variable>
+	<Variable position="2" inType="String" label="Historique">
+		 <LocalVariables/>
+		<PrimitiveTree>
+			<Data_Value inValue_Type="String" inValue="."/>
+		</PrimitiveTree>
+	</Variable>
+ </SimulationVariables>
