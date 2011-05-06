@@ -84,9 +84,4 @@ void SimulationThread::main() {
 			break;
 		}
 	} while (!lDone);
-
-	// ready for deletion
-	mParallel->lock();
-	mSequential->post();
-	mParallel->unlock();
 }

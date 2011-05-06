@@ -21,8 +21,9 @@
 #ifndef SCHNAPS_Plugins_Data_RouletteDynamic_hpp
 #define SCHNAPS_Plugins_Data_RouletteDynamic_hpp
 
-#include "PACC/XML.hpp"
 #include "SCHNAPS/SCHNAPS.hpp"
+
+#include "PACC/XML.hpp"
 
 namespace SCHNAPS {
 namespace Plugins {

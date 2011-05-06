@@ -29,11 +29,16 @@ using namespace Simulation;
  * \param inOriginal A const reference to an original class of simulation variables.
  */
 SimulationVariables::SimulationVariables(const SimulationVariables& inOriginal) {
-	this->mVariablesMap.clear();
-	for (VariablesMap::const_iterator lIt = inOriginal.mVariablesMap.begin(); lIt != inOriginal.mVariablesMap.end(); lIt++) {
-		this->mVariablesMap.insert(std::pair<std::string, Core::PrimitiveTree::Handle>(
-			lIt->first,
-			lIt->second));
+	this->mVariables.clear();
+	for (unsigned int i = 0; i < inOriginal.mVariables.size(); i++) {
+		this->mVariables.push_back(Variable(
+			inOriginal.mVariables[i].mLabel,
+			inOriginal.mVariables[i].mInitTree));
+		for (unsigned int j = 0; j < inOriginal.mVariables[i].mLocalVariables.size(); j++) {
+			this->mVariables.back().mLocalVariables.push_back(LocalVariable(
+				inOriginal.mVariables[i].mLocalVariables[j].first,
+				inOriginal.mVariables[i].mLocalVariables[j].second));
+		}
 	}
 }
 
@@ -45,10 +50,16 @@ SimulationVariables::SimulationVariables(const SimulationVariables& inOriginal) 
 Core::Object::Handle SimulationVariables::deepCopy(const Core::System& inSystem) const {
 	schnaps_StackTraceBeginM();
 	SimulationVariables::Handle lCopy = new SimulationVariables();
-	for (VariablesMap::const_iterator lIt = this->mVariablesMap.begin(); lIt != this->mVariablesMap.end(); lIt++) {
-		lCopy->mVariablesMap.insert(std::pair<std::string, Core::PrimitiveTree::Handle>(
-			lIt->first.c_str(),
-			Core::castHandleT<Core::PrimitiveTree>(lIt->second->deepCopy(inSystem))));
+	
+	for (unsigned int i = 0; i < this->mVariables.size(); i++) {
+		lCopy->mVariables.push_back(Variable(
+			this->mVariables[i].mLabel,
+			Core::castHandleT<Core::PrimitiveTree>(this->mVariables[i].mInitTree->deepCopy(inSystem))));
+		for (unsigned int j = 0; j < this->mVariables[i].mLocalVariables.size(); j++) {
+			lCopy->mVariables.back().mLocalVariables.push_back(LocalVariable(
+				this->mVariables[i].mLocalVariables[j].first,
+				Core::castHandleT<Core::AnyType>(this->mVariables[i].mLocalVariables[j].second->clone())));
+		}
 	}
 	return lCopy;
 	schnaps_StackTraceEndM("SCHNAPS::Core::Object::Handle SCHNAPS::Simulation::SimulationVariables::deepCopy(const SCHNAPS::Core::System&) const");

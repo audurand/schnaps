@@ -29,11 +29,17 @@ using namespace Simulation;
  * \param inOriginal A const reference to the original demography.
  */
 Demography::Demography(const Demography& inOriginal) {
-	this->mVariablesMap.clear();
-	for (VariablesMap::const_iterator lIt = inOriginal.mVariablesMap.begin(); lIt != inOriginal.mVariablesMap.end(); lIt++) {
-		this->mVariablesMap.insert(std::pair<std::string, Core::PrimitiveTree::Handle>(
-			lIt->first,
-			lIt->second));
+	this->mVariables.clear();
+	for (unsigned int i = 0; i < inOriginal.mVariables.size(); i++) {
+		this->mVariables.push_back(Variable(
+			inOriginal.mVariables[i].mLabel,
+			inOriginal.mVariables[i].mInitTree));
+		
+		for (unsigned int j = 0; j < inOriginal.mVariables[i].mLocalVariables.size(); j++) {
+			this->mVariables.back().mLocalVariables.push_back(LocalVariable(
+				inOriginal.mVariables[i].mLocalVariables[j].first,
+				inOriginal.mVariables[i].mLocalVariables[j].second));
+		}
 	}
 }
 
@@ -45,10 +51,15 @@ Core::Object::Handle Demography::deepCopy(const Core::System& inSystem) const {
 	schnaps_StackTraceBeginM();
 	Demography::Handle lCopy = new Demography();
 	
-	for (VariablesMap::const_iterator lIt = this->mVariablesMap.begin(); lIt != this->mVariablesMap.end(); lIt++) {
-		lCopy->mVariablesMap.insert(std::pair<std::string, Core::PrimitiveTree::Handle>(
-			lIt->first.c_str(),
-			Core::castHandleT<Core::PrimitiveTree>(lIt->second->deepCopy(inSystem))));
+	for (unsigned int i = 0; i < this->mVariables.size(); i++) {
+		lCopy->mVariables.push_back(Variable(
+			this->mVariables[i].mLabel,
+			Core::castHandleT<Core::PrimitiveTree>(this->mVariables[i].mInitTree->deepCopy(inSystem))));
+		for (unsigned int j = 0; j < this->mVariables[i].mLocalVariables.size(); j++) {
+			lCopy->mVariables.back().mLocalVariables.push_back(LocalVariable(
+				this->mVariables[i].mLocalVariables[j].first,
+				Core::castHandleT<Core::AnyType>(this->mVariables[i].mLocalVariables[j].second->clone())));
+		}
 	}
 	return lCopy;
 	schnaps_StackTraceEndM("SCHNAPS::Core::Object::Handle SCHNAPS::Simulation::Demography::deepCopy(const SCHNAPS::Core::System&) const");
@@ -59,7 +70,6 @@ Core::Object::Handle Demography::deepCopy(const Core::System& inSystem) const {
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.
  * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
- * \throw SCHNAPS::Core::IOException if variable label is missing.
  */
 void Demography::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
@@ -81,26 +91,10 @@ void Demography::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& i
 #ifdef SCHNAPS_FULL_DEBUG
 		printf("Reading %s\n", getName().c_str());
 #endif
-		mVariablesMap.clear();
+		mVariables.clear();
 		for (PACC::XML::ConstIterator lChild = inIter->getFirstChild(); lChild; lChild++) {
 			if (lChild->getType() == PACC::XML::eData) {
-				if (lChild->getValue() != "Variable") {
-					std::ostringstream lOSS;
-					lOSS << "tag <Variable> expected, but ";
-					lOSS << "got tag <" << lChild->getValue() << "> instead!";
-					throw schnaps_IOExceptionNodeM(*lChild, lOSS.str());
-				}
-				if (lChild->getAttribute("label").empty()) {
-					throw schnaps_IOExceptionNodeM(*lChild, "label attribute expected!");
-				}
-
-				lLabel = lChild->getAttribute("label");
-#ifdef SCHNAPS_FULL_DEBUG
-				printf("Reading variable: %s\n", lLabel.c_str());
-#endif
-
-				mVariablesMap.insert(std::pair<std::string, Core::PrimitiveTree::Handle>(lLabel, new Core::PrimitiveTree()));
-				mVariablesMap[lLabel]->readWithSystem(lChild->getFirstChild(), ioSystem);
+				readVariable(lChild, ioSystem);
 			}
 		}
 	} else {
@@ -119,60 +113,126 @@ void Demography::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& i
  * \param inIndent Wether to indent or not.
  */
 void Demography::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
-	for (VariablesMap::const_iterator lIt = mVariablesMap.begin(); lIt != mVariablesMap.end(); lIt++) {
+	for (unsigned int i = 0; i < mVariables.size(); i++) {
 		ioStreamer.openTag("Variable");
-		ioStreamer.insertAttribute("label", lIt->first);
-		lIt->second->write(ioStreamer, inIndent);
+		ioStreamer.insertAttribute("label", mVariables[i].mLabel);
+		
+		ioStreamer.openTag("LocalVariables");
+		for (unsigned int j = 0; j < mVariables[i].mLocalVariables.size(); j++) {
+			ioStreamer.openTag("LocalVariable");
+			ioStreamer.insertAttribute("label", mVariables[i].mLocalVariables[j].first);
+			ioStreamer.insertAttribute("type", mVariables[i].mLocalVariables[j].second->getType());
+			ioStreamer.insertAttribute("value", mVariables[i].mLocalVariables[j].second->writeStr());
+			ioStreamer.closeTag();
+		}
+		ioStreamer.closeTag();
+		
+		mVariables[i].mInitTree->write(ioStreamer, inIndent);
 		ioStreamer.closeTag();
 	}
 }
 
 /*!
- * \brief  Return the list of variables contained in demography.
- * \return The list of variables contained in demography.
+ * \brief Read variable from XML using system.
+ * \param inIter XML iterator of input document.
+ * \param ioSystem A reference to the system.
+ * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
+ * \throw SCHNAPS::Core::IOException if label attribute is missing.
  */
-std::vector<std::string> Demography::getVariableList() const {
+void Demography::readVariable(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
-	std::vector<std::string> lVariables;
-	for (VariablesMap::const_iterator lIt = mVariablesMap.begin(); lIt != mVariablesMap.end(); lIt++) {
-		lVariables.push_back(lIt->first.c_str());
-	}
-	return lVariables;
-	schnaps_StackTraceEndM("std::vector<std::string> SCHNAPS::Simulation::Demography::getVariableList() const");
-}
-
-/*!
- * \brief  Return a const reference to a variable initialization tree function.
- * \param  inLabel A const reference to the label of variable.
- * \return A const reference to a variable initialization tree function or NULL if the variable is not in demography.
- * \thorw  SCHNAPS::Core::RunTimeException if the variable does not exist.
- * \thorw  SCHNAPS::Core::AssertException if the initialization tree of the variable is NULL.
- */
-const Core::PrimitiveTree& Demography::getVariableInitTree(const std::string& inLabel) const {
-	schnaps_StackTraceBeginM();
-	VariablesMap::const_iterator lIterVariable = mVariablesMap.find(inLabel);
-	if (lIterVariable == mVariablesMap.end()) {
+	if (inIter->getValue() != "Variable") {
 		std::ostringstream lOSS;
-		lOSS << "The variable '" << inLabel << "' does not exist; ";
-		lOSS << "could not get its initialization tree.";
-		throw schnaps_RunTimeExceptionM(lOSS.str());
+		lOSS << "tag <Variable> expected, but ";
+		lOSS << "got tag <" << inIter->getValue() << "> instead!";
+		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
 	}
-	schnaps_NonNullPointerAssertM(lIterVariable->second);
-	return *lIterVariable->second;
-	schnaps_StackTraceEndM("const SCHNAPS::Core::PrimitiveTree& SCHNAPS::Simulation::Demography::getVariableInitTree(const std::string&) const");
+	
+	if (inIter->getAttribute("label").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "label attribute expected!");
+	}
+	
+	mVariables.push_back(Variable(inIter->getAttribute("label"), new Core::PrimitiveTree()));
+	
+#ifdef SCHNAPS_FULL_DEBUG
+	printf("Reading variable: %s\n", mVariables.back().mLabel.c_str());
+#endif
+	
+	// read local variables
+	inIter = inIter->getFirstChild();
+	readLocalVariables(inIter, ioSystem);
+	
+	// read variable init tree
+	inIter++;
+	mVariables.back().mInitTree->readWithSystem(inIter, ioSystem);
+	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Demography::readVariable(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
 /*!
- * \brief  Check if a variable is contained in demography.
- * \param  inLabel A const reference to the label of variable.
- * \return True is the variable is contained in demography, false if not.
+ * \brief Read local variables from XML using system.
+ * \param inIter XML iterator of input document.
+ * \param ioSystem A reference to the system.
+ * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
+ * \throw SCHNAPS::Core::IOException if label attribute is missing.
  */
-bool Demography::hasVariable(const std::string& inLabel) const {
+void Demography::readLocalVariables(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
-	VariablesMap::const_iterator lIterVariable = mVariablesMap.find(inLabel);
-	if (lIterVariable == mVariablesMap.end()) {
-		return false;
+	if (inIter->getValue() != "LocalVariables") {
+		std::ostringstream lOSS;
+		lOSS << "tag <LocalVariables> expected, but ";
+		lOSS << "got tag <" << inIter->getValue() << "> instead!";
+		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
 	}
-	return true;
-	schnaps_StackTraceEndM("bool SCHNAPS::Simulation::Demography::hasVariable(const std::string&) const");
+	
+	mVariables.back().mLocalVariables.clear();
+	
+	Core::AnyType::Handle lValue;
+	Core::Object::Alloc::Handle lAlloc;
+	for (PACC::XML::ConstIterator lChild = inIter->getFirstChild(); lChild; lChild++) {
+		if (lChild->getValue() != "LocalVariable") {
+			std::ostringstream lOSS;
+			lOSS << "tag <LocalVariable> expected, but ";
+			lOSS << "got tag <" << lChild->getValue() << "> instead!";
+			throw schnaps_IOExceptionNodeM(*lChild, lOSS.str());
+		}
+		
+		// retrieve label
+		if (lChild->getAttribute("label").empty()) {
+			throw schnaps_IOExceptionNodeM(*lChild, "label attribute expected!");
+		}
+		
+#ifdef SCHNAPS_FULL_DEBUG
+		printf("\tReading local variable: %s\n", mVariables.back().mLocalVariables.back().first.c_str());
+#endif
+
+		lAlloc = ioSystem.getFactory().getAllocator(lChild->getFirstChild()->getValue());
+		lValue = Core::castHandleT<Core::AnyType>(lAlloc->allocate());
+		lValue->readWithSystem(lChild->getFirstChild(), ioSystem);
+		
+		mVariables.back().mLocalVariables.push_back(std::pair<std::string, Core::AnyType::Handle>(lChild->getAttribute("label"), lValue));
+	}
+	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Demography::readLocalVariables(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
+}
+
+/*!
+ * \brief  Return the number of variables contained in demography.
+ * \return The number of variables contained in demography.
+ */
+unsigned int Demography::getVariablesSize() const {
+	schnaps_StackTraceBeginM();
+	return mVariables.size();
+	schnaps_StackTraceEndM("unsigned int SCHNAPS::Simulation::Demography::getVariablesSize() const");
+}
+
+/*!
+ * \brief  Return a const reference to a specific variable of demography.
+ * \param  inIndex the index of variable.
+ * \return A const reference to a specific variable of demography.
+ * \thorw  SCHNAPS::Core::AssertException if inIndex is out of bounds.
+ */
+const Demography::Variable& Demography::getVariable(unsigned int inIndex) const {
+	schnaps_StackTraceBeginM();
+	schnaps_UpperBoundCheckAssertM(inIndex, mVariables.size()-1);
+	return mVariables[inIndex];
+	schnaps_StackTraceEndM("const SCHNAPS::Simulation::Demography::Variable& SCHNAPS::Simulation::Demography::getVariable(unsigned int) const");
 }

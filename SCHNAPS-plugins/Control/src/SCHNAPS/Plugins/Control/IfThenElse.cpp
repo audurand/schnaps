@@ -55,17 +55,17 @@ IfThenElse& IfThenElse::operator=(const IfThenElse& inOriginal) {
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
  */
-SCHNAPS::Core::AnyType::Handle IfThenElse::execute(unsigned int inIndex, SCHNAPS::Core::ExecutionContext& ioContext) const {
+Core::AnyType::Handle IfThenElse::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	SCHNAPS::Core::Bool::Handle lArg1 = SCHNAPS::Core::castHandleT<SCHNAPS::Core::Bool>(getArgument(inIndex, 0, ioContext));
+	Core::Bool::Handle lArg1 = Core::castHandleT<Core::Bool>(getArgument(inIndex, 0, ioContext));
 	// if
 	if (lArg1->getValue()) {
 		// then
-		SCHNAPS::Core::AnyType::Handle lArg2 = getArgument(inIndex, 1, ioContext);
+		Core::AnyType::Handle lArg2 = getArgument(inIndex, 1, ioContext);
 		return lArg2;
 	}
 	// else
-	SCHNAPS::Core::AnyType::Handle lArg3 = getArgument(inIndex, 2, ioContext);
+	Core::AnyType::Handle lArg3 = getArgument(inIndex, 2, ioContext);
 	return lArg3;
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Control::IfThenElse::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
@@ -78,7 +78,7 @@ SCHNAPS::Core::AnyType::Handle IfThenElse::execute(unsigned int inIndex, SCHNAPS
  * \return A const reference to the type of the nth argument.
  * \throw  SCHNAPS::Core::AssertException if the argument index is out of bounds.
  */
-const std::string& IfThenElse::getArgType(unsigned int inIndex, unsigned int inN, SCHNAPS::Core::ExecutionContext& ioContext) const {
+const std::string& IfThenElse::getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	schnaps_UpperBoundCheckAssertM(inN, 2);
 	if (inN == 0) {
@@ -100,7 +100,7 @@ const std::string& IfThenElse::getArgType(unsigned int inIndex, unsigned int inN
  * \param  ioContext A reference to the execution context.
  * \return A const reference to the return type.
  */
-const std::string& IfThenElse::getReturnType(unsigned int inIndex, SCHNAPS::Core::ExecutionContext& ioContext) const {
+const std::string& IfThenElse::getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	const static std::string lCommonType = ioContext.getSystem().getTypingManager().commonType(getArgType(inIndex, 1, ioContext), getArgType(inIndex, 2, ioContext));
 	return lCommonType;

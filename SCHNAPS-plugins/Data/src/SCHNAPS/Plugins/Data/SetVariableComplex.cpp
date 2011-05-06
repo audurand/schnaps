@@ -28,7 +28,8 @@ using namespace Data;
  * \brief Default constructor.
  */
 SetVariableComplex::SetVariableComplex() :
-	Core::Primitive(1)
+	Core::Primitive(1),
+	mVariable_Ref("")
 {}
 
 /*!
@@ -37,8 +38,19 @@ SetVariableComplex::SetVariableComplex() :
  */
 SetVariableComplex::SetVariableComplex(const SetVariableComplex& inOriginal) :
 	Core::Primitive(1),
-	mLabel(inOriginal.mLabel.c_str())
+	mVariable_Ref(inOriginal.mVariable_Ref.c_str())
 {}
+
+/*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
+SetVariableComplex& SetVariableComplex::operator=(const SetVariableComplex& inOriginal) {
+	schnaps_StackTraceBeginM();
+	mVariable_Ref.assign(inOriginal.mVariable_Ref.c_str());
+	return *this;
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Data::SetVariableComplex& SCHNAPS::Plugins::Data::SetVariableComplex::operator=(const SCHNAPS::Plugins::Data::SetVariableComplex&)");
+}
 
 /*!
  * \brief Read object from XML using system.
@@ -58,11 +70,16 @@ void SetVariableComplex::readWithSystem(PACC::XML::ConstIterator inIter, Core::S
 		lOSS << "got tag <" << inIter->getValue() << "> instead!";
 		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
 	}
-	// retrieve label
-	if (inIter->getAttribute("label").empty()) {
-		throw schnaps_IOExceptionNodeM(*inIter, "label of variable to set expected!");
+	
+	// retrieve variable
+	if (inIter->getAttribute("outVariable").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "variable to set expected!");
 	}
-	mLabel = inIter->getAttribute("label");
+	mVariable_Ref.assign(inIter->getAttribute("outVariable"));
+	
+	if (mVariable_Ref[0] != '@' && mVariable_Ref[0] != '%') {
+		throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific variable source!");
+	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Data::SetVariableComplex::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
@@ -73,7 +90,7 @@ void SetVariableComplex::readWithSystem(PACC::XML::ConstIterator inIter, Core::S
  */
 void SetVariableComplex::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-	ioStreamer.insertAttribute("label", mLabel);
+	ioStreamer.insertAttribute("outVariable", mVariable_Ref);
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Data::SetVariableComplex::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
@@ -86,20 +103,35 @@ void SetVariableComplex::writeContent(PACC::XML::Streamer& ioStreamer, bool inIn
  */
 Core::AnyType::Handle SetVariableComplex::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
-	Core::Atom::Handle lArg = Core::castHandleT<Core::Atom>(getArgument(inIndex, 0, ioContext));
+	Core::AnyType::Handle lArg = getArgument(inIndex, 0, ioContext);
 
-	std::string lTypeVariable = lContext.getIndividual().getState().getVariable(mLabel).getType();
-	std::string lTypeArg = lArg->getType();
-	if (lTypeVariable != lTypeArg) {
-		std::stringstream lOSS;
-		lOSS << "The type of variable '" << mLabel << "' (" << lTypeVariable << ") ";
-		lOSS << "does not match the type of argument (" << lTypeArg << "); ";
-		lOSS << "could not set the variable.";
-		throw schnaps_RunTimeExceptionM(lOSS.str());
+	if (mVariable_Ref[0] == '@') {
+		// individual variable
+		Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
+		std::string lTypeVariable = lContext.getIndividual().getState().getVariable(mVariable_Ref.substr(1)).getType();
+		std::string lTypeArg = lArg->getType();
+		if (lTypeVariable != lTypeArg) {
+			std::stringstream lOSS;
+			lOSS << "The type of variable '" << mVariable_Ref.substr(1) << "' (" << lTypeVariable << ") ";
+			lOSS << "does not match the type of argument (" << lTypeArg << "); ";
+			lOSS << "could not set the variable.";
+			throw schnaps_RunTimeExceptionM(lOSS.str());
+		}
+		lContext.getIndividual().getState().setVariable(mVariable_Ref.substr(1), lArg);
+	} else { // mVariable_Ref[0] == '%'
+		// local variable
+		Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
+		std::string lTypeVariable = lContext.getLocalVariable(mVariable_Ref.substr(1)).getType();
+		std::string lTypeArg = lArg->getType();
+		if (lTypeVariable != lTypeArg) {
+			std::stringstream lOSS;
+			lOSS << "The type of variable '" << mVariable_Ref.substr(1) << "' (" << lTypeVariable << ") ";
+			lOSS << "does not match the type of argument (" << lTypeArg << "); ";
+			lOSS << "could not set the variable.";
+			throw schnaps_RunTimeExceptionM(lOSS.str());
+		}
+		lContext.setLocalVariable(mVariable_Ref.substr(1), lArg);
 	}
-
-	lContext.getIndividual().getState().setVariable(mLabel, lArg);
 	return NULL;
 	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Data::SetVariableComplex::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
 }
@@ -115,7 +147,7 @@ Core::AnyType::Handle SetVariableComplex::execute(unsigned int inIndex, Core::Ex
 const std::string& SetVariableComplex::getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	schnaps_AssertM(inN<1);
-	const static std::string lType("Atom");
+	const static std::string lType("AnyType");
 	return lType;
 	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Data::SetVariableComplex::getArgType(unsigned int, unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }

@@ -28,7 +28,6 @@ namespace Core {
 
 // forward declaration
 class Double;
-class Float;
 class Int;
 class Long;
 class UInt;
@@ -77,26 +76,24 @@ public:
 	}
 
 	//! Compute absolute value.
-	virtual Number& abs();
-	//! Adds a number.
-	virtual Number& add(Number& inRightNumber);
-	//! Divide by a number.
-	virtual Number& div(Number& inRightNumber);
+	virtual Number::Handle abs();
+	//! Compute the addition with a number.
+	virtual Number::Handle add(Number& inRightNumber);
+	//! Compute the division by a number.
+	virtual Number::Handle div(Number& inRightNumber);
 	//! Compute the base-e exponential function, which is the e number raised to the power x.
-	virtual Number& exp();
+	virtual Number::Handle exp();
 	//! Compute the modulo by a number.
-	virtual Number& mod(Number& inRightNumber);
-	//! Multiply by a number.
-	virtual Number& mult(Number& inRightNumber);
-	//! Raise to the power exponent.
-	virtual Number& pow(Number& inRightNumber);
-	//! Subtract a number.
-	virtual Number& sub(Number& inRightNumber);
+	virtual Number::Handle mod(Number& inRightNumber);
+	//! Compute the multiplication by a number.
+	virtual Number::Handle mult(Number& inRightNumber);
+	//! Compute the raise to the power exponent.
+	virtual Number::Handle pow(Number& inRightNumber);
+	//! Compute the subtraction by a number.
+	virtual Number::Handle sub(Number& inRightNumber);
 
 	//! Casting operator to double.
 	virtual operator Double() const;
-	//! Casting operator to float.
-	virtual operator Float() const;
 	//! Casting operator to integer.
 	virtual operator Int() const;
 	//! Casting operator to long.

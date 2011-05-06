@@ -1,0 +1,6 @@
+ <Process label="Ajouter_Ophtalmologiste">
+  <LocalVariables/>
+  <PrimitiveTree size="1">
+   <Operators_AddVariable inArgRight_Type="Int" inArgRight="1" inArgLeft="@Total_Ophtalmologiste" outResult="@Total_Ophtalmologiste"/>
+  </PrimitiveTree>
+ </Process>

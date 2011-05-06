@@ -31,7 +31,7 @@ namespace Operators {
 
 /*!
  *  \class AddVariable SCHNAPS/Plugins/Operators/AddVariable.hpp "SCHNAPS/Plugins/Operators/AddVariable.hpp"
- *  \brief Add a value to a variable current value.
+ *  \brief Add right argument from left argument and store result in a variable.
  */
 class AddVariable: public Core::Primitive {
 public:
@@ -45,6 +45,9 @@ public:
 	AddVariable();
 	AddVariable(const AddVariable& inOriginal);
 	virtual ~AddVariable() {}
+
+	//! Copy operator.
+	AddVariable& operator=(const AddVariable& inOriginal);
 
 	/*!
 	 * \brief  Return a const reference to the name of object.
@@ -68,9 +71,11 @@ public:
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
-	std::string mLabel;				//!< Label of concerned variable.
-	std::string mValue_Ref; 		//!< Value to add (reference).
-	Core::Number::Handle mValue;	//!< A handle to the value to add.
+	std::string mResult_Ref;		//!< Reference of variable for storing result.
+	std::string mArgLeft_Ref;		//!< Reference to left argument.
+	Core::Number::Handle mArgLeft;	//!< A handle to left argument.
+	std::string mArgRight_Ref;		//!< Reference to right argument.
+	Core::Number::Handle mArgRight;	//!< A handle to right argument.
 };
 } // end of Operators namespace
 } // end of Plugins namespace

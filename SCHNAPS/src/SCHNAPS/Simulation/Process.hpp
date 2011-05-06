@@ -29,9 +29,12 @@ namespace Simulation {
 
 /*!
  *  \class Process SCHNAPS/Simulation/Process.hpp "SCHNAPS/Simulation/Process.hpp"
- *  \brief Process that constitute a simulation.
+ *  \brief Process part of a simulation.
  */
 class Process: public Core::Object {
+protected:
+	typedef std::pair<std::string, Core::AnyType::Handle> LocalVariable;
+
 public:
 	//! Process target.
 	enum Target {
@@ -82,12 +85,17 @@ public:
 	const std::string& getLabel() const {
 		return mLabel;
 	}
+	
+private:
+	//! Read local variables from XML using system.
+	void readLocalVariables(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
 
 protected:
-	std::string mLabel;
+	std::string mLabel;							//!< Label of process.
 
 private:
-	SCHNAPS::Core::PrimitiveTree::Handle mPrimitiveTree;
+	Core::PrimitiveTree::Handle mPrimitiveTree;	//!< Primive tree that represents the process execution.
+	std::vector<LocalVariable> mLocalVariables;	//!< Variables local to the process.
 };
 } // end of Simulation namespace
 } // end of SCHNAPS namespace

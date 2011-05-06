@@ -46,6 +46,9 @@ public:
 	Test(const Test& inOriginal);
 	virtual ~Test() {}
 
+	//! Copy operator.
+	Test& operator=(const Test& inOriginal);
+
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.
@@ -64,18 +67,25 @@ public:
 
 	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+	//! Return the nth argument requested return type.
+	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const;
 	//! Return the primitive return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
 	std::string mLabel;					//!< Label of test.
+	std::string mOutCost_Ref;			//!< Reference to the output cost destination.
+	std::string mCompliance_Ref;		//!< Reference to the compliance.
 	Core::Double::Handle mCompliance;	//!< A handle to the compliance value.
+	std::string mSensitivity_Ref;		//!< Reference to the sensitivity.
+	Core::Double::Handle mSensitivity;	//!< A handle to the sensitivity value.
+	std::string mSpecificity_Ref;		//!< Reference to the specificity.
+	Core::Double::Handle mSpecificity;	//!< A handle to the specificity value.
+	std::string mCost_Ref;				//!< Reference to the cost.
 	Core::Double::Handle mCost;			//!< A handle to the cost value.
+	std::string mDiscountRate_Ref;		//!< Reference to the discount rate.
 	Core::Double::Handle mDiscountRate;	//!< A handle to the discount rate value.
-	std::string mCompliance_Ref;		//!< Label of compliance parameter.
-	std::string mCost_Ref;				//!< Label of cost parameter.
-	std::string mDiscountRate_Ref;		//!< Label of discount rate parameter.
-	std::string mCostVariableLabel;		//!< Label of individual variable for cumulating cost.
+	std::string mState_Ref;				//!< Reference to the actual state of individual.
 };
 } // end of Meds namespace
 } // end of Plugins namespace

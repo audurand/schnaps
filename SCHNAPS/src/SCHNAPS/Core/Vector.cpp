@@ -49,7 +49,7 @@ Vector& Vector::operator=(const Vector& inOriginal) {
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.
  */
-void Vector::readWithSystem(PACC::XML::ConstIterator inIter, SCHNAPS::Core::System& ioSystem) {
+void Vector::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
 	if (inIter->getType() != PACC::XML::eData) {
 		throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
@@ -64,17 +64,10 @@ void Vector::readWithSystem(PACC::XML::ConstIterator inIter, SCHNAPS::Core::Syst
 	this->clear();
 
 	AnyType::Alloc::Handle lAlloc;
-	AnyType::Handle lElement;
 	for (PACC::XML::ConstIterator lChild = inIter->getFirstChild(); lChild; lChild++) {
 		if (lChild->getType() == PACC::XML::eData) {
-			lAlloc = SCHNAPS::Core::castHandleT<SCHNAPS::Core::AnyType::Alloc>(ioSystem.getFactory().getAllocator(lChild->getValue()));
-			if (lAlloc == NULL) {
-				std::ostringstream lOSS;
-				lOSS << "no element named '" <<  lChild->getValue();
-				lOSS << "' found in the factory";
-				throw schnaps_IOExceptionNodeM(*lChild, lOSS.str());
-			}
-			this->push_back(SCHNAPS::Core::castHandleT<SCHNAPS::Core::AnyType>(lAlloc->allocate()));
+			lAlloc = Core::castHandleT<Core::AnyType::Alloc>(ioSystem.getFactory().getAllocator(lChild->getValue()));
+			this->push_back(Core::castHandleT<Core::AnyType>(lAlloc->allocate()));
 			this->back()->readWithSystem(lChild, ioSystem);
 		}
 	}
@@ -123,8 +116,18 @@ bool Vector::isLess(const Object&) const {
  */
 void Vector::readStr(const std::string& inStr) {
 	schnaps_StackTraceBeginM();
-	throw schnaps_UndefinedMethodInternalExceptionM("readStr","Vector",getName());
-	schnaps_StackTraceEndM("void SCHNAPS::Core::Vector::readStr(std::string&)");
+	std::stringstream lISS(inStr);
+	PACC::Tokenizer lTokenizer(lISS);
+	lTokenizer.setDelimiters("|", "");
+
+	std::string lElement;
+
+	unsigned int i = 0;
+	while (lTokenizer.getNextToken(lElement)) {
+		(*this)[i]->readStr(lElement);
+		i++;
+	}
+	schnaps_StackTraceEndM("void SCHNAPS::Core::Vector::readStr(const std::string&)");
 }
 
 /*!
@@ -138,7 +141,7 @@ std::string Vector::writeStr() const {
 	for (i = 0; i < this->size()-1; i++) {
 		lOSS << (*this)[i]->writeStr() << "|";
 	}
-	lOSS << (*this)[i]->writeStr();
+	lOSS << this->back()->writeStr();
 	return lOSS.str();
 	schnaps_StackTraceEndM("std::string SCHNAPS::Core::Vector::writeStr() const");
 }

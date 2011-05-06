@@ -1,0 +1,8 @@
+  <Environment>
+    <State>
+      <Variable type="Int" value="0" label="Total_Amnio"/>
+      <Variable type="Int" value="0" label="Total_CVS"/>
+      <Variable type="Int" value="0" label="PF_Diagnostique"/>
+      <Variable type="Int" value="0" label="IVG_Diagnostique"/>
+    </State>
+  </Environment>

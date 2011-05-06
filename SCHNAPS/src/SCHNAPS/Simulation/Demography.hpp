@@ -21,7 +21,6 @@
 #ifndef SCHNAPS_Simulation_Demography_hpp
 #define SCHNAPS_Simulation_Demography_hpp
 
-#include "SCHNAPS/Core/HashString.hpp"
 #include "SCHNAPS/Core/Object.hpp"
 #include "SCHNAPS/Core/PrimitiveTree.hpp"
 
@@ -30,21 +29,25 @@
 namespace SCHNAPS {
 namespace Simulation {
 
+
 /*!
  *  \class Demography SCHNAPS/Simulation/Demography.hpp "SCHNAPS/Simulation/Demography.hpp"
  *  \brief Demography variables.
  */
 class Demography: public Core::Object {
 protected:
-#if defined(SCHNAPS_HAVE_STD_HASHMAP)
-	typedef std::hash_map<std::string, Core::PrimitiveTree::Handle, HashString> VariablesMap;
-#elif defined(SCHNAPS_HAVE_GNUCXX_HASHMAP)
-	typedef __gnu_cxx::hash_map<std::string, Core::PrimitiveTree::Handle, HashString> VariablesMap;
-#elif defined(SCHNAPS_HAVE_STDEXT_HASHMAP)
-	typedef stdext::hash_map<std::string, Core::PrimitiveTree::Handle, HashString> VariablesMap;
-#else // no hash_map found
-	typedef std::map<std::string, Core::PrimitiveTree::Handle> VariablesMap;
-#endif
+	typedef std::pair<std::string, Core::AnyType::Handle> LocalVariable;
+	
+	struct Variable {
+		std::string mLabel;
+		Core::PrimitiveTree::Handle mInitTree;
+		std::vector<LocalVariable> mLocalVariables;
+		
+		Variable(const std::string& inLabel, const Core::PrimitiveTree::Handle inInitTree) {
+			mLabel = inLabel.c_str();
+			mInitTree = inInitTree;
+		}
+	};
 
 public:
 	//! Demography allocator type.
@@ -77,15 +80,18 @@ public:
 	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 	
-	//! Return the list of variables contained in demography.
-	std::vector<std::string> getVariableList() const;
-	//! Return a const reference to a variable initialization tree function.
-	const Core::PrimitiveTree& getVariableInitTree(const std::string& inLabel) const;
-	//! Check if a variable is contained in demography.
-	bool hasVariable(const std::string& inLabel) const;
+	//! Read variable from XML using system.
+	void readVariable(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Read local variables from XML using system.
+	void readLocalVariables(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	
+	//! Return the number of variables contained in demography.
+	unsigned int getVariablesSize() const;
+	//! Return a specific variable of demography.
+	const Demography::Variable& getVariable(unsigned int inIndex) const;
 
 protected:
-VariablesMap mVariablesMap; //!< The map of all demography variable labels to initialization tree.
+	std::vector<Variable> mVariables;	//!< Demography variables init information.
 };
 } // end of Simulation namespace
 } // end of SCHNAPS namespace

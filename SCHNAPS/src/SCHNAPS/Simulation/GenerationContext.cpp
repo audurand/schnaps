@@ -30,9 +30,7 @@ using namespace Simulation;
 GenerationContext::GenerationContext() :
 	ExecutionContext(),
 	mGenProfile(NULL)
-{
-	mName = "GenerationContext";
-}
+{}
 
 /*!
  * \brief Construct a generation context as a copy of an original.
@@ -41,9 +39,7 @@ GenerationContext::GenerationContext() :
 GenerationContext::GenerationContext(const GenerationContext& inOriginal) :
 	ExecutionContext(inOriginal),
 	mGenProfile(inOriginal.mGenProfile)
-{
-	mName = "GenerationContext";
-}
+{}
 
 /*!
  * \brief Construct a generation context with specific system, clock, and environment.
@@ -54,9 +50,7 @@ GenerationContext::GenerationContext(const GenerationContext& inOriginal) :
 GenerationContext::GenerationContext(Core::System::Handle inSystem, Clock::Handle inClock, Environment::Handle inEnvironment) :
 	ExecutionContext(inSystem, inClock, inEnvironment),
 	mGenProfile(NULL)
-{
-	mName = "GenerationContext";
-}
+{}
 
 /*!
  * \brief  Copy operator.
@@ -81,6 +75,13 @@ GenerationContext::Handle GenerationContext::deepCopy() const {
 
 	// set profile as a copy of the current one
 	lCopy->setGenProfile(Core::castHandleT<GenProfile>(mGenProfile->deepCopy(*mSystem)));
+	
+	// copy local variables
+	for (LocalVariablesMap::const_iterator lIt = this->mLocalVariables.begin(); lIt != this->mLocalVariables.end(); lIt++) {
+		lCopy->mLocalVariables.insert(std::pair<std::string, Core::AnyType::Handle>(
+			lIt->first.c_str(),
+			Core::castHandleT<Core::AnyType>(lIt->second->clone())));
+	}
 
 	return lCopy;
 	schnaps_StackTraceEndM("SCHNAPS::Simulation::GenerationContext& SCHNAPS::Simulation::GenerationContext::operator=(const SCHNAPS::Simulation::GenerationContext&)");

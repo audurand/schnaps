@@ -31,7 +31,7 @@ namespace Operators {
 
 /*!
  *  \class SubVariable SCHNAPS/Plugins/Operators/SubVariable.hpp "SCHNAPS/Plugins/Operators/SubVariable.hpp"
- *  \brief Substract a value from a variable current value.
+ *  \brief Substract right argument from left argument and store result in a variable.
  */
 class SubVariable: public Core::Primitive {
 public:
@@ -45,6 +45,9 @@ public:
 	SubVariable();
 	SubVariable(const SubVariable& inOriginal);
 	virtual ~SubVariable() {}
+
+	//! Copy operator.
+	SubVariable& operator=(const SubVariable& inOriginal);
 
 	/*!
 	 * \brief  Return a const reference to the name of object.
@@ -68,9 +71,11 @@ public:
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
-	std::string mLabel;				//!< Label of concerned variable
-	std::string mValue_Ref;			//!< Label of value to substract as parameter.
-	Core::Number::Handle mValue;	//!< A handle to the value to substract.
+	std::string mResult_Ref;		//!< Reference of variable for storing result.
+	std::string mArgLeft_Ref;		//!< Reference to left argument.
+	Core::Number::Handle mArgLeft;	//!< A handle to left argument.
+	std::string mArgRight_Ref;		//!< Reference to right argument.
+	Core::Number::Handle mArgRight;	//!< A handle to right argument.
 };
 } // end of Operators namespace
 } // end of Plugins namespace

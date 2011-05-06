@@ -29,8 +29,7 @@ using namespace Control;
  */
 Switch::Switch() :
 	Primitive(), // unknown number of children
-	mKeys_Ref(""),
-	mKeyType("")
+	mKeys_Ref("")
 {}
 
 /*!
@@ -39,12 +38,19 @@ Switch::Switch() :
  */
 Switch::Switch(const Switch& inOriginal) :
 	Primitive(inOriginal.getNumberArguments()),
-	mKeys_Ref(inOriginal.mKeys_Ref.c_str()),
-	mKeyType(inOriginal.mKeyType.c_str())
+	mKeys_Ref(inOriginal.mKeys_Ref.c_str())
 {
 	mSwitchMap.clear();
-	for (SwitchMap::const_iterator lIt = inOriginal.mSwitchMap.begin(); lIt != inOriginal.mSwitchMap.end(); lIt++) {
-		mSwitchMap.insert(std::pair<Core::Atom::Handle, unsigned int>(Core::castHandleT<Core::Atom>(lIt->first->clone()), lIt->second));
+	if (mKeys_Ref[0] == '$') {
+		// parameter value
+		for (SwitchMap::const_iterator lIt = inOriginal.mSwitchMap.begin(); lIt != inOriginal.mSwitchMap.end(); lIt++) {
+			mSwitchMap.insert(std::pair<Core::Atom::Handle, unsigned int>(Core::castHandleT<Core::Atom>(lIt->first), lIt->second));
+		}
+	} else {
+		// direct value
+		for (SwitchMap::const_iterator lIt = inOriginal.mSwitchMap.begin(); lIt != inOriginal.mSwitchMap.end(); lIt++) {
+			mSwitchMap.insert(std::pair<Core::Atom::Handle, unsigned int>(Core::castHandleT<Core::Atom>(lIt->first->clone()), lIt->second));
+		}
 	}
 }
 
@@ -55,11 +61,18 @@ Switch::Switch(const Switch& inOriginal) :
 Switch& Switch::operator=(const Switch& inOriginal) {
 	schnaps_StackTraceBeginM();
 	this->setNumberArguments(inOriginal.getNumberArguments());
-	mKeys_Ref = inOriginal.mKeys_Ref.c_str();
-	mKeyType = inOriginal.mKeyType.c_str();
+	mKeys_Ref.assign(inOriginal.mKeys_Ref.c_str());
 	mSwitchMap.clear();
-	for (SwitchMap::const_iterator lIt = inOriginal.mSwitchMap.begin(); lIt != inOriginal.mSwitchMap.end(); lIt++) {
-		mSwitchMap.insert(std::pair<Core::Atom::Handle, unsigned int>(Core::castHandleT<Core::Atom>(lIt->first->clone()), lIt->second));
+	if (mKeys_Ref[0] == '$') {
+		// parameter value
+		for (SwitchMap::const_iterator lIt = inOriginal.mSwitchMap.begin(); lIt != inOriginal.mSwitchMap.end(); lIt++) {
+			mSwitchMap.insert(std::pair<Core::Atom::Handle, unsigned int>(Core::castHandleT<Core::Atom>(lIt->first), lIt->second));
+		}
+	} else {
+		// direct value
+		for (SwitchMap::const_iterator lIt = inOriginal.mSwitchMap.begin(); lIt != inOriginal.mSwitchMap.end(); lIt++) {
+			mSwitchMap.insert(std::pair<Core::Atom::Handle, unsigned int>(Core::castHandleT<Core::Atom>(lIt->first->clone()), lIt->second));
+		}
 	}
 	return *this;
 	schnaps_StackTraceEndM("SCHNAPS::Core::Switch& SCHNAPS::Plugins::Control::Switch::operator=(const SCHNAPS::Core::Switch&)");
@@ -70,8 +83,9 @@ Switch& Switch::operator=(const Switch& inOriginal) {
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.
  * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
- * \throw SCHNAPS::Core::IOException if keys attribute and keys.ref attribute are missing.
- * \throw SCHNAPS::Core::IOException if keys attribute is used and keyType attribute is missing.
+ * \throw SCHNAPS::Core::IOException if inKeys attribute is missing (or empty).
+ * \throw SCHNAPS::Core::IOException if inKeys attribute gives a direct value and inKeys_Type attribute is missing.
+ * \throw SCHNAPS::Core::RunTimeException if the primitive is undefined for the specific keys source.
  */
 void Switch::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
@@ -85,49 +99,57 @@ void Switch::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSys
 		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
 	}
 
-	unsigned int lChoice;
-
 	// retrieve keys
-	if (inIter->getAttribute("keys").empty()) {
-		if (inIter->getAttribute("keys.ref").empty()) {
-			throw schnaps_IOExceptionNodeM(*inIter, "keys of the children expected!");
-		} else { // use referenced keys
-			mKeys_Ref = inIter->getAttribute("keys.ref");
-			std::stringstream lSS;
-			lSS << "ref." << mKeys_Ref;
+	if (inIter->getAttribute("inKeys").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "switch keys expected!");
+	} else {
+		mKeys_Ref.assign(inIter->getAttribute("inKeys"));
+		
+		mSwitchMap.clear();
+		switch (mKeys_Ref[0]) {
+			case '@':
+				// individual variable value
+			case '#':
+				// environment variable value
+			case '%':
+				// local variable value
+				throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific keys source.");
+				break;
+			case '$': {
+				// parameter value
+				Core::Vector::Handle lKeys = Core::castHandleT<Core::Vector>(ioSystem.getParameters().getParameterHandle(mKeys_Ref.substr(1).c_str()));
+				for (unsigned int i = 0; i < lKeys->size(); i++) {
+					mSwitchMap.insert(std::pair<Core::Atom::Handle, unsigned int>(Core::castHandleT<Core::Atom>((*lKeys)[i]), i));
+				}
+				break; }
+			default: {
+				// direct value
+				// retrieve type of keys
+				if (inIter->getAttribute("inKeys_Type").empty()) {
+					throw schnaps_IOExceptionNodeM(*inIter, "type of keys expected!");
+				}
+				Core::Atom::Alloc::Handle lAlloc = Core::castHandleT<Core::Atom::Alloc>(ioSystem.getFactory().getAllocator(inIter->getAttribute("inKeys_Type")));
+				
+				std::stringstream lSS(mKeys_Ref);
+				PACC::Tokenizer lTokenizer(lSS);
+				lTokenizer.setDelimiters("|", "");
 
-			Core::Vector::Handle lKeys = Core::castHandleT<Core::Vector>(ioSystem.getParameters().getParameterHandle(lSS.str().c_str()));
-			for (unsigned int i = 0; i < lKeys->size(); i++) {
-				mSwitchMap.insert(std::pair<Core::Atom::Handle, unsigned int>(Core::castHandleT<Core::Atom>((*lKeys)[i]), i));
-			}
-			lChoice = lKeys->size();
-		}
-	} else { // use defined keys
-		// retrieve key type
-		if (inIter->getAttribute("keyType").empty()) {
-			throw schnaps_IOExceptionNodeM(*inIter, "type of the keys expected!");
-		}
-		mKeyType = inIter->getAttribute("keyType");
-		Core::Atom::Alloc::Handle lAlloc = Core::castHandleT<Core::Atom::Alloc>(ioSystem.getFactory().getAllocator(mKeyType));
+				std::string lKey;
+				Core::Atom::Handle lAtom;
 
-		std::stringstream lSS(inIter->getAttribute("keys"));
-		PACC::Tokenizer lTokenizer(lSS);
-		lTokenizer.setDelimiters("|", "");
-
-		std::string lKey;
-		Core::Atom::Handle lAtom;
-
-		lChoice = 0;
-		while (lTokenizer.getNextToken(lKey)) {
-			// add to map
-			lAtom = Core::castHandleT<Core::Atom>(lAlloc->allocate());
-			lAtom->readStr(lKey);
-			mSwitchMap.insert(std::pair<Core::Atom::Handle, unsigned int>(lAtom, lChoice));
-			lChoice++;
+				unsigned int lCount = 0;
+				while (lTokenizer.getNextToken(lKey)) {
+					// add to map
+					lAtom = Core::castHandleT<Core::Atom>(lAlloc->allocate());
+					lAtom->readStr(lKey);
+					mSwitchMap.insert(std::pair<Core::Atom::Handle, unsigned int>(lAtom, lCount));
+					lCount++;
+				}
+				break; }
 		}
 	}
 
-	setNumberArguments(lChoice + 2); // + 1 for the value switched on, +1 for default case
+	setNumberArguments(mSwitchMap.size() + 2); // + 1 for the value switched on, +1 for default case
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Control::Switch::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
@@ -138,17 +160,8 @@ void Switch::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSys
  */
 void Switch::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-	if (mKeys_Ref.empty()) {
-		std::string lKeys;
-		for (std::map<Core::Atom::Handle, unsigned int, Core::IsLessPointerPredicate>::const_iterator lIt = mSwitchMap.begin(); lIt != mSwitchMap.end(); lIt++) {
-			lKeys += (*lIt).first->writeStr();
-			lKeys += " ";
-		}
-		ioStreamer.insertAttribute("keyType", mKeyType);
-		ioStreamer.insertAttribute("keys", lKeys);
-	}
-
-	ioStreamer.insertAttribute("keys.ref", mKeys_Ref);
+	ioStreamer.insertAttribute("inKeys", mKeys_Ref);
+	ioStreamer.insertAttribute("inKeys_Type", mSwitchMap.begin()->first->getType());
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Control::Switch::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
@@ -157,16 +170,24 @@ void Switch::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const 
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
+ * \throw  SCHNAPS::Core::RunTimeException if the method is undefined for the specified key source.
  */
 Core::AnyType::Handle Switch::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
+	if (mSwitchMap.empty()) {
+		throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific keys source!");
+	}
+	
 	Core::Atom::Handle lArg = Core::castHandleT<Core::Atom>(getArgument(inIndex, 0, ioContext));
+	
+	// direct value or parameter value
 	SwitchMap::const_iterator lIt = mSwitchMap.find(lArg);
 	if (lIt != mSwitchMap.end()) {
-		return getArgument(inIndex, (*lIt).second+2, ioContext); // +2 to skip switch value and default case
+		return getArgument(inIndex, (*lIt).second+2, ioContext);
+	} else {
+		// default
+		return getArgument(inIndex, 1, ioContext);
 	}
-	// Default
-	return getArgument(inIndex, 1, ioContext);
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Control::Switch::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 

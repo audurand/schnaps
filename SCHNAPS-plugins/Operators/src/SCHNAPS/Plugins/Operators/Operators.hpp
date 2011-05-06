@@ -22,39 +22,45 @@
 #define Operators_hpp
 
 // mathematical operators
-#include "SCHNAPS/Plugins/Operators/Abs.hpp"
-#include "SCHNAPS/Plugins/Operators/Add.hpp"
+#include "SCHNAPS/Plugins/Operators/AbsComplex.hpp"
+#include "SCHNAPS/Plugins/Operators/AddComplex.hpp"
 #include "SCHNAPS/Plugins/Operators/AddVariable.hpp"
-#include "SCHNAPS/Plugins/Operators/Div.hpp"
-#include "SCHNAPS/Plugins/Operators/Exp.hpp"
-#include "SCHNAPS/Plugins/Operators/Mod.hpp"
-#include "SCHNAPS/Plugins/Operators/Mult.hpp"
+#include "SCHNAPS/Plugins/Operators/DivComplex.hpp"
+#include "SCHNAPS/Plugins/Operators/DivVariable.hpp"
+#include "SCHNAPS/Plugins/Operators/ExpComplex.hpp"
+#include "SCHNAPS/Plugins/Operators/ModComplex.hpp"
+#include "SCHNAPS/Plugins/Operators/MultComplex.hpp"
 #include "SCHNAPS/Plugins/Operators/MultVariable.hpp"
-#include "SCHNAPS/Plugins/Operators/Pow.hpp"
-#include "SCHNAPS/Plugins/Operators/Sub.hpp"
+#include "SCHNAPS/Plugins/Operators/PowComplex.hpp"
+#include "SCHNAPS/Plugins/Operators/SubComplex.hpp"
 #include "SCHNAPS/Plugins/Operators/SubVariable.hpp"
 
 // relational operators (comparison)
 #include "SCHNAPS/Plugins/Operators/IsBetween.hpp"
-#include "SCHNAPS/Plugins/Operators/IsBetweenVariable.hpp"
+#include "SCHNAPS/Plugins/Operators/IsBetweenComplex.hpp"
 #include "SCHNAPS/Plugins/Operators/IsEqual.hpp"
-#include "SCHNAPS/Plugins/Operators/IsEqualVariable.hpp"
+#include "SCHNAPS/Plugins/Operators/IsEqualComplex.hpp"
 #include "SCHNAPS/Plugins/Operators/IsGreater.hpp"
-#include "SCHNAPS/Plugins/Operators/IsGreaterVariable.hpp"
+#include "SCHNAPS/Plugins/Operators/IsGreaterComplex.hpp"
 #include "SCHNAPS/Plugins/Operators/IsGreaterOrEqual.hpp"
+#include "SCHNAPS/Plugins/Operators/IsGreaterOrEqualComplex.hpp"
 #include "SCHNAPS/Plugins/Operators/IsLess.hpp"
-#include "SCHNAPS/Plugins/Operators/IsLessVariable.hpp"
+#include "SCHNAPS/Plugins/Operators/IsLessComplex.hpp"
 #include "SCHNAPS/Plugins/Operators/IsLessOrEqual.hpp"
-#include "SCHNAPS/Plugins/Operators/Not.hpp"
+#include "SCHNAPS/Plugins/Operators/IsLessOrEqualComplex.hpp"
 
 // logical operators
 #include "SCHNAPS/Plugins/Operators/And.hpp"
+#include "SCHNAPS/Plugins/Operators/AndComplex.hpp"
+#include "SCHNAPS/Plugins/Operators/Not.hpp"
+#include "SCHNAPS/Plugins/Operators/NotComplex.hpp"
 #include "SCHNAPS/Plugins/Operators/Or.hpp"
+#include "SCHNAPS/Plugins/Operators/OrComplex.hpp"
 
 // other
-#include "SCHNAPS/Plugins/Operators/Concatenate.hpp"
+#include "SCHNAPS/Plugins/Operators/ConcatComplex.hpp"
 #include "SCHNAPS/Plugins/Operators/ConcatVariable.hpp"
-#include "SCHNAPS/Plugins/Operators/NPV.hpp"
+#include "SCHNAPS/Plugins/Operators/NPVComplex.hpp"
 #include "SCHNAPS/Plugins/Operators/Serialize.hpp"
 
 #endif /* Operators_hpp */

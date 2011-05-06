@@ -1,0 +1,14 @@
+<FunctionReward>
+  <LocalVariables>
+	  <LocalVariable label="Recompense">
+		  <Double value="0"/>
+	  </LocalVariable>
+  </LocalVariables>
+  <PrimitiveTree>
+    <Control_Sequential>
+      <Operators_AddVariable inArgLeft="@Cout" inArgRight="@Cout_Aveugle" outResult="%Recompense"/>
+      <Operators_MultVariable inArgLeft="%Recompense" inArgRight="-1" inArgRight_Type="Double" outResult="%Recompense"/>
+      <Data_Value inValue="%Recompense"/>
+    </Control_Sequential>
+  </PrimitiveTree>
+</FunctionReward>

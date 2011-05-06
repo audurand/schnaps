@@ -1,0 +1,6 @@
+ <Process label="Ajouter_Traitement_PDR">
+  <LocalVariables/>
+  <PrimitiveTree size="1">
+   <Operators_AddVariable inArgRight_Type="Int" inArgRight="1" inArgLeft="@Total_Traitement_PDR" outResult="@Total_Traitement_PDR"/>
+  </PrimitiveTree>
+ </Process>

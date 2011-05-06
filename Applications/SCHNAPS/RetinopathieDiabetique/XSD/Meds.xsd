@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:gui="graphical_user_interface_info" xmlns:pmt="primitives_info">
+	<xsd:annotation>
+		<xsd:appinfo>
+			<string dictName="Medical"/>
+			<int dictPriority="0"/>
+			<string dictRequires=""/>
+			<string shortDescription="Medical primitives for SCHNAPS originally created for osteoporosis modelling."/>
+		</xsd:appinfo>
+		<xsd:documentation>
+			W3C XML Schema for Meds primitives files by
+			Audrey Durand, November 2010
+		</xsd:documentation>
+	</xsd:annotation>
+	
+	<xsd:include schemaLocation="XSD/BaseTypes.xsd" />
+	
+	<xsd:element name="Meds_Event" substitutionGroup="_primitive">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en"></pmt:info>
+				<pmt:mappedName lang="en">Event</pmt:mappedName>
+				<pmt:returnType definedBy="staticType">Void</pmt:returnType>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence minOccurs="1" maxOccurs="1">
+				<xsd:choice>
+					<xsd:annotation>
+						<xsd:appinfo>
+							<pmt:childType definedBy="staticType">Any</pmt:childType>
+							<pmt:childBranchTag lang="en">Event</pmt:childBranchTag>
+						</xsd:appinfo>
+					</xsd:annotation>
+					<xsd:element ref="_primitive"/>
+				</xsd:choice>
+				<xsd:choice>
+					<xsd:annotation>
+						<xsd:appinfo>
+							<pmt:childType definedBy="staticType">Any</pmt:childType>
+							<pmt:childBranchTag lang="en">No event</pmt:childBranchTag>
+						</xsd:appinfo>
+					</xsd:annotation>
+					<xsd:element ref="_primitive"/>
+				</xsd:choice>
+			</xsd:sequence>
+			<xsd:attribute name="inLabel" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:displayValue position="br"/>
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Name</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="inProbability" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Probability</pmt:attributeMappedName>
+						<pmt:attributeInfo lang="en">Event probability.</pmt:attributeInfo>
+						<pmt:attributeType>Double</pmt:attributeType>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="Meds_PreventionCampain" substitutionGroup="_primitive">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en"></pmt:info>
+				<pmt:mappedName lang="en">Prevention campain</pmt:mappedName>
+				<pmt:returnType definedBy="staticType">Void</pmt:returnType>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:attribute name="outCost" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Output cost destination</pmt:attributeMappedName>
+						<pmt:attributeInfo lang="en">Variable to cumulate cost.</pmt:attributeInfo>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="inCost" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Cost</pmt:attributeMappedName>
+						<pmt:attributeType>Double</pmt:attributeType>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="inDiscountRate" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Discount rate</pmt:attributeMappedName>
+						<pmt:attributeType>Double</pmt:attributeType>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="Meds_Test" substitutionGroup="_primitive">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en"></pmt:info>
+				<pmt:mappedName lang="en">Test</pmt:mappedName>
+				<pmt:returnType definedBy="staticType">Void</pmt:returnType>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence minOccurs="1" maxOccurs="1">
+				<xsd:choice>
+					<xsd:annotation>
+						<xsd:appinfo>
+							<pmt:childType definedBy="staticType">Any</pmt:childType>
+							<pmt:childBranchTag lang="en">Positive</pmt:childBranchTag>
+						</xsd:appinfo>
+					</xsd:annotation>
+					<xsd:element ref="_primitive"/>
+				</xsd:choice>
+				<xsd:choice>
+					<xsd:annotation>
+						<xsd:appinfo>
+							<pmt:childType definedBy="staticType">Any</pmt:childType>
+							<pmt:childBranchTag lang="en">Negative</pmt:childBranchTag>
+						</xsd:appinfo>
+					</xsd:annotation>
+					<xsd:element ref="_primitive"/>
+				</xsd:choice>
+				<xsd:choice>
+					<xsd:annotation>
+						<xsd:appinfo>
+							<pmt:childType definedBy="staticType">Any</pmt:childType>
+							<pmt:childBranchTag lang="en">Not compliant</pmt:childBranchTag>
+						</xsd:appinfo>
+					</xsd:annotation>
+					<xsd:element ref="_primitive"/>
+				</xsd:choice>
+			</xsd:sequence>
+			<xsd:attribute name="inLabel" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:displayValue position="br"/>
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Name</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="outCost" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Output cost destination</pmt:attributeMappedName>
+						<pmt:attributeInfo lang="en">Variable used to cumulate costs.</pmt:attributeInfo>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="inCompliance" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Compliance</pmt:attributeMappedName>
+						<pmt:attributeType>Double</pmt:attributeType>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="inCost" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Cost</pmt:attributeMappedName>
+						<pmt:attributeType>Double</pmt:attributeType>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="inDiscountRate" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Discount rate</pmt:attributeMappedName>
+						<pmt:attributeType>Double</pmt:attributeType>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="inSensitivity" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Sensitivity</pmt:attributeMappedName>
+						<pmt:attributeType>Double</pmt:attributeType>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="inSpecificity" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Specificity</pmt:attributeMappedName>
+						<pmt:attributeType>Double</pmt:attributeType>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="inState" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">State</pmt:attributeMappedName>
+						<pmt:attributeInfo lang="en">Variable giving illness state of the indvidual.</pmt:attributeInfo>
+						<pmt:attributeType>Bool</pmt:attributeType>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="Meds_Treatment" substitutionGroup="_primitive">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en"></pmt:info>
+				<pmt:mappedName lang="en">Treatment</pmt:mappedName>
+				<pmt:returnType definedBy="staticType">Void</pmt:returnType>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence minOccurs="1" maxOccurs="1">
+				<xsd:choice>
+					<xsd:annotation>
+						<xsd:appinfo>
+							<pmt:childType definedBy="staticType">Any</pmt:childType>
+							<pmt:childBranchTag lang="en">Compliant</pmt:childBranchTag>
+						</xsd:appinfo>
+					</xsd:annotation>
+					<xsd:element ref="_primitive"/>
+				</xsd:choice>
+				<xsd:choice>
+					<xsd:annotation>
+						<xsd:appinfo>
+							<pmt:childType definedBy="staticType">Any</pmt:childType>
+							<pmt:childBranchTag lang="en">Not compliant</pmt:childBranchTag>
+						</xsd:appinfo>
+					</xsd:annotation>
+					<xsd:element ref="_primitive"/>
+				</xsd:choice>
+			</xsd:sequence>
+			<xsd:attribute name="inLabel" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:displayValue position="br"/>
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Name</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="outCost" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Output cost destination</pmt:attributeMappedName>
+						<pmt:attributeInfo lang="en">Variable used to cumulate costs.</pmt:attributeInfo>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="inCompliance" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Compliance</pmt:attributeMappedName>
+						<pmt:attributeType>Double</pmt:attributeType>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="inCost" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Cost</pmt:attributeMappedName>
+						<pmt:attributeType>Double</pmt:attributeType>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="inDiscountRate" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Discount rate</pmt:attributeMappedName>
+						<pmt:attributeType>Double</pmt:attributeType>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="inChargeNonCompliant" type="xsd:boolean" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<pmt:attributeMappedName lang="en">Charge if non-compliant</pmt:attributeMappedName>
+						<pmt:attributeInfo lang="en">If set to true, cost is also charged to non-compliant individuals.</pmt:attributeInfo>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	
+</xsd:schema>

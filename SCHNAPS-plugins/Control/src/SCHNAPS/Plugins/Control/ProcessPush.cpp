@@ -28,7 +28,10 @@ using namespace Control;
  * \brief Default constructor.
  */
 ProcessPush::ProcessPush() :
-	Primitive(0)
+	Primitive(0),
+	mLabel(""),
+	mDelay(NULL),
+	mDelay_Ref("")
 {}
 
 /*!
@@ -39,8 +42,42 @@ ProcessPush::ProcessPush(const ProcessPush& inOriginal) :
 	Primitive(0),
 	mLabel(inOriginal.mLabel.c_str()),
 	mTarget(inOriginal.mTarget),
-	mDelay(inOriginal.mDelay)
+	mDelay(inOriginal.mDelay),
+	mDelay_Ref(inOriginal.mDelay_Ref.c_str())
 {}
+
+/*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
+ProcessPush& ProcessPush::operator=(const ProcessPush& inOriginal) {
+	schnaps_StackTraceBeginM();
+	mLabel.assign(inOriginal.mLabel.c_str());
+	mTarget = inOriginal.mTarget;
+	mDelay_Ref.assign(inOriginal.mDelay_Ref.c_str());
+	
+	switch (mDelay_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mDelay = NULL;
+			break;
+		case '$':
+			// parameter value
+			mDelay = inOriginal.mDelay;
+			break;
+		default:
+			// direct value
+			mDelay = Core::castHandleT<Core::ULong>(inOriginal.mDelay->clone());
+			break;
+	}
+
+	return *this;
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Control::ProcessPush& SCHNAPS::Plugins::Control::ProcessPush::operator=(const SCHNAPS::Plugins::Control::ProcessPush&)");
+}
 
 /*!
  * \brief Read object from XML using system.
@@ -63,15 +100,15 @@ void ProcessPush::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
 		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
 	}
 
-	if (inIter->getAttribute("label").empty()) {
+	if (inIter->getAttribute("inLabel").empty()) {
 		throw schnaps_IOExceptionNodeM(*inIter, "label of the referenced process expected!");
 	}
-	mLabel = inIter->getAttribute("label");
+	mLabel.assign(inIter->getAttribute("inLabel"));
 
-	std::string lTarget = inIter->getAttribute("target");
-	if (lTarget.empty()) {
+	if (inIter->getAttribute("inTarget").empty()) {
 		throw schnaps_IOExceptionNodeM(*inIter, "target of the referenced process " + mLabel + " expected!");
 	}
+	std::string lTarget = inIter->getAttribute("inTarget");
 
 	if (lTarget == "current") {
 		mTarget = Simulation::Process::eCurrent;
@@ -83,11 +120,29 @@ void ProcessPush::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
 		throw schnaps_IOExceptionNodeM(*inIter, "ProcessPush " + mLabel + " unknown target: " + lTarget);
 	}
 
-	if (inIter->getAttribute("delay").empty()) {
-		mDelay = 0;
+	mDelay_Ref.assign(inIter->getAttribute("inDelay"));
+	if (mDelay_Ref.empty()) {
+		mDelay = new Core::ULong(0);
 	} else {
-		std::istringstream lISS(inIter->getAttribute("delay"));
-		lISS >> mDelay;
+		switch (mDelay_Ref[0]) {
+			case '@':
+				// individual variable value
+			case '#':
+				// environment variable value
+			case '%':
+				// local variable value
+				mDelay = NULL;
+				break;
+			case '$':
+				// parameter value
+				mDelay = Core::castHandleT<Core::ULong>(ioSystem.getParameters().getParameterHandle(mDelay_Ref.substr(1).c_str()));
+				break;
+			default:
+				// direct value
+				mDelay = new Core::ULong();
+				mDelay->readStr(mDelay_Ref);
+				break;
+		}
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Control::ProcessPush::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
@@ -99,17 +154,17 @@ void ProcessPush::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
  */
 void ProcessPush::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-		ioStreamer.insertAttribute("label", mLabel);
-		ioStreamer.insertAttribute("delay", mDelay);
+		ioStreamer.insertAttribute("inLabel", mLabel);
+		ioStreamer.insertAttribute("inDelay", mDelay_Ref);
 		switch (mTarget) {
 		case Simulation::Process::eCurrent:
-			ioStreamer.insertAttribute("target", "current");
+			ioStreamer.insertAttribute("inTarget", "current");
 			break;
 		case Simulation::Process::eEnvironment:
-			ioStreamer.insertAttribute("target", "environment");
+			ioStreamer.insertAttribute("inTarget", "environment");
 			break;
 		case Simulation::Process::eIndividuals:
-			ioStreamer.insertAttribute("target", "individuals");
+			ioStreamer.insertAttribute("inTarget", "individuals");
 			break;
 		default:
 			break;
@@ -122,11 +177,36 @@ void ProcessPush::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) c
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
+ * \throw  SCHNAPS::Core::RunTimeException if the method is undefined for the specified delay source.
  */
 Core::AnyType::Handle ProcessPush::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
-	lContext.getPushList().push_back(Simulation::Push(mLabel, mTarget, lContext.getClock().getValue()+mDelay));
+	
+	if (mDelay == NULL) {
+		unsigned long lDelay;
+		switch (mDelay_Ref[0]) {
+			case '@':
+				// individual variable value
+				lDelay = Core::castHandleT<Core::ULong>(lContext.getIndividual().getState().getVariableHandle(mDelay_Ref.substr(1).c_str()))->getValue();
+				break;
+			case '#':
+				// environment variable value
+				lDelay = Core::castHandleT<Core::ULong>(lContext.getEnvironment().getState().getVariableHandle(mDelay_Ref.substr(1).c_str()))->getValue();
+				break;
+			case '%':
+				// local variable value
+				lDelay = Core::castHandleT<Core::ULong>(lContext.getLocalVariableHandle(mDelay_Ref.substr(1).c_str()))->getValue();
+				break;
+			default:
+				throw schnaps_RunTimeExceptionM("The method is undefined for the specified delay source!");
+				break;
+		}
+		lContext.getPushList().push_back(Simulation::Push(mLabel, mTarget, lContext.getClock().getValue()+lDelay));
+	} else {
+		// direct value or parameter value
+		lContext.getPushList().push_back(Simulation::Push(mLabel, mTarget, lContext.getClock().getValue()+mDelay->getValue()));
+	}
 	return NULL;
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Control::ProcessPush::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
 }

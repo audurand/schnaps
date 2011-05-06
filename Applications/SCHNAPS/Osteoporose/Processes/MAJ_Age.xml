@@ -1,0 +1,10 @@
+  <Process label="MAJ_Age">
+	<LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_IfThenElse>
+        <Data_Value inValue="@Mort"/>
+        <Control_Nothing/>
+        <Operators_AddVariable inArgLeft="@Age" inArgRight="1" inArgRight_Type="Int" outResult="@Age"/>
+      </Control_IfThenElse>
+    </PrimitiveTree>
+  </Process>

@@ -28,7 +28,11 @@ using namespace Operators;
  * \brief Default constructor.
  */
 IsGreaterOrEqual::IsGreaterOrEqual() :
-		Primitive(2)
+	Core::Primitive(0),
+	mArgLeft_Ref(""),
+	mArgLeft(NULL),
+	mArgRight_Ref(""),
+	mArgRight(NULL)
 {}
 
 /*!
@@ -36,8 +40,46 @@ IsGreaterOrEqual::IsGreaterOrEqual() :
  * \param inOriginal A const reference to the original "is greater or equal" comparison operator.
  */
 IsGreaterOrEqual::IsGreaterOrEqual(const IsGreaterOrEqual& inOriginal) :
-	Primitive(2)
-{}
+	Core::Primitive(0),
+	mArgLeft_Ref(inOriginal.mArgLeft_Ref.c_str()),
+	mArgRight_Ref(inOriginal.mArgRight_Ref.c_str())
+{
+	switch (mArgLeft_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mArgLeft = NULL;
+			break;
+		case '$':
+			// parameter value
+			mArgLeft = inOriginal.mArgLeft;
+			break;
+		default:
+			// direct value
+			mArgLeft = Core::castHandleT<Core::Number>(inOriginal.mArgLeft->clone());
+	}
+	
+	switch (mArgRight_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mArgRight = NULL;
+			break;
+		case '$':
+			// parameter value
+			mArgRight = inOriginal.mArgRight;
+			break;
+		default:
+			// direct value
+			mArgRight = Core::castHandleT<Core::Number>(inOriginal.mArgRight->clone());
+	}
+}
 
 /*!
  * \brief  Copy operator.
@@ -45,8 +87,149 @@ IsGreaterOrEqual::IsGreaterOrEqual(const IsGreaterOrEqual& inOriginal) :
  */
 IsGreaterOrEqual& IsGreaterOrEqual::operator=(const IsGreaterOrEqual& inOriginal) {
 	schnaps_StackTraceBeginM();
+	mArgLeft_Ref.assign(inOriginal.mArgLeft_Ref.c_str());
+	mArgRight_Ref.assign(inOriginal.mArgRight_Ref.c_str());
+	
+	switch (mArgLeft_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mArgLeft = NULL;
+			break;
+		case '$':
+			// parameter value
+			mArgLeft = inOriginal.mArgLeft;
+			break;
+		default:
+			// direct value
+			mArgLeft = Core::castHandleT<Core::Number>(inOriginal.mArgLeft->clone());
+	}
+	
+	switch (mArgRight_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mArgRight = NULL;
+			break;
+		case '$':
+			// parameter value
+			mArgRight = inOriginal.mArgRight;
+			break;
+		default:
+			// direct value
+			mArgRight = Core::castHandleT<Core::Number>(inOriginal.mArgRight->clone());
+	}
+
 	return *this;
 	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::IsGreaterOrEqual& SCHNAPS::Plugins::Operators::IsGreaterOrEqual::operator=(const SCHNAPS::Plugins::Operators::IsGreaterOrEqual&)");
+}
+
+/*!
+ * \brief Read object from XML using system.
+ * \param inIter XML iterator of input document.
+ * \param ioSystem A reference to the system.
+ * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
+ * \throw SCHNAPS::Core::IOException if inArgLeft or inArgRight attributes are missing.
+ */
+void IsGreaterOrEqual::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
+	schnaps_StackTraceBeginM();
+	if (inIter->getType() != PACC::XML::eData) {
+		throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
+	}
+	if (inIter->getValue() != getName()) {
+		std::ostringstream lOSS;
+		lOSS << "tag <" << getName() << "> expected, but ";
+		lOSS << "got tag <" << inIter->getValue() << "> instead!";
+		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
+	}
+
+	// retrieve left argument
+	if (inIter->getAttribute("inArgLeft").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "left argument of subtract expected!");
+	}
+	mArgLeft_Ref.assign(inIter->getAttribute("inArgLeft"));
+	
+	switch (mArgLeft_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mArgLeft = NULL;
+			break;
+		case '$':
+			// parameter value
+			mArgLeft = Core::castHandleT<Core::Number>(ioSystem.getParameters().getParameterHandle(mArgLeft_Ref.substr(1)));
+			break;
+		default: {
+			// direct value
+			if (inIter->getAttribute("inArgLeft_Type").empty()) {
+				throw schnaps_IOExceptionNodeM(*inIter, "type of left argument expected!");
+			}
+			Core::Number::Alloc::Handle lAlloc = Core::castHandleT<Core::Number::Alloc>(ioSystem.getFactory().getAllocator(inIter->getAttribute("inArgLeft_Type")));
+			mArgLeft = Core::castHandleT<Core::Number>(lAlloc->allocate());
+			mArgLeft->readStr(mArgLeft_Ref);
+			break; }
+	}
+	
+	// retrieve right argument
+	if (inIter->getAttribute("inArgRight").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "right argument of subtract expected!");
+	}
+	mArgRight_Ref.assign(inIter->getAttribute("inArgRight"));
+	
+	switch (mArgRight_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mArgRight = NULL;
+			break;
+		case '$':
+			// parameter value
+			mArgRight = Core::castHandleT<Core::Number>(ioSystem.getParameters().getParameterHandle(mArgRight_Ref.substr(1)));
+			break;
+		default: {
+			// direct value
+			if (inIter->getAttribute("inArgRight_Type").empty()) {
+				throw schnaps_IOExceptionNodeM(*inIter, "type of right argument expected!");
+			}
+			Core::Number::Alloc::Handle lAlloc = Core::castHandleT<Core::Number::Alloc>(ioSystem.getFactory().getAllocator(inIter->getAttribute("inArgLeft_Type")));
+			mArgRight = Core::castHandleT<Core::Number>(lAlloc->allocate());
+			mArgRight->readStr(mArgRight_Ref);
+			break; }
+	}
+	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Operators::IsGreaterOrEqual::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
+}
+
+/*!
+ * \brief Write object content to XML.
+ * \param ioStreamer XML streamer to output document.
+ * \param inIndent Wether to indent or not.
+ */
+void IsGreaterOrEqual::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
+	schnaps_StackTraceBeginM();
+	ioStreamer.insertAttribute("inArgLeft", mArgLeft_Ref);
+	ioStreamer.insertAttribute("inArgRight", mArgRight_Ref);
+	
+	if (mArgLeft != NULL && mArgLeft_Ref[0] != '$') {
+		// direct value
+		ioStreamer.insertAttribute("inArgLeft_Type", mArgLeft->getType());
+	}
+	if (mArgRight != NULL && mArgRight_Ref[0] != '$') {
+		// direct value
+		ioStreamer.insertAttribute("inArgRight_Type", mArgRight->getType());
+	}
+	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Operators::IsGreaterOrEqual::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
 /*!
@@ -54,33 +237,61 @@ IsGreaterOrEqual& IsGreaterOrEqual::operator=(const IsGreaterOrEqual& inOriginal
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
+ * \throw  SCHNAPS::RunTimeException if the primitive is undefined for the specific left argument source.
+ * \throw  SCHNAPS::RunTimeException if the primitive is undefined for the specific right argument source.
  */
 Core::AnyType::Handle IsGreaterOrEqual::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	Core::Number::Handle lArg1 = Core::castHandleT<Core::Number>(getArgument(inIndex, 0, ioContext));
-	Core::Number::Handle lArg2 = Core::castHandleT<Core::Number>(getArgument(inIndex, 1, ioContext));
-	return new Core::Bool(lArg2->isLess(*lArg1) || lArg1->isEqual(*lArg2));
-	schnaps_StackTraceEndM(" SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Operators::Operators::IsGreaterOrEqual::execute(unsigned int,  SCHNAPS::Core::ExecutionContext&)");
-}
-
-/*!
- * \brief  Return the nth argument requested return type.
- * \param  inIndex Index of the current primitive.
- * \param  inN Index of the argument to get the type.
- * \param  ioContext A reference to the execution context.
- * \return A const reference to the type of the nth argument.
- * \throw  SCHNAPS::Core::AssertException if the argument index is out of bounds.
- */
-const std::string& IsGreaterOrEqual::getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const {
-	schnaps_StackTraceBeginM();
-	schnaps_UpperBoundCheckAssertM(inN, 1);
-	if (inN == 0) {
-		const static std::string lType("Core::Number");
-		return lType;
+	Core::Number::Handle lArgLeft, lArgRight;
+	
+	if (mArgLeft == NULL) {
+		switch (mArgLeft_Ref[0]) {
+			case '@':
+				// individual variable value
+				lArgLeft = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getIndividual().getState().getVariableHandle(mArgLeft_Ref.substr(1)));
+				break;
+			case '#':
+				// environment variable value
+				lArgLeft = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getEnvironment().getState().getVariableHandle(mArgLeft_Ref.substr(1))->clone());
+				break;
+			case '%':
+				// local variable value
+				lArgLeft = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::SimulationContext&>(ioContext).getLocalVariableHandle(mArgLeft_Ref.substr(1)));
+				break;
+			default:
+				throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific left argument source.");
+				break;
+		}
+	} else {
+		// parameter value or direct value
+		lArgLeft = Core::castHandleT<Core::Number>(mArgLeft->clone());
 	}
-	unsigned int lNodeIndex = getArgumentIndex(inIndex, 0, ioContext);
-	return ioContext.getPrimitiveTree()[lNodeIndex].mPrimitive->getReturnType(inIndex, ioContext);
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Operators::IsGreaterOrEqual::getArgType(unsigned int, unsigned int,  SCHNAPS::Core::ExecutionContext&) const");
+	
+	if (mArgRight == NULL) {
+		switch (mArgRight_Ref[0]) {
+			case '@':
+				// individual variable value
+				lArgRight = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getIndividual().getState().getVariableHandle(mArgRight_Ref.substr(1)));
+				break;
+			case '#':
+				// environment variable value
+				lArgRight = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getEnvironment().getState().getVariableHandle(mArgRight_Ref.substr(1))->clone());
+				break;
+			case '%':
+				// local variable value
+				lArgRight = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::SimulationContext&>(ioContext).getLocalVariableHandle(mArgRight_Ref.substr(1)));
+				break;
+			default:
+				throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific right argument source.");
+				break;
+		}
+	} else {
+		// parameter value or direct value
+		lArgRight = Core::castHandleT<Core::Number>(mArgRight->clone());
+	}
+	
+	return new Core::Bool(lArgRight->isLess(*lArgLeft) || lArgLeft->isEqual(*lArgRight));
+	schnaps_StackTraceEndM(" SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Operators::Operators::IsGreaterOrEqual::execute(unsigned int,  SCHNAPS::Core::ExecutionContext&)");
 }
 
 /*!

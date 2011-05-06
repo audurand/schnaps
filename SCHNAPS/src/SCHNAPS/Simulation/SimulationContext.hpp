@@ -86,6 +86,7 @@ protected:
 #endif
 
 public:
+
 	//! SimulationContext allocator type.
 	typedef Core::AllocatorT<SimulationContext, ExecutionContext::Alloc> Alloc;
 	//! SimulationContext handle type.
@@ -97,9 +98,16 @@ public:
 	SimulationContext(const SimulationContext& inOriginal);
 	explicit SimulationContext(const Core::System::Handle inSystem, const Clock::Handle inClock, const Environment::Handle inEnvironment);
 	virtual ~SimulationContext() {}
-
+	
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
-		return mName;
+		schnaps_StackTraceBeginM();
+		const static std::string lName("SimulationContext");
+		return lName;
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Simulation::SimulationContext::getName() const");
 	}
 
 	//! Read processes from XML.
@@ -116,8 +124,10 @@ public:
 	 * \brief Reset to a null individual and clears the list of push processes.
 	 */
 	void reset() {
+		schnaps_StackTraceBeginM();
 		mIndividual = NULL;
 		mPushList.clear();
+		schnaps_StackTraceEndM("void SCHNAPS::Simulation::SimulationContext::reset()");
 	}
 
 	/*!
@@ -125,7 +135,9 @@ public:
 	 * \return A const reference to all processes.
 	 */
 	const ProcessMap& getProcesses() const {
+		schnaps_StackTraceBeginM();
 		return mProcesses;
+		schnaps_StackTraceEndM("const SCHNAPS::Simulation::SimulationContext::ProcessMap& SCHNAPS::Simulation::SimulationContext::getProcesses() const");
 	}
 	
 	/*!
@@ -152,7 +164,9 @@ public:
 	 * \return A const reference to all clock observers.
 	 */
 	const ClockObservers& getClockObservers() const {
+		schnaps_StackTraceBeginM();
 		return mClockObservers;
+		schnaps_StackTraceEndM("const SCHNAPS::Simulation::SimulationContext::ClockObservers& SCHNAPS::Simulation::SimulationContext::getClockObservers() const");
 	}
 
 	/*!
@@ -160,7 +174,9 @@ public:
 	 * \return A const reference to all scenarios.
 	 */
 	const ScenarioMap& getScenarios() const {
+		schnaps_StackTraceBeginM();
 		return mScenarios;
+		schnaps_StackTraceEndM("const SCHNAPS::Simulation::SimulationContext::ScenarioMap& SCHNAPS::Simulation::SimulationContext::getScenarios() const");
 	}
 	
 	/*!
@@ -187,7 +203,9 @@ public:
 	 * \return A const reference to the list of push processes.
 	 */
 	const std::list<Push>& getPushList() const {
+		schnaps_StackTraceBeginM();
 		return mPushList;
+		schnaps_StackTraceEndM("const std::list<Push>& SCHNAPS::Simulation::SimulationContext::getPushList() const");
 	}
 
 	/*!
@@ -195,17 +213,19 @@ public:
 	 * \return A reference to the list of push processes.
 	 */
 	std::list<Push>& getPushList() {
+		schnaps_StackTraceBeginM();
 		return mPushList;
+		schnaps_StackTraceEndM("std::list<Push>& SCHNAPS::Simulation::SimulationContext::getPushList()");
 	}
 
 private:
 	// data structures
-	ProcessMap mProcesses;			//!< Stored processes.
-	ClockObservers mClockObservers;	//!< Clock observers.
-	ScenarioMap mScenarios;			//!< Scenario processes (label to scenario).
+	ProcessMap mProcesses;				//!< Stored processes.
+	ClockObservers mClockObservers;		//!< Clock observers.
+	ScenarioMap mScenarios;				//!< Scenario processes (label to scenario).
 
 	// current structures
-	std::list<Push> mPushList;		//!< List of pushes made while executing current individual.
+	std::list<Push> mPushList;			//!< List of pushes made while executing current individual.
 };
 } // end of Simulation namespace
 } // end of SCHNAPS namespace

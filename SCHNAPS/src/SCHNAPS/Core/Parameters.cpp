@@ -36,6 +36,10 @@ void Parameters::readWithSystem(PACC::XML::ConstIterator inIter, System& ioSyste
 	if ((inIter->getType() != PACC::XML::eData) || (inIter->getValue() != "Parameters")) {
 		throw schnaps_IOExceptionNodeM(*inIter, "tag <Parameters> expected!");
 	}
+			
+#ifdef SCHNAPS_FULL_DEBUG
+	std::cout << "Reading parameters\n";
+#endif
 
 	AnyType::Handle lValue;
 	Object::Alloc::Handle lAlloc;
@@ -56,6 +60,10 @@ void Parameters::readWithSystem(PACC::XML::ConstIterator inIter, System& ioSyste
 			} else {
 				mParametersMap[lChild->getAttribute("label")] = lValue;
 			}
+			
+#ifdef SCHNAPS_FULL_DEBUG
+			std::cout << "- " << lChild->getAttribute("label") << " = " << lValue->writeStr() << "\n";
+#endif
 		}
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Core::Parameters::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
@@ -90,13 +98,22 @@ void Parameters::readStr(const std::string& inStr) {
 	std::string lOption;
 	std::string::size_type lPos;
 
+	ParametersMap::iterator lIterParameters;
 	while (lTokenizer.getNextToken(lOption)) {
 		lPos = lOption.find("=");
 
-		if (lPos == std::string::npos) {
-			printf("Expected value of option %s!\n", lOption.c_str());
+		if (lPos == std::string::npos || lPos == lOption.size()-1) {
+			std::cout << "Expected value for parameter " <<  lOption.substr(0, lPos) << "!\n";
 		} else {
-			mParametersMap[lOption.substr(0, lPos)]->readStr(lOption.substr(lPos+1));
+			lIterParameters = mParametersMap.find(lOption.substr(0, lPos));
+			if (lIterParameters == mParametersMap.end()) {
+				std::ostringstream lOSS;
+				lOSS << "The parameter '" << lOption.substr(0, lPos);
+				lOSS << "' does not exist; ";
+				lOSS << "could not configure it.";
+				throw schnaps_RunTimeExceptionM(lOSS.str());
+			}
+			lIterParameters->second->readStr(lOption.substr(lPos+1));
 		}
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Core::Parameters::readStr(const std::string&)");
@@ -128,7 +145,7 @@ std::string Parameters::writeStr() const {
  */
 void Parameters::insertParameter(const std::string& inLabel, AnyType::Handle inValue) {
 	schnaps_StackTraceBeginM();
-	if(mParametersMap.find(inLabel) != mParametersMap.end()) {
+	if (mParametersMap.find(inLabel) != mParametersMap.end()) {
 		std::ostringstream lOSS;
 		lOSS << "The parameter '" << inLabel;
 		lOSS << "' is already present in the map of parameters; ";
@@ -149,7 +166,7 @@ void Parameters::insertParameter(const std::string& inLabel, AnyType::Handle inV
 void Parameters::setParameter(const std::string& inLabel, const AnyType::Handle inValue) {
 	schnaps_StackTraceBeginM();
 	ParametersMap::iterator lIterParameters = mParametersMap.find(inLabel);
-	if (lIterParameters != mParametersMap.end()) {
+	if (lIterParameters == mParametersMap.end()) {
 		std::ostringstream lOSS;
 		lOSS << "The parameter '" << inLabel << "' does not exist; ";
 		lOSS << "could not read its value.";

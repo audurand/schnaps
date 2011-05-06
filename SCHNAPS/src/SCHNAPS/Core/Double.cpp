@@ -93,8 +93,7 @@ bool Double::isLess(const Object& inRightObj) const {
  */
 void Double::readStr(const std::string& inStr) {
 	schnaps_StackTraceBeginM();
-	std::istringstream lISS(inStr);
-	lISS >> mValue;
+	mValue = SCHNAPS::str2dbl(inStr);
 	schnaps_StackTraceEndM("void SCHNAPS::Core::Double::readStr(std::string&)");
 }
 
@@ -121,85 +120,78 @@ AnyType::Handle Double::clone() const {
 }
 
 /*!
- *  \brief  Compute absolute value.
- *  \return A reference to the resulting number.
+ * \brief  Compute the absolute value.
+ * \return A handle to the resulting number.
  */
-Number& Double::abs() {
+Number::Handle Double::abs() {
 	schnaps_StackTraceBeginM();
-	mValue = std::fabs(mValue);
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Double::abs()");
+	return new Double(std::fabs(mValue));
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Double::abs()");
 }
 
 /*!
- *  \brief  Adds a number.
- *  \return A reference to the resulting number.
+ * \brief  Compute the addition a number.
+ * \return A handle to the resulting number.
  */
-Number& Double::add(Number& inRightNumber) {
+Number::Handle Double::add(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	Double lRightDouble = inRightNumber;
-	mValue += lRightDouble.getValue();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Double::add(SCHNAPS::Core::Number&)");
+	return new Double(mValue + lRightDouble.getValue());
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Double::add(SCHNAPS::Core::Number&)");
 }
 
 /*!
- *  \brief  Divide by a number.
- *  \return A reference to the resulting number.
+ * \brief  Compute the division by a number.
+ * \return A handle to the resulting number.
  */
-Number& Double::div(Number& inRightNumber) {
+Number::Handle Double::div(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	Double lRightDouble = inRightNumber;
-	mValue /= lRightDouble.getValue();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Double::div(SCHNAPS::Core::Number&)");
+	return new Double(mValue / lRightDouble.getValue());
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Double::div(SCHNAPS::Core::Number&)");
 }
 
 /*!
  *  \brief  Compute the base-e exponential function, which is the e number raised to the power x.
- *  \return A reference to the resulting number.
+ *  \return A handle to the resulting number.
  */
-Number& Double::exp() {
+Number::Handle Double::exp() {
 	schnaps_StackTraceBeginM();
-	mValue = std::exp(mValue);
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Double::exp()");
+	return new Double(std::exp(mValue));
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Double::exp()");
 }
 
 /*!
- *  \brief  Multiply by a number.
- *  \return A reference to the resulting number.
+ * \brief  Compute the multiplication by a number.
+ * \return A handle to the resulting number.
  */
-Number& Double::mult(Number& inRightNumber) {
+Number::Handle Double::mult(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	Double lRightDouble = inRightNumber;
-	mValue *= lRightDouble.getValue();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Double::mult(SCHNAPS::Core::Number& )");
+	return new Double(mValue * lRightDouble.getValue());
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Double::mult(SCHNAPS::Core::Number&)");
 }
 
 /*!
- *  \brief  Raise to the power exponent.
- *  \return A reference to the resulting number.
+ *  \brief  Compute the raise to the power exponent.
+ *  \return A handle to the resulting number.
  */
-Number& Double::pow(Number& inRightNumber) {
+Number::Handle Double::pow(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	Double lRightDouble = inRightNumber;
-	mValue = std::pow(mValue, lRightDouble.getValue());
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Double::pow(SCHNAPS::Core::Number&)");
+	return new Double(std::pow(mValue, lRightDouble.getValue()));
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Double::pow(SCHNAPS::Core::Number&)");
 }
 
 /*!
- *  \brief  Subtract a number.
- *  \return A reference to the resulting number.
+ * \brief  Compute the subtraction by a number.
+ * \return A handle to the resulting number.
  */
-Number& Double::sub(Number& inRightNumber) {
+Number::Handle Double::sub(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	Double lRightDouble = inRightNumber;
-	mValue -= lRightDouble.getValue();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Double::sub(SCHNAPS::Core::Number&)");
+	return new Double(mValue - lRightDouble.getValue());
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Double::sub(SCHNAPS::Core::Number&)");
 }
 
 /*!
@@ -209,16 +201,6 @@ Double::operator Double() const {
 	schnaps_StackTraceBeginM();
 	return *this;
 	schnaps_StackTraceEndM("SCHNAPS::Core::Double::operator Double() const");
-}
-
-/*!
- * \brief Casting operator to float.
- */
-Double::operator Float() const {
-	schnaps_StackTraceBeginM();
-	Float lFloat(static_cast<float>(mValue));
-	return lFloat;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Double::operator Float() const");
 }
 
 /*!

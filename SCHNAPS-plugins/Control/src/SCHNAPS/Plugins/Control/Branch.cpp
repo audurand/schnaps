@@ -40,10 +40,23 @@ Branch::Branch() :
 Branch::Branch(const Branch& inOriginal) :
 		mProbability_Ref(inOriginal.mProbability_Ref.c_str())
 {
-	if (mProbability_Ref.empty()) {
-		mProbability = Core::castHandleT<Core::Double>(inOriginal.mProbability->clone());
-	} else {
-		mProbability = inOriginal.mProbability;
+	switch (mProbability_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mProbability = NULL;
+			break;
+		case '$':
+			// parameter value
+			mProbability = inOriginal.mProbability;
+			break;
+		default:
+			// direct value
+			mProbability = Core::castHandleT<Core::Double>(inOriginal.mProbability->clone());
+			break;
 	}
 }
 
@@ -53,16 +66,29 @@ Branch::Branch(const Branch& inOriginal) :
  */
 Branch& Branch::operator=(const Branch& inOriginal) {
 	schnaps_StackTraceBeginM();
-	mProbability_Ref = inOriginal.mProbability_Ref.c_str();
-
-	if (mProbability_Ref.empty()) {
-		mProbability = Core::castHandleT<Core::Double>(inOriginal.mProbability->clone());
-	} else {
-		mProbability = inOriginal.mProbability;
+	mProbability_Ref.assign(inOriginal.mProbability_Ref.c_str());
+	
+	switch (mProbability_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mProbability = NULL;
+			break;
+		case '$':
+			// parameter value
+			mProbability = inOriginal.mProbability;
+			break;
+		default:
+			// direct value
+			mProbability = Core::castHandleT<Core::Double>(inOriginal.mProbability->clone());
+			break;
 	}
 
 	return *this;
-	schnaps_StackTraceEndM("Core::Branch& SCHNAPS::Plugins::Control::Branch::operator=(const SCHNAPS::Core::Branch&)");
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Control::Branch& SCHNAPS::Plugins::Control::Branch::operator=(const SCHNAPS::Plugins::Control::Branch&)");
 }
 
 /*!
@@ -70,7 +96,7 @@ Branch& Branch::operator=(const Branch& inOriginal) {
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.
  * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
- * \throw SCHNAPS::Core::IOException if probability attribute and probability.ref attribute are empty.
+ * \throw SCHNAPS::Core::IOException if inProbability attribute is missing.
  */
 void Branch::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
@@ -85,17 +111,29 @@ void Branch::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSys
 	}
 
 	// retrieve probability of executing the first branch
-	if (inIter->getAttribute("probability").empty()) {
-		if (inIter->getAttribute("probability.ref").empty()) {
-			throw schnaps_IOExceptionNodeM(*inIter, "probability of executing first branch expected!");
-		} else { // retrieve from parameter
-			mProbability_Ref = inIter->getAttribute("probability.ref");
-			std::stringstream lSS;
-			lSS << "ref." << mProbability_Ref;
-			mProbability = Core::castHandleT<Core::Double>(ioSystem.getParameters().getParameterHandle(lSS.str().c_str()));
-		}
-	} else { // retrieve from attribute
-		mProbability = new Core::Double(SCHNAPS::str2dbl(inIter->getAttribute("probability")));
+	if (inIter->getAttribute("inProbability").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "probability of executing first branch expected!");
+	}
+	mProbability_Ref = inIter->getAttribute("inProbability");
+	
+	switch (mProbability_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mProbability = NULL;
+			break;
+		case '$':
+			// parameter value
+			mProbability = Core::castHandleT<Core::Double>(ioSystem.getParameters().getParameterHandle(mProbability_Ref.substr(1)));
+			break;
+		default:
+			// direct value
+			mProbability = new Core::Double();
+			mProbability->readStr(mProbability_Ref);
+			break;
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Control::Branch::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
@@ -107,11 +145,7 @@ void Branch::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSys
  */
 void Branch::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-	if (mProbability_Ref.empty()) {
-		ioStreamer.insertAttribute("probability", mProbability->writeStr());
-	} else {
-		ioStreamer.insertAttribute("probability.ref", mProbability_Ref);
-	}
+	ioStreamer.insertAttribute("inProbability", mProbability_Ref);
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Control::Branch::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
@@ -123,8 +157,29 @@ void Branch::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const 
  */
 Core::AnyType::Handle Branch::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
+	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
 	double lRandom = ioContext.getRandomizer().rollUniform();
-	if (lRandom < mProbability->getValue()) {
+	double lProbability;
+	
+	switch (mProbability_Ref[0]) {
+		case '@':
+			// individual variable value
+			lProbability = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mProbability_Ref.substr(1))).getValue();
+			break;
+		case '#':
+			// environment variable value
+			lProbability = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mProbability_Ref.substr(1))).getValue();
+			break;
+		case '%':
+			// local variable value
+			lProbability = Core::castObjectT<const Core::Double&>(lContext.getLocalVariable(mProbability_Ref.substr(1))).getValue();
+			break;
+		default:
+			lProbability = mProbability->getValue();
+			break;
+	}
+	
+	if (lRandom < lProbability) {
 		// first branch
 		return getArgument(inIndex, 0, ioContext);
 	} else {

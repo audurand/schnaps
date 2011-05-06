@@ -1,27 +1,21 @@
 /*
- *  Open BEAGLE
- *  Copyright (C) 2001-2009 by Christian Gagne and Marc Parizeau
+ * RandomizerMulti.hpp
  *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  Contact:
- *  Laboratoire de Vision et Systemes Numeriques
- *  Departement de genie electrique et de genie informatique
- *  Universite Laval, Quebec, Canada, G1K 7P4
- *  http://vision.gel.ulaval.ca
- *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef SCHNAPS_Core_RandomizerMulti_hpp
@@ -57,20 +51,24 @@ public:
 	 *  \brief Get a handle to the Randomizer associated to the index \c inIndex.
 	 *  \param inIndex Index of the Randomizer.
 	 */
-	inline Randomizer::Handle operator[](unsigned int inIndex) {
-		return (*mRandomizers)[inIndex];
+	Randomizer::Handle operator[](unsigned int inIndex) {
+		schnaps_StackTraceBeginM();
+		return mRandomizers[inIndex];
+		schnaps_StackTraceEndM("SCHNAPS::Core::Randomizer::Handle SCHNAPS::Core::Randomizer::operator[](unsigned int)");
 	}
 
 	/*!
 	 *  \brief Return a const handle to the Randomizer associated to the index \c inIndex.
 	 *  \param inIndex Index of the Randomizer.
 	 */
-	inline const Randomizer::Handle operator[](unsigned int inIndex) const {
-		return (*mRandomizers)[inIndex];
+	const Randomizer::Handle operator[](unsigned int inIndex) const {
+		schnaps_StackTraceBeginM();
+		return mRandomizers[inIndex];
+		schnaps_StackTraceEndM("const SCHNAPS::Core::Randomizer::Handle SCHNAPS::Core::Randomizer::operator[](unsigned int) const");
 	}
 
 protected:
-	Randomizer::Bag::Handle mRandomizers; //!< Bag of random number generators, one per thread.
+	Randomizer::Bag mRandomizers; //!< Bag of random number generators, one per thread.
 };
 } // end of Core namespace
 } // end of SCHNAPS namespace

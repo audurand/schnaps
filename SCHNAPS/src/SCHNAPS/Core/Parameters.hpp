@@ -89,7 +89,7 @@ public:
 	const AnyType& getParameter(const std::string& inLabel) const {
 		schnaps_StackTraceBeginM();
 		ParametersMap::const_iterator lIterParameters = mParametersMap.find(inLabel);
-		if(lIterParameters == mParametersMap.end()) {
+		if (lIterParameters == mParametersMap.end()) {
 			std::ostringstream lOSS;
 			lOSS << "The parameter '" << inLabel << "' does not exist; ";
 			lOSS << "could not get it.";
@@ -105,18 +105,16 @@ public:
 	 * \param  inLabel A const reference to the label of the parameter.
 	 * \return A const handle to the parameter.
 	 * \throw  SCHNAPS::Core::RunTimeException if the parameter does not exist.
-	 * \throw  SCHNAPS::Core::AssertException if the parameter is NULL.
 	 */
 	const AnyType::Handle getParameterHandle(const std::string& inLabel) const {
 		schnaps_StackTraceBeginM();
 		ParametersMap::const_iterator lIterParameters = mParametersMap.find(inLabel);
-		if(lIterParameters == mParametersMap.end()) {
+		if (lIterParameters == mParametersMap.end()) {
 			std::ostringstream lOSS;
 			lOSS << "The parameter '" << inLabel << "' does not exist; ";
 			lOSS << "could not get it.";
 			throw schnaps_RunTimeExceptionM(lOSS.str());
 		}
-		schnaps_NonNullPointerAssertM(lIterParameters->second);
 		return lIterParameters->second;
 		schnaps_StackTraceEndM("const SCHNAPS::Core::AnyType::Handle SCHNAPS::Core::Parameters::getParameter(const std::string&) const");
 	}

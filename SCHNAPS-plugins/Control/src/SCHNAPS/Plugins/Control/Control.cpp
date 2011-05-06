@@ -21,7 +21,7 @@
 #include "SCHNAPS/SCHNAPS.hpp"
 #include "SCHNAPS/Plugins/Control/Control.hpp"
 
-SCHNAPS_Plugin_BeginDefinitionM("Control", "1.0");
+SCHNAPS_Plugin_BeginDefinitionM("Control", "2.0.0");
 
 SCHNAPS_Plugin_AddAllocM("Control_Branch", SCHNAPS::Plugins::Control::Branch::Alloc);
 SCHNAPS_Plugin_AddAllocM("Control_BranchMulti", SCHNAPS::Plugins::Control::BranchMulti::Alloc);

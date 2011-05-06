@@ -68,18 +68,9 @@ Generator::Generator(Core::System::Handle inSystem, Clock::Handle inClock, Envir
 	mEnvironment(inEnvironment),
 	mParallel(new PACC::Threading::Condition()),
 	mSequential(new PACC::Threading::Semaphore(0))
-{}
-
-/*!
- * \brief Destructor.
- */
-Generator::~Generator() {
-	for (unsigned int i = 0; i < mSubThreads.size(); i++) {
-		mSubThreads[i]->setPosition(GenerationThread::eEND);
-	}
-	mParallel->lock();
-	mParallel->broadcast();
-	mParallel->unlock();
+{
+	mContext.push_back(new GenerationContext(inSystem, inClock, inEnvironment));
+	mContext.back()->setThreadNb(0);
 }
 
 /*!
@@ -151,11 +142,10 @@ Individual::Bag::Handle Generator::generate(const std::string& inProfile, unsign
 
 	// compute variables to erase
 	Core::StringArray::Handle lEraseVariable = new Core::StringArray();
-	std::vector<std::string> lVariables = lProfile->getDemography().getVariableList();
-	for (unsigned int i = 0; i < lVariables.size(); i++) {
-		if (lProfile->getIndividualModel().find(lVariables[i]) == lProfile->getIndividualModel().end()) {
+	for (unsigned int i = 0; i < lProfile->getDemography().getVariablesSize(); i++) {
+		if (lProfile->getIndividualModel().find(lProfile->getDemography().getVariable(i).mLabel) == lProfile->getIndividualModel().end()) {
 			// if variable not in individual model, add to variable list for thrash
-			lEraseVariable->push_back(lVariables[i]);
+			lEraseVariable->push_back(lProfile->getDemography().getVariable(i).mLabel);
 		}
 	}
 
@@ -164,13 +154,17 @@ Individual::Bag::Handle Generator::generate(const std::string& inProfile, unsign
 	Core::StringArray lBackupState;
 
 	// for computing threads sub-size to generate
-	unsigned int lQuotient = inSize / mSubThreads.size();
-	unsigned int lRemainder = inSize % mSubThreads.size();
+	unsigned int lQuotient = inSize / mContext.size();
+	unsigned int lRemainder = inSize % mContext.size();
 	unsigned int lSubSize;
 
-	// init Threads
-	for (unsigned int i = 0; i < mSubThreads.size(); i++) {
+	// create subthreads
+	for (unsigned int i = 0; i < mContext.size(); i++) {
 		mContext[i]->setGenProfile(Core::castHandleT<GenProfile>(lProfile->deepCopy(*mSystem)));
+		
+		// create subthread
+		mSubThreads.push_back(new GenerationThread(mParallel, mSequential, mContext[i]));
+		mSequential->wait();
 
 		// compute sub-size
 		lSubSize = lQuotient;
@@ -178,8 +172,7 @@ Individual::Bag::Handle Generator::generate(const std::string& inProfile, unsign
 			lSubSize++;
 		}
 
-		mSubThreads[i]->setPosition(GenerationThread::eGENERATION);
-		mSubThreads[i]->setGenerationInfo(lSubSize, inPrefix, inStartingIndex, lEraseVariable);
+		mSubThreads.back()->setGenerationInfo(lSubSize, inPrefix, inStartingIndex, lEraseVariable);
 		inStartingIndex += lSubSize;
 
 		// backup and reset randomizer info
@@ -190,8 +183,9 @@ Individual::Bag::Handle Generator::generate(const std::string& inProfile, unsign
 
 	// build individuals
 #ifdef SCHNAPS_FULL_DEBUG
-		printf("Generating %u individuals\n", inSize);
+		std::cout << "Generating " << inSize <<  " individuals\n";
 #endif
+	// launch subthreads and wait
 	mParallel->lock();
 	mParallel->broadcast();
 	mParallel->unlock();
@@ -199,6 +193,7 @@ Individual::Bag::Handle Generator::generate(const std::string& inProfile, unsign
 		mSequential->wait();
 	}
 
+	// store result for output
 	Individual::Bag::Handle lIndividuals = new Individual::Bag();
 	lIndividuals->reserve(inSize);
 	for (unsigned int i = 0; i < mSubThreads.size(); i++) {
@@ -209,6 +204,9 @@ Individual::Bag::Handle Generator::generate(const std::string& inProfile, unsign
 		mRandomizerCurrentState[i] = mSystem->getRandomizer(i).getState();
 		mSystem->getRandomizer(i).reset(lBackupSeed[i], lBackupState[i]);
 	}
+	
+	// terminate and destroy threads
+	mSubThreads.clear();
 
 	return lIndividuals;
 	schnaps_StackTraceEndM("SCHNAPS::Simulation::Individual::Bag::Handle SCHNAPS::Simulation::Generator::generate(const std::string&, unsigned int, const std::string&, unsigned int)");
@@ -226,9 +224,6 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 
 	inThread->getIndividuals().clear();
 	inThread->getIndividuals().reserve(inThread->getSize());
-	
-	std::vector<std::string> lDemographyVariables = lContext->getGenProfile().getDemography().getVariableList();
-	std::vector<std::string> lSimulationVariables = lContext->getGenProfile().getSimulationVariables().getVariableList();
 
 	for (unsigned int i = 0; i < inThread->getSize(); i++) {
 		lID.str("");
@@ -237,28 +232,45 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 		inThread->getIndividuals().push_back(new Individual(lID.str()));
 		lContext->setIndividual(inThread->getIndividuals().back());
 
+		// add demography variables
 		do {
 			lContext->getIndividual().getState().clear();
 			
-			for (unsigned int j = 0; j < lDemographyVariables.size(); j++) {
-				if (lContext->getIndividual().getState().hasVariable(lDemographyVariables[j]) == false) {
-					// the variable has not been computed yet for this individual
-					lContext->getIndividual().getState().insertVariable(
-						lDemographyVariables[j],
-						Core::castHandleT<Core::Atom>(lContext->getGenProfile().getDemography().getVariableInitTree(lDemographyVariables[j]).interpret(*lContext)));
+			for (unsigned int j = 0; j < lContext->getGenProfile().getDemography().getVariablesSize(); j++) {
+				// set local variables
+				for (unsigned int k = 0; k < lContext->getGenProfile().getDemography().getVariable(j).mLocalVariables.size(); k++) {
+					lContext->insertLocalVariable(
+						lContext->getGenProfile().getDemography().getVariable(j).mLocalVariables[k].first,
+						Core::castHandleT<Core::AnyType>(lContext->getGenProfile().getDemography().getVariable(j).mLocalVariables[k].second->clone()));
 				}
+				
+				// compute variable init value
+				lContext->getIndividual().getState().insertVariable(
+					lContext->getGenProfile().getDemography().getVariable(j).mLabel,
+					lContext->getGenProfile().getDemography().getVariable(j).mInitTree->interpret(*lContext));
+				
+				// clear local variables
+				lContext->clearLocalVariables();
 			}
 			// retry until a valid individual is created
 		} while (Core::castHandleT<Core::Bool>(lContext->getGenProfile().getAcceptFunction().interpret(*lContext))->getValue() == false);
 
 		// add simulation variables
-		for (unsigned int j = 0; j < lSimulationVariables.size(); j++) {
-			if (lContext->getIndividual().getState().hasVariable(lSimulationVariables[j]) == false) {
-				// the variable has not been computed yet for this individual
-				lContext->getIndividual().getState().insertVariable(
-					lSimulationVariables[j],
-					Core::castHandleT<Core::Atom>(lContext->getGenProfile().getSimulationVariables().getVariableInitTree(lSimulationVariables[j]).interpret(*lContext)));
+		for (unsigned int j = 0; j < lContext->getGenProfile().getSimulationVariables().getVariablesSize(); j++) {
+			// set local variables
+			for (unsigned int k = 0; k < lContext->getGenProfile().getSimulationVariables().getVariable(j).mLocalVariables.size(); k++) {
+				lContext->insertLocalVariable(
+					lContext->getGenProfile().getSimulationVariables().getVariable(j).mLocalVariables[k].first,
+					Core::castHandleT<Core::AnyType>(lContext->getGenProfile().getDemography().getVariable(j).mLocalVariables[k].second->clone()));
 			}
+			
+			// compute variable init value
+			lContext->getIndividual().getState().insertVariable(
+				lContext->getGenProfile().getSimulationVariables().getVariable(j).mLabel,
+				lContext->getGenProfile().getSimulationVariables().getVariable(j).mInitTree->interpret(*lContext));
+			
+			// clear local variables
+			lContext->clearLocalVariables();
 		}
 
 		// erase non-wanted demographic variables
@@ -276,24 +288,37 @@ void Generator::refresh() {
 	schnaps_StackTraceBeginM();
 	// create one context per thread + sub threads
 	unsigned int lNbThreads_new = Core::castObjectT<const Core::UInt&>(mSystem->getParameters().getParameter("threads.generator")).getValue();
+	if (lNbThreads_new < 1) {
+		std::ostringstream lOSS;
+		lOSS << "The number of generation threads must be higher or equal to 1 (current new value = " << lNbThreads_new << ");";
+		lOSS << "the number of generation threads could not be set.\n";
+		throw schnaps_RunTimeExceptionM(lOSS.str());
+	}
+	
 	unsigned int lNbThreads_old = mContext.size();
 
 	if (lNbThreads_old < lNbThreads_new) {
 		for (unsigned int i = lNbThreads_old; i < lNbThreads_new; i++) {
+			// create new contexts
 			mContext.push_back(new GenerationContext(mSystem, mClock, mEnvironment));
 			mContext.back()->setThreadNb(i);
-
-			mSubThreads.push_back(new GenerationThread(mParallel, mSequential, mContext.back()));
-			mSequential->wait();
+			
+			// add simulator randomizers information
+			mRandomizerInitSeed.push_back(0);
+			mRandomizerInitState.push_back("");
 		}
 	} else if (lNbThreads_new < lNbThreads_old) {
-		// TODO: remove unused contexts and subthreads
+		for (unsigned int i = lNbThreads_old; i > lNbThreads_new; i--) {
+			// remove unused contexts
+			mContext.pop_back();
+			
+			// remove unused randomizers information
+			mRandomizerInitSeed.pop_back();
+			mRandomizerInitState.pop_back();
+		}
 	}
 	
 	// update generator randomizers information
-	mRandomizerInitSeed.resize(lNbThreads_new, 0);
-	mRandomizerInitState.resize(lNbThreads_new, "");
-
 	mRandomizerCurrentSeed = mRandomizerInitSeed;
 	mRandomizerCurrentState = mRandomizerInitState;
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Generator::refresh()");

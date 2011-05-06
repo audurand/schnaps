@@ -1,8 +1,8 @@
 /*
  * GenerationThread.hpp
  *
- *  Created on: 2010-04-10
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,31 +33,25 @@ namespace Simulation {
  *  \class GenerationThread SCHNAPS/Simulation/GenerationThread.hpp "SCHNAPS/Simulation/GenerationThread.hpp"
  *  \brief GenerationThread class.
  */
-class GenerationThread: public SCHNAPS::Core::Object, public PACC::Threading::Thread {
+class GenerationThread: public Core::Object, public PACC::Threading::Thread {
 public:
 	//! GenerationThread allocator type.
-	typedef SCHNAPS::Core::AllocatorT<GenerationThread, SCHNAPS::Core::Object::Alloc> Alloc;
+	typedef Core::AllocatorT<GenerationThread, Core::Object::Alloc> Alloc;
 	//! GenerationThread handle type.
-	typedef SCHNAPS::Core::PointerT<GenerationThread, SCHNAPS::Core::Object::Handle> Handle;
+	typedef Core::PointerT<GenerationThread, Core::Object::Handle> Handle;
 	//! GenerationThread bag type.
-	typedef SCHNAPS::Core::ContainerT<GenerationThread, SCHNAPS::Core::Object::Bag> Bag;
-
-	enum Position {eGENERATION, eEND};
+	typedef Core::ContainerT<GenerationThread, Core::Object::Bag> Bag;
 
 	explicit GenerationThread(PACC::Threading::Condition* inParallel,
 								PACC::Threading::Semaphore* inSequential,
 								GenerationContext::Handle inContext);
 	~GenerationThread();
 
-	void setGenerationInfo(unsigned int inSize, std::string inPrefix, unsigned int inStartingIndex, SCHNAPS::Core::StringArray::Handle inEraseVariables) {
+	void setGenerationInfo(unsigned int inSize, std::string inPrefix, unsigned int inStartingIndex, Core::StringArray::Handle inEraseVariables) {
 		mSize = inSize;
 		mPrefix = inPrefix.c_str();
 		mStartingIndex = inStartingIndex;
 		mEraseVariables = inEraseVariables;
-	}
-
-	void setPosition(Position inPosition) {
-		mPosition = inPosition;
 	}
 
 	GenerationContext::Handle getContextHandle() {
@@ -76,7 +70,7 @@ public:
 		return mStartingIndex;
 	}
 
-	const SCHNAPS::Core::StringArray& getEraseVariables() const {
+	const Core::StringArray& getEraseVariables() const {
 		schnaps_NonNullPointerAssertM(mEraseVariables);
 		return *mEraseVariables;
 	}
@@ -101,9 +95,7 @@ private:
 	unsigned int mSize;							//!< Size of population to generate (by this thread).
 	std::string mPrefix;						//!< Individual ID prefix.
 	unsigned int mStartingIndex;				//!< First individual index (concatenate with prefix to get ID).
-	SCHNAPS::Core::StringArray::Handle mEraseVariables;	//!< Individual variables to erase.
-
-	Position mPosition;							//!< Thread position in generation cycle.
+	Core::StringArray::Handle mEraseVariables;	//!< Individual variables to erase.
 
 	// Result
 	Individual::Bag::Handle mIndividuals;

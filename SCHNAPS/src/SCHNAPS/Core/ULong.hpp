@@ -30,7 +30,6 @@ namespace Core {
 
 // forward declaration
 class Double;
-class Float;
 class Int;
 class Long;
 class UInt;
@@ -98,22 +97,20 @@ public:
 	virtual AnyType::Handle clone() const;
 
 	//! Compute absolute value.
-	virtual Number& abs();
-	//! Add a number.
-	virtual Number& add(Number& inRightNumber);
-	//! Divide by a number.
-	virtual Number& div(Number& inRightNumber);
-	//! Comute the modulo by a number.
-	virtual Number& mod(Number& inRightNumber);
-	//! Multiply by a number.
-	virtual Number& mult(Number& inRightNumber);
-	//! Subtract a number.
-	virtual Number& sub(Number& inRightNumber);
+	virtual Number::Handle abs();
+	//! Compute the addition with a number.
+	virtual Number::Handle add(Number& inRightNumber);
+	//! Compute the division by a number.
+	virtual Number::Handle div(Number& inRightNumber);
+	//! Compute the modulo by a number.
+	virtual Number::Handle mod(Number& inRightNumber);
+	//! Compute the multiplication by a number.
+	virtual Number::Handle mult(Number& inRightNumber);
+	//! Compute the subtraction by a number.
+	virtual Number::Handle sub(Number& inRightNumber);
 
 	//! Casting operator to double.
 	operator Double() const;
-	//! Casting operator to float.
-	operator Float() const;
 	//! Casting operator to integer.
 	operator Int() const;
 	//! Casting operator to long.

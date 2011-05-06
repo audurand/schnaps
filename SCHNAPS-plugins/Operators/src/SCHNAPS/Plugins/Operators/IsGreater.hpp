@@ -31,15 +31,15 @@ namespace Operators {
 
 /*!
  *  \class IsGreater SCHNAPS/Plugins/Operators/IsGreater.hpp "SCHNAPS/Plugins/Operators/IsGreater.hpp"
- *  \brief Comparison operator "is greater".
+ *  \brief Compare (is greater) left and right arguments.
  */
 class IsGreater: public Core::Primitive {
 public:
-	//! IsIsGreater allocator type.
+	//! IsGreater allocator type.
 	typedef Core::AllocatorT<IsGreater, Core::Primitive::Alloc> Alloc;
-	//! IsIsGreater handle type.
+	//! IsGreater handle type.
 	typedef Core::PointerT<IsGreater, Core::Primitive::Handle> Handle;
-	//! IsIsGreater IsIsGreater type.
+	//! IsGreater bag type.
 	typedef Core::ContainerT<IsGreater, Core::Primitive::Bag> Bag;
 
 	IsGreater();
@@ -60,12 +60,21 @@ public:
 		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::IsGreater::getName() const");
 	}
 
+	//! Read object from XML using system.
+	virtual	void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Write content of object to XML.
+	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
+
 	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
-	//! Return the nth argument requested return type.
-	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const;
 	//! Return the primitive return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+
+private:
+	std::string mArgLeft_Ref;		//!< Reference to left argument in comparison.
+	Core::Number::Handle mArgLeft;	//!< A handle to left argument in comparison.
+	std::string mArgRight_Ref;		//!< Reference to right argument in comparison.
+	Core::Number::Handle mArgRight;	//!< A handle to right argument in comparison.
 };
 } // end of Operators namespace
 } // end of Plugins namespace

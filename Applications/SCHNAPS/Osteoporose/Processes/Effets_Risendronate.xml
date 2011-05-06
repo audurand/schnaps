@@ -1,0 +1,22 @@
+  <Process label="Effets_Risendronate">
+	<LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
+        <Control_Sequential>
+          <Operators_MultVariable inArgLeft="@Probabilite_Fracture_Hanche" inArgRight="$ref.effet_risendronate_hanche_normale" outResult="@Probabilite_Fracture_Hanche"/>
+          <Operators_MultVariable inArgLeft="@Probabilite_Fracture_Poignet" inArgRight="$ref.effet_risendronate_poignet_normale" outResult="@Probabilite_Fracture_Poignet"/>
+          <Operators_MultVariable inArgLeft="@Probabilite_Fracture_Colonne" inArgRight="$ref.effet_risendronate_colonne_normale" outResult="@Probabilite_Fracture_Colonne"/>
+        </Control_Sequential>
+        <Control_Sequential>
+          <Operators_MultVariable inArgLeft="@Probabilite_Fracture_Hanche" inArgRight="$ref.effet_risendronate_hanche_osteo" outResult="@Probabilite_Fracture_Hanche"/>
+          <Operators_MultVariable inArgLeft="@Probabilite_Fracture_Poignet" inArgRight="$ref.effet_risendronate_poignet_osteo" outResult="@Probabilite_Fracture_Poignet"/>
+          <Operators_MultVariable inArgLeft="@Probabilite_Fracture_Colonne" inArgRight="$ref.effet_risendronate_colonne_osteo" outResult="@Probabilite_Fracture_Colonne"/>
+        </Control_Sequential>
+        <Control_Sequential>
+          <Operators_MultVariable inArgLeft="@Probabilite_Fracture_Hanche" inArgRight="$ref.effet_risendronate_hanche_osteo" outResult="@Probabilite_Fracture_Hanche"/>
+          <Operators_MultVariable inArgLeft="@Probabilite_Fracture_Poignet" inArgRight="$ref.effet_risendronate_poignet_osteo" outResult="@Probabilite_Fracture_Poignet"/>
+          <Operators_MultVariable inArgLeft="@Probabilite_Fracture_Colonne" inArgRight="$ref.effet_risendronate_colonne_osteo" outResult="@Probabilite_Fracture_Colonne"/>
+        </Control_Sequential>
+      </Control_ChoiceIsEqual>
+    </PrimitiveTree>
+  </Process>

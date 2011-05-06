@@ -55,7 +55,7 @@ ProcessCall::ProcessCall(const std::string& inLabel) :
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.
  * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
- * \throw SCHNAPS::Core::IOException if label attribute is missing.
+ * \throw SCHNAPS::Core::IOException if inLabel attribute is missing.
  */
 void ProcessCall::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
@@ -68,11 +68,11 @@ void ProcessCall::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
 		lOSS << "got tag <" << inIter->getValue() << "> instead!";
 		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
 	}
-	if (inIter->getAttribute("label").empty()) {
+	
+	if (inIter->getAttribute("inLabel").empty()) {
 		throw schnaps_IOExceptionNodeM(*inIter, "label of called process expected!");
 	}
-
-	mLabel = inIter->getAttribute("label");
+	mLabel.assign(inIter->getAttribute("inLabel"));
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Control::ProcessCall::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
@@ -83,7 +83,7 @@ void ProcessCall::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
  */
 void ProcessCall::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-	ioStreamer.insertAttribute("label", mLabel);
+	ioStreamer.insertAttribute("inLabel", mLabel);
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Control::ProcessCall::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
@@ -99,14 +99,18 @@ Core::AnyType::Handle ProcessCall::execute(unsigned int inIndex, Core::Execution
 	Core::PrimitiveTree::Handle lCurrentPrimitiveTree;
 	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
 
-	// save current primitive tree
+	// save current primitive tree and local variables
 	lCurrentPrimitiveTree = lContext.getPrimitiveTreeHandle();
+	Simulation::SimulationContext::LocalVariablesMap lCurrentLocalVariables = lContext.getLocalVariables();
 
-	// process called primitive tree
+	// execute process called
 	lResult = lContext.getProcessHandle(mLabel)->execute(ioContext);
 
-	// restore current primitive tree
+	// restore current primitive tree and local variables
 	lContext.setPrimitiveTree(lCurrentPrimitiveTree);
+	for (Simulation::SimulationContext::LocalVariablesMap::const_iterator lIt = lCurrentLocalVariables.begin(); lIt != lCurrentLocalVariables.end(); lIt++) {
+		lContext.insertLocalVariable(lIt->first, lIt->second);
+	}
 
 	return lResult;
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Control::ProcessCall::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");

@@ -30,7 +30,8 @@ using namespace Meds;
 Event::Event() :
 	Primitive(2),
 	mLabel(""),
-	mProbabilityVariableLabel("")
+	mProbability_Ref(""),
+	mProbability(NULL)
 {}
 
 /*!
@@ -40,16 +41,66 @@ Event::Event() :
 Event::Event(const Event& inOriginal) :
 	Primitive(2),
 	mLabel(inOriginal.mLabel.c_str()),
-	mProbabilityVariableLabel(inOriginal.mProbabilityVariableLabel.c_str())
-{}
+	mProbability_Ref(inOriginal.mProbability_Ref.c_str())
+{
+	switch (mProbability_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mProbability = NULL;
+			break;
+		case '$':
+			// parameter value
+			mProbability = inOriginal.mProbability;
+			break;
+		default:
+			// direct value
+			mProbability = Core::castHandleT<Core::Double>(inOriginal.mProbability->clone());
+			break;
+	}
+}
+
+/*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
+Event& Event::operator=(const Event& inOriginal) {
+	schnaps_StackTraceBeginM();
+	mLabel.assign(inOriginal.mLabel.c_str());
+	mProbability_Ref.assign(inOriginal.mProbability_Ref.c_str());
+	
+	switch (mProbability_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mProbability = NULL;
+			break;
+		case '$':
+			// parameter value
+			mProbability = inOriginal.mProbability;
+			break;
+		default:
+			// direct value
+			mProbability = Core::castHandleT<Core::Double>(inOriginal.mProbability->clone());
+			break;
+	}
+
+	return *this;
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Meds::Event& SCHNAPS::Plugins::Meds::Event::operator=(const SCHNAPS::Plugins::Meds::Event&)");
+}
 
 /*!
  * \brief Read object from XML using system.
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.
  * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
- * \throw SCHNAPS::Core::IOException if label attribute is missing.
- * \throw SCHNAPS::Core::IOException if probabilityVariableLabel attribute is missing.
+ * \throw SCHNAPS::Core::IOException if inLabel or inProbability attributes are missing.
  */
 void Event::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
@@ -64,16 +115,36 @@ void Event::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSyst
 	}
 
 	// retrieve label
-	if (inIter->getAttribute("label").empty()) {
+	if (inIter->getAttribute("inLabel").empty()) {
 		throw schnaps_IOExceptionNodeM(*inIter, "label of event expected!");
 	}
-	mLabel = inIter->getAttribute("label");
+	mLabel.assign(inIter->getAttribute("inLabel"));
 
-	// retrieve label of individual variable associated to event probability
-	if (inIter->getAttribute("probabilityVariableLabel").empty()) {
-		throw schnaps_IOExceptionNodeM(*inIter, "label of individual variable associated to event probability expected!");
+	// retrieve event probability
+	if (inIter->getAttribute("inProbability").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "event probability expected!");
 	}
-	mProbabilityVariableLabel = inIter->getAttribute("probabilityVariableLabel");
+	mProbability_Ref.assign(inIter->getAttribute("inProbability"));
+	
+	switch (mProbability_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mProbability = NULL;
+			break;
+		case '$':
+			// parameter value
+			mProbability = Core::castHandleT<Core::Double>(ioSystem.getParameters().getParameterHandle(mProbability_Ref.substr(1)));
+			break;
+		default:
+			// direct value
+			mProbability = new Core::Double();
+			mProbability->readStr(mProbability_Ref);
+			break;
+	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Meds::Event::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
@@ -84,8 +155,8 @@ void Event::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSyst
  */
 void Event::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-	ioStreamer.insertAttribute("label", mLabel);
-	ioStreamer.insertAttribute("probabilityVariableLabel", mProbabilityVariableLabel);
+	ioStreamer.insertAttribute("inLabel", mLabel);
+	ioStreamer.insertAttribute("inProbability", mProbability_Ref);
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Meds::Event::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
@@ -94,23 +165,35 @@ void Event::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
- * \throw  SCHNAPS::Core::RunTimeException if the primitive is not defined for the specific context.
  */
 Core::AnyType::Handle Event::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	if (ioContext.getName() == "SimulationContext") {
-		Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
-
-		// get event probability for the individual
-		double lProbability = Core::castHandleT<Core::Double>(lContext.getIndividual().getState().getVariableHandle(mProbabilityVariableLabel))->getValue();
-
-		if (ioContext.getRandomizer().rollUniform() <= lProbability) { // event
-			getArgument(inIndex, 0, ioContext);
-		} else { // no event
-			getArgument(inIndex, 1, ioContext);
-		}
-	} else {
-		throw schnaps_RunTimeExceptionM("Event primitive is not defined for context '" + ioContext.getName() + "'!");
+	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
+	double lProbability;
+	
+	switch (mProbability_Ref[0]) {
+		case '@':
+			// individual variable value
+			lProbability = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mProbability_Ref.substr(1))).getValue();
+			break;
+		case '#':
+			// environment variable value
+			lProbability = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mProbability_Ref.substr(1))).getValue();
+			break;
+		case '%':
+			// local variable value
+			lProbability = Core::castObjectT<const Core::Double&>(lContext.getLocalVariable(mProbability_Ref.substr(1))).getValue();
+			break;
+		default:
+			// parameter value or direct value
+			lProbability = mProbability->getValue();
+			break;
+	}
+	
+	if (ioContext.getRandomizer().rollUniform() <= lProbability) { // event
+		getArgument(inIndex, 0, ioContext);
+	} else { // no event
+		getArgument(inIndex, 1, ioContext);
 	}
 	return NULL;
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Meds::Event::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");

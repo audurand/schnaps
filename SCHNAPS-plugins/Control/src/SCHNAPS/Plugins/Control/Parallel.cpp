@@ -58,11 +58,11 @@ Parallel& Parallel::operator=(const Parallel& inOriginal) {
  */
 Core::AnyType::Handle Parallel::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		Core::Vector::Handle lResults = new Core::Vector();
-		for (unsigned int i = 0; i < getNumberArguments(); i++) {
-			lResults->push_back(getArgument(inIndex, i, ioContext));
-		}
-		return lResults;
+	Core::Vector::Handle lResults = new Core::Vector();
+	for (unsigned int i = 0; i < getNumberArguments(); i++) {
+		lResults->push_back(getArgument(inIndex, i, ioContext));
+	}
+	return lResults;
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Control::Parallel::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
 }
 

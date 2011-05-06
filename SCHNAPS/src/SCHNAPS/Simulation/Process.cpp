@@ -28,6 +28,7 @@ using namespace Simulation;
  * \brief Default constructor.
  */
 Process::Process() :
+	mLabel(""),
 	mPrimitiveTree(NULL)
 {}
 
@@ -57,7 +58,13 @@ Process::Process(const std::string& inLabel, Core::PrimitiveTree::Handle inPrimi
  */
 Core::Object::Handle Process::deepCopy(const Core::System& inSystem) const {
 	schnaps_StackTraceBeginM();
-	return new Process(mLabel, Core::castHandleT<Core::PrimitiveTree>(mPrimitiveTree->deepCopy(inSystem)));
+	Process::Handle lCopy = new Process(mLabel, Core::castHandleT<Core::PrimitiveTree>(mPrimitiveTree->deepCopy(inSystem)));
+	for (unsigned int i = 0; i < this->mLocalVariables.size(); i++) {
+		lCopy->mLocalVariables.push_back(std::pair<std::string, Core::AnyType::Handle>(
+			this->mLocalVariables[i].first,
+			this->mLocalVariables[i].second));
+	}
+	return lCopy;
 	schnaps_StackTraceEndM("SCHNAPS::Core::Object::Handle SCHNAPS::Simulation::Process::deepCopy(const SCHNAPS::Core::System&) const ");
 }
 
@@ -81,12 +88,20 @@ void Process::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSy
 	}
 
 	if (inIter->getAttribute("file").empty()) {
+		// retrieve process label
 		if (inIter->getAttribute("label").empty()) {
 			throw schnaps_IOExceptionNodeM(*inIter, "process label attribute expected!");
 		}
-		mLabel = inIter->getAttribute("label");
+		mLabel.assign(inIter->getAttribute("label"));
+		
+		// retrieve local variables
+		inIter = inIter->getFirstChild();
+		readLocalVariables(inIter, ioSystem);
+		
+		// retrieve execution tree
+		inIter++;
 		mPrimitiveTree = new Core::PrimitiveTree();
-		mPrimitiveTree->readWithSystem(inIter->getFirstChild(), ioSystem);
+		mPrimitiveTree->readWithSystem(inIter, ioSystem);
 	} else {
 		std::ifstream lIFS(inIter->getAttribute("file").c_str(), std::ios::in);
 		PACC::XML::Document lDocument(lIFS);
@@ -101,9 +116,68 @@ void Process::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSy
  * \param ioStreamer XML streamer to output document.
  * \param inIndent Wether to indent or not.
  */
-void SCHNAPS::Simulation::Process::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
+void Process::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	ioStreamer.insertAttribute("label", mLabel);
+	
+	// write process local variables
+	ioStreamer.openTag("LocalVariables");
+	for (unsigned int i = 0; i < mLocalVariables.size(); i++) {
+		ioStreamer.openTag("LocalVariable");
+		ioStreamer.insertAttribute("label", mLocalVariables[i].first);
+		ioStreamer.insertAttribute("type", mLocalVariables[i].second->getType());
+		ioStreamer.insertAttribute("value", mLocalVariables[i].second->writeStr());
+		ioStreamer.closeTag();
+	}
+	ioStreamer.closeTag();
+	
+	// write process execution tree
 	mPrimitiveTree->write(ioStreamer, inIndent);
+}
+
+/*!
+ * \brief Read local variables from XML using system.
+ * \param inIter XML iterator of input document.
+ * \param ioSystem A reference to the system.
+ * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
+ * \throw SCHNAPS::Core::IOException if label, type or value attributes are missing.
+ */
+void Process::readLocalVariables(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
+	schnaps_StackTraceBeginM();
+	if (inIter->getValue() != "LocalVariables") {
+		std::ostringstream lOSS;
+		lOSS << "tag <LocalVariables> expected, but ";
+		lOSS << "got tag <" << inIter->getValue() << "> instead!";
+		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
+	}
+	
+	mLocalVariables.clear();
+	
+	Core::AnyType::Handle lValue;
+	Core::Object::Alloc::Handle lAlloc;
+	for (PACC::XML::ConstIterator lChild = inIter->getFirstChild(); lChild; lChild++) {
+		if (lChild->getValue() != "LocalVariable") {
+			std::ostringstream lOSS;
+			lOSS << "tag <LocalVariable> expected, but ";
+			lOSS << "got tag <" << lChild->getValue() << "> instead!";
+			throw schnaps_IOExceptionNodeM(*lChild, lOSS.str());
+		}
+		
+		// retrieve label
+		if (lChild->getAttribute("label").empty()) {
+			throw schnaps_IOExceptionNodeM(*lChild, "label attribute expected!");
+		}
+		
+#ifdef SCHNAPS_FULL_DEBUG
+		printf("\tReading local variable: %s\n", mLocalVariables.back().first.c_str());
+#endif
+
+		lAlloc = ioSystem.getFactory().getAllocator(lChild->getFirstChild()->getValue());
+		lValue = Core::castHandleT<Core::AnyType>(lAlloc->allocate());
+		lValue->readWithSystem(lChild->getFirstChild(), ioSystem);
+		
+		mLocalVariables.push_back(std::pair<std::string, Core::AnyType::Handle>(lChild->getAttribute("label"), lValue));
+	}
+	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Process::readLocalVariables(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
 /*!
@@ -113,7 +187,19 @@ void SCHNAPS::Simulation::Process::writeContent(PACC::XML::Streamer& ioStreamer,
  */
 Core::AnyType::Handle Process::execute(Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	return mPrimitiveTree->interpret(ioContext);
+	SimulationContext& lContext = Core::castObjectT<SimulationContext&>(ioContext);
+	Core::AnyType::Handle lResult;
+	
+	// set process local variables
+	for (unsigned int i = 0; i < mLocalVariables.size(); i++) {
+		lContext.insertLocalVariable(
+			mLocalVariables[i].first,
+			Core::castHandleT<Core::AnyType>(mLocalVariables[i].second->clone()));
+	}
+	lResult = mPrimitiveTree->interpret(ioContext);
+	lContext.clearLocalVariables();
+	
+	return lResult;
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Simulation::Process::execute(SCHNAPS::Core::ExecutionContext&) const ");
 }
 
@@ -122,7 +208,7 @@ Core::AnyType::Handle Process::execute(Core::ExecutionContext& ioContext) const 
  * \param  ioContext A reference to the execution context required for getting primitive tree function return type.
  * \return A const reference to the type of process execution result.
  */
-const std::string& Process::getReturnType(SCHNAPS::Core::ExecutionContext& ioContext) const {
+const std::string& Process::getReturnType(Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	return mPrimitiveTree->getReturnType(ioContext);
 	schnaps_StackTraceEndM("const std::string& Process::getReturnType(SCHNAPS::Core::ExecutionContext&) const ");
@@ -132,7 +218,7 @@ const std::string& Process::getReturnType(SCHNAPS::Core::ExecutionContext& ioCon
  * \brief Validate the process.
  * \param ioContext A reference to the execution context required for the primitive tree function validation.
  */
-void Process::validate(SCHNAPS::Core::ExecutionContext& ioContext) const {
+void Process::validate(Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	mPrimitiveTree->validate(ioContext);
 	return;

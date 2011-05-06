@@ -46,6 +46,9 @@ public:
 	SetVariable(const SetVariable& inOriginal);
 	virtual ~SetVariable() {}
 
+	//! Copy operator.
+	SetVariable& operator=(const SetVariable& inOriginal);
+
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.
@@ -68,9 +71,9 @@ public:
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
-	std::string mLabel;			//!< Label of variable to set.
-	std::string mValue_Ref; 	//!< New value (reference).
-	Core::Atom::Handle mValue;	//!< A handle to the new value.
+	std::string mVariable_Ref;		//!< Reference to variable to set.
+	std::string mValue_Ref; 		//!< Reference to the new value.
+	Core::AnyType::Handle mValue;	//!< A handle to the new value.
 };
 } // end of Data namespace
 } // end of Plugins namespace

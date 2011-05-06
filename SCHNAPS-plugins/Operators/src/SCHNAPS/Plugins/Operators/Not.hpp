@@ -60,12 +60,19 @@ public:
 		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Not::getName() const");
 	}
 
+	//! Read object from XML using system.
+	virtual	void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Write content of object to XML.
+	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
+
 	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
-	//! Return the nth argument requested return type.
-	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const;
 	//! Return the primitive return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+
+private:
+	std::string mArg_Ref;		//!< Reference to argument.
+	Core::Bool::Handle mArg;	//!< A handle to argument.
 };
 } // end of Operators namespace
 } // end of Plugins namespace

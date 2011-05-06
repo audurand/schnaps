@@ -29,7 +29,8 @@ using namespace Control;
  */
 ChoiceIsEqual::ChoiceIsEqual() :
 	Primitive(),	// unknown number of children
-	mChoiceVariableLabel(""),
+	mValue_Ref(""),
+	mValue(NULL),
 	mChoices_Ref("")
 {}
 
@@ -39,19 +40,42 @@ ChoiceIsEqual::ChoiceIsEqual() :
  */
 ChoiceIsEqual::ChoiceIsEqual(const ChoiceIsEqual& inOriginal) :
 	Primitive(inOriginal.getNumberArguments()),
-	mChoiceVariableLabel(inOriginal.mChoiceVariableLabel.c_str()),
+	mValue_Ref(inOriginal.mValue_Ref.c_str()),
 	mChoices_Ref(inOriginal.mChoices_Ref.c_str())
 {
-	if (mChoices_Ref.empty()) {
-		mChoices.clear();
-		for (ChoiceMap::const_iterator lIt = inOriginal.mChoices.begin(); lIt != inOriginal.mChoices.end(); lIt++) {
-			mChoices.insert(std::pair<Core::Atom::Handle, unsigned int>(Core::castHandleT<Core::Atom>(lIt->first->clone()), lIt->second));
-		}
-	} else {
-		mChoices.clear();
-		for (ChoiceMap::const_iterator lIt = inOriginal.mChoices.begin(); lIt != inOriginal.mChoices.end(); lIt++) {
-			mChoices.insert(std::pair<Core::Atom::Handle, unsigned int>(Core::castHandleT<Core::Atom>(lIt->first), lIt->second));
-		}
+	switch (mValue_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mValue = NULL;
+			break;
+		case '$':
+			// parameter value
+			mValue = inOriginal.mValue;
+			break;
+		default:
+			// direct value
+			mValue = Core::castHandleT<Core::Atom>(inOriginal.mValue->clone());
+			break;
+	}
+	
+	mChoiceMap.clear();
+	switch (mChoices_Ref[0]) {
+		case '$':
+			// parameter value
+			for (ChoiceMap::const_iterator lIt = inOriginal.mChoiceMap.begin(); lIt != inOriginal.mChoiceMap.end(); lIt++) {
+				mChoiceMap.insert(std::pair<Core::Atom::Handle, unsigned int>(lIt->first, lIt->second));
+			}
+			break;
+		default:
+			// direct value
+			for (ChoiceMap::const_iterator lIt = inOriginal.mChoiceMap.begin(); lIt != inOriginal.mChoiceMap.end(); lIt++) {
+				mChoiceMap.insert(std::pair<Core::Atom::Handle, unsigned int>(Core::castHandleT<Core::Atom>(lIt->first->clone()), lIt->second));
+			}
+			break;
 	}
 }
 
@@ -62,18 +86,42 @@ ChoiceIsEqual::ChoiceIsEqual(const ChoiceIsEqual& inOriginal) :
 ChoiceIsEqual& ChoiceIsEqual::operator=(const ChoiceIsEqual& inOriginal) {
 	schnaps_StackTraceBeginM();
 	this->setNumberArguments(inOriginal.getNumberArguments());
-	mChoiceVariableLabel = inOriginal.mChoiceVariableLabel.c_str();
-	mChoices_Ref = inOriginal.mChoices_Ref.c_str();
-
-	mChoices.clear();
-	if (mChoices_Ref.empty()) {
-		for (ChoiceMap::const_iterator lIt = inOriginal.mChoices.begin(); lIt != inOriginal.mChoices.end(); lIt++) {
-			mChoices.insert(std::pair<Core::Atom::Handle, unsigned int>(Core::castHandleT<Core::Atom>(lIt->first->clone()), lIt->second));
-		}
-	} else {
-		for (ChoiceMap::const_iterator lIt = inOriginal.mChoices.begin(); lIt != inOriginal.mChoices.end(); lIt++) {
-			mChoices.insert(std::pair<Core::Atom::Handle, unsigned int>(Core::castHandleT<Core::Atom>(lIt->first), lIt->second));
-		}
+	mValue_Ref.assign(inOriginal.mValue_Ref);
+	mChoices_Ref.assign(inOriginal.mChoices_Ref);
+	
+	switch (mValue_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mValue = NULL;
+			break;
+		case '$':
+			// parameter value
+			mValue = inOriginal.mValue;
+			break;
+		default:
+			// direct value
+			mValue = Core::castHandleT<Core::Atom>(inOriginal.mValue->clone());
+			break;
+	}
+	
+	mChoiceMap.clear();
+	switch (mChoices_Ref[0]) {
+		case '$':
+			// parameter value
+			for (ChoiceMap::const_iterator lIt = inOriginal.mChoiceMap.begin(); lIt != inOriginal.mChoiceMap.end(); lIt++) {
+				mChoiceMap.insert(std::pair<Core::Atom::Handle, unsigned int>(lIt->first, lIt->second));
+			}
+			break;
+		default:
+			// direct value
+			for (ChoiceMap::const_iterator lIt = inOriginal.mChoiceMap.begin(); lIt != inOriginal.mChoiceMap.end(); lIt++) {
+				mChoiceMap.insert(std::pair<Core::Atom::Handle, unsigned int>(Core::castHandleT<Core::Atom>(lIt->first->clone()), lIt->second));
+			}
+			break;
 	}
 	return *this;
 	schnaps_StackTraceEndM("SCHNAPS::Plugins::Control::ChoiceIsEqual& SCHNAPS::Plugins::Control::ChoiceIsEqual::operator=(const SCHNAPS::Plugins::Control::ChoiceIsEqual&)");
@@ -84,11 +132,11 @@ ChoiceIsEqual& ChoiceIsEqual::operator=(const ChoiceIsEqual& inOriginal) {
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.
  * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
- * \throw SCHNAPS::Core::IOException if choiceVariableLabel attribute is missing.
- * \throw SCHNAPS::Core::IOException if choices attribute and choices.ref attribute are missing.
- * \throw SCHNAPS::Core::IOException if choices attribute is used and choiceType attribute is missing.
+ * \throw SCHNAPS::Core::IOException if choices or inValue attributes are missing.
+ * \throw SCHNAPS::Core::IOException if choices attribute is given as direct value and inChoices_Type attribute is missing.
  * \throw SCHNAPS::Core::IOException if choice bounds are not given in crescent order.
  * \throw SCHNAPS::Core::IOException if less than one choice are given.
+ * \throw SCHNAPS::Core::RunTimeException if the primitive is undefined for the specific choices source.
  */
 void ChoiceIsEqual::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
@@ -101,61 +149,91 @@ void ChoiceIsEqual::readWithSystem(PACC::XML::ConstIterator inIter, Core::System
 		lOSS << "got tag <" << inIter->getValue() << "> instead!";
 		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
 	}
-	// retrieve choice variable label
-	if (inIter->getAttribute("choiceVariableLabel").empty()) {
-		throw schnaps_IOExceptionNodeM(*inIter, "choice variable label expected!");
+	
+	// retrieve value to switch on
+	if (inIter->getAttribute("inValue").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "value to switch on expected!");
 	}
-	mChoiceVariableLabel = inIter->getAttribute("choiceVariableLabel");
+	mValue_Ref.assign(inIter->getAttribute("inValue"));
+	
+	switch (mValue_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mValue = NULL;
+			break;
+		case '$':
+			// parameter value
+			mValue = Core::castHandleT<Core::Atom>(ioSystem.getParameters().getParameterHandle(mValue_Ref.substr(1)));
+			break;
+		default: {
+			// direct value
+			if (inIter->getAttribute("inChoices_Type").empty()) {
+				throw schnaps_IOExceptionNodeM(*inIter, "type of choices expected!");
+			}
+			Core::Atom::Alloc::Handle lAlloc = Core::castHandleT<Core::Atom::Alloc>(ioSystem.getFactory().getAllocator(inIter->getAttribute("inChoices_Type")));
+			mValue = Core::castHandleT<Core::Atom>(lAlloc->allocate());
+			mValue->readStr(mValue_Ref);
+			break; }
+	}
 
 	// retrieve choices
-	if (inIter->getAttribute("choices").empty()) {
-		if (inIter->getAttribute("choices.ref").empty()) {
-			throw schnaps_IOExceptionNodeM(*inIter, "possible choices expected!");
-		} else { // use referenced choices
-			mChoices_Ref = inIter->getAttribute("choices.ref");
-			std::stringstream lSS;
-			lSS << "ref." << mChoices_Ref;
-
-			Core::Vector::Handle lChoices = Core::castHandleT<Core::Vector>(ioSystem.getParameters().getParameterHandle(lSS.str().c_str()));
+	if (inIter->getAttribute("inChoices").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "possible choices expected!");
+	}
+	mChoices_Ref.assign(inIter->getAttribute("inChoices"));
+	
+	mChoiceMap.clear();
+	switch (mChoices_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific choices source!");
+			break;
+		case '$': {
+			// parameter value
+			Core::Vector::Handle lChoices = Core::castHandleT<Core::Vector>(ioSystem.getParameters().getParameterHandle(mChoices_Ref.substr(1)));
 			for (unsigned int i = 0; i < lChoices->size(); i++) {
-				mChoices.insert(std::pair<Core::Atom::Handle, unsigned int>(Core::castHandleT<Core::Atom>((*lChoices)[i]), i));
+				mChoiceMap.insert(std::pair<Core::Atom::Handle, unsigned int>(Core::castHandleT<Core::Atom>((*lChoices)[i]), i));
 			}
-		}
-	} else { // use defined keys
-		// retrieve key type
-		if (inIter->getAttribute("choiceType").empty()) {
-			throw schnaps_IOExceptionNodeM(*inIter, "type of choice expected!");
-		}
-		Core::Atom::Alloc::Handle lAlloc = Core::castHandleT<Core::Atom::Alloc>(ioSystem.getFactory().getAllocator(inIter->getAttribute("choiceType")));
-
-		std::stringstream lSS(inIter->getAttribute("choices"));
-		PACC::Tokenizer lTokenizer(lSS);
-		lTokenizer.setDelimiters("|", "");
-
-		std::string lKey;
-		Core::Atom::Handle lAtom;
-
-		unsigned int lChoice = 0;
-		while (lTokenizer.getNextToken(lKey)) {
-			// add to map
-			lAtom = Core::castHandleT<Core::Atom>(lAlloc->allocate());
-			if (lAtom == NULL) {
-				std::ostringstream lOSS;
-				lOSS << "no atom named '" <<  inIter->getAttribute("choiceType");
-				lOSS << "' found in the factory";
-				throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
+			break; }
+		default: {
+			// direct value
+			// retrieve type of choices
+			if (inIter->getAttribute("inChoices_Type").empty()) {
+				throw schnaps_IOExceptionNodeM(*inIter, "type of choices expected!");
 			}
-			lAtom->readStr(lKey);
-			mChoices.insert(std::pair<Core::Atom::Handle, unsigned int>(lAtom, lChoice));
-			lChoice++;
-		}
+			Core::Atom::Alloc::Handle lAlloc = Core::castHandleT<Core::Atom::Alloc>(ioSystem.getFactory().getAllocator(inIter->getAttribute("inChoices_Type")));
+			
+			std::stringstream lSS(mChoices_Ref);
+			PACC::Tokenizer lTokenizer(lSS);
+			lTokenizer.setDelimiters("|", "");
+
+			std::string lChoice;
+			Core::Atom::Handle lAtom;
+
+			unsigned int lIndex = 0;
+			while (lTokenizer.getNextToken(lChoice)) {
+				// add to map
+				lAtom = Core::castHandleT<Core::Atom>(lAlloc->allocate());
+				lAtom->readStr(lChoice);
+				mChoiceMap.insert(std::pair<Core::Atom::Handle, unsigned int>(lAtom, lIndex));
+				lIndex++;
+			}
+			break; }
 	}
 
-	if (mChoices.size() == 0) {
+	if (mChoiceMap.empty()) {
 		throw schnaps_IOExceptionNodeM(*inIter, "at least one choice is expected!");
 	}
 
-	setNumberArguments(mChoices.size());
+	setNumberArguments(mChoiceMap.size());
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Control::ChoiceIsEqual::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
@@ -166,19 +244,9 @@ void ChoiceIsEqual::readWithSystem(PACC::XML::ConstIterator inIter, Core::System
  */
 void ChoiceIsEqual::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-	ioStreamer.insertAttribute("choiceVariableLabel", mChoiceVariableLabel);
-
-	if (mChoices_Ref.empty()) {
-		std::string lChoices;
-		for (std::map<Core::Atom::Handle, unsigned int, Core::IsLessPointerPredicate>::const_iterator lIt = mChoices.begin(); lIt != mChoices.end(); lIt++) {
-			lChoices += (*lIt).first->writeStr();
-			lChoices += " ";
-		}
-		ioStreamer.insertAttribute("choiceType", mChoices.begin()->first->getName());
-		ioStreamer.insertAttribute("choices", lChoices);
-	} else {
-		ioStreamer.insertAttribute("choices.ref", mChoices_Ref);
-	}
+	ioStreamer.insertAttribute("inValue", mValue_Ref);
+	ioStreamer.insertAttribute("inChoices", mChoices_Ref);
+	ioStreamer.insertAttribute("inChoices_Type", mChoiceMap.begin()->first->getType());
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Control::ChoiceIsEqual::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
@@ -187,49 +255,40 @@ void ChoiceIsEqual::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent)
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
- * \throw  SCHNAPS::Core::RunTimeException if the variable is not in choices.
+ * \throw  SCHNAPS::Core::RunTimeException if the value is not in choices.
  */
 Core::AnyType::Handle ChoiceIsEqual::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	Core::Atom::Handle lVariable;
-	if (ioContext.getName() == "GenerationContext") {
-		Simulation::GenerationContext& lContext = Core::castObjectT<Simulation::GenerationContext&>(ioContext);
-		if (lContext.getIndividual().getState().hasVariable(mChoiceVariableLabel) == false) {
-			// intialize the variable before continuing
-			
-			// save current primitive tree
-			Core::PrimitiveTree::Handle lCurrentPrimitiveTree = lContext.getPrimitiveTreeHandle();
-			
-			if (lContext.getGenProfile().getDemography().hasVariable(mChoiceVariableLabel) == false) {
-				// variable not in demography, check in simulation variables
-				if (lContext.getGenProfile().getSimulationVariables().hasVariable(mChoiceVariableLabel)) {
-					// variable not in simulation variables either, throw error
-					throw schnaps_RunTimeExceptionM("Variable " + mChoiceVariableLabel + " is empty for current individual and is not contained in demography nor in simulation variables.");
-				} else {
-					// variable is in simulation variables
-					lVariable = Core::castHandleT<Core::Atom>(lContext.getGenProfile().getSimulationVariables().getVariableInitTree(mChoiceVariableLabel).interpret(ioContext));
-				}
-			} else {
-				// variable is in demography
-				lVariable = Core::castHandleT<Core::Atom>(lContext.getGenProfile().getDemography().getVariableInitTree(mChoiceVariableLabel).interpret(ioContext));
-			}
-			// add newly computed variable to individual
-			lContext.getIndividual().getState().insertVariable(mChoiceVariableLabel, Core::castHandleT<Core::Atom>(lVariable->clone()));
-			
-			// restore primitive tree
-			lContext.setPrimitiveTree(lCurrentPrimitiveTree);
-		} else {
-			lVariable = lContext.getIndividual().getState().getVariableHandle(mChoiceVariableLabel);
-		}
-	} else {
-		Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
-		lVariable = lContext.getIndividual().getState().getVariableHandle(mChoiceVariableLabel);
+	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
+	ChoiceMap::const_iterator lIterChoice;
+	Core::Atom::Handle lValue;
+	
+	switch (mValue_Ref[0]) {
+		case '@':
+			// individual variable value
+			lValue = Core::castHandleT<Core::Atom>(lContext.getIndividual().getState().getVariableHandle(mValue_Ref.substr(1)));
+			break;
+		case '#':
+			// environment variable value
+			lValue = Core::castHandleT<Core::Atom>(lContext.getEnvironment().getState().getVariableHandle(mValue_Ref.substr(1))->clone());
+			break;
+		case '%':
+			// local variable value
+			lValue = Core::castHandleT<Core::Atom>(lContext.getLocalVariableHandle(mValue_Ref.substr(1)));
+			break;
+		case '$':
+			// parameter value
+			lValue =  Core::castHandleT<Core::Atom>(mValue->clone());
+		default:
+			// direct value
+			lValue = mValue;
+			break;
 	}
-
-	ChoiceMap::const_iterator lIterChoice = mChoices.find(lVariable);
-	if (lIterChoice == mChoices.end()) {
+	
+	lIterChoice = mChoiceMap.find(lValue);
+	if (lIterChoice == mChoiceMap.end()) {
 		std::stringstream lOSS;
-		lOSS << "Variable value " << lVariable->writeStr() << " is not in choices; ";
+		lOSS << "Value " << lValue->writeStr() << " is not in choices; ";
 		lOSS << "could not make choice.";
 		throw schnaps_RunTimeExceptionM(lOSS.str());
 	}

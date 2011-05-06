@@ -1,0 +1,6 @@
+ <Process label="Ajouter_Traitement_CSMO">
+  <LocalVariables/>
+  <PrimitiveTree size="1">
+   <Operators_AddVariable inArgRight_Type="Int" inArgRight="1" inArgLeft="@Total_Traitement_CSMO" outResult="@Total_Traitement_CSMO"/>
+  </PrimitiveTree>
+ </Process>

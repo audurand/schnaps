@@ -28,7 +28,9 @@ using namespace Operators;
  * \brief Default constructor.
  */
 Not::Not() :
-	Primitive(1)
+	Core::Primitive(0),
+	mArg_Ref(""),
+	mArg(NULL)
 {}
 
 /*!
@@ -36,8 +38,27 @@ Not::Not() :
  * \param inOriginal A const reference to the original logical NOT operator.
  */
 Not::Not(const Not& inOriginal) :
-	Primitive(1)
-{}
+	Core::Primitive(0),
+	mArg_Ref(inOriginal.mArg_Ref.c_str())
+{
+	switch (mArg_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mArg = NULL;
+			break;
+		case '$':
+			// parameter value
+			mArg = inOriginal.mArg;
+			break;
+		default:
+			// direct value
+			mArg = Core::castHandleT<Core::Bool>(inOriginal.mArg->clone());
+	}
+}
 
 /*!
  * \brief  Copy operator.
@@ -45,8 +66,86 @@ Not::Not(const Not& inOriginal) :
  */
 Not& Not::operator=(const Not& inOriginal) {
 	schnaps_StackTraceBeginM();
+	mArg_Ref.assign(inOriginal.mArg_Ref.c_str());
+	
+	switch (mArg_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mArg = NULL;
+			break;
+		case '$':
+			// parameter value
+			mArg = inOriginal.mArg;
+			break;
+		default:
+			// direct value
+			mArg = Core::castHandleT<Core::Bool>(inOriginal.mArg->clone());
+	}
+
 	return *this;
 	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::Not& SCHNAPS::Plugins::Operators::Not::operator=(const SCHNAPS::Plugins::Operators::Not&)");
+}
+
+/*!
+ * \brief Read object from XML using system.
+ * \param inIter XML iterator of input document.
+ * \param ioSystem A reference to the system.
+ * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
+ * \throw SCHNAPS::Core::IOException if inArg attribute is missing.
+ */
+void Not::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
+	schnaps_StackTraceBeginM();
+	if (inIter->getType() != PACC::XML::eData) {
+		throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
+	}
+	if (inIter->getValue() != getName()) {
+		std::ostringstream lOSS;
+		lOSS << "tag <" << getName() << "> expected, but ";
+		lOSS << "got tag <" << inIter->getValue() << "> instead!";
+		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
+	}
+
+	// retrieve argument
+	if (inIter->getAttribute("inArg").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "argument expected!");
+	}
+	mArg_Ref.assign(inIter->getAttribute("inArg"));
+	
+	switch (mArg_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mArg = NULL;
+			break;
+		case '$':
+			// parameter value
+			mArg = Core::castHandleT<Core::Bool>(ioSystem.getParameters().getParameterHandle(mArg_Ref.substr(1)));
+			break;
+		default:
+			// direct value
+			mArg = new Core::Bool();
+			mArg->readStr(mArg_Ref.substr(1));
+			break;
+	}
+	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Operators::Not::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
+}
+
+/*!
+ * \brief Write object content to XML.
+ * \param ioStreamer XML streamer to output document.
+ * \param inIndent Wether to indent or not.
+ */
+void Not::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
+	schnaps_StackTraceBeginM();
+	ioStreamer.insertAttribute("inArg", mArg_Ref);
+	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Operators::Not::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
 /*!
@@ -57,25 +156,30 @@ Not& Not::operator=(const Not& inOriginal) {
  */
 Core::AnyType::Handle Not::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	Core::Bool::Handle lArg1 = Core::castHandleT<Core::Bool>(getArgument(inIndex, 0, ioContext));
-	return new Core::Bool(!lArg1->getValue());
+	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
+	bool lArg;
+	
+	switch (mArg_Ref[0]) {
+		case '@':
+			// individual variable value
+			lArg = Core::castObjectT<const Core::Bool&>(lContext.getIndividual().getState().getVariable(mArg_Ref.substr(1))).getValue();
+			break;
+		case '#':
+			// environment variable value
+			lArg = Core::castObjectT<const Core::Bool&>(lContext.getEnvironment().getState().getVariable(mArg_Ref.substr(1))).getValue();
+			break;
+		case '%':
+			// local variable value
+			lArg = Core::castObjectT<const Core::Bool&>(lContext.getLocalVariable(mArg_Ref.substr(1))).getValue();
+			break;
+		default:
+			// parameter value or direct value
+			lArg = mArg->getValue();
+			break;
+	}
+	
+	return new Core::Bool(!lArg);
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Operators::Not::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
-}
-
-/*!
- * \brief  Return the nth argument requested return type.
- * \param  inIndex Index of the current primitive.
- * \param  inN Index of the argument to get the type.
- * \param  ioContext A reference to the execution context.
- * \return A const reference to the type of the nth argument.
- * \throw  SCHNAPS::Core::AssertException if the argument index is out of bounds.
- */
-const std::string& Not::getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const {
-	schnaps_StackTraceBeginM();
-	schnaps_UpperBoundCheckAssertM(inN, 0);
-	const static std::string lType("Bool");
-	return lType;
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Not::getArgType(unsigned int, unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 
 /*!

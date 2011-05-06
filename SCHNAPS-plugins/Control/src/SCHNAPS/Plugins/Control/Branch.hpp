@@ -21,15 +21,15 @@
 #ifndef SCHNAPS_Plugins_Control_Branch_hpp
 #define SCHNAPS_Plugins_Control_Branch_hpp
 
-#include "PACC/XML.hpp"
 #include "SCHNAPS/SCHNAPS.hpp"
+#include "PACC/XML.hpp"
 
 namespace SCHNAPS {
 namespace Plugins {
 namespace Control {
 
 /*!
- *  \class Branch SCHNAPS/Plugins/Easier/Branch.hpp "SCHNAPS/Plugins/Easier/Branch.hpp"
+ *  \class Branch SCHNAPS/Plugins/Control/Branch.hpp "SCHNAPS/Plugins/Control/Branch.hpp"
  *  \brief Executes the first branch with some probability, else second branch.
  */
 class Branch: public Core::Primitive {
@@ -72,7 +72,7 @@ public:
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
-	std::string mProbability_Ref;		//!< Label of parameter than represents the probability.
+	std::string mProbability_Ref;		//!< Reference to the probability.
 	Core::Double::Handle mProbability;	//!< A handle to the probability.
 };
 } // end of Control namespace

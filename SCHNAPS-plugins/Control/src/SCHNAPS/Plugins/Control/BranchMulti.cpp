@@ -40,11 +40,25 @@ BranchMulti::BranchMulti() :
 BranchMulti::BranchMulti(const BranchMulti& inOriginal) :
 		mProbabilities_Ref(inOriginal.mProbabilities_Ref.c_str())
 {
-	if (mProbabilities_Ref.empty()) {
-		mProbabilities = Core::castHandleT<Core::Vector>(inOriginal.mProbabilities->clone());
-	} else {
-		mProbabilities = inOriginal.mProbabilities;
+	switch (mProbabilities_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mProbabilities = NULL;
+			break;
+		case '$':
+			// parameter value
+			mProbabilities = inOriginal.mProbabilities;
+			break;
+		default:
+			// direct value
+			mProbabilities = Core::castHandleT<Core::Vector>(inOriginal.mProbabilities->clone());
+			break;
 	}
+	setNumberArguments(inOriginal.getNumberArguments());
 }
 
 /*!
@@ -53,13 +67,27 @@ BranchMulti::BranchMulti(const BranchMulti& inOriginal) :
  */
 BranchMulti& BranchMulti::operator=(const BranchMulti& inOriginal) {
 	schnaps_StackTraceBeginM();
-	mProbabilities_Ref = inOriginal.mProbabilities_Ref.c_str();
-
-	if (mProbabilities_Ref.empty()) {
-		mProbabilities = Core::castHandleT<Core::Vector>(inOriginal.mProbabilities->clone());
-	} else {
-		mProbabilities = inOriginal.mProbabilities;
+	mProbabilities_Ref.assign(inOriginal.mProbabilities_Ref);
+	
+	switch (mProbabilities_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mProbabilities = NULL;
+			break;
+		case '$':
+			// parameter value
+			mProbabilities = inOriginal.mProbabilities;
+			break;
+		default:
+			// direct value
+			mProbabilities = Core::castHandleT<Core::Vector>(inOriginal.mProbabilities->clone());
+			break;
 	}
+	setNumberArguments(inOriginal.getNumberArguments());
 
 	return *this;
 	schnaps_StackTraceEndM("Core::BranchMulti& SCHNAPS::Plugins::Control::BranchMulti::operator=(const SCHNAPS::Core::BranchMulti&)");
@@ -70,7 +98,8 @@ BranchMulti& BranchMulti::operator=(const BranchMulti& inOriginal) {
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.
  * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
- * \throw SCHNAPS::Core::IOException if probabilityies attribute and probabilities.ref attribute are empty.
+ * \throw SCHNAPS::Core::IOException if inProbabilities attribute is missing.
+ * \throw SCHNAPS::Core::RunTimeException if the primitive is undefined for the specific probabilities source.
  */
 void BranchMulti::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
@@ -85,36 +114,48 @@ void BranchMulti::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
 	}
 
 	// retrieve probabilities of executing each branch
-	if (inIter->getAttribute("probabilities").empty()) {
-		if (inIter->getAttribute("probabilities.ref").empty()) {
-			throw schnaps_IOExceptionNodeM(*inIter, "probabilities of executing each branch expected!");
-		} else { // retrieve from parameter
-			mProbabilities_Ref = inIter->getAttribute("probabilities.ref");
-			std::stringstream lSS;
-			lSS << "ref." << mProbabilities_Ref;
-			mProbabilities = Core::castHandleT<Core::Vector>(ioSystem.getParameters().getParameterHandle(lSS.str().c_str()));
-		}
-	} else { // retrieve from attribute
-		std::stringstream lISS(inIter->getAttribute("probabilities"));
-		PACC::Tokenizer lTokenizer(lISS);
-		lTokenizer.setDelimiters("|", "");
-		
-		std::string lProbability;
-		double lSum = 0;
-	
-		mProbabilities = new Core::Vector();
-		while (lTokenizer.getNextToken(lProbability)) {
-			mProbabilities->push_back(new Core::Double(SCHNAPS::str2dbl(lProbability)));
-			lSum += SCHNAPS::str2dbl(lProbability);
-		}
-		
-#ifndef SCHNAPS_NDEBUG
-		if (lSum != 1) {
-			printf("Warning: multi branches probabilities must sum to 1 (current sum: %f)!\n", lSum);
-			printf("\tIn: void SCHNAPS::Plugins::Control::BranchMulti::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)\n");
-		}
-#endif
+	if (inIter->getAttribute("inProbabilities").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "probabilities of executing each branch expected!");
 	}
+	mProbabilities_Ref.assign(inIter->getAttribute("inProbabilities"));
+	
+	switch (mProbabilities_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific probabilities source!");
+			break;
+		case '$':
+			// parameter value
+			mProbabilities = Core::castHandleT<Core::Vector>(ioSystem.getParameters().getParameterHandle(mProbabilities_Ref.substr(1)));
+			break;
+		default: {
+			// direct value
+			std::stringstream lISS(mProbabilities_Ref);
+			PACC::Tokenizer lTokenizer(lISS);
+			lTokenizer.setDelimiters("|", "");
+			
+			std::string lProbability;
+			double lSum = 0;
+
+			mProbabilities = new Core::Vector();
+			while (lTokenizer.getNextToken(lProbability)) {
+				mProbabilities->push_back(new Core::Double(SCHNAPS::str2dbl(lProbability)));
+				lSum += SCHNAPS::str2dbl(lProbability);
+			}
+			
+#ifndef SCHNAPS_NDEBUG
+			if (lSum != 1) {
+				std::cout << "Warning: multi branches probabilities must sum to 1 (current sum: " <<  lSum << "!";
+				std::cout << "\tIn: void SCHNAPS::Plugins::Control::BranchMulti::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)\n";
+			}
+#endif
+			break; }
+	}
+	setNumberArguments(mProbabilities->size());
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Control::BranchMulti::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
@@ -125,11 +166,7 @@ void BranchMulti::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
  */
 void BranchMulti::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-	if (mProbabilities_Ref.empty()) {
-		ioStreamer.insertAttribute("probabilities", mProbabilities->writeStr());
-	} else {
-		ioStreamer.insertAttribute("probabilities.ref", mProbabilities_Ref);
-	}
+	ioStreamer.insertAttribute("inProbabilities", mProbabilities_Ref);
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Control::BranchMulti::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
@@ -141,9 +178,35 @@ void BranchMulti::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) c
  */
 Core::AnyType::Handle BranchMulti::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
+	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
+	Core::Vector::Handle lProbabilities;
 	Core::RouletteT<unsigned int> lRoulette;
-	for (unsigned int i = 0; i < mProbabilities->size(); i++) {
-		lRoulette.insert(i, Core::castHandleT<Core::Double>((*mProbabilities)[i])->getValue());
+	
+	switch (mProbabilities_Ref[0]) {
+		case '@':
+			// individual variable value
+			lProbabilities = Core::castHandleT<Core::Vector>(lContext.getIndividual().getState().getVariableHandle(mProbabilities_Ref.substr(1)));
+			break;
+		case '#':
+			// environment variable value
+			lProbabilities = Core::castHandleT<Core::Vector>(lContext.getIndividual().getState().getVariableHandle(mProbabilities_Ref.substr(1))->clone());
+			break;
+		case '%':
+			// local variable value
+			lProbabilities = Core::castHandleT<Core::Vector>(lContext.getLocalVariableHandle(mProbabilities_Ref.substr(1)));
+			break;
+		case '$':
+			// parameter value
+			lProbabilities = Core::castHandleT<Core::Vector>(mProbabilities->clone());
+			break;
+		default:
+			// direct value
+			lProbabilities = mProbabilities;
+			break;
+	}
+	
+	for (unsigned int i = 0; i < lProbabilities->size(); i++) {
+		lRoulette.insert(i, Core::castHandleT<Core::Double>((*lProbabilities)[i])->getValue());
 	}
 	return getArgument(inIndex, lRoulette.select(ioContext.getRandomizer()), ioContext);
 	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Control::BranchMulti::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");

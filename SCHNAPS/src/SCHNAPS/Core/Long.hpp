@@ -30,7 +30,6 @@ namespace Core {
 
 // forward declaration
 class Double;
-class Float;
 class Int;
 class UInt;
 class ULong;
@@ -98,22 +97,20 @@ public:
 	virtual AnyType::Handle clone() const;
 
 	//! Compute absolute value.
-	virtual Number& abs();
-	//! Add a number.
-	virtual Number& add(Number& inRightNumber);
-	//! Divide by a number.
-	virtual Number& div(Number& inRightNumber);
+	virtual Number::Handle abs();
+	//! Compute the addition with a number.
+	virtual Number::Handle add(Number& inRightNumber);
+	//! Compute the division by a number.
+	virtual Number::Handle div(Number& inRightNumber);
 	//! Compute the modulo by a number.
-	virtual Number& mod(Number& inRightNumber);
-	//! Multiply by a number.
-	virtual Number& mult(Number& inRightNumber);
-	//! Subtract by a number.
-	virtual Number& sub(Number& inRightNumber);
+	virtual Number::Handle mod(Number& inRightNumber);
+	//! Compute the multiplication by a number.
+	virtual Number::Handle mult(Number& inRightNumber);
+	//! Compute the subtraction by a number.
+	virtual Number::Handle sub(Number& inRightNumber);
 
 	//! Casting operator to double.
 	operator Double() const;
-	//! Casting operator to float.
-	operator Float() const;
 	//! Casting operator to integer.
 	operator Int() const;
 	//! Casting operator to long.
@@ -135,7 +132,7 @@ public:
 	 * \brief Set the value of long.
 	 * \param inValue A const reference to the new value of long.
 	 */
-	void setValue(const float& inValue) {
+	void setValue(const long& inValue) {
 		mValue = inValue;
 	}
 

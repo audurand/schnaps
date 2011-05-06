@@ -35,90 +35,90 @@ Number& Number::operator=(const Number& inOriginal) {
 
 /*!
  * \brief  Compute the absolute value.
- * \return A reference to the resulting number.
+ * \return A handle to the resulting number.
  * \throw  SCHNAPS::Core::InternalException if the method is not overdefined in a subclass.
  */
-Number& Number::abs() {
+Number::Handle Number::abs() {
 	schnaps_StackTraceBeginM();
 	throw schnaps_UndefinedMethodInternalExceptionM("abs", "Number", getName());
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Number::abs()");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Number::abs()");
 }
 
 /*!
- * \brief  Adds a number.
- * \return A reference to the resulting number.
+ * \brief  Compute the addition a number.
+ * \return A handle to the resulting number.
  * \throw  SCHNAPS::Core::InternalException if the method is not overdefined in a subclass.
  */
-Number& Number::add(Number& inRightNumber) {
+Number::Handle Number::add(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	throw schnaps_UndefinedMethodInternalExceptionM("add", "Number", getName());
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Number::add(SCHNAPS::Core::Number&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Number::add(SCHNAPS::Core::Number&)");
 }
 
 /*!
- * \brief  Divide by a number.
- * \return A reference to the resulting number.
+ * \brief  Compute the division by a number.
+ * \return A handle to the resulting number.
  * \throw  SCHNAPS::Core::InternalException if the method is not overdefined in a subclass.
  */
-Number& Number::div(Number& inRightNumber) {
+Number::Handle Number::div(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	throw schnaps_UndefinedMethodInternalExceptionM("div", "Number", getName());
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Number::div(SCHNAPS::Core::Number&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Number::div(SCHNAPS::Core::Number&)");
 }
 
 /*!
  * \brief  Compute the base-e exponential function, which is the e number raised to the power x.
- * \return A reference to the resulting number.
+ * \return A handle to the resulting number.
  * \throw  SCHNAPS::Core::InternalException if the method is not overdefined in a subclass.
  */
-Number& Number::exp() {
+Number::Handle Number::exp() {
 	schnaps_StackTraceBeginM();
 	throw schnaps_UndefinedMethodInternalExceptionM("exp", "Number", getName());
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Number::exp(SCHNAPS::Core::Number&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Number::exp(SCHNAPS::Core::Number&)");
 }
 
 /*!
  * \brief  Compute the modulo by a number.
- * \return A reference to the resulting number.
+ * \return A handle to the resulting number.
  * \throw  SCHNAPS::Core::InternalException if the method is not overdefined in a subclass.
  */
-Number& Number::mod(Number& inRightNumber) {
+Number::Handle Number::mod(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	throw schnaps_UndefinedMethodInternalExceptionM("mod", "Number", getName());
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Number::mod(SCHNAPS::Core::Number&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Number::mod(SCHNAPS::Core::Number&)");
 }
 
 /*!
- * \brief  Multiply by a number.
- * \return A reference to the resulting number.
+ * \brief  Compute the multiplication by a number.
+ * \return A handle to the resulting number.
  * \throw  SCHNAPS::Core::InternalException if the method is not overdefined in a subclass.
  */
-Number& Number::mult(Number& inRightNumber) {
+Number::Handle Number::mult(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	throw schnaps_UndefinedMethodInternalExceptionM("mult", "Number", getName());
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Number::mult(SCHNAPS::Core::Number&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Number::mult(SCHNAPS::Core::Number&)");
 }
 
 /*!
- * \brief  Raise the current number to the power exponent.
- * \return A reference to the resulting number.
+ * \brief  Compute Raise the current number to the power exponent.
+ * \return A handle to the resulting number.
  * \throw  SCHNAPS::Core::InternalException if the method is not overdefined in a subclass.
  */
-Number& Number::pow(Number& inRightNumber) {
+Number::Handle Number::pow(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	throw schnaps_UndefinedMethodInternalExceptionM("pow", "Number", getName());
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Number::pow(SCHNAPS::Core::Number&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Number::pow(SCHNAPS::Core::Number&)");
 }
 
 /*!
- * \brief  Subtract a number.
- * \return A reference to the resulting number.
+ * \brief  Compute the subtraction by a number.
+ * \return A handle to the resulting number.
  * \throw  SCHNAPS::Core::InternalException if the method is not overdefined in a subclass.
  */
-Number& Number::sub(Number& inRightNumber) {
+Number::Handle Number::sub(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	throw schnaps_UndefinedMethodInternalExceptionM("sub", "Number", getName());
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Number::sub(SCHNAPS::Core::Number&)");
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Number::sub(SCHNAPS::Core::Number&)");
 }
 
 /*!
@@ -129,16 +129,6 @@ Number::operator Double() const {
 	schnaps_StackTraceBeginM();
 	throw schnaps_UndefinedMethodInternalExceptionM("operator Double", "Number", getName());
 	schnaps_StackTraceEndM("SCHNAPS::Core::Number::operator Double() const");
-}
-
-/*!
- * \brief Casting operator to float.
- * \throw  SCHNAPS::Core::InternalException if the method is not overdefined in a subclass.
- */
-Number::operator Float() const {
-	schnaps_StackTraceBeginM();
-	throw schnaps_UndefinedMethodInternalExceptionM("operator Float", "Number", getName());
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number::operator Float() const");
 }
 
 /*!

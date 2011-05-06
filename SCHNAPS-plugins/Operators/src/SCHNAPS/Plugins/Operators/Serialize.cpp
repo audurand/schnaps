@@ -28,16 +28,37 @@ using namespace Operators;
  * \brief Default constructor.
  */
 Serialize::Serialize() :
-	Primitive(1)
+	Core::Primitive(0),
+	mValue_Ref(""),
+	mValue(NULL)
 {}
 
 /*!
- * \brief Construct an operator to serialize atoms to strings as a copy of an original.
- * \param inOriginal A const reference to the original operator to serialize atoms to strings.
+ * \brief Construct an operator to serialize value to string as a copy of original.
+ * \param inOriginal A const reference to the original operator to serialize value to string.
  */
 Serialize::Serialize(const Serialize& inOriginal) :
-	Primitive(1)
-{}
+	Core::Primitive(0),
+	mValue_Ref(inOriginal.mValue_Ref.c_str())
+{
+	switch (mValue_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mValue = NULL;
+			break;
+		case '$':
+			// parameter value
+			mValue = inOriginal.mValue;
+			break;
+		default:
+			// direct value
+			mValue = Core::castHandleT<Core::String>(inOriginal.mValue->clone());
+	}
+}
 
 /*!
  * \brief  Copy operator.
@@ -45,8 +66,85 @@ Serialize::Serialize(const Serialize& inOriginal) :
  */
 Serialize& Serialize::operator=(const Serialize& inOriginal) {
 	schnaps_StackTraceBeginM();
+	mValue_Ref.assign(inOriginal.mValue_Ref.c_str());
+	
+	switch (mValue_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mValue = NULL;
+			break;
+		case '$':
+			// parameter value
+			mValue = inOriginal.mValue;
+			break;
+		default:
+			// direct value
+			mValue = Core::castHandleT<Core::String>(inOriginal.mValue->clone());
+	}
+
 	return *this;
 	schnaps_StackTraceEndM("SCHNAPS::Plugins::Operators::Serialize& SCHNAPS::Plugins::Operators::Serialize::operator=(const SCHNAPS::Plugins::Operators::Serialize&)");
+}
+
+/*!
+ * \brief Read object from XML using system.
+ * \param inIter XML iterator of input document.
+ * \param ioSystem A reference to the system.
+ * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
+ * \throw SCHNAPS::Core::IOException if inArg attribute is missing.
+ */
+void Serialize::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
+	schnaps_StackTraceBeginM();
+	if (inIter->getType() != PACC::XML::eData) {
+		throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
+	}
+	if (inIter->getValue() != getName()) {
+		std::ostringstream lOSS;
+		lOSS << "tag <" << getName() << "> expected, but ";
+		lOSS << "got tag <" << inIter->getValue() << "> instead!";
+		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
+	}
+
+	// retrieve argument
+	if (inIter->getAttribute("inValue").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "argument expected!");
+	}
+	mValue_Ref.assign(inIter->getAttribute("inValue"));
+	
+	switch (mValue_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mValue = NULL;
+			break;
+		case '$':
+			// parameter value
+			mValue = ioSystem.getParameters().getParameterHandle(mValue_Ref.substr(1));
+			break;
+		default:
+			// direct value
+			mValue = new Core::String(mValue_Ref.substr(1));
+			break;
+	}
+	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Operators::Serialize::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
+}
+
+/*!
+ * \brief Write object content to XML.
+ * \param ioStreamer XML streamer to output document.
+ * \param inIndent Wether to indent or not.
+ */
+void Serialize::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
+	schnaps_StackTraceBeginM();
+	ioStreamer.insertAttribute("inValue", mValue_Ref);
+	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Operators::Serialize::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
 /*!
@@ -57,24 +155,30 @@ Serialize& Serialize::operator=(const Serialize& inOriginal) {
  */
 Core::AnyType::Handle Serialize::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	return new Core::String(getArgument(inIndex, 0, ioContext)->writeStr().c_str());
-	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Operators::Serialize::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
-}
-
-/*!
- * \brief  Return the nth argument requested return type.
- * \param  inIndex Index of the current primitive.
- * \param  inN Index of the argument to get the type.
- * \param  ioContext A reference to the execution context.
- * \return A const reference to the type of the nth argument.
- * \throw  SCHNAPS::Core::AssertException if the argument index is out of bounds.
- */
-const std::string& Serialize::getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const {
-	schnaps_StackTraceBeginM();
-	schnaps_UpperBoundCheckAssertM(inN, 0);
-	const static std::string lType("Any");
-	return lType;
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Serialize::getArgType(unsigned int, unsigned int, SCHNAPS::Core::ExecutionContext&) const");
+	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
+	std::string lValue;
+	
+	switch (mValue_Ref[0]) {
+		case '@':
+			// individual variable value
+			lValue = lContext.getIndividual().getState().getVariableHandle(mValue_Ref.substr(1))->writeStr();
+			break;
+		case '#':
+			// environment variable value
+			lValue = lContext.getEnvironment().getState().getVariableHandle(mValue_Ref.substr(1))->writeStr();
+			break;
+		case '%':
+			// local variable value
+			lValue = lContext.getLocalVariableHandle(mValue_Ref.substr(1))->writeStr();
+			break;
+		default:
+			// parameter value or direct value
+			lValue = mValue->writeStr();
+			break;
+	}
+	
+	return new Core::String(lValue);
+	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Operators::Serialize::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
 }
 
 /*!
@@ -85,7 +189,7 @@ const std::string& Serialize::getArgType(unsigned int inIndex, unsigned int inN,
  */
 const std::string& Serialize::getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		const static std::string lType("String");
-		return lType;
+	const static std::string lType("String");
+	return lType;
 	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Serialize::getReturnType(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }

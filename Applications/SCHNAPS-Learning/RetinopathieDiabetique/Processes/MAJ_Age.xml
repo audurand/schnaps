@@ -1,0 +1,6 @@
+ <Process label="MAJ_Age">
+  <LocalVariables/>
+  <PrimitiveTree size="1">
+   <Operators_AddVariable inArgRight_Type="Int" inArgRight="1" inArgLeft="@Age" outResult="@Age"/>
+  </PrimitiveTree>
+ </Process>

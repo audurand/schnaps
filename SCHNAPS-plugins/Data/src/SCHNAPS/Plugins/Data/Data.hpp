@@ -23,13 +23,10 @@
 
 #include "SCHNAPS/Plugins/Data/Clock.hpp"
 #include "SCHNAPS/Plugins/Data/Log.hpp"
-#include "SCHNAPS/Plugins/Data/Parameter.hpp"
 #include "SCHNAPS/Plugins/Data/RandomUniform.hpp"
 #include "SCHNAPS/Plugins/Data/RouletteDynamic.hpp"
 #include "SCHNAPS/Plugins/Data/SetVariable.hpp"
 #include "SCHNAPS/Plugins/Data/SetVariableComplex.hpp"
-#include "SCHNAPS/Plugins/Data/Token.hpp"
-#include "SCHNAPS/Plugins/Data/Variable.hpp"
-#include "SCHNAPS/Plugins/Data/VariableEnvironment.hpp"
+#include "SCHNAPS/Plugins/Data/Value.hpp"
 
 #endif /* Data_hpp */

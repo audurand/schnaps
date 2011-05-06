@@ -90,12 +90,10 @@ bool Int::isLess(const Object& inRightObj) const {
 /*!
  * \brief Read the object from string.
  * \param inStr String to read the object from.
- * \throw SCHNAPS::Core::InternalException if the string contains an unknown value for object.
  */
 void Int::readStr(const std::string& inStr) {
 	schnaps_StackTraceBeginM();
-	std::istringstream lISS(inStr);
-	lISS >> mValue;
+	mValue = SCHNAPS::str2int(inStr);
 	schnaps_StackTraceEndM("void SCHNAPS::Core::Int::readStr(std::string&)");
 }
 
@@ -122,74 +120,68 @@ AnyType::Handle Int::clone() const {
 }
 
 /*!
- *  \brief  Compute absolute value.
- *  \return A reference to the resulting number.
+ * \brief  Compute the absolute value.
+ * \return A handle to the resulting number.
  */
-Number& Int::abs() {
+Number::Handle Int::abs() {
 	schnaps_StackTraceBeginM();
-	mValue = std::fabs(mValue);
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Int::abs()");
+	return new Int(std::abs(mValue));
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Int::abs()");
 }
 
 /*!
- *  \brief  Add a number.
- *  \return A reference to the resulting number.
+ * \brief  Compute the addition a number.
+ * \return A handle to the resulting number.
  */
-Number& Int::add(Number& inRightNumber) {
+Number::Handle Int::add(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	Int lRightInt = inRightNumber;
-	mValue += lRightInt.getValue();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Int::add(SCHNAPS::Core::Number&)");
+	return new Int(mValue + lRightInt.getValue());
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Int::add(SCHNAPS::Core::Number&)");
 }
 
 /*!
- *  \brief  Divide by a number.
- *  \return A reference to the resulting number.
+ * \brief  Compute the division by a number.
+ * \return A handle to the resulting number.
  */
-Number& Int::div(Number& inRightNumber) {
+Number::Handle Int::div(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	Int lRightInt = inRightNumber;
-	mValue /= lRightInt.getValue();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Int::div(SCHNAPS::Core::Number&)");
+	return new Int(mValue / lRightInt.getValue());
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Int::div(SCHNAPS::Core::Number&)");
 }
 
 /*!
- *  \brief  Compute the modulo by a number.
- *  \return A reference to the resulting number.
+ * \brief  Compute the modulo by a number.
+ * \return A handle to the resulting number.
  */
-Number& Int::mod(Number& inRightNumber) {
+Number::Handle Int::mod(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	Int lRightInt = inRightNumber;
-	mValue = mValue % lRightInt.getValue();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Int::mod(SCHNAPS::Core::Number&)");
+	return new Int(mValue % lRightInt.getValue());
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Int::mod(SCHNAPS::Core::Number&)");
 }
 
 /*!
- *  \brief  Multiply by a number.
- *  \return A reference to the resulting number.
+ * \brief  Compute the multiplication by a number.
+ * \return A handle to the resulting number.
  */
-Number& Int::mult(Number& inRightNumber) {
+Number::Handle Int::mult(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	Int lRightInt = inRightNumber;
-	mValue *= lRightInt.getValue();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Int::mult(SCHNAPS::Core::Number&)");
+	return new Int(mValue * lRightInt.getValue());
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Int::mult(SCHNAPS::Core::Number&)");
 }
 
 /*!
- *  \brief  Subtract a number.
- *  \return A reference to the resulting number.
+ * \brief  Compute the subtraction by a number.
+ * \return A handle to the resulting number.
  */
-Number& Int::sub(Number& inRightNumber) {
+Number::Handle Int::sub(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	Int lRightInt = inRightNumber;
-	mValue -= lRightInt.getValue();
-	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Number& SCHNAPS::Core::Int::sub(SCHNAPS::Core::Number&)");
+	return new Int(mValue - lRightInt.getValue());
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::Int::sub(SCHNAPS::Core::Number&)");
 }
 
 /*!
@@ -200,16 +192,6 @@ Int::operator Double() const {
 	Double lDouble(static_cast<double>(mValue));
 	return lDouble;
 	schnaps_StackTraceEndM("SCHNAPS::Core::Int::operator Double() const");
-}
-
-/*!
- * \brief Casting operator to float.
- */
-Int::operator Float() const {
-	schnaps_StackTraceBeginM();
-	Float lFloat(static_cast<float>(mValue));
-	return lFloat;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Int::operator Float() const");
 }
 
 /*!

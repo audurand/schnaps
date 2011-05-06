@@ -1,0 +1,13 @@
+  <Process label="Campagne_Prevention_ActPhys">
+	<LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_IfThenElse>
+        <Data_Value inValue="@Mort"/>
+        <Control_Nothing/>
+        <Control_Sequential>
+          <Meds_PreventionCampaign outCost="@Cout" inCost="$ref.cout_campagne_ActPhys" inDiscountRate="$ref.taux_actualisation"/>
+          <Control_ProcessPush inTarget="current" inDelay="1" inLabel="Campagne_Prevention_ActPhys"/>
+        </Control_Sequential>
+      </Control_IfThenElse>
+    </PrimitiveTree>
+  </Process>

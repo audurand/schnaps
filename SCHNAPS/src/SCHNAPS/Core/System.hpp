@@ -209,33 +209,63 @@ public:
 	 * \brief Return a const handle to a specific component.
 	 * \param inName The name of the component to return.
 	 * \return A const handle to the specific component.
-	 * \throw SCHNAPS::Core::AssertException if specific component does not exist.
+	 * \throw SCHNAPS::Core::RunTimeException if component does not exist.
+	 * \throw SCHNAPS::Core::AssertException if component is NULL.
 	 */
-	const Component::Handle getComponentHandle(std::string inName) const {
-		schnaps_AssertM(this->find(inName) != this->end());
-		return this->find(inName)->second;
+	const Component::Handle getComponentHandle(const std::string& inName) const {
+		schnaps_StackTraceBeginM();
+		System::const_iterator lIterComponents = this->find(inName);
+		if (lIterComponents == this->end()) {
+			std::ostringstream lOSS;
+			lOSS << "The component '" << inName << "' does not exist; ";
+			lOSS << "could not get it.";
+			throw schnaps_RunTimeExceptionM(lOSS.str());
+		}
+		schnaps_NonNullPointerAssertM(lIterComponents->second);
+		return lIterComponents->second;
+		schnaps_StackTraceEndM("const SCHNAPS::Core::Component::Handle SCHNAPS::Core::System::getComponentHandle(const std::string&) const");
 	}
 
 	/*!
 	 * \brief Return a const reference to a specific component.
 	 * \param inName The name of the component to return.
 	 * \return A const reference to the specific component.
-	 * \throw SCHNAPS::Core::AssertException if specific component does not exist.
+	 * \throw SCHNAPS::Core::RunTimeException if component does not exist.
+	 * \throw SCHNAPS::Core::AssertException if component is NULL.
 	 */
-	const Component& getComponent(std::string inName) const {
-		schnaps_AssertM(this->find(inName) != this->end());
-		return *(this->find(inName)->second);
+	const Component& getComponent(const std::string& inName) const {
+		schnaps_StackTraceBeginM();
+		System::const_iterator lIterComponents = this->find(inName);
+		if (lIterComponents == this->end()) {
+			std::ostringstream lOSS;
+			lOSS << "The component '" << inName << "' does not exist; ";
+			lOSS << "could not get it.";
+			throw schnaps_RunTimeExceptionM(lOSS.str());
+		}
+		schnaps_NonNullPointerAssertM(lIterComponents->second);
+		return *lIterComponents->second;
+		schnaps_StackTraceEndM("const SCHNAPS::Core::Component& SCHNAPS::Core::System::getComponent(const std::string&) const");
 	}
 
 	/*!
 	 * \brief Return a reference to a specific component.
 	 * \param inName The name of the component to return.
 	 * \return A reference to the specific component.
-	 * \throw SCHNAPS::Core::AssertException if specific component does not exist.
+	 * \throw SCHNAPS::Core::RunTimeException if component does not exist.
+	 * \throw SCHNAPS::Core::AssertException if component is NULL.
 	 */
-	Component& getComponent(std::string inName) {
-		schnaps_AssertM(this->find(inName) != this->end());
-		return *(this->find(inName)->second);
+	Component& getComponent(const std::string& inName) {
+		schnaps_StackTraceBeginM();
+		System::iterator lIterComponents = this->find(inName);
+		if (lIterComponents == this->end()) {
+			std::ostringstream lOSS;
+			lOSS << "The component '" << inName << "' does not exist; ";
+			lOSS << "could not get it.";
+			throw schnaps_RunTimeExceptionM(lOSS.str());
+		}
+		schnaps_NonNullPointerAssertM(lIterComponents->second);
+		return *lIterComponents->second;
+		schnaps_StackTraceEndM("SCHNAPS::Core::Component& SCHNAPS::Core::System::getComponent(const std::string&)");
 	}
 
 private:

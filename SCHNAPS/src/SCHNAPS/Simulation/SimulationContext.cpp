@@ -29,9 +29,7 @@ using namespace Simulation;
  */ 
 SimulationContext::SimulationContext() :
 	ExecutionContext()
-{
-	mName = "SimulationContext";
-}
+{}
 
 /*!
  * \brief Construct a simulation context as a copy of an original.
@@ -42,9 +40,7 @@ SimulationContext::SimulationContext(const SimulationContext& inOriginal) :
 	mProcesses(inOriginal.mProcesses),
 	mClockObservers(inOriginal.mClockObservers),
 	mScenarios(inOriginal.mScenarios)
-{
-	mName = "SimulationContext";
-}
+{}
 
 /*!
  * \brief Construct a simulation context with specific system, clock, and environment.
@@ -54,9 +50,7 @@ SimulationContext::SimulationContext(const SimulationContext& inOriginal) :
  */
 SimulationContext::SimulationContext(const Core::System::Handle inSystem, const Clock::Handle inClock, const Environment::Handle inEnvironment) :
 		ExecutionContext(inSystem, inClock, inEnvironment)
-{
-	mName = "SimulationContext";
-}
+{}
 
 /*!
  * \brief Read processes from XML.
@@ -278,35 +272,42 @@ void SimulationContext::writeScenarios(PACC::XML::Streamer& ioStreamer, bool inI
  */
 SimulationContext::Handle SimulationContext::deepCopy() const {
 	schnaps_StackTraceBeginM();
-	SimulationContext::Handle lSimulationContext = new SimulationContext(mSystem, mClock, mEnvironment);
+	SimulationContext::Handle lCopy = new SimulationContext(mSystem, mClock, mEnvironment);
 
 	// copy processes
 	for (ProcessMap::const_iterator lIt = this->mProcesses.begin(); lIt != this->mProcesses.end(); lIt++) {
-		lSimulationContext->mProcesses[lIt->first] = Core::castHandleT<Process>(lIt->second->deepCopy(*mSystem));
+		lCopy->mProcesses[lIt->first] = Core::castHandleT<Process>(lIt->second->deepCopy(*mSystem));
 	}
 
 	// copy clock observers
 	for (unsigned int i = 0; i < this->mClockObservers.mProcessEnvironment.size(); i++) {
-		lSimulationContext->mClockObservers.mProcessEnvironment.push_back(Core::castHandleT<Process>(this->mClockObservers.mProcessEnvironment[i]->deepCopy(*mSystem)));
+		lCopy->mClockObservers.mProcessEnvironment.push_back(Core::castHandleT<Process>(this->mClockObservers.mProcessEnvironment[i]->deepCopy(*mSystem)));
 	}
 	for (unsigned int i = 0; i < this->mClockObservers.mProcessIndividual.size(); i++) {
-		lSimulationContext->mClockObservers.mProcessIndividual.push_back(Core::castHandleT<Process>(this->mClockObservers.mProcessIndividual[i]->deepCopy(*mSystem)));
+		lCopy->mClockObservers.mProcessIndividual.push_back(Core::castHandleT<Process>(this->mClockObservers.mProcessIndividual[i]->deepCopy(*mSystem)));
 	}
 
 	// copy scenarios
 	for (ScenarioMap::const_iterator lIt = this->mScenarios.begin(); lIt != this->mScenarios.end(); lIt++) {
 		if (lIt->second.mProcessEnvironment == NULL) {
-			lSimulationContext->mScenarios[lIt->first].mProcessEnvironment = NULL;
+			lCopy->mScenarios[lIt->first].mProcessEnvironment = NULL;
 		} else {
-			lSimulationContext->mScenarios[lIt->first].mProcessEnvironment = Core::castHandleT<Process>(lIt->second.mProcessEnvironment->deepCopy(*mSystem));
+			lCopy->mScenarios[lIt->first].mProcessEnvironment = Core::castHandleT<Process>(lIt->second.mProcessEnvironment->deepCopy(*mSystem));
 		}
 		if (lIt->second.mProcessIndividual == NULL) {
-			lSimulationContext->mScenarios[lIt->first].mProcessIndividual = NULL;
+			lCopy->mScenarios[lIt->first].mProcessIndividual = NULL;
 		} else {
-			lSimulationContext->mScenarios[lIt->first].mProcessIndividual = Core::castHandleT<Process>(lIt->second.mProcessIndividual->deepCopy(*mSystem));
+			lCopy->mScenarios[lIt->first].mProcessIndividual = Core::castHandleT<Process>(lIt->second.mProcessIndividual->deepCopy(*mSystem));
 		}
 	}
+	
+	// copy local variables
+	for (LocalVariablesMap::const_iterator lIt = this->mLocalVariables.begin(); lIt != this->mLocalVariables.end(); lIt++) {
+		lCopy->mLocalVariables.insert(std::pair<std::string, Core::AnyType::Handle>(
+			lIt->first.c_str(),
+			Core::castHandleT<Core::AnyType>(lIt->second->clone())));
+	}
 
-	return lSimulationContext;
+	return lCopy;
 	schnaps_StackTraceEndM("SCHNAPS::Simulation::SimulationContext::Handle SCHNAPS::Simulation::SimulationContext::deepCopy() const");
 }

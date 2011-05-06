@@ -24,8 +24,6 @@
 #include "SCHNAPS/Plugins/Meds/Event.hpp"
 #include "SCHNAPS/Plugins/Meds/PreventionCampaign.hpp"
 #include "SCHNAPS/Plugins/Meds/Test.hpp"
-#include "SCHNAPS/Plugins/Meds/Testv2.hpp"
 #include "SCHNAPS/Plugins/Meds/Treatment.hpp"
-#include "SCHNAPS/Plugins/Meds/Treatmentv2.hpp"
 
 #endif /* Meds_hpp */

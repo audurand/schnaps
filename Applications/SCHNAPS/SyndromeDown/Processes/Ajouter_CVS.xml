@@ -1,0 +1,6 @@
+  <Process label="Ajouter_CVS">
+	<LocalVariables/>
+    <PrimitiveTree size="1">
+      <Operators_AddVariable inArgLeft="@Total_CVS" inArgRight="1" inArgRight_Type="Int" outResult="@Total_CVS"/>
+    </PrimitiveTree>
+  </Process>

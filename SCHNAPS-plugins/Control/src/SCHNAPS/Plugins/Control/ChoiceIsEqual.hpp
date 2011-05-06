@@ -33,8 +33,8 @@ namespace Control {
 
 /*!
  *  \class ChoiceIsEqual SCHNAPS/Plugins/Control/ChoiceIsEqual.hpp "SCHNAPS/Plugins/Control/ChoiceIsEqual.hpp"
- *  \brief Execute node branch according to the value of an individual variable over a set of possibilities (choices).
- * 		   WARNING: There is no default choice so the variable MUST BE in choices. 
+ *  \brief Execute node branch according to some value over a set of possibilities (choices).
+ * 		   WARNING: There is no default choice so the value MUST BE in choices. 
  */
 class ChoiceIsEqual: public Core::Primitive {
 protected:
@@ -79,9 +79,10 @@ public:
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
 private:
-	std::string mChoiceVariableLabel;	//!< Current individual variable label to switch on.
-	std::string mChoices_Ref;			//!< Reference to choice values.
-	ChoiceMap mChoices;					//!< Map of values to children index associated.
+	std::string mValue_Ref;		//!< Reference to the value to switch on.
+	Core::Atom::Handle mValue;	//!< A handle to the value to switch on.
+	std::string mChoices_Ref;	//!< Reference to choice values.
+	ChoiceMap mChoiceMap;		//!< Map of values to children index associated.
 };
 } // end of Control namespace
 } // end of Plugins namespace

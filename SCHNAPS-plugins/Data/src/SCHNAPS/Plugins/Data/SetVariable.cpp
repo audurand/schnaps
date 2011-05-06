@@ -29,6 +29,7 @@ using namespace Data;
  */
 SetVariable::SetVariable() :
 		Core::Primitive(0),
+		mVariable_Ref(""),
 		mValue_Ref(""),
 		mValue(NULL)
 {}
@@ -39,14 +40,58 @@ SetVariable::SetVariable() :
  */
 SetVariable::SetVariable(const SetVariable& inOriginal) :
 		Core::Primitive(0),
-		mLabel(inOriginal.mLabel.c_str()),
+		mVariable_Ref(inOriginal.mVariable_Ref.c_str()),
 		mValue_Ref(inOriginal.mValue_Ref.c_str())
 {
-	if (mValue_Ref.empty()) {
-		mValue = Core::castHandleT<Core::Atom>(inOriginal.mValue->clone());
-	} else {
-		mValue = Core::castHandleT<Core::Atom>(inOriginal.mValue);
+	switch (mValue_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// TODO: local variable value
+			mValue = NULL;
+			break;
+		case '$':
+			// parameter value
+			mValue = inOriginal.mValue;
+			break;
+		default:
+			// direct value
+			mValue = inOriginal.mValue->clone();
 	}
+}
+
+/*!
+ * \brief  Copy operator.
+ * \return A reference to the current object.
+ */
+SetVariable& SetVariable::operator=(const SetVariable& inOriginal) {
+	schnaps_StackTraceBeginM();
+	mVariable_Ref.assign(inOriginal.mVariable_Ref.c_str());
+	mValue_Ref.assign(inOriginal.mValue_Ref.c_str());
+	
+	switch (mValue_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mValue = NULL;
+			break;
+		case '$':
+			// parameter value
+			mValue = inOriginal.mValue;
+			break;
+		default:
+			// direct value
+			mValue = inOriginal.mValue->clone();
+			break;
+	}
+
+	return *this;
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Data::SetVariable& SCHNAPS::Plugins::Data::SetVariable::operator=(const SCHNAPS::Plugins::Data::SetVariable&)");
 }
 
 /*!
@@ -54,9 +99,9 @@ SetVariable::SetVariable(const SetVariable& inOriginal) :
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.
  * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
- * \throw SCHNAPS::Core::IOException if label attribute is missing.
- * \throw SCHNAPS::Core::IOException if value attribute and value.ref attribute are missing.
- * \throw SCHNAPS::Core::IOException if value attribute is given and valueType attribute is missing.
+ * \throw SCHNAPS::Core::IOException if outVariable or inValue attributes are missing.
+ * \throw SCHNAPS::Core::IOException if inValue attribute is a direct value and inValue_Type attribute is missing.
+ * \throw SCHNAPS::Core::RunTimeException if outVariable attribute is not a reference to a variable.
  */
 void SetVariable::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
@@ -70,31 +115,44 @@ void SetVariable::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
 		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
 	}
 
-	// retrieve label
-	if (inIter->getAttribute("label").empty()) {
-		throw schnaps_IOExceptionNodeM(*inIter, "label of variable to set expected!");
+	// retrieve output variable
+	if (inIter->getAttribute("outVariable").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "variable where to store result expected!");
 	}
-	mLabel = inIter->getAttribute("label");
+	mVariable_Ref.assign(inIter->getAttribute("outVariable"));
+	
+	if (mVariable_Ref[0] != '@' && mVariable_Ref[0] != '%') {
+		throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific variable source!");
+	}
 
-	// retrieve value
-	if (inIter->getAttribute("value").empty()) {
-		if (inIter->getAttribute("value.ref").empty()) {
-			throw schnaps_IOExceptionNodeM(*inIter, "comparison value expected!");
-		} else { // from parameter
-			mValue_Ref = inIter->getAttribute("value.ref");
-
-			std::stringstream lSS;
-			lSS << "ref." << mValue_Ref;
-			mValue = Core::castHandleT<Core::Atom>(ioSystem.getParameters().getParameterHandle(lSS.str().c_str()));
-		}
-	} else { // explicitly given
-		if (inIter->getAttribute("valueType").empty()) {
-			throw schnaps_IOExceptionNodeM(*inIter, "type of comparison value expected!");
-		}
-
-		Core::Atom::Alloc::Handle lAlloc = Core::castHandleT<Core::Atom::Alloc>(ioSystem.getFactory().getAllocator(inIter->getAttribute("valueType")));
-		mValue =  Core::castHandleT<Core::Atom>(lAlloc->allocate());
-		mValue->readStr(inIter->getAttribute("value"));
+	// retrieve new value
+	if (inIter->getAttribute("inValue").empty()) {
+		throw schnaps_IOExceptionNodeM(*inIter, "value expected!");
+	}
+	mValue_Ref.assign(inIter->getAttribute("inValue"));
+	
+	switch (mValue_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mValue = NULL;
+			break;
+		case '$':
+			// parameter value
+			mValue = ioSystem.getParameters().getParameterHandle(mValue_Ref.substr(1));
+			break;
+		default: {
+			// direct value
+			if (inIter->getAttribute("inValue_Type").empty()) {
+				throw schnaps_IOExceptionNodeM(*inIter, "type of value expected!");
+			}
+			Core::AnyType::Alloc::Handle lAlloc = Core::castHandleT<Core::AnyType::Alloc>(ioSystem.getFactory().getAllocator(inIter->getAttribute("inValue_Type")));
+			mValue = Core::castHandleT<Core::AnyType>(lAlloc->allocate());
+			mValue->readStr(mValue_Ref);
+			break; }
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Data::SetVariable::readWithSystem(PACC::XML::ConstIterator, Core::System&)");
 }
@@ -106,12 +164,12 @@ void SetVariable::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
  */
 void SetVariable::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-	ioStreamer.insertAttribute("label", mLabel);
-	if (mValue_Ref.empty()) {
-		ioStreamer.insertAttribute("valueType", mValue->getName());
-		ioStreamer.insertAttribute("value", mValue->writeStr());
-	} else {
-		ioStreamer.insertAttribute("value.ref", mValue_Ref);
+	ioStreamer.insertAttribute("outVariable", mVariable_Ref);
+	ioStreamer.insertAttribute("inValue", mValue_Ref);
+	
+	if (mValue != NULL && mValue_Ref[0] != '$') {
+		// direct value
+		ioStreamer.insertAttribute("inValue_Type", mValue->getType());
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Data::SetVariable::writeContent(PACC::XML::Streamer&, bool) const");
 }
@@ -121,27 +179,44 @@ void SetVariable::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) c
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
- * \throw  SCHNAPS::Core::RunTimeException if the method is not defined for the specific execution context.
  * \throw  SCHNAPS::Core::RunTimeException if the type of new value does not match the type of variable.
  */
 Core::AnyType::Handle SetVariable::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	if (ioContext.getName() == "GenerationContext") {
-		throw schnaps_RunTimeExceptionM("The method is not defined for context 'GenerationContext'.");
-	}
-	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
+	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
+	Core::AnyType::Handle lValue;
 
-	std::string lTypeVariable = lContext.getIndividual().getState().getVariable(mLabel).getType();
-	std::string lTypeNewValue = mValue->getType();
+	std::string lTypeVariable = lContext.getIndividual().getState().getVariable(mVariable_Ref.substr(1)).getType();
+	
+	switch (mValue_Ref[0]) {
+		case '@':
+			// individual variable value
+			lValue = lContext.getIndividual().getState().getVariableHandle(mValue_Ref.substr(1))->clone();
+			break;
+		case '#':
+			// environment variable value
+			lValue = lContext.getEnvironment().getState().getVariableHandle(mValue_Ref.substr(1))->clone();
+			break;
+		case '%':
+			// local variable value
+			lValue = lContext.getLocalVariableHandle(mValue_Ref.substr(1))->clone();
+			break;
+		default:
+			// parameter value or direct value
+			lValue = mValue->clone();
+			break;
+	}
+	
+	std::string lTypeNewValue = lValue->getType();
 	if (lTypeVariable != lTypeNewValue) {
 		std::stringstream lOSS;
-		lOSS << "The type of variable '" << mLabel << "' (" << lTypeVariable << ") ";
+		lOSS << "The type of variable '" << mVariable_Ref.substr(1) << "' (" << lTypeVariable << ") ";
 		lOSS << "does not match the type of new value (" << lTypeNewValue << "); ";
 		lOSS << "could not set the variable.";
 		throw schnaps_RunTimeExceptionM(lOSS.str());
 	}
 	
-	lContext.getIndividual().getState().setVariable(mLabel, Core::castHandleT<Core::Atom>(mValue->clone()));
+	lContext.getIndividual().getState().setVariable(mVariable_Ref.substr(1), lValue);
 	return NULL;
 	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Data::SetVariable::execute(unsigned int, Core::ExecutionContext&)");
 }

@@ -47,6 +47,9 @@ public:
 	ProcessPush(const ProcessPush& inOriginal);
 	virtual ~ProcessPush() {}
 
+	//! Copy operator.
+	ProcessPush& operator=(const ProcessPush& inOriginal);
+
 	/*!
 	 * \brief  Return a const reference to the name of object.
 	 * \return A const reference to the name of object.
@@ -68,34 +71,11 @@ public:
 	//! Return the nth argument requested return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
 
-	/*!
-	 * \brief  Return a const reference to the label of process to push.
-	 * \return A const reference to the label of process to push.
-	 */
-	const std::string& getLabel() const {
-		return mLabel;
-	}
-
-	/*!
-	 * \brief  Return a const reference to the target of process to push.
-	 * \return A const reference to the target of process to push.
-	 */
-	const Simulation::Process::Target& getTarget() const {
-		return mTarget;
-	}
-
-	/*!
-	 * \brief  Return a const reference to the delay of process to push.
-	 * \return A const reference to the delay of process to push.
-	 */
-	const unsigned long& getDelay() const {
-		return mDelay;
-	}
-
 private:
 	std::string mLabel;						//!< Label of process to push.
 	Simulation::Process::Target mTarget;	//!< Target of the push.
-	unsigned long mDelay;					//!< Delay before execution.
+	Core::ULong::Handle mDelay;				//!< A handle to the delay before execution.
+	std::string mDelay_Ref;					//!< Reference to the delay value.
 };
 } // end of Control namespace
 } // end of Plugins namespace

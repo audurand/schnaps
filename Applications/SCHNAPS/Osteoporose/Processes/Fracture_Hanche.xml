@@ -1,0 +1,76 @@
+  <Process label="Fracture_Hanche">
+	<LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Data_Log inMessage="Fracture_Hanche" inType="Event"/>
+        <Meds_Treatment outCost="@Cout" inDiscountRate="$ref.taux_actualisation" inCost="256.69" inLabel="Urgence" inCompliance="1" inChargeNonCompliant="false">
+          <Control_Nothing/>
+          <Control_Nothing/>
+        </Meds_Treatment>
+        <Meds_Treatment outCost="@Cout" inDiscountRate="$ref.taux_actualisation" inCost="3808.94" inLabel="Operation" inCompliance="1" inChargeNonCompliant="false">
+          <Control_Nothing/>
+          <Control_Nothing/>
+        </Meds_Treatment>
+        <Meds_Treatment outCost="@Cout" inDiscountRate="$ref.taux_actualisation" inCost="$ref.cout_hospitalisation_hanche" inLabel="Hospitalisation" inCompliance="1" inChargeNonCompliant="false">
+          <Control_Nothing/>
+          <Control_Nothing/>
+        </Meds_Treatment>
+        <Control_Branch inProbability="0.52">
+          <Control_Sequential>
+            <Meds_Treatment outCost="@Cout" inDiscountRate="$ref.taux_actualisation" inCost="536.69" inLabel="Physio_Externe" inCompliance="1" inChargeNonCompliant="false">
+              <Control_Nothing/>
+              <Control_Nothing/>
+            </Meds_Treatment>
+            <Meds_Treatment outCost="@Cout" inDiscountRate="$ref.taux_actualisation" inCost="2328.48" inLabel="Prevention_Chutes" inCompliance="1" inChargeNonCompliant="false">
+              <Control_Nothing/>
+              <Control_Nothing/>
+            </Meds_Treatment>
+          </Control_Sequential>
+          <Control_Sequential>
+            <Meds_Treatment outCost="@Cout" inDiscountRate="$ref.taux_actualisation" inCost="24639.53" inLabel="Readaptation_Aigue" inCompliance="1" inChargeNonCompliant="false">
+              <Control_Nothing/>
+              <Control_Nothing/>
+            </Meds_Treatment>
+            <Control_Branch inProbability="$ref.probabilite_soins_longue_duree_hanche">
+              <Meds_Treatment outCost="@Cout" inDiscountRate="$ref.taux_actualisation" inCost="74646" inLabel="Soins_Longue_Duree" inCompliance="1" inChargeNonCompliant="false">
+                <Control_Nothing/>
+                <Control_Nothing/>
+              </Meds_Treatment>
+              <Control_Sequential>
+                <Meds_Treatment outCost="@Cout" inDiscountRate="$ref.taux_actualisation" inCost="536.69" inLabel="Physio_Externe" inCompliance="1" inChargeNonCompliant="false">
+                  <Control_Nothing/>
+                  <Control_Nothing/>
+                </Meds_Treatment>
+                <Meds_Treatment outCost="@Cout" inDiscountRate="$ref.taux_actualisation" inCost="2328.48" inLabel="Prevention_Chutes" inCompliance="1" inChargeNonCompliant="false">
+                  <Control_Nothing/>
+                  <Control_Nothing/>
+                </Meds_Treatment>
+              </Control_Sequential>
+            </Control_Branch>
+          </Control_Sequential>
+        </Control_Branch>
+        <Operators_AddVariable inArgLeft="@Nb_Fracture_Hanche" inArgRight="1" inArgRight_Type="Int" outResult="@Nb_Fracture_Hanche"/>
+        <Data_SetVariableComplex outVariable="@QALY">
+          <Operators_AddComplex>
+            <Data_Value inValue="@QALY"/>
+            <Operators_NPVComplex inDiscountRate="$ref.taux_actualisation">
+              <Data_Value inValue_Type="Double" inValue="0.05732">
+                <!--0.30*0.038 annee + 0.56*0.082 annee-->
+              </Data_Value>
+            </Operators_NPVComplex>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="@QALY_Temps_MAJ">
+          <Operators_AddComplex>
+            <Data_Value inValue="@QALY_Temps_MAJ"/>
+            <Data_Value inValue_Type="Double" inValue="0.12">
+              <!--0.038 annee + 0.082 annee-->
+            </Data_Value>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Control_ProcessPush inTarget="current" inDelay="1" inLabel="MAJ_TauxMortalite_PostHanche_1ereAnnee"/>
+        <Control_ProcessPush inTarget="current" inDelay="2" inLabel="MAJ_TauxMortalite_PostHanche_2eAnnee"/>
+        <Control_ProcessPush inTarget="current" inDelay="3" inLabel="MAJ_TauxMortalite_PostHanche_3eAnnee"/>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

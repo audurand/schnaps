@@ -4,7 +4,7 @@
  * SCHNAPS
  * Copyright (C) 2009-2011 by Audrey Durand
  *
- * This program is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it Serialize/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -31,13 +31,13 @@ namespace Operators {
 
 /*!
  *  \class Serialize SCHNAPS/Plugins/Operators/Serialize.hpp "SCHNAPS/Plugins/Operators/Serialize.hpp"
- *  \brief Operator to serialize any atoms to string.
+ *  \brief Serialize a value to a string.
  */
 class Serialize: public Core::Primitive {
 public:
 	//! Serialize allocator type.
 	typedef Core::AllocatorT<Serialize, Core::Primitive::Alloc> Alloc;
-	//! Serialize handle type.
+	//! Serialize hSerializele type.
 	typedef Core::PointerT<Serialize, Core::Primitive::Handle> Handle;
 	//! Serialize bag type.
 	typedef Core::ContainerT<Serialize, Core::Primitive::Bag> Bag;
@@ -60,12 +60,19 @@ public:
 		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::Serialize::getName() const");
 	}
 
+	//! Read object from XML using system.
+	virtual	void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Write content of object to XML.
+	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
+
 	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
-	//! Return the nth argument requested return type.
-	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const;
 	//! Return the primitive return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+
+private:
+	std::string mValue_Ref;			//!< Reference to value.
+	Core::AnyType::Handle mValue;	//!< A handle to value.
 };
 } // end of Operators namespace
 } // end of Plugins namespace

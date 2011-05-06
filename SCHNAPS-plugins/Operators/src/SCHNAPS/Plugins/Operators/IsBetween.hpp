@@ -31,15 +31,15 @@ namespace Operators {
 
 /*!
  *  \class IsBetween SCHNAPS/Plugins/Operators/IsBetween.hpp "SCHNAPS/Plugins/Operators/IsBetween.hpp"
- *  \brief Comparison operator "is between".
+ *  \brief Check if some value is between left and right arguments (left argument <= value <= right argument).
  */
 class IsBetween: public Core::Primitive {
 public:
-	//! IsIsBetween allocator type.
+	//! IsBetween allocator type.
 	typedef Core::AllocatorT<IsBetween, Core::Primitive::Alloc> Alloc;
-	//! IsIsBetween handle type.
+	//! IsBetween handle type.
 	typedef Core::PointerT<IsBetween, Core::Primitive::Handle> Handle;
-	//! IsIsBetween IsIsBetween type.
+	//! IsBetween bag type.
 	typedef Core::ContainerT<IsBetween, Core::Primitive::Bag> Bag;
 
 	IsBetween();
@@ -60,12 +60,23 @@ public:
 		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::IsBetween::getName() const");
 	}
 
+	//! Read object from XML using system.
+	virtual	void readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem);
+	//! Write content of object to XML.
+	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
+
 	//! Execute the primitive.
 	virtual Core::AnyType::Handle execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
-	//! Return the nth argument requested return type.
-	virtual const std::string& getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const;
 	//! Return the primitive return type.
 	virtual const std::string& getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const;
+
+private:
+	std::string mValue_Ref;			//!< Reference to the value to compare.
+	Core::Number::Handle mValue;	//!< A handle to the value to compare.
+	std::string mArgLeft_Ref;		//!< Reference to left argument in comparison.
+	Core::Number::Handle mArgLeft;	//!< A handle to left argument in comparison.
+	std::string mArgRight_Ref;		//!< Reference to right argument in comparison.
+	Core::Number::Handle mArgRight;	//!< A handle to right argument in comparison.
 };
 } // end of Operators namespace
 } // end of Plugins namespace

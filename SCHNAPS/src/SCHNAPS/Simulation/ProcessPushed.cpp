@@ -1,8 +1,8 @@
 /*
  * ProcessPushed.cpp
  *
- *  Created on: 2009-02-26
- *  Author: Audrey Durand
+ * SCHNAPS
+ * Copyright (C) 2009-2011 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,54 +24,65 @@
 using namespace SCHNAPS;
 using namespace Simulation;
 
+/*!
+ * \brief Default constructor.
+ */
 ProcessPushed::ProcessPushed()
-{}
+{
+	mLabel = "";
+}
 
-ProcessPushed::ProcessPushed(const ProcessPushed& inOriginal)
+/*!
+ * \brief Construct a pushed process as a copy of an original.
+ * \param inOriginal The original push process.
+ */
+ProcessPushed::ProcessPushed(const ProcessPushed& inOriginal)	
 {
 	mLabel = inOriginal.mLabel.c_str();
 }
 
+/*!
+ * \brief Construct a pushed process with a specific label.
+ * \param inLabel The specific pushed process label.
+ */
 ProcessPushed::ProcessPushed(const std::string inLabel)
 {
 	mLabel = inLabel.c_str();
 }
 
-void SCHNAPS::Simulation::ProcessPushed::readWithSystem(PACC::XML::ConstIterator inIter, SCHNAPS::Core::System& ioSystem) {
+/*!
+ * \brief Read object from XML using system.
+ * \param inIter XML iterator of input document.
+ * \param ioSystem A reference to the system.
+ * \throw SCHNAPS::Core::InternalException if the method is undefined for the class.
+ * 
+ */
+void ProcessPushed::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
-		throw schnaps_UndefinedMethodInternalExceptionM("readWithSystem", "Process", getName());
+	throw schnaps_UndefinedMethodInternalExceptionM("readWithSystem", "PushedProcess", getName());
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::ProcessPushed::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
-void SCHNAPS::Simulation::ProcessPushed::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
+/*!
+ * \brief Write object content to XML.
+ * \param ioStreamer XML streamer to output document.
+ * \param inIndent Wether to indent or not.
+ * \throw SCHNAPS::Core::InternalException if the method is undefined for the class.
+ */
+void ProcessPushed::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-		throw schnaps_UndefinedMethodInternalExceptionM("writeContent", "Process", getName());
+	throw schnaps_UndefinedMethodInternalExceptionM("writeContent", "PushedProcess", getName());
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::ProcessPushed::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
-SCHNAPS::Core::AnyType::Handle ProcessPushed::execute(SCHNAPS::Core::ExecutionContext& ioContext) const {
+/*!
+ * \brief  Return a handle to the result of process execution.
+ * \param  ioContext A reference to the execution context required for primitive tree function execution.
+ * \return A handle to the result of process execution.
+ */
+Core::AnyType::Handle ProcessPushed::execute(Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		SCHNAPS::Core::AnyType::Handle lResult;
-		SCHNAPS::Core::PrimitiveTree::Handle lCurrentPrimitiveTree;
-		SCHNAPS::Simulation::SimulationContext& lContext = SCHNAPS::Core::castObjectT<SCHNAPS::Simulation::SimulationContext&>(ioContext);
-
-#ifndef SCHNAPS_NDEBUG
-		if (lContext.getProcesses().find(mLabel) == lContext.getProcesses().end()) {
-			throw schnaps_InternalExceptionM("Could not find process '" + mLabel + "' in the process database!");
-		}
-#else
-		schnaps_AssertM(lContext.getProcesses().find(mLabel) != lContext.getProcesses().end());
-#endif
-
-		// Save current primitive tree
-		lCurrentPrimitiveTree = lContext.getPrimitiveTreeHandle();
-
-		// Process called primitive tree
-		lResult = lContext.getProcesses().find(mLabel)->second->execute(ioContext);
-
-		// Restore current primitive tree
-		lContext.setPrimitiveTree(lCurrentPrimitiveTree);
-
-		return lResult;
+	SimulationContext& lContext = Core::castObjectT<SimulationContext&>(ioContext);
+	return lContext.getProcesses().find(mLabel)->second->execute(ioContext);
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Simulation::ProcessPushed::execute(SCHNAPS::Core::ExecutionContext&) const ");
 }

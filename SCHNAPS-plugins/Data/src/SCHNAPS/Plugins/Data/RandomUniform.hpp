@@ -21,8 +21,9 @@
 #ifndef SCHNAPS_Plugins_Data_RandomUniform_hpp
 #define SCHNAPS_Plugins_Data_RandomUniform_hpp
 
-#include "PACC/XML.hpp"
 #include "SCHNAPS/SCHNAPS.hpp"
+
+#include "PACC/XML.hpp"
 
 namespace SCHNAPS {
 namespace Plugins {
@@ -44,9 +45,6 @@ public:
 	RandomUniform();
 	RandomUniform(const RandomUniform& inOriginal);
 	virtual ~RandomUniform() {}
-
-	//! Copy operator.
-	RandomUniform& operator=(const RandomUniform& inOriginal);
 
 	/*!
 	 * \brief  Return a const reference to the name of object.
