@@ -30,6 +30,8 @@
 #include "XGetopt.h"
 #endif
 
+#include <cstdio>
+
 using namespace SCHNAPS;
 using namespace Plugins;
 using namespace Learning;
@@ -146,10 +148,20 @@ int main(int argc, char* argv[]) {
 		std::string lPrintPrefix_Basic = Core::castHandleT<Core::String>(lSimulator.getSystem().getParameters().getParameterHandle("print.prefix"))->getValue();
 		bool lPrintConf = Core::castHandleT<Core::Bool>(lSimulator.getSystem().getParameters().getParameterHandle("print.conf"))->getValue();
 
-		// learn
+		// declare useful streams
 		std::ofstream lOFS;
 		std::stringstream lSS;
-		PACC::XML::Streamer *lOStreamer;	
+		PACC::XML::Streamer *lOStreamer;
+		
+		// redirect stdout and stderr to file (for Colosse output)
+		lSS.str("");
+		lSS << lPrintPrefix_Basic << "out.txt";
+		freopen(lSS.str().c_str(), "w", stdout);
+		lSS.str("");
+		lSS << lPrintPrefix_Basic << "err.txt";
+		freopen(lSS.str().c_str(), "w", stderr);
+		
+		// learn	
 		for (unsigned int i = 0; i < lEpisodes; i++) {
 #ifdef SCHNAPS_FULL_DEBUG
 			std::cout << "Episode " << i << "\n";
@@ -169,7 +181,7 @@ int main(int argc, char* argv[]) {
 			if (lFolders) {
 				// create folder for episode i
 				lSS.str("");
-				lSS << lPrintPrefix_Basic<< i << "/";
+				lSS << lPrintPrefix_Basic << i << "/";
 #ifdef SCHNAPS_IS_UNIX
 				mkdir(lSS.str().c_str(), 0777);
 #else
@@ -261,10 +273,17 @@ int main(int argc, char* argv[]) {
 			lSimulator.getPopulationManager().readStr(lInputEvaluation);
 			lSimulator.simulate(lScenario);
 		}
+		
+		fclose(stdout);
+		fclose(stderr);
 
 		return 0;
 	} catch (Core::Exception& E) {
 		E.terminate();
+		
+		fclose(stdout);
+		fclose(stderr);
+		
 		return -1;
 	}
 }
