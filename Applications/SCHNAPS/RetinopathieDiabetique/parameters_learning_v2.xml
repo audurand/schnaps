@@ -14,10 +14,10 @@
           <UInt value="8"/>
         </Entry>
         <Entry label="ref.Age_Depart">
-          <Int value="0"/>
+          <Int value="30"/>
         </Entry>
         <Entry label="ref.Age_Fin">
-          <Int value="150"/>
+          <Int value="60"/>
         </Entry>
         <Entry label="ref.Traitement_PDR_Efficacite">
           <Double value="0.80"/>
@@ -32,28 +32,28 @@
           <Double value="180.00"/>
         </Entry>
         <Entry label="ref.Optometriste_Specificite">
-          <Double value="0.93"/>
+          <Double value="0.80"/>
         </Entry>
         <Entry label="ref.Optometriste_Sensibilite">
-          <Double value="0.73"/>
+          <Double value="0.50"/>
         </Entry>
         <Entry label="ref.Optometriste_Cout">
           <Double value="20.00"/>
         </Entry>
         <Entry label="ref.Optometriste_Intervalle">
-          <ULong value="12"/>
+          <ULong value="6"/>
         </Entry>
         <Entry label="ref.Optometriste_Compliance">
           <Double value="0.80"/>
         </Entry>
         <Entry label="ref.GoldStandard_Specificite">
-          <Double value="1.00"/>
+          <Double value="0.80"/>
         </Entry>
         <Entry label="ref.GoldStandard_Sensibilite">
-          <Double value="0.98"/>
+          <Double value="0.60"/>
         </Entry>
         <Entry label="ref.GoldStandard_Cout">
-          <Double value="60.00"/>
+          <Double value="32.00"/>
         </Entry>
         <Entry label="ref.GoldStandard_Intervalle">
           <ULong value="6"/>

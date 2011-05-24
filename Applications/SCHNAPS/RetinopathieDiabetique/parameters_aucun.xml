@@ -17,7 +17,7 @@
           <Int value="0"/>
         </Entry>
         <Entry label="ref.Age_Fin">
-          <Int value="150"/>
+          <Int value="0"/>
         </Entry>
         <Entry label="ref.Traitement_PDR_Efficacite">
           <Double value="0.80"/>

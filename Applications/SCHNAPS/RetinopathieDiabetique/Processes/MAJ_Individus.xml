@@ -27,7 +27,15 @@
             <Data_Clock/>
             <Data_Value inValue_Type="ULong" inValue="11"/>
           </Operators_IsGreaterComplex>
-		  <Operators_AddVariable inArgRight_Type="Int" inArgRight="1" inArgLeft="@Annees_Aveugle" outResult="@Annees_Aveugle"/>
+		  <Control_Sequential>
+			 <Operators_AddVariable inArgRight_Type="Int" inArgRight="1" inArgLeft="@Annees_Aveugle" outResult="@Annees_Aveugle"/>
+			 <Control_ChoiceIsBetween inBounds="0|6|22|65" inBounds_Type="Int" inValue="@Age">
+			   <Operators_AddVariable inArgLeft="@Cout_Aveugle" inArgRight_Type="Double" inArgRight="1688" outResult="@Cout_Aveugle"/>
+			   <Operators_AddVariable inArgLeft="@Cout_Aveugle" inArgRight_Type="Double" inArgRight="1373" outResult="@Cout_Aveugle"/>
+			   <Operators_AddVariable inArgLeft="@Cout_Aveugle" inArgRight_Type="Double" inArgRight="9184" outResult="@Cout_Aveugle"/>
+			   <Operators_AddVariable inArgLeft="@Cout_Aveugle" inArgRight_Type="Double" inArgRight="24" outResult="@Cout_Aveugle"/>
+			 </Control_ChoiceIsBetween>
+		  </Control_Sequential>
 		  <Control_Nothing/>
        </Control_IfThenElse>
        <Control_Nothing/>

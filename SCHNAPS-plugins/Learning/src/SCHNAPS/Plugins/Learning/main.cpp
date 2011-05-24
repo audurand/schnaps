@@ -30,8 +30,6 @@
 #include "XGetopt.h"
 #endif
 
-#include <cstdio>
-
 using namespace SCHNAPS;
 using namespace Plugins;
 using namespace Learning;
@@ -153,13 +151,7 @@ int main(int argc, char* argv[]) {
 		std::stringstream lSS;
 		PACC::XML::Streamer *lOStreamer;
 		
-		// redirect stdout and stderr to file (for Colosse output)
-		lSS.str("");
-		lSS << lPrintPrefix_Basic << "out.txt";
-		freopen(lSS.str().c_str(), "w", stdout);
-		lSS.str("");
-		lSS << lPrintPrefix_Basic << "err.txt";
-		freopen(lSS.str().c_str(), "w", stderr);
+		fflush(stdout);
 		
 		// learn	
 		for (unsigned int i = 0; i < lEpisodes; i++) {
@@ -234,11 +226,13 @@ int main(int argc, char* argv[]) {
 				lSimulator.getPopulationManager().getGenerator().resetRandomizer();
 				
 				// simulate
-				lSimulator.configure("print.input=false,print.output=true,print.log=true,learning.learn=false");
+				lSimulator.configure("print.input=false,print.output=true,print.log=false,learning.learn=false");
 				lSimulator.getPopulationManager().clear();
 				lSimulator.getPopulationManager().readStr(lInputEvaluation);
 				lSimulator.simulate(lScenario);
 			}
+			
+			fflush(stdout);
 		}
 		
 #ifdef SCHNAPS_FULL_DEBUG
@@ -267,22 +261,16 @@ int main(int argc, char* argv[]) {
 			
 			// simulate
 			lSS.str("");
-			lSS << "print.prefix=" << lPrintPrefix_Basic << ",print.input=false,print.output=true,print.log=true,learning.learn=false";
+			lSS << "print.prefix=" << lPrintPrefix_Basic << ",print.input=false,print.output=true,print.log=false,learning.learn=false";
 			lSimulator.configure(lSS.str().c_str());
 			lSimulator.getPopulationManager().clear();
 			lSimulator.getPopulationManager().readStr(lInputEvaluation);
 			lSimulator.simulate(lScenario);
 		}
-		
-		fclose(stdout);
-		fclose(stderr);
 
 		return 0;
 	} catch (Core::Exception& E) {
 		E.terminate();
-		
-		fclose(stdout);
-		fclose(stderr);
 		
 		return -1;
 	}

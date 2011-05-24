@@ -2,7 +2,7 @@
   <LocalVariables/>
   <PrimitiveTree size="1">
    <Control_Sequential>
-    <Control_ChoiceIsEqual inChoices="$ref.Genre" inValue="@ref.Genre">
+    <Control_ChoiceIsEqual inChoices="$ref.Genre" inValue="@Genre">
      <Control_ChoiceIsBetween inBounds_Type="Int" inValue="@Age" inBounds="0|1|5|10|15|20|25|35|45|55|65|75|85">
       <Data_SetVariable inValue_Type="Double" inValue="0.0080" outVariable="@Taux_Mortalite"/>
       <Data_SetVariable inValue_Type="Double" inValue="0.0004" outVariable="@Taux_Mortalite"/>
