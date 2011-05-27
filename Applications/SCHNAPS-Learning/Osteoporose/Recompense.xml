@@ -3,11 +3,30 @@
 	  <LocalVariable label="Recompense">
 		  <Double value="0"/>
 	  </LocalVariable>
+	  <LocalVariable label="Nb_Fractures_Evitees">
+		  <Int value="0"/>
+	  </LocalVariable>
   </LocalVariables>
   <PrimitiveTree>
     <Control_Sequential>
       <Operators_AddVariable inArgLeft="@Cout" inArgRight="@Cout_Aveugle" outResult="%Recompense"/>
       <Operators_MultVariable inArgLeft="%Recompense" inArgRight="-1" inArgRight_Type="Double" outResult="%Recompense"/>
+      <Data_SetVariableComplex outVariable="%Nb_Fractures_Evitees">
+		<Operators_SubComplex>
+	      <Data_Value inValue="2" inValue_Type="Int"/>
+	      <Operators_AddComplex>
+		    <Operators_AddComplex>
+		      <Data_Value inValue="@Nb_Fractures_Hanche"/>
+		      <Data_Value inValue="@Nb_Fractures_Poignet"/>
+		    </Operators_AddComplex>
+		      <Data_Value inValue="@Nb_Fractures_Colonne"/>
+	      </Operators_AddComplex>
+	    </Operators_SubComplex>
+      </Data_SetVariableComplex>
+      <Control_IfThenElse>
+	    <Operators_IsGreater inArgLeft="%Nb_Fractures_Evitees" inArgRight="0" inArgRight_Type="0"/>
+	    <Operators_DivVariable inArgLeft="%Recompense" inArgRight="%Nb_Fractures_Evitees" outResult="%Recompense"/>
+      </Control_IfThenElse>
       <Data_Value inValue="%Recompense"/>
     </Control_Sequential>
   </PrimitiveTree>
