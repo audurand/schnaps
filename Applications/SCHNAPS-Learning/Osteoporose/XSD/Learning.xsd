@@ -86,7 +86,7 @@
 			</xsd:appinfo>
 		</xsd:annotation>
 		<xsd:complexType>
-			<xsd:choice minOccurs="1" maxOccurs="unbounded">
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
 				<xsd:appinfo>
 					<pmt:childType definedBy="staticType">Any</pmt:childType>
 					<pmt:childBranchTag lang="en">Action</pmt:childBranchTag>
