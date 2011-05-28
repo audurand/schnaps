@@ -256,7 +256,7 @@ void AddVariable::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) c
  * \return A handle to the execution result.
  */
 Core::AnyType::Handle AddVariable::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
-	schnaps_StackTraceBeginM();	
+	schnaps_StackTraceBeginM();
 	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
 	Core::Number::Handle lArgLeft, lArgRight;
 	

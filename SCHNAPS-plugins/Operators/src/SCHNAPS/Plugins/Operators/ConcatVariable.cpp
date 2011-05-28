@@ -235,8 +235,8 @@ void ConcatVariable::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent
  * \return A handle to the execution result.
  */
 Core::AnyType::Handle ConcatVariable::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
-	schnaps_StackTraceBeginM();	
-	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
+	schnaps_StackTraceBeginM();
+	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
 	std::string lArgRight, lArgLeft;
 	
 	switch (mArgLeft_Ref[0]) {
@@ -279,7 +279,16 @@ Core::AnyType::Handle ConcatVariable::execute(unsigned int inIndex, Core::Execut
 
 	std::stringstream lSS;
 	lSS << lArgLeft << lArgRight;
-	lContext.getIndividual().getState().setVariable(mResult_Ref.substr(1), new Core::String(lSS.str()));
+	
+	if (mResult_Ref[0] == '@') {
+		// individual variable
+		Simulation::SimulationContext& lSimulationContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
+		lSimulationContext.getIndividual().getState().setVariable(mResult_Ref.substr(1), new Core::String(lSS.str()));
+	} else { // mResult_Ref[0] == '%'
+		// local variable
+		lContext.setLocalVariable(mResult_Ref.substr(1), new Core::String(lSS.str()));
+	}
+	
 	return NULL;
 	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Operators::ConcatVariable::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
 }

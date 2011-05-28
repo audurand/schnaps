@@ -6,21 +6,18 @@
 #
 
 project(SCHNAPS_PLUGINS_LEARNING CXX)
-set(SCHNAPS_PLUGINS_LEARNING_VERSION 1.0)
+set(SCHNAPS_PLUGINS_LEARNING_VERSION 1.0.0)
 
 # This is the shared library versioning info
 set(LIBRARY_VERSION 1.0.0)
 #                   | | |
 #            +------+ | +---+
 #            |        |     |
-#         current:revision:age
+#         major:minor:little
 #            |        |     |
-#            |        |     +- increment if interfaces have been added
-#            |        |        set to zero if interfaces have been removed
-#            |        |        or changed
-#            |        +- increment if source code has changed
-#            |           set to zero if current is incremented
-#            +- increment if interfaces have been added, removed or changed
+#            |        |     +- increment when little bugs are corrected
+#            |        +- increment if minor changes occured such as new primitives added
+#            +- increment if major changes occured (or milestone)
 
 # Minimum cmake version required
 cmake_minimum_required(VERSION 2.6)
