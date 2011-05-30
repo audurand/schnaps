@@ -120,12 +120,7 @@
       <Environment file="Environment/Environment.xml"/>
       <PopulationManager>
         <Generator>
-          <RandomizerInfo>
-            <Randomizer seed="3137557951804300621" state=""/>
-            <Randomizer seed="5314523410558948407" state=""/>
-            <Randomizer seed="4225458384245771364" state=""/>
-            <Randomizer seed="2929292054817220093" state=""/>
-          </RandomizerInfo>
+          <RandomizerInfo/>
           <Profiles>
             <GenProfile label="Femmes_2006">
               <Demography file="Populations/Demography.xml"/>
@@ -169,12 +164,7 @@
       </PopulationManager>
     </Input>
     <Simulation>
-      <RandomizerInfo>
-        <Randomizer seed="3137557951804300621" state=""/>
-        <Randomizer seed="5314523410558948407" state=""/>
-        <Randomizer seed="4225458384245771364" state=""/>
-        <Randomizer seed="2929292054817220093" state=""/>
-      </RandomizerInfo>
+      <RandomizerInfo/>
       <Clock>
         <PrimitiveTree>
           <Operators_OrComplex>
@@ -261,6 +251,7 @@
         <Scenario processIndividual="Scenario_ORAI_ActivitePhysique+VitamineDCalcium" label="Scenario_ORAI_ActivitePhysique+VitamineDCalcium"/>
         <Scenario processIndividual="Scenario_OST_ActivitePhysique+VitamineDCalcium" label="Scenario_OST_ActivitePhysique+VitamineDCalcium"/>
         <Scenario processIndividual="Scenario_SCORE_ActivitePhysique+VitamineDCalcium" label="Scenario_SCORE_ActivitePhysique+VitamineDCalcium"/>
+        <Scenario processIndividual="Scenario_Apprentissage" label="Scenario_Apprentissage"/>
       </Scenarios>
       <ClockObservers>
         <Observer target="individuals" process="MAJ_Age"/>

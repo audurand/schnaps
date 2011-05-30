@@ -7,7 +7,7 @@
         <Control_ProcessCall inLabel="Scenario_SCORE_ActivitePhysique"/>
         <Control_ProcessCall inLabel="Scenario_SCORE_ActivitePhysique"/>
         <Control_ProcessCall inLabel="Scenario_ActivitePhysique"/>
-        <Control_ProcessCall inLabel="ActPhys+VitDCalcium"/>
+        <Control_ProcessCall inLabel="Scenario_ActivitePhysique+VitamineDCalcium"/>
         <Control_ProcessCall inLabel="Scenario_CAROC_ActivitePhysique"/>
       </Control_ChoiceIsBetween>
     </PrimitiveTree>
