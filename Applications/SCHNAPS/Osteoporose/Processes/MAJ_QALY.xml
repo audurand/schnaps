@@ -1,10 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
   <Process label="MAJ_QALY">
-	<LocalVariables/>
+    <LocalVariables/>
     <PrimitiveTree size="1">
       <Control_IfThenElse>
         <Operators_OrComplex>
-          <Operators_IsGreater inArgLeft="@Nb_Fracture_Colonne" inArgRight="0" inArgRight_Type="Int"/>
-          <Operators_IsGreater inArgLeft="@Nb_Fracture_Hanche" inArgRight="0" inArgRight_Type="Int"/>
+          <Operators_IsGreater inArgRight="0" inArgRight_Type="Int" inArgLeft="@Nb_Fracture_Colonne"/>
+          <Operators_IsGreater inArgRight="0" inArgRight_Type="Int" inArgLeft="@Nb_Fracture_Hanche"/>
         </Operators_OrComplex>
         <Control_Sequential>
           <Data_SetVariableComplex outVariable="@QALY">
@@ -12,10 +13,10 @@
               <Data_Value inValue="@QALY"/>
               <Operators_NPVComplex inDiscountRate="$ref.taux_actualisation">
                 <Operators_MultComplex>
-                  <Data_Value inValue_Type="Double" inValue="0.85"/>
+                  <Data_Value inValue="0.85" inValue_Type="Double"/>
                   <Operators_SubComplex>
                     <Operators_AddComplex>
-                      <Data_Value inValue_Type="Double" inValue="1"/>
+                      <Data_Value inValue="1" inValue_Type="Double"/>
                       <Data_Clock/>
                     </Operators_AddComplex>
                     <Data_Value inValue="@QALY_Temps_MAJ"/>
@@ -26,7 +27,7 @@
           </Data_SetVariableComplex>
           <Data_SetVariableComplex outVariable="@QALY_Temps_MAJ">
             <Operators_AddComplex>
-              <Data_Value inValue_Type="Double" inValue="1"/>
+              <Data_Value inValue="1" inValue_Type="Double"/>
               <Data_Clock/>
             </Operators_AddComplex>
           </Data_SetVariableComplex>
@@ -38,7 +39,7 @@
               <Operators_NPVComplex inDiscountRate="$ref.taux_actualisation">
                 <Operators_SubComplex>
                   <Operators_AddComplex>
-                    <Data_Value inValue_Type="Double" inValue="1"/>
+                    <Data_Value inValue="1" inValue_Type="Double"/>
                     <Data_Clock/>
                   </Operators_AddComplex>
                   <Data_Value inValue="@QALY_Temps_MAJ"/>
@@ -48,7 +49,7 @@
           </Data_SetVariableComplex>
           <Data_SetVariableComplex outVariable="@QALY_Temps_MAJ">
             <Operators_AddComplex>
-              <Data_Value inValue_Type="Double" inValue="1"/>
+              <Data_Value inValue="1" inValue_Type="Double"/>
               <Data_Clock/>
             </Operators_AddComplex>
           </Data_SetVariableComplex>

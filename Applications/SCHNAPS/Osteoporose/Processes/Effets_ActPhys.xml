@@ -1,10 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
   <Process label="Effets_ActPhys">
-	<LocalVariables/>
+    <LocalVariables/>
     <PrimitiveTree size="1">
       <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
-        <Operators_MultVariable inArgLeft="@Probabilite_Fracture_Hanche" inArgRight="$ref.effet_actphys_hanche_normale" outResult="@Probabilite_Fracture_Hanche"/>
-        <Operators_MultVariable inArgLeft="@Probabilite_Fracture_Hanche" inArgRight="$ref.effet_actphys_hanche_osteo" outResult="@Probabilite_Fracture_Hanche"/>
-        <Operators_MultVariable inArgLeft="@Probabilite_Fracture_Hanche" inArgRight="$ref.effet_actphys_hanche_osteo" outResult="@Probabilite_Fracture_Hanche"/>
+        <Operators_MultVariable inArgRight="$ref.effet_actphys_hanche_normale" inArgLeft="@Probabilite_Fracture_Hanche" outResult="@Probabilite_Fracture_Hanche"/>
+        <Operators_MultVariable inArgRight="$ref.effet_actphys_hanche_osteo" inArgLeft="@Probabilite_Fracture_Hanche" outResult="@Probabilite_Fracture_Hanche"/>
+        <Operators_MultVariable inArgRight="$ref.effet_actphys_hanche_osteo" inArgLeft="@Probabilite_Fracture_Hanche" outResult="@Probabilite_Fracture_Hanche"/>
       </Control_ChoiceIsEqual>
     </PrimitiveTree>
   </Process>

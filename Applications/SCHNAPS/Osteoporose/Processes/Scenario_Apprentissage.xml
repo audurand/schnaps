@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="Scenario_Apprentissage">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_ChoiceIsBetween inValue="@Age" inBounds="40|50|60|70|80|90" inBounds_Type="Int">
+        <Control_ProcessCall inLabel="Scenario_ActivitePhysique"/>
+        <Control_ProcessCall inLabel="Scenario_SCORE_ActivitePhysique"/>
+        <Control_ProcessCall inLabel="Scenario_SCORE_ActivitePhysique"/>
+        <Control_ProcessCall inLabel="Scenario_ActivitePhysique"/>
+        <Control_ProcessCall inLabel="ActPhys+VitDCalcium"/>
+        <Control_ProcessCall inLabel="Scenario_CAROC_ActivitePhysique"/>
+      </Control_ChoiceIsBetween>
+    </PrimitiveTree>
+  </Process>

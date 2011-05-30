@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
   <Process label="Evenements_AucunePrevention">
-	<LocalVariables/>
+    <LocalVariables/>
     <PrimitiveTree size="1">
       <Control_IfThenElse>
         <Data_Value inValue="@Mort"/>
@@ -17,7 +18,7 @@
             </Control_IfThenElse>
           </Control_IfThenElse>
           <Control_IfThenElse>
-            <Operators_IsEqual inArgLeft="@Nb_Fracture_Hanche" inArgRight="2" inArgRight_Type="Int" />
+            <Operators_IsEqual inArgRight="2" inArgRight_Type="Int" inArgLeft="@Nb_Fracture_Hanche"/>
             <Control_Nothing/>
             <Meds_Event inProbability="@Probabilite_Fracture_Hanche" inLabel="Fracture_Hanche">
               <Control_Sequential>
@@ -31,7 +32,7 @@
                     <Control_Branch inProbability="$ref.probabilite_investigation">
                       <Control_ProcessCall inLabel="CAROC_PostFracture"/>
                       <Control_Branch inProbability="0.105">
-                        <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Traitement"/>
+                        <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
                         <Control_Nothing/>
                       </Control_Branch>
                     </Control_Branch>
@@ -53,7 +54,7 @@
                   <Control_Branch inProbability="$ref.probabilite_investigation">
                     <Control_ProcessCall inLabel="CAROC_PostFracture"/>
                     <Control_Branch inProbability="0.105">
-                      <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Traitement"/>
+                      <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
                       <Control_Nothing/>
                     </Control_Branch>
                   </Control_Branch>
@@ -74,7 +75,7 @@
                   <Control_Branch inProbability="$ref.probabilite_investigation">
                     <Control_ProcessCall inLabel="CAROC_PostFracture"/>
                     <Control_Branch inProbability="0.105">
-                      <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Traitement"/>
+                      <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
                       <Control_Nothing/>
                     </Control_Branch>
                   </Control_Branch>
@@ -86,12 +87,12 @@
           <Control_ProcessCall inLabel="MAJ_QALY"/>
           <Meds_Event inProbability="@Taux_Mortalite" inLabel="Deces">
             <Control_Sequential>
-              <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Mort"/>
-              <Control_ProcessPush inTarget="environment" inDelay="0" inLabel="Retirer_Individu"/>
+              <Data_SetVariable inValue="true" outVariable="@Mort" inValue_Type="Bool"/>
+              <Control_ProcessPush inDelay="0" inTarget="environment" inLabel="Retirer_Individu"/>
             </Control_Sequential>
             <Control_Sequential>
-              <Operators_AddVariable inArgLeft="@Duree_Vie" inArgRight="1" inArgRight_Type="Int" outResult="@Duree_Vie"/>
-              <Control_ProcessPush inTarget="current" inDelay="1" inLabel="Evenements_AucunePrevention"/>
+              <Operators_AddVariable inArgRight="1" inArgRight_Type="Int" inArgLeft="@Duree_Vie" outResult="@Duree_Vie"/>
+              <Control_ProcessPush inDelay="1" inTarget="current" inLabel="Evenements_AucunePrevention"/>
             </Control_Sequential>
           </Meds_Event>
         </Control_Sequential>

@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
   <Process label="ORAI">
-	<LocalVariables/>
+    <LocalVariables/>
     <PrimitiveTree size="1">
       <Control_IfThenElse>
         <Data_Value inValue="@Mort"/>
@@ -19,11 +20,11 @@
                     <Control_IfThenElse>
                       <Data_Value inValue="@Pratiquant"/>
                       <Control_Nothing/>
-                      <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Prevention"/>
+                      <Data_SetVariable inValue="true" outVariable="@Prevention" inValue_Type="Bool"/>
                     </Control_IfThenElse>
-                    <Control_ProcessPush inTarget="current" inDelay="5" inLabel="ORAI"/>
+                    <Control_ProcessPush inDelay="5" inTarget="current" inLabel="ORAI"/>
                   </Control_Sequential>
-                  <Control_ProcessPush inTarget="current" inDelay="5" inLabel="ORAI"/>
+                  <Control_ProcessPush inDelay="5" inTarget="current" inLabel="ORAI"/>
                 </Control_Branch>
                 <Control_ProcessCall inLabel="CAROC_Initial"/>
               </Control_Branch>
@@ -34,11 +35,11 @@
                     <Control_IfThenElse>
                       <Data_Value inValue="@Pratiquant"/>
                       <Control_Nothing/>
-                      <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Prevention"/>
+                      <Data_SetVariable inValue="true" outVariable="@Prevention" inValue_Type="Bool"/>
                     </Control_IfThenElse>
-                    <Control_ProcessPush inTarget="current" inDelay="5" inLabel="ORAI"/>
+                    <Control_ProcessPush inDelay="5" inTarget="current" inLabel="ORAI"/>
                   </Control_Sequential>
-                  <Control_ProcessPush inTarget="current" inDelay="5" inLabel="ORAI"/>
+                  <Control_ProcessPush inDelay="5" inTarget="current" inLabel="ORAI"/>
                 </Control_Branch>
               </Control_Branch>
               <Control_Branch inProbability="$ref.ORAI_sensibilite">
@@ -48,11 +49,11 @@
                     <Control_IfThenElse>
                       <Data_Value inValue="@Pratiquant"/>
                       <Control_Nothing/>
-                      <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Prevention"/>
+                      <Data_SetVariable inValue="true" outVariable="@Prevention" inValue_Type="Bool"/>
                     </Control_IfThenElse>
-                    <Control_ProcessPush inTarget="current" inDelay="5" inLabel="ORAI"/>
+                    <Control_ProcessPush inDelay="5" inTarget="current" inLabel="ORAI"/>
                   </Control_Sequential>
-                  <Control_ProcessPush inTarget="current" inDelay="5" inLabel="ORAI"/>
+                  <Control_ProcessPush inDelay="5" inTarget="current" inLabel="ORAI"/>
                 </Control_Branch>
               </Control_Branch>
             </Control_ChoiceIsEqual>

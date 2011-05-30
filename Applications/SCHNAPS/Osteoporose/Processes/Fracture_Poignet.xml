@@ -1,45 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
   <Process label="Fracture_Poignet">
-	<LocalVariables/>
+    <LocalVariables/>
     <PrimitiveTree size="1">
       <Control_Sequential>
         <Data_Log inMessage="Fracture_Poignet" inType="Event"/>
-        <Meds_Treatment outCost="@Cout" inDiscountRate="$ref.taux_actualisation" inCost="256.69" inLabel="Urgence" inCompliance="1" inChargeNonCompliant="false">
+        <Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Urgence" inCompliance="1" outCost="@Cout" inCost="256.69" inChargeNonCompliant="false">
           <Control_Nothing/>
           <Control_Nothing/>
         </Meds_Treatment>
         <Control_Branch inProbability="0.18">
-          <Meds_Treatment outCost="@Cout" inDiscountRate="$ref.taux_actualisation" inCost="3334.74" inLabel="Chirurgie" inCompliance="1" inChargeNonCompliant="false">
+          <Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Chirurgie" inCompliance="1" outCost="@Cout" inCost="3334.74" inChargeNonCompliant="false">
             <Control_Nothing/>
             <Control_Nothing/>
           </Meds_Treatment>
-          <Meds_Treatment outCost="@Cout" inDiscountRate="$ref.taux_actualisation" inCost="385.34" inLabel="Traitement_Conservateur" inCompliance="1" inChargeNonCompliant="false">
+          <Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Traitement_Conservateur" inCompliance="1" outCost="@Cout" inCost="385.34" inChargeNonCompliant="false">
             <Control_Nothing/>
             <Control_Nothing/>
           </Meds_Treatment>
         </Control_Branch>
-        <Meds_Treatment outCost="@Cout" inDiscountRate="$ref.taux_actualisation" inCost="536.69" inLabel="Physio_Domicile" inCompliance="1" inChargeNonCompliant="false">
+        <Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Physio_Domicile" inCompliance="1" outCost="@Cout" inCost="536.69" inChargeNonCompliant="false">
           <Control_Nothing/>
           <Control_Nothing/>
         </Meds_Treatment>
-        <Meds_Treatment outCost="@Cout" inDiscountRate="$ref.taux_actualisation" inCost="110.92" inLabel="Visite_Medicale" inCompliance="1" inChargeNonCompliant="false">
+        <Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Visite_Medicale" inCompliance="1" outCost="@Cout" inCost="110.92" inChargeNonCompliant="false">
           <Control_Nothing/>
           <Control_Nothing/>
         </Meds_Treatment>
-        <Meds_Treatment outCost="@Cout" inDiscountRate="$ref.taux_actualisation" inCost="2328.48" inLabel="Prevention_Chutes" inCompliance="1" inChargeNonCompliant="false">
+        <Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Prevention_Chutes" inCompliance="1" outCost="@Cout" inCost="2328.48" inChargeNonCompliant="false">
           <Control_Nothing/>
           <Control_Nothing/>
         </Meds_Treatment>
-        <Operators_AddVariable inArgLeft="@Nb_Fracture_Poignet" inArgRight="1" inArgRight_Type="Int" outResult="@Nb_Fracture_Poignet"/>
+        <Operators_AddVariable inArgRight="1" inArgRight_Type="Int" inArgLeft="@Nb_Fracture_Poignet" outResult="@Nb_Fracture_Poignet"/>
         <Control_IfThenElse>
           <Operators_OrComplex>
-            <Operators_IsGreater inArgLeft="@Nb_Fracture_Hanche" inArgRight="0" inArgRight_Type="Int"/>
-            <Operators_IsGreater inArgLeft="@Nb_Fracture_Colonne" inArgRight="0" inArgRight_Type="Int"/>
+            <Operators_IsGreater inArgRight="0" inArgRight_Type="Int" inArgLeft="@Nb_Fracture_Hanche"/>
+            <Operators_IsGreater inArgRight="0" inArgRight_Type="Int" inArgLeft="@Nb_Fracture_Colonne"/>
           </Operators_OrComplex>
           <Data_SetVariableComplex outVariable="@QALY">
             <Operators_AddComplex>
               <Data_Value inValue="@QALY"/>
               <Operators_NPVComplex inDiscountRate="$ref.taux_actualisation">
-                <Data_Value inValue_Type="Double" inValue="0.05297">
+                <Data_Value inValue="0.05297" inValue_Type="Double">
                   <!--0.54*0.003 annee + 0.79*0.065 annee-->
                 </Data_Value>
               </Operators_NPVComplex>
@@ -49,7 +50,7 @@
             <Operators_AddComplex>
               <Data_Value inValue="@QALY"/>
               <Operators_NPVComplex inDiscountRate="$ref.taux_actualisation">
-                <Data_Value inValue_Type="Double" inValue="0.05903">
+                <Data_Value inValue="0.05903" inValue_Type="Double">
                   <!--0.61*0.003 annee + 0.88*0.065 annee-->
                 </Data_Value>
               </Operators_NPVComplex>
@@ -59,11 +60,11 @@
         <Data_SetVariableComplex outVariable="@QALY_Temps_MAJ">
           <Operators_AddComplex>
             <Data_Value inValue="@QALY_Temps_MAJ"/>
-            <Data_Value inValue_Type="Double" inValue="0.068"/>
+            <Data_Value inValue="0.068" inValue_Type="Double"/>
           </Operators_AddComplex>
         </Data_SetVariableComplex>
-        <Control_ProcessPush inTarget="current" inDelay="1" inLabel="MAJ_TauxMortalite_PostPoignet_1ereAnnee"/>
-        <Control_ProcessPush inTarget="current" inDelay="2" inLabel="MAJ_TauxMortalite_PostPoignet_2eAnnee"/>
+        <Control_ProcessPush inDelay="1" inTarget="current" inLabel="MAJ_TauxMortalite_PostPoignet_1ereAnnee"/>
+        <Control_ProcessPush inDelay="2" inTarget="current" inLabel="MAJ_TauxMortalite_PostPoignet_2eAnnee"/>
       </Control_Sequential>
     </PrimitiveTree>
   </Process>

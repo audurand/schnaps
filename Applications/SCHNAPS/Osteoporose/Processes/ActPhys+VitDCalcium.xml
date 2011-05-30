@@ -1,13 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
   <Process label="ActPhys+VitDCalcium">
-	<LocalVariables/>
+    <LocalVariables/>
     <PrimitiveTree size="1">
       <Control_IfThenElse>
-        <Operators_IsLess inArgLeft="@Age" inArgRight_Type="Int" inArgRight="50"/>
-        <Meds_Treatment outCost="@Cout" inDiscountRate="$ref.taux_actualisation" inCost="149.65" inLabel="ActivitePhysique+VitamineD+Calcium" inCompliance="0.49" inChargeNonCompliant="true">
+        <Operators_IsLess inArgRight="50" inArgRight_Type="Int" inArgLeft="@Age"/>
+        <Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="ActivitePhysique+VitamineD+Calcium" inCompliance="0.49" outCost="@Cout" inCost="149.65" inChargeNonCompliant="true">
           <Control_ProcessCall inLabel="Effets_ActPhys+VitDCalcium"/>
           <Control_Nothing/>
         </Meds_Treatment>
-        <Meds_Treatment outCost="@Cout" inDiscountRate="$ref.taux_actualisation" inCost="164.25" inLabel="ActivitePhysique+VitamineD+Calcium" inCompliance="0.49" inChargeNonCompliant="true">
+        <Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="ActivitePhysique+VitamineD+Calcium" inCompliance="0.49" outCost="@Cout" inCost="164.25" inChargeNonCompliant="true">
           <Control_ProcessCall inLabel="Effets_ActPhys+VitDCalcium"/>
           <Control_Nothing/>
         </Meds_Treatment>

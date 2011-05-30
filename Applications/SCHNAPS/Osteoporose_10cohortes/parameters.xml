@@ -237,6 +237,7 @@
         <Process file="Processes/Scenario_SCORE_ActivitePhysique+VitamineDCalcium.xml" label="Scenario_SCORE_ActivitePhysique+VitamineDCalcium"/>
         <Process file="Processes/Scenario_SCORE_VitamineDCalcium.xml" label="Scenario_SCORE_VitamineDCalcium"/>
         <Process file="Processes/Scenario_VitamineDCalcium.xml" label="Scenario_VitamineDCalcium"/>
+        <Process file="Processes/Scenario_Apprentissage.xml" label="Scenario_Apprentissage"/>
         <Process file="Processes/SCORE.xml" label="SCORE"/>
         <Process file="Processes/Traitement_ActPhys.xml" label="Traitement_ActPhys"/>
         <Process file="Processes/Traitement_ActPhys+VitDCalcium.xml" label="Traitement_ActPhys+VitDCalcium"/>
