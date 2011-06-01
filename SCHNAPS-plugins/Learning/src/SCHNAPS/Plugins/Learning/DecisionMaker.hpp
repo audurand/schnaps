@@ -77,8 +77,10 @@ public:
 	void open(const std::string& inFileName);
 	//! Close log file.
 	void close();
+	//! Compute the reward associated to an individual according to specific information.
+	double computeReward(const std::string& inDecisionNode, const std::string& inState, unsigned int inActionID, unsigned int inIndividualID);
 	//! Update information of a specific decision node.
-	void update(const std::string& inDecisionNode, const std::string& inState, unsigned int inActionID, unsigned int inIndividualID);
+	void update(const std::string& inDecisionNode, const std::string& inState, unsigned int inActionID, double inReward);
 	
 	//! Set the system.
 	void setSystem(Core::System::Handle inSystem);
@@ -177,8 +179,8 @@ public:
 			}
 			
 			// log move
-			(*mOGZS) << inDecisionNode << "," << lCurrentState << "," << lActionID << "," << inIndividual->getIndex() << "\n";
-			mOGZS->flush();
+			(*mOFS) << inDecisionNode << "," << lCurrentState << "," << lActionID << "," << inIndividual->getIndex() << "\n";
+			mOFS->flush();
 		} else {
 			
 			// exploitation mode = action with best mean
@@ -212,7 +214,7 @@ public:
 	
 private:
 	LearningContext mContext;			//!< The execution context used for computation of functions.
-	ogzstream *mOGZS;					//!< A pointer to the output log file.
+	std::ofstream *mOFS;				//!< A pointer to the output log file.
 	Core::Bool::Handle mLearning;		//!< A handle indicating if learning mode is activated (else it is exploitation mode).
 	Core::Double::Handle mGEAS_Alpha;	//!< A handle to the alpha parameter of GEAS.
 };

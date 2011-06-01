@@ -179,6 +179,18 @@
               </IndividualModel>
               <SimulationVariables file="Populations/SimulationVariables.xml"/>
             </GenProfile>
+            <GenProfile label="Femmes_Apprentissage">
+              <Demography file="Populations/Demography_Apprentissage.xml"/>
+              <AcceptFunction>
+                <PrimitiveTree>
+                  <Data_Value inValue="true" inValue_Type="Bool"/>
+                </PrimitiveTree>
+              </AcceptFunction>
+              <IndividualModel>
+                <Variable label="Age"/>
+              </IndividualModel>
+              <SimulationVariables file="Populations/SimulationVariables.xml"/>
+            </GenProfile>
           </Profiles>
         </Generator>
         <Population>
@@ -190,13 +202,10 @@
       <RandomizerInfo/>
       <Clock>
         <PrimitiveTree>
-          <Operators_OrComplex>
-            <Operators_IsEqual inArgRight="0" inArgRight_Type="Int" inArgLeft="#IndividusVivants"/>
-            <Operators_IsEqualComplex>
-              <Data_Clock/>
-              <Data_Value inValue="80" inValue_Type="ULong"/>
-            </Operators_IsEqualComplex>
-          </Operators_OrComplex>
+					<Operators_IsEqualComplex>
+						<Data_Clock/>
+						<Data_Value inValue="80" inValue_Type="ULong"/>
+					</Operators_IsEqualComplex>
         </PrimitiveTree>
       </Clock>
       <Processes>
@@ -229,7 +238,7 @@
         <Process file="Processes/MAJ_TauxMortalite_PostPoignet_2eAnnee.xml" label="MAJ_TauxMortalite_PostPoignet_2eAnnee"/>
         <Process file="Processes/ORAI.xml" label="ORAI"/>
         <Process file="Processes/OST.xml" label="OST"/>
-        <Process file="Processes/Retirer_Individu.xml" label="Retirer_Individu"/>
+        <Process file="Processes/Apprentissage.xml" label="Apprentissage"/>
         <Process file="Processes/Scenario_Apprentissage.xml" label="Scenario_Apprentissage"/>
         <Process file="Processes/SCORE.xml" label="SCORE"/>
         <Process file="Processes/Traitement_ActPhys.xml" label="Traitement_ActPhys"/>
@@ -253,6 +262,17 @@
       </Environment>
       <Population>
         <SubPopulation profile="Femmes_2006">
+          <Variable label="DMO"/>
+          <Variable label="Nb_Fracture_Poignet"/>
+          <Variable label="Nb_Fracture_Colonne"/>
+          <Variable label="Nb_Fracture_Hanche"/>
+          <Variable label="Cout"/>
+          <Variable label="Mort"/>
+          <Variable label="Taux_Mortalite"/>
+          <Variable label="QALY"/>
+          <Variable label="Duree_Vie"/>
+        </SubPopulation>
+        <SubPopulation profile="Femmes_Apprentissage">
           <Variable label="DMO"/>
           <Variable label="Nb_Fracture_Poignet"/>
           <Variable label="Nb_Fracture_Colonne"/>

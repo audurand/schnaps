@@ -6,10 +6,10 @@
 #
 
 project(SCHNAPS_PLUGINS_LEARNING CXX)
-set(SCHNAPS_PLUGINS_LEARNING_VERSION 1.0.0)
+set(SCHNAPS_PLUGINS_LEARNING_VERSION 1.1.0)
 
 # This is the shared library versioning info
-set(LIBRARY_VERSION 1.0.0)
+set(LIBRARY_VERSION 1.1.0)
 #                   | | |
 #            +------+ | +---+
 #            |        |     |
@@ -68,6 +68,26 @@ else(NOT DEFINED CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
 		set(CMAKE_BUILD_TYPE "RELEASE" FORCE)
 	endif(CMAKE_BUILD_TYPE STREQUAL "RELEASE")
 endif(NOT DEFINED CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
+
+if(NOT DEFINED PARALLEL_UPDATE OR PARALLEL_UPDATE STREQUAL "")
+	# sequential update as default
+	message(STATUS "Setting config to sequential update (default)...")
+	set(PARALLEL_UPDATE false)
+else(NOT DEFINED PARALLEL_UPDATE OR PARALLEL_UPDATE STREQUAL "")
+	if(PARALLEL_UPDATE STREQUAL "TRUE")
+		# parallel update
+		message(STATUS "Setting config to parallel update...")
+		set(PARALLEL_UPDATE true)
+	elseif(PARALLEL_UPDATE STREQUAL "FALSE")
+		# sequential update
+		message(STATUS "Setting config to sequential update...")
+		set(PARALLEL_UPDATE false)
+	else(PARALLEL_UPDATE STREQUAL "TRUE")
+		# unknown, sequential as default
+		message(STATUS "## Warning: unhandled parallel update value, will use sequential update in config...")
+		set(PARALLEL_UPDATE false)
+	endif(PARALLEL_UPDATE STREQUAL "TRUE")
+endif(NOT DEFINED PARALLEL_UPDATE OR PARALLEL_UPDATE STREQUAL "")
 
 message(STATUS "Begin configuration tests...")
 
@@ -133,6 +153,9 @@ file(GLOB_RECURSE SCHNAPS_PLUGINS_LEARNING_SOURCES src/SCHNAPS/Plugins/Learning/
 file(GLOB SCHNAPS_PLUGINS_LEARNING_HEADERS src/SCHNAPS/Plugins/Learning/*.hpp )
 
 message(STATUS "Configuration...")
+# Writing results in configuration file
+configure_file("${PROJECT_SOURCE_DIR}/src/SCHNAPS/Plugins/Learning/config.hpp.in" "${PROJECT_SOURCE_DIR}/src/SCHNAPS/Plugins/Learning/config.hpp")
+message(STATUS "++ config.hpp")
 
 include_directories("${PROJECT_SOURCE_DIR}/src" "${CMAKE_CURRENT_BINARY_DIR}/include" ${PACC_HEADERS_PATH} ${SCHNAPS_HEADERS_PATH})
 message(STATUS "++ include directories")

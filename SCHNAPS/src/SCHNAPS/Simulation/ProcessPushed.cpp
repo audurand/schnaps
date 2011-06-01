@@ -83,6 +83,6 @@ void ProcessPushed::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent)
 Core::AnyType::Handle ProcessPushed::execute(Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	SimulationContext& lContext = Core::castObjectT<SimulationContext&>(ioContext);
-	return lContext.getProcesses().find(mLabel)->second->execute(ioContext);
+	return lContext.getProcessHandle(mLabel)->execute(ioContext);
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Simulation::ProcessPushed::execute(SCHNAPS::Core::ExecutionContext&) const ");
 }

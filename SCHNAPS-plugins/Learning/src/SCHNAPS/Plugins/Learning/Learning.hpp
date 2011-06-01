@@ -21,11 +21,14 @@
 #ifndef Learning_hpp
 #define Learning_hpp
 
+#include "SCHNAPS/Plugins/Learning/config.hpp"
+
 #include "SCHNAPS/Plugins/Learning/Action.hpp"
 #include "SCHNAPS/Plugins/Learning/Choice.hpp"
 #include "SCHNAPS/Plugins/Learning/DecisionMaker.hpp"
 #include "SCHNAPS/Plugins/Learning/DecisionNode.hpp"
 #include "SCHNAPS/Plugins/Learning/LearningContext.hpp"
 #include "SCHNAPS/Plugins/Learning/LearningModule.hpp"
+#include "SCHNAPS/Plugins/Learning/UpdateThread.hpp"
 
 #endif /* Learning_hpp */

@@ -13,7 +13,7 @@
       <Operators_MultVariable inArgLeft="%Recompense" inArgRight="-1" inArgRight_Type="Double" outResult="%Recompense"/>
       <Data_SetVariableComplex outVariable="%Nb_Fractures_Evitees">
 		<Operators_SubComplex>
-	      <Data_Value inValue="2" inValue_Type="Int"/>
+	      <Data_Value inValue="5" inValue_Type="Int"/>
 	      <Operators_AddComplex>
 		    <Operators_AddComplex>
 		      <Data_Value inValue="@Nb_Fracture_Hanche"/>

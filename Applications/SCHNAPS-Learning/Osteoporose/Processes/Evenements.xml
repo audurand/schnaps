@@ -86,10 +86,7 @@
           </Meds_Event>
           <Control_ProcessCall inLabel="MAJ_QALY"/>
           <Meds_Event inLabel="Deces" inProbability="@Taux_Mortalite">
-            <Control_Sequential>
-              <Data_SetVariable inValue="true" outVariable="@Mort" inValue_Type="Bool"/>
-              <Control_ProcessPush inDelay="0" inTarget="environment" inLabel="Retirer_Individu"/>
-            </Control_Sequential>
+            <Data_SetVariable inValue="true" outVariable="@Mort" inValue_Type="Bool"/>
             <Control_Sequential>
               <Operators_AddVariable inArgRight="1" inArgRight_Type="Int" inArgLeft="@Duree_Vie" outResult="@Duree_Vie"/>
               <Control_ProcessPush inDelay="1" inTarget="current" inLabel="Evenements"/>

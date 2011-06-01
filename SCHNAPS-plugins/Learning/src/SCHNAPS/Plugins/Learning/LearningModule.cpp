@@ -120,7 +120,7 @@ void LearningModule::open(const std::string& inFileName) {
 	std::stringstream lSS;
 	for (unsigned int i = 0; i < mDecisionMakers.size(); i++) {
 		lSS.str("");
-		lSS << inFileName << "_" << i << ".gz";
+		lSS << inFileName << "_" << i;
 		mDecisionMakers[i]->open(lSS.str());
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Learning::LearningModule::open(const std::string&)");
@@ -143,33 +143,101 @@ void LearningModule::close() {
  */
 void LearningModule::update(const std::string& inFileName) {
 	schnaps_StackTraceBeginM();
+	
+#ifdef PARALLEL_UPDATE
+	// multi-thread parallel update
 	std::stringstream lSS;
-	igzstream *lIGZS;
+	
+	// create one subthread per decision maker
+	for (unsigned int i = 0; i < mDecisionMakers.size(); i++) {
+		lSS.str("");
+		lSS << inFileName << "_" << i;
+		
+		mSubThreads.push_back(new UpdateThread(mParallel, mSequential, lSS.str()));
+		mSequential->wait();
+		
+		// set the current decision maker of subthread
+		mSubThreads.back()->setDecisionMaker(mDecisionMakers[i]);
+		
+		// set position of subthread
+		mSubThreads.back()->setPosition(UpdateThread::eREADANDUPDATE);
+	}
+	
+	// launch read and update step and wait
+	mParallel->lock();
+	mParallel->broadcast();
+	mParallel->unlock();
+	for (unsigned int i = 0; i < mSubThreads.size(); i++) {
+		mSequential->wait();
+	}
+	
+	// rotate decision makers and update
+	for (unsigned int i = 1; i < mDecisionMakers.size(); i++) {
+		for (unsigned int j = 0; j < mSubThreads.size(); j++) {
+			// set the current decision maker of subthread
+			mSubThreads[j]->setDecisionMaker(mDecisionMakers[(j+i)%mDecisionMakers.size()]);
+
+			// set position of subthread
+			mSubThreads[j]->setPosition(UpdateThread::eUPDATE);
+		}
+		
+		
+		// launch update step and wait
+		mParallel->lock();
+		mParallel->broadcast();
+		mParallel->unlock();
+		for (unsigned int j = 0; j < mSubThreads.size(); j++) {
+			mSequential->wait();
+		}
+	}
+	
+	// terminate subthreads
+	for (unsigned int i = 0; i < mSubThreads.size(); i++) {
+		mSubThreads[i]->setPosition(UpdateThread::eEND);
+	}
+	mParallel->lock();
+	mParallel->broadcast();
+	mParallel->unlock();
+	
+	// destroy threads
+	mSubThreads.clear();
+#else
+	// sequential update
+	std::stringstream lSS;
+	std::ifstream *lIFS;
 	PACC::Tokenizer *lTokenizer;
-	std::string lChoiceNode, lState, lActionIndex, lIndividualIndex;
+	std::string lDecisionNode, lState, lActionIndex, lIndividualIndex;
+	unsigned lActionID, lIndividualID;
+	double lReward;
 	
 	for (unsigned int i = 0; i < mDecisionMakers.size(); i++) {
 		lSS.str("");
-		lSS << inFileName << "_" << i << ".gz";
+		lSS << inFileName << "_" << i;
 		
-		lIGZS = new igzstream(lSS.str().c_str());
-		lTokenizer = new PACC::Tokenizer(*lIGZS);
+		lIFS = new std::ifstream(lSS.str().c_str());
+		lTokenizer = new PACC::Tokenizer(*lIFS);
 		lTokenizer->setDelimiters(",\n", "");
 		
-		while (lTokenizer->getNextToken(lChoiceNode)) {
+		while (lTokenizer->getNextToken(lDecisionNode)) {
 			lTokenizer->getNextToken(lState);
 			lTokenizer->getNextToken(lActionIndex);
 			lTokenizer->getNextToken(lIndividualIndex);
 			
+			lActionID = SCHNAPS::str2uint(lActionIndex);
+			lIndividualID = SCHNAPS::str2uint(lIndividualIndex);
+			
+			lReward = mDecisionMakers[i]->computeReward(lDecisionNode, lState, lActionID, lIndividualID);
+			
 			for (unsigned int j = 0; j < mDecisionMakers.size(); j++) {
-				mDecisionMakers[j]->update(lChoiceNode, lState, SCHNAPS::str2uint(lActionIndex), SCHNAPS::str2uint(lIndividualIndex));
+				mDecisionMakers[j]->update(lDecisionNode, lState, lActionID, lReward);
 			}
 		}
 		
-		lIGZS->close();
+		lIFS->close();
 		delete lTokenizer;
-		delete lIGZS;
+		delete lIFS;
 	}
+#endif
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Learning::LearningModule::update(const std::string&)");
 }
 

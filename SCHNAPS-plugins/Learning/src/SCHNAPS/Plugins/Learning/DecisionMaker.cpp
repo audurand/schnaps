@@ -28,7 +28,7 @@ using namespace Learning;
  * \brief Default constructor.
  */
 DecisionMaker::DecisionMaker() :
-	mOGZS(NULL),
+	mOFS(NULL),
 	mLearning(NULL),
 	mGEAS_Alpha(NULL)
 {}
@@ -38,7 +38,7 @@ DecisionMaker::DecisionMaker() :
  * \param inOriginal A const reference to the original decision maker.
  */
 DecisionMaker::DecisionMaker(const DecisionMaker& inOriginal) :
-	mOGZS(inOriginal.mOGZS),
+	mOFS(inOriginal.mOFS),
 	mLearning(inOriginal.mLearning),
 	mGEAS_Alpha(inOriginal.mGEAS_Alpha)
 {
@@ -61,7 +61,7 @@ DecisionMaker::DecisionMaker(const DecisionMaker& inOriginal) :
  * \return A reference to the current object.
  */
 DecisionMaker& DecisionMaker::operator=(const DecisionMaker& inOriginal) {
-	mOGZS = inOriginal.mOGZS;
+	mOFS = inOriginal.mOFS;
 	mLearning = inOriginal.mLearning;
 	mGEAS_Alpha = inOriginal.mGEAS_Alpha;
 	
@@ -145,7 +145,7 @@ void DecisionMaker::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent)
  */
 void DecisionMaker::open(const std::string& inFilename) {
 	schnaps_StackTraceBeginM();
-	mOGZS = new ogzstream(inFilename.c_str());
+	mOFS = new std::ofstream(inFilename.c_str());
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Learning::DecisionMaker::open(const std::string&)");
 }
 
@@ -154,23 +154,24 @@ void DecisionMaker::open(const std::string& inFilename) {
  */
 void DecisionMaker::close() {
 	schnaps_StackTraceBeginM();
-	mOGZS->close();
-	delete mOGZS;
+	mOFS->close();
+	delete mOFS;
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Learning::DecisionMaker::close()");
 }
 
 /*!
- * \brief Update information of a specific decision node.
- * \param inDecisionNode A const reference to the decision node where choice occured.
- * \param inState A const reference to the state.
- * \param inActionID The ID of action taken.
- * \param inIndividualID The ID of individual on which decision occured.
+ * \brief  Compute the reward associated to an individual according to specific information.
+ * \param  inDecisionNode A const reference to the decision node where choice occured.
+ * \param  inState A const reference to the state.
+ * \param  inActionID The ID of action taken.
+ * \param  inIndividualID The ID of individual on which decision occured.
+ * \return The reward associated to an individual according to specific information.
  */
-void DecisionMaker::update(const std::string& inDecisionNode, const std::string& inState, unsigned int inActionID, unsigned int inIndividualID) {
+double DecisionMaker::computeReward(const std::string& inDecisionNode, const std::string& inState, unsigned int inActionID, unsigned int inIndividualID) {
 	schnaps_StackTraceBeginM();
 	DecisionMaker::iterator lIterDecisionNode = this->find(inDecisionNode);
 	if (lIterDecisionNode == this->end()) {
-		throw schnaps_RunTimeExceptionM("Decision node '" + inDecisionNode + "' is not in decision maker; could not update choice.");
+		throw schnaps_RunTimeExceptionM("Decision node '" + inDecisionNode + "' is not in decision maker; could not compute reward.");
 	}
 	// get choice learning data
 	Choice& lChoice = *(lIterDecisionNode->second);
@@ -183,14 +184,33 @@ void DecisionMaker::update(const std::string& inDecisionNode, const std::string&
 	mContext.setActionLabel(lActions[inActionID].getLabel());
 	
 	// compute reward
-	double lReward = lChoice.computeReward(mContext);
+	return lChoice.computeReward(mContext);
+	schnaps_StackTraceEndM("double SCHNAPS::Plugins::Learning::DecisionMaker::computeReward(const std::string&, const std::string&, unsigned int, unsigned int)");
+}
+
+/*!
+ * \brief Update information of a specific decision node.
+ * \param inDecisionNode A const reference to the decision node where choice occured.
+ * \param inState A const reference to the state.
+ * \param inActionID The ID of action taken.
+ * \param inReward The reward obtained in these conditions.
+ */
+void DecisionMaker::update(const std::string& inDecisionNode, const std::string& inState, unsigned int inActionID, double inReward) {
+	schnaps_StackTraceBeginM();
+	DecisionMaker::iterator lIterDecisionNode = this->find(inDecisionNode);
+	if (lIterDecisionNode == this->end()) {
+		throw schnaps_RunTimeExceptionM("Decision node '" + inDecisionNode + "' is not in decision maker; could not update choice.");
+	}
+	// get choice learning data
+	Choice& lChoice = *(lIterDecisionNode->second);
+	std::vector<Action>& lActions = lChoice.getActions(inState);
 	
 	// update parameters
 	lActions[inActionID].setTried(true);
 	lActions[inActionID].setUpdatedTimes(lActions[inActionID].getUpdatedTimes() + 1);
-	lActions[inActionID].setReward(lActions[inActionID].getReward() + lReward);
-	lActions[inActionID].setReward2(lActions[inActionID].getReward2() + pow(lReward, 2));
-	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Learning::DecisionMaker::update(const std::string&, const std::string&, unsigned int, unsigned int)");
+	lActions[inActionID].setReward(lActions[inActionID].getReward() + inReward);
+	lActions[inActionID].setReward2(lActions[inActionID].getReward2() + pow(inReward, 2));
+	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Learning::DecisionMaker::update(const std::string&, const std::string&, unsigned int, double)");
 }
 
 /*!
