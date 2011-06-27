@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
   <Simulator version="0.1">
     <System>
       <Plugins>
@@ -7,13 +8,22 @@
         <Plugin source="libmeds.so" xsdfile="XSD/Meds.xsd"/>
       </Plugins>
       <Parameters>
-        <Entry label="Cout_IVG_Diagnostique">
+        <Entry label="ref.Cout_IVG_Diagnostique">
           <Double value="1357.33"/>
         </Entry>
-        <Entry label="Cout_Conseiller">
+        <Entry label="ref.Cout_Conseiller">
           <Double value="73.90"/>
         </Entry>
-        <Entry label="Age_13_49_1ans">
+        <Entry label="ref.Consentement_Depistage">
+          <Double value="0.7"/>
+        </Entry>
+        <Entry label="ref.Consentement_Diagnostique">
+          <Double value="0.9"/>
+        </Entry>
+        <Entry label="ref.Cout_Diagnostique">
+          <Double value="180.58"/>
+        </Entry>
+        <Entry label="ref.Age_13_49_1ans">
           <Vector>
             <Int value="13"/>
             <Int value="14"/>
@@ -54,15 +64,6 @@
             <Int value="49"/>
           </Vector>
         </Entry>
-        <Entry label="Consentement_Depistage">
-          <Double value="0.7"/>
-        </Entry>
-        <Entry label="Consentement_Diagnostique">
-          <Double value="0.9"/>
-        </Entry>
-        <Entry label="Cout_Diagnostique">
-          <Double value="180.58"/>
-        </Entry>
       </Parameters>
     </System>
     <Input>
@@ -102,7 +103,7 @@
         <PrimitiveTree>
           <Operators_IsEqualComplex>
             <Data_Clock/>
-            <Data_Value inValue_Type="ULong" inValue="1"/>
+            <Data_Value inValue="1" inValue_Type="ULong"/>
           </Operators_IsEqualComplex>
         </PrimitiveTree>
       </Clock>
@@ -136,13 +137,7 @@
       </Environment>
       <Population>
         <SubPopulation profile="FemmesEnceintes_2001">
-          <Variable label="Age"/>
-          <Variable label="IVG_T1"/>
-          <Variable label="IVG_T2"/>
           <Variable label="Mortinaissance"/>
-          <Variable label="PF_T1"/>
-          <Variable label="PF_T2"/>
-          <Variable label="SD"/>
           <Variable label="Cout"/>
         </SubPopulation>
       </Population>

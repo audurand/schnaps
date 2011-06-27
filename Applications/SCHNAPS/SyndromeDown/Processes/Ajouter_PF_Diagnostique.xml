@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
   <Process label="Ajouter_PF_Diagnostique">
-	<LocalVariables/>
+    <LocalVariables/>
     <PrimitiveTree size="1">
-      <Operators_AddVariable inArgLeft="@PF_Diagnostique" inArgRight="1" inArgRight_Type="Int" outResult="@PF_Diagnostique"/>
+      <Operators_AddVariable inArgRight="1" inArgRight_Type="Int" inArgLeft="@PF_Diagnostique" outResult="@PF_Diagnostique"/>
     </PrimitiveTree>
   </Process>

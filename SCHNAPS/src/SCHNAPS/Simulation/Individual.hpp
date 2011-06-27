@@ -147,8 +147,6 @@ public:
 protected:
 	std::string mID;	//!< Individual ID tag;
 	State mState;		//!< The state that describes the individual.
-	
-private:
 	bool mActive;		//!< Indicates if the individual is active or idle, thus considered by the simulation or not.
 };
 } // end of Simulation namespace

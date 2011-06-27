@@ -248,7 +248,6 @@
           <Variable label="Nb_Fracture_Colonne"/>
           <Variable label="Nb_Fracture_Hanche"/>
           <Variable label="Cout"/>
-          <Variable label="Mort"/>
           <Variable label="Taux_Mortalite"/>
           <Variable label="QALY"/>
           <Variable label="Duree_Vie"/>

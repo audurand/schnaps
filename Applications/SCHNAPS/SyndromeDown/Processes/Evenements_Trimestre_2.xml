@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
   <Process label="Evenements_Trimestre_2">
-	<LocalVariables/>
+    <LocalVariables/>
     <PrimitiveTree size="1">
       <Operators_OrComplex>
         <Data_Value inValue="@PF_T2"/>

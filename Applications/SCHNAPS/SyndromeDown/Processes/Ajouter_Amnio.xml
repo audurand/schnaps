@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
   <Process label="Ajouter_Amnio">
-	<LocalVariables/>
+    <LocalVariables/>
     <PrimitiveTree size="1">
-      <Operators_AddVariable inArgLeft="@Total_Amnio" inArgRight="1" inArgRight_Type="Int" outResult="@Total_Amnio"/>
+      <Operators_AddVariable inArgRight="1" inArgRight_Type="Int" inArgLeft="@Total_Amnio" outResult="@Total_Amnio"/>
     </PrimitiveTree>
   </Process>

@@ -22,7 +22,6 @@
 				<xsd:choice minOccurs="1" maxOccurs="1"> <!-- First argument -->
 					<xsd:annotation>
 						<xsd:appinfo>
-							<gui:childBehavior/>
 							<pmt:childType definedBy="staticType">Number</pmt:childType>
 							<pmt:childBranchTag lang="en">Operator argument</pmt:childBranchTag>
 						</xsd:appinfo>
@@ -40,7 +39,6 @@
 					<xsd:choice minOccurs="1" maxOccurs="1"> <!-- First argument -->
 						<xsd:annotation>
 							<xsd:appinfo>
-								<gui:childBehavior/>
 								<pmt:childType definedBy="staticType">Number</pmt:childType>
 								<pmt:childBranchTag lang="en">First argument</pmt:childBranchTag>
 							</xsd:appinfo>
@@ -53,7 +51,6 @@
 					<xsd:choice minOccurs="1" maxOccurs="1"> <!-- Second argument -->
 						<xsd:annotation>
 							<xsd:appinfo>
-								<gui:childBehavior/>
 								<pmt:childType definedBy="staticType">Number</pmt:childType>
 								<pmt:childBranchTag lang="en">Second argument</pmt:childBranchTag>
 							</xsd:appinfo>
@@ -68,10 +65,9 @@
 	
 	<xsd:complexType name="_logicalOpComplexType">
 				<xsd:sequence minOccurs="2" maxOccurs="unbounded">
-					<xsd:choice>
+					<xsd:choice> 
 						<xsd:annotation>
 							<xsd:appinfo>
-								<gui:childBehavior/>
 								<pmt:childType definedBy="staticType">Bool</pmt:childType>
 							</xsd:appinfo>
 						</xsd:annotation>
@@ -88,9 +84,7 @@
 					<xsd:choice minOccurs="1" maxOccurs="1"> <!-- First argument -->
 						<xsd:annotation>
 							<xsd:appinfo>
-								<gui:childBehavior/>
 								<pmt:childType definedBy="staticType">Atom</pmt:childType>
-								<pmt:childBranchTag lang="en">First argument</pmt:childBranchTag>
 							</xsd:appinfo>
 						</xsd:annotation>
 						<xsd:element ref="_arithmeticOp"/>
@@ -101,9 +95,7 @@
 					<xsd:choice minOccurs="1" maxOccurs="1"> <!-- Second argument -->
 						<xsd:annotation>
 							<xsd:appinfo>
-								<gui:childBehavior/>
 								<pmt:childType definedBy="argument">1</pmt:childType>
-								<pmt:childBranchTag lang="en">Second argument</pmt:childBranchTag>
 							</xsd:appinfo>
 						</xsd:annotation>
 						<xsd:element ref="_arithmeticOp"/>
@@ -197,8 +189,7 @@
 	<!-- ///////////////////////////////////////////////////////////////////////// -->
 					<!-- ABSTRACT ELEMENTS DEFINITION -->
 	<!-- ///////////////////////////////////////////////////////////////////////// -->
-	
-	<xsd:element name="_component" abstract="true"/>
+	<xsd:element name="_component" abstract="true"/>	
 
 	<xsd:element name="_primitive" abstract="true">
 		<xsd:annotation>
@@ -216,10 +207,18 @@
 				<pmt:event eventName="BadAttributeType" gravity="Error" forceCorrection="false" addComment="false" warn="true">
 				Bad attribute type <pmt:eventArg argIndex="2"/> for attribute named <pmt:eventArg argIndex="1"/> : Either xsd file is corrupted or PrimitiveModel module has to be updated
 				</pmt:event>
+				<pmt:event eventName="EmptyAttributeValue" gravity="Warning" forceCorrection="false" addComment="false" warn="true">
+				Attribute named <pmt:eventArg argIndex="1"/> has an empty value
+				</pmt:event>
 				<pmt:event eventName="BadVariableType" gravity="Error" forceCorrection="false" addComment="false" warn="true">
 				Wrong variable type for variable <pmt:eventArg argIndex="3"/> specified in attribute named <pmt:eventArg argIndex="4"/> : expecting <pmt:eventArg argIndex="1"/>, but got <pmt:eventArg argIndex="2"/>
 				</pmt:event>
-				
+				<pmt:event eventName="BadBranchTag" gravity="Error" forceCorrection="false" addComment="false" warn="true">
+				Bad branch tag value for child <pmt:eventArg argIndex="1"/> at position <pmt:eventArg argIndex="2"/> : <pmt:eventArg argIndex="3"/> is not a number
+				</pmt:event>
+				<pmt:event eventName="BadBranchSum" gravity="Error" forceCorrection="false" addComment="false" warn="true">
+				Branches weights must sum to <pmt:eventArg argIndex="1"/>. Current sum is <pmt:eventArg argIndex="2"/>
+				</pmt:event>
 				<pmt:event eventName="MissingChild" gravity="Error" forceCorrection="false" addComment="false" warn="true">
 				Missing child at position <pmt:eventArg argIndex="1"/> (default child at this position is <pmt:eventArg argIndex="2"/>)
 				</pmt:event>
@@ -229,20 +228,26 @@
 				<pmt:event eventName="BadChild" gravity="Warning" forceCorrection="false" addComment="false" warn="true">
 				Child <pmt:eventArg argIndex="2"/> at position <pmt:eventArg argIndex="1"/> is not defined to be a valid child for primitive <pmt:eventArg argIndex="3"/>: keeping the child is at your own risk.
 				</pmt:event>
+				<pmt:event eventName="BadChildPosition" gravity="Error" forceCorrection="false" addComment="false" warn="true">
+				Child <pmt:eventArg argIndex="2"/> at position <pmt:eventArg argIndex="4"/> is out of bounds for primitive <pmt:eventArg argIndex="1"/>: this primitive should have at most <pmt:eventArg argIndex="3"/> child/children.
+				</pmt:event>
 				<pmt:event eventName="EnvVarUsed" gravity="Warning" forceCorrection="false" addComment="true" warn="true">
 				If this process isn't executed on the environement, primitive <pmt:eventArg argIndex="1"/>  used with environement variable named <pmt:eventArg argIndex="2"/> will cause an error at runtime.
 				</pmt:event>
-				<pmt:event eventName="UnknowPrimitive" gravity="Warning" forceCorrection="false" addComment="true" warn="true">
-				Unknow primitive named <pmt:eventArg argIndex="1"/> (should return <pmt:eventArg argIndex="2"/>) : perhaps a library is not loaded?
+				<pmt:event eventName="UnknownPrimitive" gravity="Warning" forceCorrection="false" addComment="true" warn="true">
+				Unknown primitive named <pmt:eventArg argIndex="1"/> (should return <pmt:eventArg argIndex="2"/>) : perhaps a library is not loaded?
 				</pmt:event>
-				<pmt:event eventName="UnknowVariable" gravity="Warning" forceCorrection="false" addComment="true" warn="true">
-				Unknow variable named <pmt:eventArg argIndex="1"/> (should be <pmt:eventArg argIndex="2"/>) : perhaps you have not defined it?
+				<pmt:event eventName="UnknownParameter" gravity="Warning" forceCorrection="false" addComment="true" warn="true">
+				Unknown parameter named <pmt:eventArg argIndex="1"/> for primitive <pmt:eventArg argIndex="2"/>: keeping it is at your own risk.
+ 				</pmt:event>
+				<pmt:event eventName="UnknownVariable" gravity="Warning" forceCorrection="false" addComment="true" warn="true">
+				Unknown variable named <pmt:eventArg argIndex="1"/> for primitive <pmt:eventArg argIndex="2"/> : keeping it is at your own risk.
+ 				</pmt:event>
+				<pmt:event eventName="UnknownProcess" gravity="Warning" forceCorrection="false" addComment="true" warn="true">
+				Unknown process named <pmt:eventArg argIndex="1"/> for primitive <pmt:eventArg argIndex="2"/> : keeping it is at your own risk.
 				</pmt:event>
-				<pmt:event eventName="UnknowProcess" gravity="Warning" forceCorrection="false" addComment="true" warn="true">
-				Unknow process named <pmt:eventArg argIndex="1"/> (should return <pmt:eventArg argIndex="2"/>) : perhaps you have not defined it?
-				</pmt:event>
+
 			</pmt:eventHandler>
-			<gui:behavior/>
 		</xsd:appinfo>
 		</xsd:annotation>
 	</xsd:element>
@@ -272,7 +277,7 @@
 			<xsd:element name="_multiOp" substitutionGroup="_arithmeticOp" abstract="true"/>
 		
 		<xsd:element name="_stringOp" substitutionGroup="_operator" abstract="true"/>
-			
+	
 		<xsd:element name="_conditionOp" substitutionGroup="_operator" abstract="true"/>
 			<xsd:element name="_multiBranchesConditionOp" substitutionGroup="_conditionOp" abstract="true"/>
 						
@@ -285,10 +290,26 @@
 		
 	<xsd:element name="_tokenBase" substitutionGroup="_primitive" abstract="true"/>
 		<xsd:element name="_staticTk" substitutionGroup="_tokenBase" type="_staticTkComplexType" abstract="true"/>
-		<xsd:element name="_dynamicTk" substitutionGroup="_tokenBase" type="_dynamicTkComplexType" abstract="true"/>
-		<xsd:element name="_callTk" substitutionGroup="_tokenBase" abstract="true"/>
-	
-	
+		<xsd:element name="_dynamicTk" substitutionGroup="_tokenBase" type="_dynamicTkComplexType" abstract="true">
+			<xsd:annotation>
+				<xsd:appinfo>
+					<gui:behavior>
+						<gui:openOnDoubleClick/>
+					</gui:behavior>
+				</xsd:appinfo>
+			</xsd:annotation>
+		</xsd:element>
+		
+		<xsd:element name="_callTk" substitutionGroup="_tokenBase" abstract="true">
+			<xsd:annotation>
+				<xsd:appinfo>
+					<gui:behavior>
+						<gui:openOnDoubleClick/>
+					</gui:behavior>
+				</xsd:appinfo>
+			</xsd:annotation>
+		</xsd:element>
+
 	<xsd:element name="_genericType" substitutionGroup="_primitive" abstract="true"/>
 		<xsd:element name="_vectorType" substitutionGroup="_genericType" abstract="true"/>	
 		<xsd:element name="_atomType" substitutionGroup="_genericType" type="_atomTypeComplexType" abstract="true"/>			

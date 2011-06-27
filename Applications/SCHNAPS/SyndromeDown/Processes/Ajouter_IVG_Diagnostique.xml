@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
   <Process label="Ajouter_IVG_Diagnostique">
-	<LocalVariables/>
+    <LocalVariables/>
     <PrimitiveTree size="1">
-      <Operators_AddVariable inArgLeft="@IVG_Diagnostique" inArgRight="1" inArgRight_Type="Int" outResult="@IVG_Diagnostique"/>
+      <Operators_AddVariable inArgRight="1" inArgRight_Type="Int" inArgLeft="@IVG_Diagnostique" outResult="@IVG_Diagnostique"/>
     </PrimitiveTree>
   </Process>

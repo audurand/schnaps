@@ -278,6 +278,11 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 			default:
 				break;
 			}
+			
+			// if the environment has been set idle, end the simulation
+			if (mEnvironment->isActive() == false) {
+				break;
+			}
 
 			// push processes pushed by environment
 			if (mContext[0]->getPushList().empty() == false) {
@@ -336,10 +341,7 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 								new ProcessPushed(lIt_i->second.front().mProcess));
 						break;
 					case Process::eIndividuals:
-						//for (unsigned int i = 0; i < mEnvironment->getPopulation().size(); i++) { TODO: erase
 						for (std::map<unsigned int, std::map<unsigned int, std::queue<Process::Handle> > >::iterator lIt_j = mWaitingQMaps->getIndividualsWaitingQMaps().begin(); lIt_j != mWaitingQMaps->getIndividualsWaitingQMaps().end(); lIt_j++) {
-							//mWaitingQMaps->getIndividualsWaitingQMaps()[i][lIt->second.front().mTime].push( TODO: erase
-									//new ProcessPushed(lIt->second.front().mProcess)); TODO: erase
 							(lIt_j->second)[mContext[0]->getPushList().front().mTime].push(new ProcessPushed(mContext[0]->getPushList().front().mProcess));
 						}
 						break;
@@ -352,7 +354,7 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 			} // for each BlackBoard::PushTracker
 			mBlackBoard->clear();
 		} while (lSubStep == true);
-	} while (mClock->step(*mContext[0]));
+	} while (mClock->step(*mContext[0]) && mEnvironment->isActive());
 	
 	// terminate threads
 	for (unsigned int i = 0; i < mSubThreads.size(); i++) {
