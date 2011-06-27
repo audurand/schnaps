@@ -114,6 +114,14 @@
         <Entry label="ref.compliance_depistage">
           <Double value="0.531"/>
         </Entry>
+        <Entry label="ref.methode_prevention">
+          <Vector>
+            <String value="Aucune"/>
+            <String value="ActPhys"/>
+            <String value="VitDCalcium"/>
+            <String value="ActPhys+VitDCalcium"/>
+          </Vector>
+        </Entry>
       </Parameters>
     </System>
     <Input>
@@ -171,7 +179,7 @@
             <Operators_IsEqual inArgRight="0" inArgRight_Type="Int" inArgLeft="#IndividusVivants"/>
             <Operators_IsEqualComplex>
               <Data_Clock/>
-              <Data_Value inValue="80" inValue_Type="ULong"/>
+              <Data_Value inValue="120" inValue_Type="ULong"/>
             </Operators_IsEqualComplex>
           </Operators_OrComplex>
         </PrimitiveTree>
@@ -192,6 +200,9 @@
         <Process file="Processes/Evenements_ActPhys+VitDCalcium.xml" label="Evenements_ActPhys+VitDCalcium"/>
         <Process file="Processes/Evenements_AucunePrevention.xml" label="Evenements_AucunePrevention"/>
         <Process file="Processes/Evenements_VitDCalcium.xml" label="Evenements_VitDCalcium"/>
+        <Process file="Processes/Evenements_Apprentissage.xml" label="Evenements_Apprentissage"/>
+        <Process file="Processes/Evenements_Apprentissage_MinCout.xml" label="Evenements_Apprentissage_MinCout"/>
+        <Process file="Processes/Evenements_Apprentissage_MinFrac.xml" label="Evenements_Apprentissage_MinFrac"/>
         <Process file="Processes/Fracture_Colonne.xml" label="Fracture_Colonne"/>
         <Process file="Processes/Fracture_Hanche.xml" label="Fracture_Hanche"/>
         <Process file="Processes/Fracture_Poignet.xml" label="Fracture_Poignet"/>
@@ -228,11 +239,16 @@
         <Process file="Processes/Scenario_SCORE_VitamineDCalcium.xml" label="Scenario_SCORE_VitamineDCalcium"/>
         <Process file="Processes/Scenario_VitamineDCalcium.xml" label="Scenario_VitamineDCalcium"/>
         <Process file="Processes/Scenario_Apprentissage.xml" label="Scenario_Apprentissage"/>
+        <Process file="Processes/Scenario_Apprentissage_MinCout.xml" label="Scenario_Apprentissage_MinCout"/>
+        <Process file="Processes/Scenario_Apprentissage_MinFrac.xml" label="Scenario_Apprentissage_MinFrac"/>
         <Process file="Processes/SCORE.xml" label="SCORE"/>
         <Process file="Processes/Traitement_ActPhys.xml" label="Traitement_ActPhys"/>
         <Process file="Processes/Traitement_ActPhys+VitDCalcium.xml" label="Traitement_ActPhys+VitDCalcium"/>
         <Process file="Processes/Traitement_VitDCalcium.xml" label="Traitement_VitDCalcium"/>
         <Process file="Processes/VitDCalcium.xml" label="VitDCalcium"/>
+        <Process file="Processes/Assigner_Politique.xml" label="Assigner_Politique"/>
+        <Process file="Processes/Assigner_Politique_MinCout.xml" label="Assigner_Politique_MinCout"/>
+        <Process file="Processes/Assigner_Politique_MinFrac.xml" label="Assigner_Politique_MinFrac"/>
       </Processes>
       <Scenarios>
         <Scenario processIndividual="Scenario_CAROC_ActivitePhysique" label="Scenario_CAROC_ActivitePhysique"/>
@@ -252,6 +268,8 @@
         <Scenario processIndividual="Scenario_OST_ActivitePhysique+VitamineDCalcium" label="Scenario_OST_ActivitePhysique+VitamineDCalcium"/>
         <Scenario processIndividual="Scenario_SCORE_ActivitePhysique+VitamineDCalcium" label="Scenario_SCORE_ActivitePhysique+VitamineDCalcium"/>
         <Scenario processIndividual="Scenario_Apprentissage" label="Scenario_Apprentissage"/>
+        <Scenario processIndividual="Scenario_Apprentissage_MinCout" label="Scenario_Apprentissage_MinCout"/>
+        <Scenario processIndividual="Scenario_Apprentissage_MinFrac" label="Scenario_Apprentissage_MinFrac"/>
       </Scenarios>
       <ClockObservers>
         <Observer target="individuals" process="MAJ_Age"/>

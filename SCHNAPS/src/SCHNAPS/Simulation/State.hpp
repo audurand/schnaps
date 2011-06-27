@@ -106,15 +106,14 @@ public:
 	const Core::AnyType& getVariable(const std::string& inLabel) const {
 		schnaps_StackTraceBeginM();
 		VariablesMap::const_iterator lIterVariables = mVariables.find(inLabel);
-		if (lIterVariables == mVariables.end()) {
-			for (VariablesMap::const_iterator lIt = mVariables.begin(); lIt != mVariables.end(); lIt++) {
-				std::cout << lIt->first << " = " << lIt->second->writeStr() << "\n";
-			}
-			std::cout << "------------\n";
-			
+		if (lIterVariables == mVariables.end()) {			
 			std::ostringstream lOSS;
 			lOSS << "The variable '" << inLabel << "' does not exist; ";
 			lOSS << "could not get it.";
+			lOSS << "Current state:\n";
+			for (VariablesMap::const_iterator lIt = mVariables.begin(); lIt != mVariables.end(); lIt++) {
+				lOSS << lIt->first << " = " << lIt->second->writeStr() << "\n";
+			}
 			throw schnaps_RunTimeExceptionM(lOSS.str());
 		}
 		schnaps_NonNullPointerAssertM(lIterVariables->second);
@@ -132,14 +131,13 @@ public:
 		schnaps_StackTraceBeginM();
 		VariablesMap::const_iterator lIterVariables = mVariables.find(inLabel);
 		if (lIterVariables == mVariables.end()) {
-			for (VariablesMap::const_iterator lIt = mVariables.begin(); lIt != mVariables.end(); lIt++) {
-				std::cout << lIt->first << " = " << lIt->second->writeStr() << "\n";
-			}
-			std::cout << "------------\n";
-			
 			std::ostringstream lOSS;
 			lOSS << "The variable '" << inLabel << "' does not exist; ";
 			lOSS << "could not get it.";
+			lOSS << "Current state:\n";
+			for (VariablesMap::const_iterator lIt = mVariables.begin(); lIt != mVariables.end(); lIt++) {
+				lOSS << lIt->first << " = " << lIt->second->writeStr() << "\n";
+			}
 			throw schnaps_RunTimeExceptionM(lOSS.str());
 		}
 		return lIterVariables->second;
@@ -161,7 +159,9 @@ public:
 			lOSS << "could not set it.";
 			throw schnaps_RunTimeExceptionM(lOSS.str());
 		}
-		lIterVariables->second = inValue;
+		// TODO: remove full assign?
+		//lIterVariables->second = inValue;
+		lIterVariables->second->readStr(inValue->writeStr());
 		schnaps_StackTraceEndM("void SCHNAPS::Simulation::State::setVariable(const std::string&, SCHNAPS::Core::AnyType::Handle) const");
 	}
 

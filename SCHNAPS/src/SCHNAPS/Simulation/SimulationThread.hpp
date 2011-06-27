@@ -157,23 +157,33 @@ public:
 	}
 
 	/*! 
-	 * \brief  Return a const reference to the indexes of individuals to simulate.
-	 * \return A const reference to the indexes of individuals to simulate.
+	 * \brief  Return a reference to the indexes of individuals to simulate.
+	 * \return A reference to the indexes of individuals to simulate.
 	 */
-	const std::vector<unsigned int>& getIndexes() const {
+	std::list<unsigned int>& getIndexes() {
 		schnaps_StackTraceBeginM();
 		return mIndexes;
-		schnaps_StackTraceEndM("const std::vector<unsigned int>& SCHNAPS::Simulation::SimulationThread::getIndexes() const");
+		schnaps_StackTraceEndM("std::list<unsigned int>& SCHNAPS::Simulation::SimulationThread::getIndexes()");
 	}
 
 	/*! 
-	 * \brief  Return a const reference to the indexes of newly added individuals to simulate.
-	 * \return A const reference to the indexes of newly added individuals to simulate.
+	 * \brief  Return a reference to the indexes of newly added individuals to simulate.
+	 * \return A reference to the indexes of newly added individuals to simulate.
 	 */
-	const std::vector<unsigned int>& getNewIndexes() const {
+	std::list<unsigned int>& getNewIndexes() {
 		schnaps_StackTraceBeginM();
 		return mNewIndexes;
-		schnaps_StackTraceEndM("const std::vector<unsigned int>& SCHNAPS::Simulation::SimulationThread::getNewIndexes() const");
+		schnaps_StackTraceEndM("std::list<unsigned int>& SCHNAPS::Simulation::SimulationThread::getNewIndexes()");
+	}
+
+	/*! 
+	 * \brief  Return a reference to the indexes of individuals to erase.
+	 * \return A reference to the indexes of individuals to erase.
+	 */
+	std::list<unsigned int>& getEraseIndexes() {
+		schnaps_StackTraceBeginM();
+		return mEraseIndexes;
+		schnaps_StackTraceEndM("std::list<unsigned int>& SCHNAPS::Simulation::SimulationThread::getEraseIndexes()");
 	}
 
 	/*!
@@ -198,8 +208,9 @@ private:
 	BlackBoard::Handle mBlackBoard;				//!< A handle to the blackboard for process push.
 	WaitingQMaps::Handle mWaitingQMaps;			//!< A handle to maps of waiting FIFOs for each individual.
 
-	std::vector<unsigned int> mIndexes;			//!< Indexes of individuals tu simulate.
-	std::vector<unsigned int> mNewIndexes;		//!< Indexes of newly added individuals to simulate.
+	std::list<unsigned int> mIndexes;			//!< Indexes of individuals to simulate.
+	std::list<unsigned int> mNewIndexes;		//!< Indexes of newly added individuals to simulate.
+	std::list<unsigned int> mEraseIndexes;		//!< Indexes of individuals to erase.
 
 	std::string mScenarioLabel;					//!< The label of scenario to simulate.
 	Position mPosition;							//!< The position of threads in execution.

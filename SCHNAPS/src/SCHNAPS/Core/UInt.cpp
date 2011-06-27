@@ -151,13 +151,23 @@ Number::Handle UInt::div(Number& inRightNumber) {
 }
 
 /*!
+ *  \brief  Compute the base-e exponential function, which is the e number raised to the power x.
+ *  \return A handle to the resulting number.
+ */
+Number::Handle UInt::exp() {
+	schnaps_StackTraceBeginM();
+	return new Double(std::exp(mValue));
+	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::UInt::exp()");
+}
+
+/*!
  * \brief  Compute the modulo by a number.
  * \return A handle to the resulting number.
  */
 Number::Handle UInt::mod(Number& inRightNumber) {
 	schnaps_StackTraceBeginM();
 	UInt lRightUInt = inRightNumber;
-	return new UInt(mValue % lRightUInt.getValue());
+	return new Int(mValue % lRightUInt.getValue());
 	schnaps_StackTraceEndM("SCHNAPS::Core::Number::Handle SCHNAPS::Core::UInt::mod(SCHNAPS::Core::Number&)");
 }
 

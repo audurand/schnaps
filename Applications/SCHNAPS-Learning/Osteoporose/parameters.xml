@@ -144,7 +144,7 @@
 		      <Option label="SCORE+CAROC"/>
 		    </Options>
 		    <FunctionState file="Etat_Methode_Depistage.xml"/>
-		    <FunctionReward file="Recompense.xml"/>
+		    <FunctionReward file="Recompense_Methode_Depistage_MinFrac.xml"/>
 		    <ChoiceMap/>
 		  </Choice>
 		  <Choice label="Methode_Prevention">
@@ -155,7 +155,7 @@
 		      <Option label="ActPhys+VitDCalcium"/>
 		    </Options>
 		    <FunctionState file="Etat_Methode_Prevention.xml"/>
-		    <FunctionReward file="Recompense.xml"/>
+		    <FunctionReward file="Recompense_Methode_Prevention_MinFrac.xml"/>
 		    <ChoiceMap/>
 		  </Choice>
 		</Learning_DecisionMaker>
@@ -177,7 +177,7 @@
               <IndividualModel>
                 <Variable label="Age"/>
               </IndividualModel>
-              <SimulationVariables file="Populations/SimulationVariables.xml"/>
+              <SimulationVariables file="Populations/SimulationVariables_Apprentissage.xml"/>
             </GenProfile>
             <GenProfile label="Femmes_Apprentissage">
               <Demography file="Populations/Demography_Apprentissage.xml"/>
@@ -189,12 +189,12 @@
               <IndividualModel>
                 <Variable label="Age"/>
               </IndividualModel>
-              <SimulationVariables file="Populations/SimulationVariables.xml"/>
+              <SimulationVariables file="Populations/SimulationVariables_Apprentissage.xml"/>
             </GenProfile>
           </Profiles>
         </Generator>
         <Population>
-          <SubPopulation profile="Femmes_2006" size="500000" time="0"/>
+          <SubPopulation profile="Femmes_2006" size="0" time="0"/>
         </Population>
       </PopulationManager>
     </Input>
@@ -257,9 +257,7 @@
       </ClockObservers>
     </Simulation>
     <Output>
-      <Environment>
-        <Variable label="IndividusVivants"/>
-      </Environment>
+      <Environment/>
       <Population>
         <SubPopulation profile="Femmes_2006">
           <Variable label="DMO"/>

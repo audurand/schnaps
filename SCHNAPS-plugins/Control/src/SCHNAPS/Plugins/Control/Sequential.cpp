@@ -58,14 +58,17 @@ Sequential& Sequential::operator=(const Sequential& inOriginal) {
  */
 Core::AnyType::Handle Sequential::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	if (getNumberArguments() == 0) {
-		return NULL;
-	}
+	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
+	Core::AnyType::Handle lResult = NULL;
 
-	for (unsigned int i = 0; i < getNumberArguments()-1; i++) {
-		getArgument(inIndex, i, ioContext);
+	for (unsigned int i = 0; i < getNumberArguments(); i++) {
+		lResult = getArgument(inIndex, i, lContext);
+		if (lContext.getIndividual().isActive() == false) {
+			break;
+		}
 	}
-	return getArgument(inIndex, getNumberArguments()-1, ioContext);
+	
+	return lResult;
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Control::Sequential::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
 }
 

@@ -176,7 +176,9 @@ public:
 			lOSS << "could not set it.";
 			throw schnaps_RunTimeExceptionM(lOSS.str());
 		}
-		lIter->second = inValue;
+		// TODO: remove full assign?
+		//lIter->second = inValue;
+		lIter->second->readStr(inValue->writeStr());
 		schnaps_StackTraceEndM("void SCHNAPS::Simulation::ExecutionContext::setLocalVariable(const std::string&, SCHNAPS::Core::Atom::Handle) const");
 	}
 	

@@ -183,6 +183,9 @@ double DecisionMaker::computeReward(const std::string& inDecisionNode, const std
 	// set action label
 	mContext.setActionLabel(lActions[inActionID].getLabel());
 	
+	// set state
+	mContext.setState(inState);
+	
 	// compute reward
 	return lChoice.computeReward(mContext);
 	schnaps_StackTraceEndM("double SCHNAPS::Plugins::Learning::DecisionMaker::computeReward(const std::string&, const std::string&, unsigned int, unsigned int)");

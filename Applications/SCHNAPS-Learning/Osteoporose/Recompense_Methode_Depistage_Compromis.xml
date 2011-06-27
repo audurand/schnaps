@@ -1,0 +1,103 @@
+<FunctionReward>
+  <LocalVariables>
+	  <LocalVariable label="Etat">
+		  <String value=" "/>
+	  </LocalVariable>
+	  <LocalVariable label="Recompense">
+		  <Double value="0"/>
+	  </LocalVariable>
+	  <LocalVariable label="Nb_Fractures_Total">
+		  <Int value="0"/>
+	  </LocalVariable>
+  </LocalVariables>
+  <PrimitiveTree>
+    <Control_Sequential>
+      <Data_SetVariableComplex outVariable="%Etat">
+        <Learning_State/>
+      </Data_SetVariableComplex>
+      <Control_ChoiceIsEqual inValue="%Etat" inChoices="40-49|50-59|60-69|70-79|80-89|90-99|100+" inChoices_Type="String">
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_40-49"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_40-49"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_40-49"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_50-59"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_50-59"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_50-59"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_60-69"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_60-69"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_60-69"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_70-79"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_70-79"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_70-79"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_80-89"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_80-89"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_80-89"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_90-99"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_90-99"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_90-99"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+      </Control_ChoiceIsEqual>
+      <Data_SetVariableComplex outVariable="%Recompense">
+		<Operators_DivComplex>
+			<Operators_MultComplex>
+				<Operators_ExpComplex>
+					<Data_Value inValue="%Nb_Fractures_Total"/>
+				</Operators_ExpComplex>
+				<Data_Value inValue="@Cout"/>
+			</Operators_MultComplex>
+			<Operators_MultComplex>
+				<Operators_ExpComplex>
+					<Data_Value inValue="0" inValue_Type="Double"/>
+				</Operators_ExpComplex>
+				<Data_Value inValue="6391" inValue_Type="Double"/>
+			</Operators_MultComplex>
+		</Operators_DivComplex>
+      </Data_SetVariableComplex>
+      <Operators_MultVariable inArgLeft="%Recompense" inArgRight="-1" inArgRight_Type="Double" outResult="%Recompense"/>
+      <Data_Value inValue="%Recompense"/>
+    </Control_Sequential>
+  </PrimitiveTree>
+</FunctionReward>

@@ -524,4 +524,16 @@
         </Control_ChoiceIsEqual>
       </PrimitiveTree>
     </Variable>
+    <Variable gui.position="20" type="String" label="Methode_Prevention">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="Aucune" inValue_Type="String"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="21" type="Bool" label="Compliant">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
   </SimulationVariables>

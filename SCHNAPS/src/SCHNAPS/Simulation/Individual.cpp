@@ -24,15 +24,32 @@
 using namespace SCHNAPS;
 using namespace Simulation;
 
+/*!
+ * \brief Construct a new individual.
+ * \param inID The individual ID.
+ */
 Individual::Individual(std::string inID) :
-		mID(inID)
+		mID(inID),
+		mActive(true)
 {}
 
+/*!
+ * \brief Construct an individual as a copy of an original.
+ * \param inOriginal A const reference to the original individual.
+ */
 Individual::Individual(const Individual& inOriginal) :
 		mID(inOriginal.mID.c_str()),
-		mState(inOriginal.mState)
+		mState(inOriginal.mState),
+		mActive(true)
 {}
 
+/*!
+ * \brief Read object from XML using system.
+ * \param inIter XML iterator of input document.
+ * \param ioSystem A reference to the system.
+ * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
+ * \throw SCHNAPS::Core::IOException if variable id attribute is missing.
+ */
 void Individual::readWithSystem(PACC::XML::ConstIterator inIter, SCHNAPS::Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
 		if (inIter->getType() != PACC::XML::eData) {
@@ -53,13 +70,28 @@ void Individual::readWithSystem(PACC::XML::ConstIterator inIter, SCHNAPS::Core::
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Individual::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
+/*!
+ * \brief Write object content to XML.
+ * \param ioStreamer XML streamer to output document.
+ * \param inIndent Wether to indent or not.
+ */
 void Individual::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	ioStreamer.insertAttribute("id", mID);
 	mState.write(ioStreamer, inIndent);
 }
 
+/*!
+ * \brief Print individual to file stream.
+ * \param ioStream A reference to the file stream.
+ * \param inVariables A const reference to the labels of variables to print.
+ */
 void Individual::print(std::ostream& ioStream, const std::vector<std::string> inVariables) const {
 	ioStream << mID;
 	mState.print(ioStream, inVariables);
+	if (mActive) {
+		ioStream << "\t" << "ACTIVE";
+	} else {
+		ioStream << "\t" << "IDLE";
+	}
 	ioStream << std::endl;
 }

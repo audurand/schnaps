@@ -205,30 +205,32 @@ Core::AnyType::Handle SetVariable::execute(unsigned int inIndex, Core::Execution
 			break;
 	}
 	
-	std::string lTypeNewValue = lValue->getType();
+	//std::string lTypeNewValue = lValue->getType();
 
 	if (mVariable_Ref[0] == '@') {
 		// individual variable
 		Simulation::SimulationContext& lSimulationContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
-		std::string lTypeVariable = lSimulationContext.getIndividual().getState().getVariable(mVariable_Ref.substr(1)).getType();
-		if (lTypeVariable != lTypeNewValue) {
-			std::stringstream lOSS;
-			lOSS << "The type of variable '" << mVariable_Ref.substr(1) << "' (" << lTypeVariable << ") ";
-			lOSS << "does not match the type of argument (" << lTypeNewValue << "); ";
-			lOSS << "could not set the variable.";
-			throw schnaps_RunTimeExceptionM(lOSS.str());
-		}
+		// TODO: remove check type?
+		//std::string lTypeVariable = lSimulationContext.getIndividual().getState().getVariable(mVariable_Ref.substr(1)).getType();
+		//if (lTypeVariable != lTypeNewValue) {
+			//std::stringstream lOSS;
+			//lOSS << "The type of variable '" << mVariable_Ref.substr(1) << "' (" << lTypeVariable << ") ";
+			//lOSS << "does not match the type of argument (" << lTypeNewValue << "); ";
+			//lOSS << "could not set the variable.";
+			//throw schnaps_RunTimeExceptionM(lOSS.str());
+		//}
 		lContext.getIndividual().getState().setVariable(mVariable_Ref.substr(1), lValue);
 	} else { // mVariable_Ref[0] == '%'
 		// local variable
-		std::string lTypeVariable = lContext.getLocalVariable(mVariable_Ref.substr(1)).getType();
-		if (lTypeVariable != lTypeNewValue) {
-			std::stringstream lOSS;
-			lOSS << "The type of variable '" << mVariable_Ref.substr(1) << "' (" << lTypeVariable << ") ";
-			lOSS << "does not match the type of argument (" << lTypeNewValue << "); ";
-			lOSS << "could not set the variable.";
-			throw schnaps_RunTimeExceptionM(lOSS.str());
-		}
+		// TODO: remove check type?
+		//std::string lTypeVariable = lContext.getLocalVariable(mVariable_Ref.substr(1)).getType();
+		//if (lTypeVariable != lTypeNewValue) {
+			//std::stringstream lOSS;
+			//lOSS << "The type of variable '" << mVariable_Ref.substr(1) << "' (" << lTypeVariable << ") ";
+			//lOSS << "does not match the type of argument (" << lTypeNewValue << "); ";
+			//lOSS << "could not set the variable.";
+			//throw schnaps_RunTimeExceptionM(lOSS.str());
+		//}
 		lContext.setLocalVariable(mVariable_Ref.substr(1), lValue);
 	}
 	

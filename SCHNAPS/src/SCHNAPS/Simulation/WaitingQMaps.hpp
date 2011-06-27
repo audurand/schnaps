@@ -67,13 +67,13 @@ public:
 	 * \brief  Return a const reference to all individuals FIFOs.
 	 * \return A const reference to all individuals FIFOs FIFOs.
 	 */
-	std::vector<std::map<unsigned int, std::queue<Process::Handle> > >& getIndividualsWaitingQMaps() {
+	std::map<unsigned int, std::map<unsigned int, std::queue<Process::Handle> > >& getIndividualsWaitingQMaps() {
 		return mIndividuals;
 	}
 
 private:
-	std::map<unsigned int, std::queue<Process::Handle> > mEnvironment;					//!< FIFOs for environment.
-	std::vector<std::map<unsigned int, std::queue<Process::Handle> > > mIndividuals;	//!< FIFOs for each individual.
+	std::map<unsigned int, std::queue<Process::Handle> > mEnvironment;							//!< FIFOs for environment.
+	std::map<unsigned int, std::map<unsigned int, std::queue<Process::Handle> > > mIndividuals;	//!< FIFOs for each individual.
 };
 } // end of Simulation namespace
 } // end of SCHNAPS namespace

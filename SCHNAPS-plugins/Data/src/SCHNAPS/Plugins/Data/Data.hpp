@@ -25,6 +25,7 @@
 #include "SCHNAPS/Plugins/Data/Log.hpp"
 #include "SCHNAPS/Plugins/Data/RandomUniform.hpp"
 #include "SCHNAPS/Plugins/Data/RouletteDynamic.hpp"
+#include "SCHNAPS/Plugins/Data/SetIdle.hpp"
 #include "SCHNAPS/Plugins/Data/SetVariable.hpp"
 #include "SCHNAPS/Plugins/Data/SetVariableComplex.hpp"
 #include "SCHNAPS/Plugins/Data/Value.hpp"

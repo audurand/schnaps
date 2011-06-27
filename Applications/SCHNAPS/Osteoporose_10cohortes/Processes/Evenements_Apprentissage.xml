@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <Process label="Evenements">
+  <Process label="Evenements_Apprentissage">
     <LocalVariables/>
     <PrimitiveTree size="1">
       <Control_IfThenElse>
@@ -9,7 +9,15 @@
           <Control_IfThenElse>
             <!--Appliquer les effets du traitement ou de la prevention s'il y a lieu.-->
             <Data_Value inValue="@Traitement"/>
-            <Control_ProcessCall inLabel="Traitement_ActPhys"/>
+            <Control_ChoiceIsBetween inBounds="40|50|60|70|80|90|100" inBounds_Type="Int" inValue="@Age">
+              <Control_ProcessCall inLabel="Traitement_ActPhys"/>
+              <Control_ProcessCall inLabel="Traitement_ActPhys+VitDCalcium"/>
+              <Control_ProcessCall inLabel="Traitement_ActPhys+VitDCalcium"/>
+              <Control_ProcessCall inLabel="Traitement_ActPhys+VitDCalcium"/>
+              <Control_ProcessCall inLabel="Traitement_ActPhys+VitDCalcium"/>
+              <Control_ProcessCall inLabel="Traitement_ActPhys+VitDCalcium"/>
+              <Control_ProcessCall inLabel="Traitement_ActPhys+VitDCalcium"/>
+            </Control_ChoiceIsBetween>
             <Control_IfThenElse>
 				<Data_Value inValue="@Prevention"/>
 				<Control_ChoiceIsEqual inChoices="$ref.methode_prevention" inValue="@Methode_Prevention">
@@ -90,10 +98,13 @@
           </Meds_Event>
           <Control_ProcessCall inLabel="MAJ_QALY"/>
           <Meds_Event inLabel="Deces" inProbability="@Taux_Mortalite">
-            <Data_SetVariable inValue="true" outVariable="@Mort" inValue_Type="Bool"/>
+            <Control_Sequential>
+              <Data_SetVariable inValue="true" outVariable="@Mort" inValue_Type="Bool"/>
+              <Control_ProcessPush inDelay="0" inTarget="environment" inLabel="Retirer_Individu"/>
+            </Control_Sequential>
             <Control_Sequential>
               <Operators_AddVariable inArgRight="1" inArgRight_Type="Int" inArgLeft="@Duree_Vie" outResult="@Duree_Vie"/>
-              <Control_ProcessPush inDelay="1" inTarget="current" inLabel="Evenements"/>
+              <Control_ProcessPush inDelay="1" inTarget="current" inLabel="Evenements_Apprentissage"/>
             </Control_Sequential>
           </Meds_Event>
         </Control_Sequential>

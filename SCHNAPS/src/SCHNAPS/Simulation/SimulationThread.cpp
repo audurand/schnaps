@@ -60,7 +60,6 @@ void SimulationThread::main() {
 			}
 			if (mNewIndexes.size() > 0) {
 				Simulator::processScenario(this);
-				mIndexes.reserve(mIndexes.size()+mNewIndexes.size());
 				mIndexes.insert(mIndexes.end(), mNewIndexes.begin(), mNewIndexes.end());
 				mNewIndexes.clear();
 			}

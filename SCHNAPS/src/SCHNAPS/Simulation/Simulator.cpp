@@ -222,7 +222,9 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 		// add new individuals
 		if (mEnvironment->getPopulation().addIndividuals(mPopulationManager->getIndividuals()) == true) {
 			// resize waiting map FIFOs to include new individuals
-			mWaitingQMaps->getIndividualsWaitingQMaps().resize(mEnvironment->getPopulation().size());
+			for (unsigned int i = lNewIndividuals_LowerBound; i < mEnvironment->getPopulation().size(); i++) {
+				mWaitingQMaps->getIndividualsWaitingQMaps()[i];
+			}
 
 			// assign individuals to threads
 			for (unsigned int i = 0; i < mSubThreads.size(); i++) {
@@ -288,9 +290,8 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 								new ProcessPushed(mContext[0]->getPushList().front().mProcess));
 						break;
 					case Process::eIndividuals:
-						for (unsigned int i = 0; i < mEnvironment->getPopulation().size(); i++) {
-							mWaitingQMaps->getIndividualsWaitingQMaps()[i][mContext[0]->getPushList().front().mTime].push(
-									new ProcessPushed(mContext[0]->getPushList().front().mProcess));
+						for (std::map<unsigned int, std::map<unsigned int, std::queue<Process::Handle> > >::iterator lIt_i = mWaitingQMaps->getIndividualsWaitingQMaps().begin(); lIt_i != mWaitingQMaps->getIndividualsWaitingQMaps().end(); lIt_i++) {
+							(lIt_i->second)[mContext[0]->getPushList().front().mTime].push(new ProcessPushed(mContext[0]->getPushList().front().mProcess));
 						}
 						break;
 					default:
@@ -311,33 +312,42 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 			for (unsigned int i = 0; i < mSubThreads.size(); i++) {
 				mSequential->wait();
 			}
+			
+			// erase idle individual waiting queues
+			for (unsigned int i = 0; i < mSubThreads.size(); i++) {
+				for (std::list<unsigned int>::iterator lIt_i = mSubThreads[i]->getEraseIndexes().begin(); lIt_i != mSubThreads[i]->getEraseIndexes().end(); lIt_i++) {
+					mWaitingQMaps->getIndividualsWaitingQMaps().erase(*lIt_i);
+				}
+			}
 
 			// push processes pushed by individuals
 			if (mBlackBoard->empty() == false) {
 				lSubStep = true;
 			}
-			for (BlackBoard::iterator lIt = mBlackBoard->begin(); lIt != mBlackBoard->end(); lIt++) {
-				while (lIt->second.empty() == false) {
-					switch (lIt->second.front().mTarget) {
+			for (BlackBoard::iterator lIt_i = mBlackBoard->begin(); lIt_i != mBlackBoard->end(); lIt_i++) {
+				while (lIt_i->second.empty() == false) {
+					switch (lIt_i->second.front().mTarget) {
 					case Process::eCurrent:
-						mWaitingQMaps->getIndividualsWaitingQMaps()[lIt->first][lIt->second.front().mTime].push(
-								new ProcessPushed(lIt->second.front().mProcess));
+						mWaitingQMaps->getIndividualsWaitingQMaps()[lIt_i->first][lIt_i->second.front().mTime].push(
+								new ProcessPushed(lIt_i->second.front().mProcess));
 						break;
 					case Process::eEnvironment:
-						mWaitingQMaps->getEnvironmentWaitingQMap()[lIt->second.front().mTime].push(
-								new ProcessPushed(lIt->second.front().mProcess));
+						mWaitingQMaps->getEnvironmentWaitingQMap()[lIt_i->second.front().mTime].push(
+								new ProcessPushed(lIt_i->second.front().mProcess));
 						break;
 					case Process::eIndividuals:
-						for (unsigned int i = 0; i < mEnvironment->getPopulation().size(); i++) {
-							mWaitingQMaps->getIndividualsWaitingQMaps()[i][lIt->second.front().mTime].push(
-									new ProcessPushed(lIt->second.front().mProcess));
+						//for (unsigned int i = 0; i < mEnvironment->getPopulation().size(); i++) { TODO: erase
+						for (std::map<unsigned int, std::map<unsigned int, std::queue<Process::Handle> > >::iterator lIt_j = mWaitingQMaps->getIndividualsWaitingQMaps().begin(); lIt_j != mWaitingQMaps->getIndividualsWaitingQMaps().end(); lIt_j++) {
+							//mWaitingQMaps->getIndividualsWaitingQMaps()[i][lIt->second.front().mTime].push( TODO: erase
+									//new ProcessPushed(lIt->second.front().mProcess)); TODO: erase
+							(lIt_j->second)[mContext[0]->getPushList().front().mTime].push(new ProcessPushed(mContext[0]->getPushList().front().mProcess));
 						}
 						break;
 					default:
 						throw schnaps_InternalExceptionM("Undefined process target!");
 						break;
 					}
-					lIt->second.pop_front();
+					lIt_i->second.pop_front();
 				} // while (lIt->second.empty() == false
 			} // for each BlackBoard::PushTracker
 			mBlackBoard->clear();
@@ -474,20 +484,41 @@ void Simulator::resetRandomizer() {
 void Simulator::processScenario(SimulationThread::Handle inThread) {
 	schnaps_StackTraceBeginM();
 	SimulationContext& lContext = inThread->getContext();
-	const std::vector<unsigned int>& lNewIndexes = inThread->getNewIndexes();
+	
+	Individual::Handle lIndividual;
+	
+	std::list<unsigned int>& lNewIndexes = inThread->getNewIndexes();
+	std::list<unsigned int>& lEraseIndexes = inThread->getEraseIndexes();
+	
+	lEraseIndexes.clear();
 
 	// if there is a scenario for individuals
 	if (lContext.getScenario(inThread->getScenarioLabel()).mProcessIndividual != NULL) {
 		// execute the scenario
-		for (unsigned int i = 0; i < lNewIndexes.size(); i++) {
-			lContext.setIndividual(lContext.getEnvironment().getPopulation()[lNewIndexes[i]]);
+		std::list<unsigned int>::iterator lIt_i = lNewIndexes.begin();
+		while (lIt_i != lNewIndexes.end()) {
+			lIndividual = lContext.getEnvironment().getPopulation()[*lIt_i];
+			
+			lContext.setIndividual(lIndividual);
+			
+			// process scenario
 			lContext.getScenario(inThread->getScenarioLabel()).mProcessIndividual->execute(lContext);
-			// keep track of processes pushed by individual at index i
+			
+			// keep track of processes pushed by individual at index *lIt_i
 			if (lContext.getPushList().empty() == false) {
 				inThread->waitBlackBoard();
-				inThread->getBlackBoard()[lNewIndexes[i]] = lContext.getPushList();
+				inThread->getBlackBoard()[*lIt_i] = lContext.getPushList();
 				inThread->postBlackBoard();
 				lContext.getPushList().clear();
+			}
+		
+			// if individual is still active, go to next individual
+			if (lIndividual->isActive()) {
+				lIt_i++;
+			// if individual has been set idle, remove its index from thread charge
+			} else {
+				lEraseIndexes.push_back(*lIt_i);
+				lIt_i = lNewIndexes.erase(lIt_i);
 			}
 		}
 	}
@@ -501,30 +532,48 @@ void Simulator::processScenario(SimulationThread::Handle inThread) {
 void Simulator::processClockStep(SimulationThread::Handle inThread) {
 	schnaps_StackTraceBeginM();
 	SimulationContext& lContext = inThread->getContext();
-	const std::vector<unsigned int>& lIndexes = inThread->getIndexes();
+	
+	Individual::Handle lIndividual;
+	
+	std::list<unsigned int>& lIndexes = inThread->getIndexes();
+	std::list<unsigned int>& lEraseIndexes = inThread->getEraseIndexes();
+	std::map<unsigned int, std::map<unsigned int, std::queue<Process::Handle> > >& lIndividualWaitingQMaps = inThread->getWaitingQMaps().getIndividualsWaitingQMaps();
+	
+	lEraseIndexes.clear();
 
-	std::vector<std::map<unsigned int, std::queue<Process::Handle> > >& lIndividualWaitingQMaps = inThread->getWaitingQMaps().getIndividualsWaitingQMaps();
-
-	for (unsigned int i = 0; i < lIndexes.size(); i++) {
-		lContext.setIndividual(lContext.getEnvironment().getPopulation()[lIndexes[i]]);
+	std::list<unsigned int>::iterator lIt_i = lIndexes.begin();
+	while (lIt_i != lIndexes.end()) {
+		lIndividual = lContext.getEnvironment().getPopulation()[*lIt_i];
+		
+		lContext.setIndividual(lIndividual);
+		
 		// process clock observers
 		for (unsigned int j = 0; j < lContext.getClockObservers().mProcessIndividual.size(); j++) {
 			lContext.getClockObservers().mProcessIndividual[j]->execute(lContext);
 		}
 
-		// process current individual FIFO
-		while (lIndividualWaitingQMaps[lIndexes[i]][lContext.getClock().getValue()].empty() == false) {
-			lIndividualWaitingQMaps[lIndexes[i]][lContext.getClock().getValue()].front()->execute(lContext);
-			lIndividualWaitingQMaps[lIndexes[i]][lContext.getClock().getValue()].pop();
+		// process current individual FIFO until it is empty or individual is set idle
+		while ((lIndividualWaitingQMaps[*lIt_i][lContext.getClock().getValue()].empty() == false) && (lIndividual->isActive())) {
+			lIndividualWaitingQMaps[*lIt_i][lContext.getClock().getValue()].front()->execute(lContext);
+			lIndividualWaitingQMaps[*lIt_i][lContext.getClock().getValue()].pop();
 		}
-		lIndividualWaitingQMaps[lIndexes[i]].erase(lContext.getClock().getValue());
+		lIndividualWaitingQMaps[*lIt_i].erase(lContext.getClock().getValue());
 
-		// keep track of processes pushed by individual at index i
+		// keep track of processes pushed by individual at index *lIt_i
 		if (lContext.getPushList().empty() == false) {
 			inThread->waitBlackBoard();
-			inThread->getBlackBoard()[lIndexes[i]] = lContext.getPushList();
+			inThread->getBlackBoard()[*lIt_i] = lContext.getPushList();
 			inThread->postBlackBoard();
 			lContext.getPushList().clear();
+		}
+		
+		// if individual is still active, go to next individual
+		if (lIndividual->isActive()) {
+			lIt_i++;
+		// if individual has been set idle, remove its index from thread charge
+		} else {
+			lEraseIndexes.push_back(*lIt_i);
+			lIt_i = lIndexes.erase(lIt_i);
 		}
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::processClockStep(SCHNAPS::Simulation::SimulationThread::Handle)");
@@ -537,24 +586,43 @@ void Simulator::processClockStep(SimulationThread::Handle inThread) {
 void Simulator::processSubStep(SimulationThread::Handle inThread) {
 	schnaps_StackTraceBeginM();
 	SimulationContext& lContext = inThread->getContext();
-	const std::vector<unsigned int>& lIndexes = inThread->getIndexes();
+	
+	Individual::Handle lIndividual;
+	
+	std::list<unsigned int>& lIndexes = inThread->getIndexes();
+	std::list<unsigned int>& lEraseIndexes = inThread->getEraseIndexes();
+	std::map<unsigned int, std::map<unsigned int, std::queue<Process::Handle> > >& lIndividualWaitingQMaps = inThread->getWaitingQMaps().getIndividualsWaitingQMaps();
+	
+	lEraseIndexes.clear();
 
-	std::vector<std::map<unsigned int, std::queue<Process::Handle> > >& lIndividualWaitingQMaps = inThread->getWaitingQMaps().getIndividualsWaitingQMaps();
-
-	for (unsigned int i = 0; i < lIndexes.size(); i++) {
-		lContext.setIndividual(lContext.getEnvironment().getPopulation()[lIndexes[i]]);
+	std::list<unsigned int>::iterator lIt_i = lIndexes.begin();
+	while (lIt_i != lIndexes.end()) {
+		lIndividual = lContext.getEnvironment().getPopulation()[*lIt_i];
+		
+		lContext.setIndividual(lIndividual);
+		
 		// process current individual FIFO
-		while (lIndividualWaitingQMaps[lIndexes[i]][lContext.getClock().getValue()].empty() == false) {
-			lIndividualWaitingQMaps[lIndexes[i]][lContext.getClock().getValue()].front()->execute(lContext);
-			lIndividualWaitingQMaps[lIndexes[i]][lContext.getClock().getValue()].pop();
+		while ((lIndividualWaitingQMaps[*lIt_i][lContext.getClock().getValue()].empty() == false) && (lIndividual->isActive())) {
+			lIndividualWaitingQMaps[*lIt_i][lContext.getClock().getValue()].front()->execute(lContext);
+			lIndividualWaitingQMaps[*lIt_i][lContext.getClock().getValue()].pop();
 		}
-		lIndividualWaitingQMaps[lIndexes[i]].erase(lContext.getClock().getValue());
-		// keep track of processes pushed by individual at index i
+		lIndividualWaitingQMaps[*lIt_i].erase(lContext.getClock().getValue());
+		
+		// keep track of processes pushed by individual at index *lIt_i
 		if (lContext.getPushList().empty() == false) {
 			inThread->waitBlackBoard();
-			inThread->getBlackBoard()[lIndexes[i]] = lContext.getPushList();
+			inThread->getBlackBoard()[*lIt_i] = lContext.getPushList();
 			inThread->postBlackBoard();
 			lContext.getPushList().clear();
+		}
+		
+		// if individual is still active, go to next individual
+		if (lIndividual->isActive()) {
+			lIt_i++;
+		// if individual has been set idle, remove its index from thread charge
+		} else {
+			lEraseIndexes.push_back(*lIt_i);
+			lIt_i = lIndexes.erase(lIt_i);
 		}
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Simulator::processSubStep(SCHNAPS::Simulation::SimulationThread::Handle)");

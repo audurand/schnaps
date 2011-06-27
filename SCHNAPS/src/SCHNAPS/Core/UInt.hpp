@@ -102,6 +102,8 @@ public:
 	virtual Number::Handle add(Number& inRightNumber);
 	//! Compute the division by a number.
 	virtual Number::Handle div(Number& inRightNumber);
+	//! Compute the base-e exponential function, which is the e number raised to the power x.
+	virtual Number::Handle exp();
 	//! Compute the modulo by a number.
 	virtual Number::Handle mod(Number& inRightNumber);
 	//! Compute the multiplication by a number.

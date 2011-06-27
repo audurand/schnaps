@@ -29,6 +29,7 @@
 #include "SCHNAPS/Plugins/Learning/DecisionNode.hpp"
 #include "SCHNAPS/Plugins/Learning/LearningContext.hpp"
 #include "SCHNAPS/Plugins/Learning/LearningModule.hpp"
+#include "SCHNAPS/Plugins/Learning/State.hpp"
 #include "SCHNAPS/Plugins/Learning/UpdateThread.hpp"
 
 #endif /* Learning_hpp */

@@ -6,10 +6,10 @@
 #
 
 project(SCHNAPS_PLUGINS_CONTROL CXX)
-set(SCHNAPS_PLUGINS_CONTROL_VERSION 2.0.0)
+set(SCHNAPS_PLUGINS_CONTROL_VERSION 2.0.1)
 
 # This is the shared library versioning info
-set(LIBRARY_VERSION 2.0.0)
+set(LIBRARY_VERSION 2.0.1)
 #                   | | |
 #            +------+ | +---+
 #            |        |     |

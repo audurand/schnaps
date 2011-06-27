@@ -1,0 +1,355 @@
+<FunctionReward>
+  <LocalVariables>
+	  <LocalVariable label="Etat">
+		  <String value=" "/>
+	  </LocalVariable>
+	  <LocalVariable label="Recompense">
+		  <Double value="0"/>
+	  </LocalVariable>
+	  <LocalVariable label="Nb_Fractures_Total">
+		  <Int value="0"/>
+	  </LocalVariable>
+  </LocalVariables>
+  <PrimitiveTree>
+    <Control_Sequential>
+      <Data_SetVariableComplex outVariable="%Etat">
+        <Learning_State/>
+      </Data_SetVariableComplex>
+      <Control_ChoiceIsEqual inValue="%Etat" inChoices="40-49/Aucune|40-49/CAROC|40-49/ORAI+CAROC|40-49/OST+CAROC|40-49/SCORE+CAROC|50-59/Aucune|50-59/CAROC|50-59/ORAI+CAROC|50-59/OST+CAROC|50-59/SCORE+CAROC|60-69/Aucune|60-69/CAROC|60-69/ORAI+CAROC|60-69/OST+CAROC|60-69/SCORE+CAROC|70-79/Aucune|70-79/CAROC|70-79/ORAI+CAROC|70-79/OST+CAROC|70-79/SCORE+CAROC|80-89/Aucune|80-89/CAROC|80-89/ORAI+CAROC|80-89/OST+CAROC|80-89/SCORE+CAROC|90-99/Aucune|90-99/CAROC|90-99/ORAI+CAROC|90-99/OST+CAROC|90-99/SCORE+CAROC|100+/Aucune|100+/CAROC|100+/ORAI+CAROC|100+/OST+CAROC|100+/SCORE+CAROC" inChoices_Type="String">
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_40-49"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_40-49"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_40-49"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_40-49"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_40-49"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_40-49"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_40-49"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_40-49"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_40-49"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_40-49"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_40-49"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_40-49"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_40-49"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_40-49"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_40-49"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_50-59"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_50-59"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_50-59"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_50-59"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_50-59"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_50-59"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_50-59"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_50-59"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_50-59"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_50-59"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_50-59"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_50-59"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_50-59"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_50-59"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_50-59"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_60-69"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_60-69"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_60-69"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_60-69"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_60-69"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_60-69"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_60-69"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_60-69"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_60-69"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_60-69"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_60-69"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_60-69"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_60-69"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_60-69"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_60-69"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_70-79"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_70-79"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_70-79"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_70-79"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_70-79"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_70-79"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_70-79"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_70-79"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_70-79"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_70-79"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_70-79"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_70-79"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_70-79"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_70-79"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_70-79"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_80-89"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_80-89"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_80-89"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_80-89"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_80-89"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_80-89"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_80-89"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_80-89"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_80-89"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_80-89"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_80-89"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_80-89"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_80-89"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_80-89"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_80-89"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_90-99"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_90-99"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_90-99"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_90-99"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_90-99"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_90-99"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_90-99"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_90-99"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_90-99"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_90-99"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_90-99"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_90-99"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche_90-99"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet_90-99"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne_90-99"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+          <Operators_AddComplex>
+            <Operators_AddComplex>
+              <Data_Value inValue="@Nb_Fracture_Hanche"/>
+              <Data_Value inValue="@Nb_Fracture_Poignet"/>
+            </Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne"/>
+          </Operators_AddComplex>
+        </Data_SetVariableComplex>
+      </Control_ChoiceIsEqual>
+      <Data_SetVariableComplex outVariable="%Recompense">
+		<Operators_DivComplex>
+			<Operators_MultComplex>
+				<Operators_ExpComplex>
+					<Data_Value inValue="%Nb_Fractures_Total"/>
+				</Operators_ExpComplex>
+				<Data_Value inValue="@Cout"/>
+			</Operators_MultComplex>
+			<Operators_MultComplex>
+				<Operators_ExpComplex>
+					<Data_Value inValue="0" inValue_Type="Double"/>
+				</Operators_ExpComplex>
+				<Data_Value inValue="6391" inValue_Type="Double"/>
+			</Operators_MultComplex>
+		</Operators_DivComplex>
+      </Data_SetVariableComplex>
+      <Operators_MultVariable inArgLeft="%Recompense" inArgRight="-1" inArgRight_Type="Double" outResult="%Recompense"/>
+      <Data_Value inValue="%Recompense"/>
+    </Control_Sequential>
+  </PrimitiveTree>
+</FunctionReward>

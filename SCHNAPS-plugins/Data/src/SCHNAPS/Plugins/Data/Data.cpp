@@ -27,6 +27,7 @@ SCHNAPS_Plugin_AddAllocM("Data_Clock", SCHNAPS::Plugins::Data::Clock::Alloc);
 SCHNAPS_Plugin_AddAllocM("Data_Log", SCHNAPS::Plugins::Data::Log::Alloc);
 SCHNAPS_Plugin_AddAllocM("Data_RandomUniform", SCHNAPS::Plugins::Data::RandomUniform::Alloc);
 SCHNAPS_Plugin_AddAllocM("Data_RouletteDynamic", SCHNAPS::Plugins::Data::RouletteDynamic::Alloc);
+SCHNAPS_Plugin_AddAllocM("Data_SetIdle", SCHNAPS::Plugins::Data::SetIdle::Alloc);
 SCHNAPS_Plugin_AddAllocM("Data_SetVariable", SCHNAPS::Plugins::Data::SetVariable::Alloc);
 SCHNAPS_Plugin_AddAllocM("Data_SetVariableComplex", SCHNAPS::Plugins::Data::SetVariableComplex::Alloc);
 SCHNAPS_Plugin_AddAllocM("Data_Value", SCHNAPS::Plugins::Data::Value::Alloc);

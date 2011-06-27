@@ -46,7 +46,11 @@ public:
 	explicit Individual(std::string inID = "");
 	Individual(const Individual& inOriginal);
 	virtual ~Individual() {}
-
+	
+	/*!
+	 * \brief  Return a const reference to the name of object.
+	 * \return A const reference to the name of object.
+	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
 		const static std::string lName("Individual");
@@ -54,15 +58,26 @@ public:
 		schnaps_StackTraceEndM("const std::string& SCHNAPS::Simulation::Individual::getName() const");
 	}
 
+	//! Read object from XML using system.
 	virtual void readWithSystem(PACC::XML::ConstIterator inIter, SCHNAPS::Core::System& ioSystem);
+	//! Write content of object to XML.
 	virtual void writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 
+	//! Print individual to file stream.
 	void print(std::ostream& ioStream, const std::vector<std::string> inVariables) const;
 
+	/*!
+	 * \brief  Return a const reference to the ID.
+	 * \return A const reference to the ID.
+	 */
 	const std::string& getID() const {
 		return mID;
 	}
 
+	/*!
+	 * \brief  Return the ID prefix.
+	 * \return The ID prefix.
+	 */
 	const std::string getPrefix() const {
 		std::stringstream lID(mID);
 		PACC::Tokenizer lTokenizer(lID);
@@ -70,6 +85,10 @@ public:
 		return lTokenizer.getNextToken();
 	}
 
+	/*!
+	 * \brief  Return the ID index.
+	 * \return The ID index.
+	 */
 	const unsigned int getIndex() const {
 		std::stringstream lID(mID);
 		PACC::Tokenizer lTokenizer(lID);
@@ -78,25 +97,59 @@ public:
 		return SCHNAPS::str2uint(lTokenizer.getNextToken());
 	}
 
+	/*!
+	 * \brief  Return a const reference to the state.
+	 * \return A const reference to the state.
+	 */
 	const State& getState() const {
 		return mState;
 	}
 
+	/*!
+	 * \brief  Return a reference to the state.
+	 * \return A reference to the state.
+	 */
 	State& getState() {
 		return mState;
 	}
 
+	/*!
+	 * \brief  Return a const reference to the activity status.
+	 * \return A const reference to the activity status.
+	 */
+	const bool& isActive() const {
+		return mActive;
+	}
+
+	/*!
+	 * \brief Set the ID to a specific value.
+	 * \param inID A reference to the new ID.
+	 */
 	void setID(std::string& inID) {
 		mID = inID;
 	}
 
+	/*!
+	 * \brief Set the state to a specific value.
+	 * \param inState A reference to the new state.
+	 */
 	void setState(State& inState) {
 		mState = inState;
+	}
+
+	/*!
+	 * \brief Set the activity status to idle.
+	 */
+	void setIdle() {
+		mActive = false;
 	}
 
 protected:
 	std::string mID;	//!< Individual ID tag;
 	State mState;		//!< The state that describes the individual.
+	
+private:
+	bool mActive;		//!< Indicates if the individual is active or idle, thus considered by the simulation or not.
 };
 } // end of Simulation namespace
 } // end of SCHNAPS namespace

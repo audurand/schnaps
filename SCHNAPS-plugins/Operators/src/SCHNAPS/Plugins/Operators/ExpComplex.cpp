@@ -76,7 +76,7 @@ const std::string& ExpComplex::getArgType(unsigned int inIndex, unsigned int inN
  */
 const std::string& ExpComplex::getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-	unsigned int lNodeIndex = getArgumentIndex(inIndex, 0, ioContext);
-	return ioContext.getPrimitiveTree()[lNodeIndex].mPrimitive->getReturnType(inIndex, ioContext);
+	const static std::string lType("Double");
+	return lType;
 	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Operators::ExpComplex::getReturnType(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }

@@ -35,10 +35,9 @@ WaitingQMaps::WaitingQMaps(const WaitingQMaps& inOriginal) {
 	}
 
 	mIndividuals.clear();
-	mIndividuals.resize(inOriginal.mIndividuals.size());
-	for (unsigned int i = 0; i < mIndividuals.size(); i++) {
-		for (std::map<unsigned int, std::queue<Process::Handle> >::const_iterator lIt = inOriginal.mIndividuals[i].begin(); lIt != inOriginal.mIndividuals[i].end(); lIt++) {
-			mIndividuals[i][lIt->first] = lIt->second;
+	for (std::map<unsigned int, std::map<unsigned int, std::queue<Process::Handle> > >::const_iterator lIt_i = inOriginal.mIndividuals.begin(); lIt_i != inOriginal.mIndividuals.end(); lIt_i++) {
+		for (std::map<unsigned int, std::queue<Process::Handle> >::const_iterator lIt_j = lIt_i->second.begin(); lIt_j != lIt_i->second.end(); lIt_j++) {
+			mIndividuals[lIt_i->first][lIt_j->first] = lIt_j->second;
 		}
 	}
 }
