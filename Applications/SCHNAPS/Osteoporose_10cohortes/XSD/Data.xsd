@@ -101,6 +101,16 @@
 		</xsd:complexType>
 	</xsd:element>
 	
+	<xsd:element name="Data_SetIdle" substitutionGroup="_modifierOp">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Set an individual status to IDLE.</pmt:info>
+				<pmt:mappedName lang="en">Set IDLE</pmt:mappedName>
+				<pmt:returnType definedBy="staticType">Void</pmt:returnType>
+			</xsd:appinfo>
+		</xsd:annotation>
+	</xsd:element>
+	
 	<xsd:element name="Data_SetVariable" substitutionGroup="_modifierOp">
 		<xsd:annotation>
 			<xsd:appinfo>

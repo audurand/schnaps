@@ -4,7 +4,6 @@
     <PrimitiveTree size="1">
       <Control_IfThenElse>
         <Operators_OrComplex>
-          <Data_Value inValue="@Mort"/>
           <Data_Value inValue="@Depistage"/>
           <Data_Value inValue="@Traitement"/>
         </Operators_OrComplex>
@@ -33,11 +32,11 @@
                   <Control_Sequential>
                     <Control_IfThenElse>
                       <Operators_IsLess inArgRight="70" inArgRight_Type="Int" inArgLeft="@Age"/>
-                      <Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Visite_Medicale" inCompliance="1" outCost="@Cout" inCost="99.53" inChargeNonCompliant="false">
+                      <Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Visite_Medicale" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="99.53">
                         <Control_Nothing/>
                         <Control_Nothing/>
                       </Meds_Treatment>
-                      <Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Visite_Medicale" inCompliance="1" outCost="@Cout" inCost="102.78" inChargeNonCompliant="false">
+                      <Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Visite_Medicale" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="102.78">
                         <Control_Nothing/>
                         <Control_Nothing/>
                       </Meds_Treatment>

@@ -133,7 +133,7 @@
             </Control_Branch>
           </Control_Sequential>
         </Control_ChoiceIsBetween>
-        <Control_ProcessPush inLabel="Assigner_Politique" inTarget="current" inDelay="1"/>
+        <Control_ProcessPush inDelay="1" inTarget="current" inLabel="Assigner_Politique"/>
         <Control_ProcessCall inLabel="Evenements_Apprentissage"/>
       </Control_Sequential>
     </PrimitiveTree>

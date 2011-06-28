@@ -2,140 +2,136 @@
   <Process label="MAJ_ProbabiliteFracture">
     <LocalVariables/>
     <PrimitiveTree>
-      <Control_IfThenElse>
-        <Data_Value inValue="@Mort"/>
-        <Control_Nothing/>
-        <Control_Sequential>
-          <Data_SetVariableComplex outVariable="@Probabilite_Fracture_Hanche">
-            <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
-              <Control_ChoiceIsBetween inValue="@Age" inBounds="$ref.tranche_age_40_90_5ans">
-                <Data_Value inValue="0.000088" inValue_Type="Double"/>
-                <Data_Value inValue="0.00016" inValue_Type="Double"/>
-                <Data_Value inValue="0.00032" inValue_Type="Double"/>
-                <Data_Value inValue="0.0004" inValue_Type="Double"/>
-                <Data_Value inValue="0.0008" inValue_Type="Double"/>
-                <Data_Value inValue="0.00095" inValue_Type="Double"/>
-                <Data_Value inValue="0.0012" inValue_Type="Double"/>
-                <Data_Value inValue="0.0037" inValue_Type="Double"/>
-                <Data_Value inValue="0.0078" inValue_Type="Double"/>
-                <Data_Value inValue="0.01" inValue_Type="Double"/>
-                <Data_Value inValue="0.01" inValue_Type="Double"/>
-              </Control_ChoiceIsBetween>
-              <Control_ChoiceIsBetween inValue="@Age" inBounds="$ref.tranche_age_40_90_5ans">
-                <Data_Value inValue="0.00017" inValue_Type="Double"/>
-                <Data_Value inValue="0.0003" inValue_Type="Double"/>
-                <Data_Value inValue="0.00063" inValue_Type="Double"/>
-                <Data_Value inValue="0.00079" inValue_Type="Double"/>
-                <Data_Value inValue="0.0016" inValue_Type="Double"/>
-                <Data_Value inValue="0.0017" inValue_Type="Double"/>
-                <Data_Value inValue="0.0017" inValue_Type="Double"/>
-                <Data_Value inValue="0.0052" inValue_Type="Double"/>
-                <Data_Value inValue="0.011" inValue_Type="Double"/>
-                <Data_Value inValue="0.015" inValue_Type="Double"/>
-                <Data_Value inValue="0.015" inValue_Type="Double"/>
-              </Control_ChoiceIsBetween>
-              <Control_ChoiceIsBetween inValue="@Age" inBounds="$ref.tranche_age_40_90_5ans">
-                <Data_Value inValue="0.00031" inValue_Type="Double"/>
-                <Data_Value inValue="0.00056" inValue_Type="Double"/>
-                <Data_Value inValue="0.0011" inValue_Type="Double"/>
-                <Data_Value inValue="0.0014" inValue_Type="Double"/>
-                <Data_Value inValue="0.0029" inValue_Type="Double"/>
-                <Data_Value inValue="0.0034" inValue_Type="Double"/>
-                <Data_Value inValue="0.0042" inValue_Type="Double"/>
-                <Data_Value inValue="0.013" inValue_Type="Double"/>
-                <Data_Value inValue="0.027" inValue_Type="Double"/>
-                <Data_Value inValue="0.037" inValue_Type="Double"/>
-                <Data_Value inValue="0.037" inValue_Type="Double"/>
-              </Control_ChoiceIsBetween>
-            </Control_ChoiceIsEqual>
-          </Data_SetVariableComplex>
-          <Data_SetVariableComplex outVariable="@Probabilite_Fracture_Poignet">
-            <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
-              <Control_ChoiceIsBetween inValue="@Age" inBounds="$ref.tranche_age_40_90_5ans">
-                <Data_Value inValue="0.00077" inValue_Type="Double"/>
-                <Data_Value inValue="0.00077" inValue_Type="Double"/>
-                <Data_Value inValue="0.0014" inValue_Type="Double"/>
-                <Data_Value inValue="0.002" inValue_Type="Double"/>
-                <Data_Value inValue="0.0039" inValue_Type="Double"/>
-                <Data_Value inValue="0.0035" inValue_Type="Double"/>
-                <Data_Value inValue="0.0035" inValue_Type="Double"/>
-                <Data_Value inValue="0.0036" inValue_Type="Double"/>
-                <Data_Value inValue="0.0037" inValue_Type="Double"/>
-                <Data_Value inValue="0.0036" inValue_Type="Double"/>
-                <Data_Value inValue="0.0036" inValue_Type="Double"/>
-              </Control_ChoiceIsBetween>
-              <Control_ChoiceIsBetween inValue="@Age" inBounds="$ref.tranche_age_40_90_5ans">
-                <Data_Value inValue="0.0015" inValue_Type="Double"/>
-                <Data_Value inValue="0.0015" inValue_Type="Double"/>
-                <Data_Value inValue="0.0028" inValue_Type="Double"/>
-                <Data_Value inValue="0.004" inValue_Type="Double"/>
-                <Data_Value inValue="0.0077" inValue_Type="Double"/>
-                <Data_Value inValue="0.005" inValue_Type="Double"/>
-                <Data_Value inValue="0.005" inValue_Type="Double"/>
-                <Data_Value inValue="0.005" inValue_Type="Double"/>
-                <Data_Value inValue="0.0053" inValue_Type="Double"/>
-                <Data_Value inValue="0.0052" inValue_Type="Double"/>
-                <Data_Value inValue="0.0052" inValue_Type="Double"/>
-              </Control_ChoiceIsBetween>
-              <Control_ChoiceIsBetween inValue="@Age" inBounds="$ref.tranche_age_40_90_5ans">
-                <Data_Value inValue="0.0027" inValue_Type="Double"/>
-                <Data_Value inValue="0.0027" inValue_Type="Double"/>
-                <Data_Value inValue="0.005" inValue_Type="Double"/>
-                <Data_Value inValue="0.0075" inValue_Type="Double"/>
-                <Data_Value inValue="0.014" inValue_Type="Double"/>
-                <Data_Value inValue="0.012" inValue_Type="Double"/>
-                <Data_Value inValue="0.012" inValue_Type="Double"/>
-                <Data_Value inValue="0.013" inValue_Type="Double"/>
-                <Data_Value inValue="0.013" inValue_Type="Double"/>
-                <Data_Value inValue="0.013" inValue_Type="Double"/>
-                <Data_Value inValue="0.013" inValue_Type="Double"/>
-              </Control_ChoiceIsBetween>
-            </Control_ChoiceIsEqual>
-          </Data_SetVariableComplex>
-          <Data_SetVariableComplex outVariable="@Probabilite_Fracture_Colonne">
-            <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
-              <Control_ChoiceIsBetween inValue="@Age" inBounds="$ref.tranche_age_40_90_5ans">
-                <Data_Value inValue="0.00021" inValue_Type="Double"/>
-                <Data_Value inValue="0.00067" inValue_Type="Double"/>
-                <Data_Value inValue="0.00054" inValue_Type="Double"/>
-                <Data_Value inValue="0.0015" inValue_Type="Double"/>
-                <Data_Value inValue="0.0015" inValue_Type="Double"/>
-                <Data_Value inValue="0.0028" inValue_Type="Double"/>
-                <Data_Value inValue="0.0028" inValue_Type="Double"/>
-                <Data_Value inValue="0.0044" inValue_Type="Double"/>
-                <Data_Value inValue="0.0044" inValue_Type="Double"/>
-                <Data_Value inValue="0.0054" inValue_Type="Double"/>
-                <Data_Value inValue="0.0054" inValue_Type="Double"/>
-              </Control_ChoiceIsBetween>
-              <Control_ChoiceIsBetween inValue="@Age" inBounds="$ref.tranche_age_40_90_5ans">
-                <Data_Value inValue="0.00042" inValue_Type="Double"/>
-                <Data_Value inValue="0.0013" inValue_Type="Double"/>
-                <Data_Value inValue="0.001" inValue_Type="Double"/>
-                <Data_Value inValue="0.003" inValue_Type="Double"/>
-                <Data_Value inValue="0.003" inValue_Type="Double"/>
-                <Data_Value inValue="0.004" inValue_Type="Double"/>
-                <Data_Value inValue="0.004" inValue_Type="Double"/>
-                <Data_Value inValue="0.0063" inValue_Type="Double"/>
-                <Data_Value inValue="0.0063" inValue_Type="Double"/>
-                <Data_Value inValue="0.0077" inValue_Type="Double"/>
-                <Data_Value inValue="0.0077" inValue_Type="Double"/>
-              </Control_ChoiceIsBetween>
-              <Control_ChoiceIsBetween inValue="@Age" inBounds="$ref.tranche_age_40_90_5ans">
-                <Data_Value inValue="0.00077" inValue_Type="Double"/>
-                <Data_Value inValue="0.0024" inValue_Type="Double"/>
-                <Data_Value inValue="0.0019" inValue_Type="Double"/>
-                <Data_Value inValue="0.0055" inValue_Type="Double"/>
-                <Data_Value inValue="0.0055" inValue_Type="Double"/>
-                <Data_Value inValue="0.01" inValue_Type="Double"/>
-                <Data_Value inValue="0.01" inValue_Type="Double"/>
-                <Data_Value inValue="0.016" inValue_Type="Double"/>
-                <Data_Value inValue="0.016" inValue_Type="Double"/>
-                <Data_Value inValue="0.019" inValue_Type="Double"/>
-                <Data_Value inValue="0.019" inValue_Type="Double"/>
-              </Control_ChoiceIsBetween>
-            </Control_ChoiceIsEqual>
-          </Data_SetVariableComplex>
-        </Control_Sequential>
-      </Control_IfThenElse>
+      <Control_Sequential>
+        <Data_SetVariableComplex outVariable="@Probabilite_Fracture_Hanche">
+          <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
+            <Control_ChoiceIsBetween inValue="@Age" inBounds="$ref.tranche_age_40_90_5ans">
+              <Data_Value inValue="0.000088" inValue_Type="Double"/>
+              <Data_Value inValue="0.00016" inValue_Type="Double"/>
+              <Data_Value inValue="0.00032" inValue_Type="Double"/>
+              <Data_Value inValue="0.0004" inValue_Type="Double"/>
+              <Data_Value inValue="0.0008" inValue_Type="Double"/>
+              <Data_Value inValue="0.00095" inValue_Type="Double"/>
+              <Data_Value inValue="0.0012" inValue_Type="Double"/>
+              <Data_Value inValue="0.0037" inValue_Type="Double"/>
+              <Data_Value inValue="0.0078" inValue_Type="Double"/>
+              <Data_Value inValue="0.01" inValue_Type="Double"/>
+              <Data_Value inValue="0.01" inValue_Type="Double"/>
+            </Control_ChoiceIsBetween>
+            <Control_ChoiceIsBetween inValue="@Age" inBounds="$ref.tranche_age_40_90_5ans">
+              <Data_Value inValue="0.00017" inValue_Type="Double"/>
+              <Data_Value inValue="0.0003" inValue_Type="Double"/>
+              <Data_Value inValue="0.00063" inValue_Type="Double"/>
+              <Data_Value inValue="0.00079" inValue_Type="Double"/>
+              <Data_Value inValue="0.0016" inValue_Type="Double"/>
+              <Data_Value inValue="0.0017" inValue_Type="Double"/>
+              <Data_Value inValue="0.0017" inValue_Type="Double"/>
+              <Data_Value inValue="0.0052" inValue_Type="Double"/>
+              <Data_Value inValue="0.011" inValue_Type="Double"/>
+              <Data_Value inValue="0.015" inValue_Type="Double"/>
+              <Data_Value inValue="0.015" inValue_Type="Double"/>
+            </Control_ChoiceIsBetween>
+            <Control_ChoiceIsBetween inValue="@Age" inBounds="$ref.tranche_age_40_90_5ans">
+              <Data_Value inValue="0.00031" inValue_Type="Double"/>
+              <Data_Value inValue="0.00056" inValue_Type="Double"/>
+              <Data_Value inValue="0.0011" inValue_Type="Double"/>
+              <Data_Value inValue="0.0014" inValue_Type="Double"/>
+              <Data_Value inValue="0.0029" inValue_Type="Double"/>
+              <Data_Value inValue="0.0034" inValue_Type="Double"/>
+              <Data_Value inValue="0.0042" inValue_Type="Double"/>
+              <Data_Value inValue="0.013" inValue_Type="Double"/>
+              <Data_Value inValue="0.027" inValue_Type="Double"/>
+              <Data_Value inValue="0.037" inValue_Type="Double"/>
+              <Data_Value inValue="0.037" inValue_Type="Double"/>
+            </Control_ChoiceIsBetween>
+          </Control_ChoiceIsEqual>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="@Probabilite_Fracture_Poignet">
+          <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
+            <Control_ChoiceIsBetween inValue="@Age" inBounds="$ref.tranche_age_40_90_5ans">
+              <Data_Value inValue="0.00077" inValue_Type="Double"/>
+              <Data_Value inValue="0.00077" inValue_Type="Double"/>
+              <Data_Value inValue="0.0014" inValue_Type="Double"/>
+              <Data_Value inValue="0.002" inValue_Type="Double"/>
+              <Data_Value inValue="0.0039" inValue_Type="Double"/>
+              <Data_Value inValue="0.0035" inValue_Type="Double"/>
+              <Data_Value inValue="0.0035" inValue_Type="Double"/>
+              <Data_Value inValue="0.0036" inValue_Type="Double"/>
+              <Data_Value inValue="0.0037" inValue_Type="Double"/>
+              <Data_Value inValue="0.0036" inValue_Type="Double"/>
+              <Data_Value inValue="0.0036" inValue_Type="Double"/>
+            </Control_ChoiceIsBetween>
+            <Control_ChoiceIsBetween inValue="@Age" inBounds="$ref.tranche_age_40_90_5ans">
+              <Data_Value inValue="0.0015" inValue_Type="Double"/>
+              <Data_Value inValue="0.0015" inValue_Type="Double"/>
+              <Data_Value inValue="0.0028" inValue_Type="Double"/>
+              <Data_Value inValue="0.004" inValue_Type="Double"/>
+              <Data_Value inValue="0.0077" inValue_Type="Double"/>
+              <Data_Value inValue="0.005" inValue_Type="Double"/>
+              <Data_Value inValue="0.005" inValue_Type="Double"/>
+              <Data_Value inValue="0.005" inValue_Type="Double"/>
+              <Data_Value inValue="0.0053" inValue_Type="Double"/>
+              <Data_Value inValue="0.0052" inValue_Type="Double"/>
+              <Data_Value inValue="0.0052" inValue_Type="Double"/>
+            </Control_ChoiceIsBetween>
+            <Control_ChoiceIsBetween inValue="@Age" inBounds="$ref.tranche_age_40_90_5ans">
+              <Data_Value inValue="0.0027" inValue_Type="Double"/>
+              <Data_Value inValue="0.0027" inValue_Type="Double"/>
+              <Data_Value inValue="0.005" inValue_Type="Double"/>
+              <Data_Value inValue="0.0075" inValue_Type="Double"/>
+              <Data_Value inValue="0.014" inValue_Type="Double"/>
+              <Data_Value inValue="0.012" inValue_Type="Double"/>
+              <Data_Value inValue="0.012" inValue_Type="Double"/>
+              <Data_Value inValue="0.013" inValue_Type="Double"/>
+              <Data_Value inValue="0.013" inValue_Type="Double"/>
+              <Data_Value inValue="0.013" inValue_Type="Double"/>
+              <Data_Value inValue="0.013" inValue_Type="Double"/>
+            </Control_ChoiceIsBetween>
+          </Control_ChoiceIsEqual>
+        </Data_SetVariableComplex>
+        <Data_SetVariableComplex outVariable="@Probabilite_Fracture_Colonne">
+          <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
+            <Control_ChoiceIsBetween inValue="@Age" inBounds="$ref.tranche_age_40_90_5ans">
+              <Data_Value inValue="0.00021" inValue_Type="Double"/>
+              <Data_Value inValue="0.00067" inValue_Type="Double"/>
+              <Data_Value inValue="0.00054" inValue_Type="Double"/>
+              <Data_Value inValue="0.0015" inValue_Type="Double"/>
+              <Data_Value inValue="0.0015" inValue_Type="Double"/>
+              <Data_Value inValue="0.0028" inValue_Type="Double"/>
+              <Data_Value inValue="0.0028" inValue_Type="Double"/>
+              <Data_Value inValue="0.0044" inValue_Type="Double"/>
+              <Data_Value inValue="0.0044" inValue_Type="Double"/>
+              <Data_Value inValue="0.0054" inValue_Type="Double"/>
+              <Data_Value inValue="0.0054" inValue_Type="Double"/>
+            </Control_ChoiceIsBetween>
+            <Control_ChoiceIsBetween inValue="@Age" inBounds="$ref.tranche_age_40_90_5ans">
+              <Data_Value inValue="0.00042" inValue_Type="Double"/>
+              <Data_Value inValue="0.0013" inValue_Type="Double"/>
+              <Data_Value inValue="0.001" inValue_Type="Double"/>
+              <Data_Value inValue="0.003" inValue_Type="Double"/>
+              <Data_Value inValue="0.003" inValue_Type="Double"/>
+              <Data_Value inValue="0.004" inValue_Type="Double"/>
+              <Data_Value inValue="0.004" inValue_Type="Double"/>
+              <Data_Value inValue="0.0063" inValue_Type="Double"/>
+              <Data_Value inValue="0.0063" inValue_Type="Double"/>
+              <Data_Value inValue="0.0077" inValue_Type="Double"/>
+              <Data_Value inValue="0.0077" inValue_Type="Double"/>
+            </Control_ChoiceIsBetween>
+            <Control_ChoiceIsBetween inValue="@Age" inBounds="$ref.tranche_age_40_90_5ans">
+              <Data_Value inValue="0.00077" inValue_Type="Double"/>
+              <Data_Value inValue="0.0024" inValue_Type="Double"/>
+              <Data_Value inValue="0.0019" inValue_Type="Double"/>
+              <Data_Value inValue="0.0055" inValue_Type="Double"/>
+              <Data_Value inValue="0.0055" inValue_Type="Double"/>
+              <Data_Value inValue="0.01" inValue_Type="Double"/>
+              <Data_Value inValue="0.01" inValue_Type="Double"/>
+              <Data_Value inValue="0.016" inValue_Type="Double"/>
+              <Data_Value inValue="0.016" inValue_Type="Double"/>
+              <Data_Value inValue="0.019" inValue_Type="Double"/>
+              <Data_Value inValue="0.019" inValue_Type="Double"/>
+            </Control_ChoiceIsBetween>
+          </Control_ChoiceIsEqual>
+        </Data_SetVariableComplex>
+      </Control_Sequential>
     </PrimitiveTree>
   </Process>

@@ -2,7 +2,7 @@
   <Process label="Scenario_Apprentissage_MinFrac">
     <LocalVariables/>
     <PrimitiveTree size="1">
-			<Control_Sequential>
+      <Control_Sequential>
         <Control_ProcessCall inLabel="Campagne_Prevention_ActPhys"/>
         <Control_Branch inProbability="$ref.compliance_depistage">
           <!--Verifier si l'individu est compliant aux interventions de prevention/depistage-->
@@ -82,7 +82,7 @@
             </Control_IfThenElse>
           </Control_Sequential>
         </Control_ChoiceIsBetween>
-        <Control_ProcessPush inLabel="Assigner_Politique_MinFrac" inTarget="current" inDelay="1"/>
+        <Control_ProcessPush inDelay="1" inTarget="current" inLabel="Assigner_Politique_MinFrac"/>
         <Control_ProcessCall inLabel="Evenements_Apprentissage_MinFrac"/>
       </Control_Sequential>
     </PrimitiveTree>
