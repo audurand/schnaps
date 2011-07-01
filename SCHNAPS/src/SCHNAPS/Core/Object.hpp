@@ -143,9 +143,6 @@ public:
 
 	//! Copy operator.
 	Object& operator=(const Object& inOriginal);
-	
-	//! Return a handle to a deep copy of the object.
-	virtual Object::Handle deepCopy(const System& inSystem) const;
 
 	//! Return a const reference to the name of object.
 	virtual const std::string& getName() const;

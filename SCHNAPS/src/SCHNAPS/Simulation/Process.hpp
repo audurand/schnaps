@@ -53,8 +53,8 @@ public:
 	Process(const std::string& inLabel, Core::PrimitiveTree::Handle inPrimitiveTree);
 	virtual ~Process() {}
 
-	//! Return a handle to a deep copy of the object.
-	virtual Core::Object::Handle deepCopy(const Core::System& inSystem) const;
+	//! Return a handle to a deep copy of the process.
+	Process::Handle deepCopy(const Core::System& inSystem) const;
 
 	/*!
 	 * \brief  Return a const reference to the name of object.

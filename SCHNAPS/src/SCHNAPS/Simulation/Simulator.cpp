@@ -164,7 +164,8 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 	Core::StringArray lBackupState;
 	
 	for (unsigned int i = 0; i < mContext.size(); i++) {
-		mContext[i]->reset();
+		mContext[i]->resetIndividual();
+		mContext[i]->resetObserversNextExecution();
 		
 		// create subthreads
 		mSubThreads.push_back(new SimulationThread(mParallel, mSequential, mBlackBoardWrt, mContext[i], mBlackBoard, mWaitingQMaps));
@@ -217,6 +218,7 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 		lPositionEnv = eSTEP;
 		for (unsigned int i = 0; i < mSubThreads.size(); i++) {
 			mSubThreads[i]->setPosition(SimulationThread::eSTEP);
+			mContext[i]->updateCurrentObservers();
 		}
 
 		// add new individuals
@@ -256,8 +258,8 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 					}
 				} else {
 					// process clock observers
-					for (unsigned int j = 0; j < mContext[0]->getClockObservers().mProcessEnvironment.size(); j++) {
-						mContext[0]->getClockObservers().mProcessEnvironment[j]->execute(*mContext[0]);
+					for (unsigned int j = 0; j < mContext[0]->getCurrentObserversForEnvironment().size(); j++) {
+						mContext[0]->getCurrentObserversForEnvironment()[j]->execute(*mContext[0]);
 					}
 					// process current environment FIFO
 					while (mWaitingQMaps->getEnvironmentWaitingQMap()[mClock->getValue()].empty() == false) {
@@ -550,8 +552,8 @@ void Simulator::processClockStep(SimulationThread::Handle inThread) {
 		lContext.setIndividual(lIndividual);
 		
 		// process clock observers
-		for (unsigned int j = 0; j < lContext.getClockObservers().mProcessIndividual.size(); j++) {
-			lContext.getClockObservers().mProcessIndividual[j]->execute(lContext);
+		for (unsigned int j = 0; j < lContext.getCurrentObserversForIndividuals().size(); j++) {
+			lContext.getCurrentObserversForIndividuals()[j]->execute(lContext);
 		}
 
 		// process current individual FIFO until it is empty or individual is set idle

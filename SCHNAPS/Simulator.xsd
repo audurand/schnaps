@@ -343,6 +343,16 @@
 			<xsd:sequence>
 				<xsd:element ref="PrimitiveTree"/>
 			</xsd:sequence>
+			<xsd:attribute name="units" type="xsd:string" use="optional" default="other">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="other"/>
+						<xsd:enumeration value="year"/>
+						<xsd:enumeration value="month"/>
+						<xsd:enumeration value="day"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
 		</xsd:complexType>
 	</xsd:element>	
 	
@@ -419,12 +429,37 @@
 					</xsd:annotation>
 					<xsd:complexType>
 						<xsd:attribute name="process" type="xsd:string" use="required"/>
-						<xsd:attribute name="target" use="optional" default="current_individual">
+						<xsd:attribute name="target" type="xsd:string" use="optional" default="current_individual">
 							<xsd:simpleType>
 								<xsd:restriction base="xsd:string">
 									<xsd:enumeration value="current_individual"/>
 									<xsd:enumeration value="environment"/>
 									<xsd:enumeration value="individuals"/>
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:attribute>
+						<xsd:attribute name="start" type="xsd:unsignedLong" use="optional" default="1">
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:unsignedLong">
+									<xsd:minInclusive value="1"/>
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:attribute>
+						<xsd:attribute name="step" type="xsd:unsignedLong" use="optional" default="1">
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:unsignedLong">
+									<xsd:minInclusive value="1"/>
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:attribute>
+						<xsd:attribute name="end" type="xsd:unsignedLong" use="optional" default="0"/>
+						<xsd:attribute name="units" type="xsd:string" use="optional" default="other">
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:string">
+									<xsd:enumeration value="other"/>
+									<xsd:enumeration value="year"/>
+									<xsd:enumeration value="month"/>
+									<xsd:enumeration value="day"/>
 								</xsd:restriction>
 							</xsd:simpleType>
 						</xsd:attribute>

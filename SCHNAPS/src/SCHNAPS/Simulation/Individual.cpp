@@ -88,10 +88,5 @@ void Individual::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) co
 void Individual::print(std::ostream& ioStream, const std::vector<std::string> inVariables) const {
 	ioStream << mID;
 	mState.print(ioStream, inVariables);
-	if (mActive) {
-		ioStream << "\t" << "ACTIVE";
-	} else {
-		ioStream << "\t" << "IDLE";
-	}
 	ioStream << std::endl;
 }

@@ -3,6 +3,7 @@
     <System>
       <Plugins>
         <Plugin source="libcontrol.so" xsdfile="XSD/Control.xsd"/>
+        <Plugin source="libdata.so" xsdfile="XSD/Data.xsd"/>
         <Plugin source="liboperators.so" xsdfile="XSD/Operators.xsd"/>
         <Plugin source="libmeds.so" xsdfile="XSD/Meds.xsd"/>
       </Plugins>

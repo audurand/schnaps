@@ -29,7 +29,8 @@ using namespace Simulation;
  */
 Clock::Clock() :
 	mValue(0),
-	mStop(NULL)
+	mStop(NULL),
+	mUnits(eOther)
 {}
 
 /*!
@@ -37,8 +38,9 @@ Clock::Clock() :
  * \param inOriginal A const reference to the original clock.
  */
 Clock::Clock(const Clock& inOriginal) :
-	mValue(inOriginal.getValue()),
-	mStop(inOriginal.getStop())
+	mValue(inOriginal.mValue),
+	mStop(inOriginal.mStop),
+	mUnits(inOriginal.mUnits)
 {}
 
 /*!
@@ -63,7 +65,22 @@ void Clock::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSyst
 	printf("Reading clock\n");
 #endif
 
-	// Read stop condition tree
+	// read units
+	if (inIter->getAttribute("units").empty()) {
+		mUnits = eOther;
+	} else {
+		if (inIter->getAttribute("units") == "year") {
+			mUnits = eYear;
+		} else if (inIter->getAttribute("units") == "month") {
+			mUnits = eMonth;
+		} else if (inIter->getAttribute("units") == "day") {
+			mUnits = eDay;
+		} else {
+			mUnits = eOther;
+		}
+	}
+
+	// read stop condition tree
 	mStop = new Core::PrimitiveTree();
 	mStop->readWithSystem(inIter->getFirstChild(), ioSystem);
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Clock::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
@@ -75,6 +92,23 @@ void Clock::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSyst
  * \param inIndent Wether to indent or not.
  */
 void Clock::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
-	// Write stop condition tree
+	// write units
+	switch (mUnits) {
+		case eYear:
+			ioStreamer.insertAttribute("units", "year");
+			break;
+		case eMonth:
+			ioStreamer.insertAttribute("units", "month");
+			break;
+		case eDay:
+			ioStreamer.insertAttribute("units", "day");
+			break;
+		default:
+			ioStreamer.insertAttribute("units", "other");
+			break;
+			
+	}
+	
+	// write stop condition tree
 	mStop->write(ioStreamer, inIndent);
 }

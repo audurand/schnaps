@@ -38,7 +38,8 @@ SimulationContext::SimulationContext() :
 SimulationContext::SimulationContext(const SimulationContext& inOriginal) :
 	ExecutionContext(inOriginal),
 	mProcesses(inOriginal.mProcesses),
-	mClockObservers(inOriginal.mClockObservers),
+	mObserversForEnvironment(inOriginal.mObserversForEnvironment),
+	mObserversForIndividuals(inOriginal.mObserversForIndividuals),
 	mScenarios(inOriginal.mScenarios)
 {}
 
@@ -114,16 +115,17 @@ void SimulationContext::readProcesses(PACC::XML::ConstIterator inIter) {
 /*!
  * \brief Read observers from XML.
  * \param inIter XML iterator of input document.
+ * \throw  SCHNAPS::Core::AssertException if the simulation clock has not been defined.
  * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
- * \throw SCHNAPS::Core::IOException if observer process attribute is missing.
- * \throw SCHNAPS::Core::IOException if observer target attribute is missing.
+ * \throw SCHNAPS::Core::IOException if clock observer process attribute is missing.
+ * \throw SCHNAPS::Core::IOException if clock observer target attribute is missing.
+ * \throw SCHNAPS::Core::IOException if clock observer start < 1.
+ * \throw SCHNAPS::Core::IOException if clock observer step size < 1.
  * \throw SCHNAPS::Core::RunTimeException if observer target attribute is unknown.
  */
 void SimulationContext::readObservers(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceBeginM();
-	PACC::XML::ConstIterator lChild;
-	ProcessMap::iterator lProcessIt;
-
+	schnaps_NonNullPointerAssertM(mClock);
 	if (inIter->getType() != PACC::XML::eData) {
 		throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
 	}
@@ -133,7 +135,14 @@ void SimulationContext::readObservers(PACC::XML::ConstIterator inIter) {
 		lOSS << "got tag <" << inIter->getValue() << "> instead!";
 		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
 	}
-	for (lChild = inIter->getFirstChild(); lChild; lChild++) {
+	
+	mObserversForEnvironment.clear();
+	mObserversForIndividuals.clear();
+	
+	Clock::Units lUnits;
+	unsigned long lStart, lEnd, lStep, lFirstOccurence;
+	
+	for (PACC::XML::ConstIterator lChild = inIter->getFirstChild(); lChild; lChild++) {
 		if (lChild->getType() == PACC::XML::eData) {
 			if (lChild->getValue() != "Observer") {
 				std::ostringstream lOSS;
@@ -147,11 +156,49 @@ void SimulationContext::readObservers(PACC::XML::ConstIterator inIter) {
 			if (lChild->getAttribute("target").empty()) {
 				throw schnaps_IOExceptionNodeM(*lChild, "clock observer target attribute expected!");
 			}
+			
+			if (lChild->getAttribute("start").empty()) {
+				lStart = 1;
+				if (lStart < 1) {
+					throw schnaps_IOExceptionNodeM(*lChild, "clock observer start >= 1!");
+				}
+			} else {
+				lStart = SCHNAPS::str2uint(lChild->getAttribute("start"));
+			}
+			
+			if (lChild->getAttribute("end").empty()) {
+				lEnd = 0;
+			} else {
+				lEnd = SCHNAPS::str2uint(lChild->getAttribute("end"));
+			}
+			
+			if (lChild->getAttribute("step").empty()) {
+				lStep = 1;
+			} else {
+				lStep = SCHNAPS::str2uint(lChild->getAttribute("step"));
+				if (lStep < 1) {
+					throw schnaps_IOExceptionNodeM(*lChild, "clock observer step size must be >= 1!");
+				}
+			}
+			
+			if (lChild->getAttribute("units").empty()) {
+				lUnits = Clock::eOther;
+			} else {
+				if (lChild->getAttribute("units") == "year") {
+					lUnits = Clock::eYear;
+				} else if (lChild->getAttribute("units") == "month") {
+					lUnits = Clock::eMonth;
+				} else if (lChild->getAttribute("units") == "day") {
+					lUnits = Clock::eDay;
+				} else {
+					lUnits = Clock::eOther;
+				}
+			}
 
 			if (lChild->getAttribute("target") == "environment") {
-				mClockObservers.mProcessEnvironment.push_back(this->getProcessHandle(lChild->getAttribute("process")));
+				mObserversForEnvironment.insert(std::pair<std::string, Observer>(lChild->getAttribute("process"), Observer(this->getProcessHandle(lChild->getAttribute("process")), lStart, lEnd, lStep, lUnits)));
 			} else if (lChild->getAttribute("target") == "individuals") {
-				mClockObservers.mProcessIndividual.push_back(this->getProcessHandle(lChild->getAttribute("process")));
+				mObserversForIndividuals.insert(std::pair<std::string, Observer>(lChild->getAttribute("process"), Observer(this->getProcessHandle(lChild->getAttribute("process")), lStart, lEnd, lStep, lUnits)));
 			} else {
 				throw schnaps_RunTimeExceptionM("Undefined clock observer target '" + lChild->getAttribute("target") + "'!");
 			}
@@ -168,8 +215,6 @@ void SimulationContext::readObservers(PACC::XML::ConstIterator inIter) {
  */
 void SimulationContext::readScenarios(PACC::XML::ConstIterator inIter) {
 	schnaps_StackTraceBeginM();
-	ProcessMap::const_iterator lProcessIt;
-
 	if (inIter->getType() != PACC::XML::eData) {
 		throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
 	}
@@ -179,6 +224,7 @@ void SimulationContext::readScenarios(PACC::XML::ConstIterator inIter) {
 		lOSS << "got tag <" << inIter->getValue() << "> instead!";
 		throw schnaps_IOExceptionNodeM(*inIter, lOSS.str());
 	}
+	
 	for (PACC::XML::ConstIterator lChild = inIter->getFirstChild(); lChild; lChild++) {
 		if (lChild->getType() == PACC::XML::eData) {
 			if (lChild->getValue() != "Scenario") {
@@ -225,18 +271,51 @@ void SimulationContext::writeProcesses(PACC::XML::Streamer& ioStreamer, bool inI
  */
 void SimulationContext::writeObservers(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
-	// write clock observers
 	ioStreamer.openTag("ClockObservers");
-	for (unsigned int i = 0; i < mClockObservers.mProcessEnvironment.size(); i++) {
+	for (ObserverMap::const_iterator lIt_i = mObserversForEnvironment.begin(); lIt_i != mObserversForEnvironment.end(); lIt_i++) {
 		ioStreamer.openTag("Observer");
-		ioStreamer.insertAttribute("process", mClockObservers.mProcessEnvironment[i]->getLabel());
 		ioStreamer.insertAttribute("target", "environment");
+		ioStreamer.insertAttribute("process", lIt_i->second.mProcess->getLabel());
+		ioStreamer.insertAttribute("start", lIt_i->second.mStart);
+		ioStreamer.insertAttribute("end", lIt_i->second.mEnd);
+		ioStreamer.insertAttribute("step", lIt_i->second.mStep);
+		switch (lIt_i->second.mUnits) {
+			case Clock::eYear:
+				ioStreamer.insertAttribute("units", "year");
+				break;
+			case Clock::eMonth:
+				ioStreamer.insertAttribute("units", "month");
+				break;
+			case Clock::eDay:
+				ioStreamer.insertAttribute("units", "day");
+				break;
+			default:
+				ioStreamer.insertAttribute("units", "other");
+				break;
+		}
 		ioStreamer.closeTag();
 	}
-	for (unsigned int i = 0; i < mClockObservers.mProcessIndividual.size(); i++) {
+	for (ObserverMap::const_iterator lIt_i = mObserversForIndividuals.begin(); lIt_i != mObserversForIndividuals.end(); lIt_i++) {
 		ioStreamer.openTag("Observer");
-		ioStreamer.insertAttribute("process", mClockObservers.mProcessIndividual[i]->getLabel());
 		ioStreamer.insertAttribute("target", "individuals");
+		ioStreamer.insertAttribute("process", lIt_i->second.mProcess->getLabel());
+		ioStreamer.insertAttribute("start", lIt_i->second.mStart);
+		ioStreamer.insertAttribute("end", lIt_i->second.mEnd);
+		ioStreamer.insertAttribute("step", lIt_i->second.mStep);
+		switch (lIt_i->second.mUnits) {
+			case Clock::eYear:
+				ioStreamer.insertAttribute("units", "Year");
+				break;
+			case Clock::eMonth:
+				ioStreamer.insertAttribute("units", "Month");
+				break;
+			case Clock::eDay:
+				ioStreamer.insertAttribute("units", "Day");
+				break;
+			default:
+				ioStreamer.insertAttribute("units", "Other");
+				break;
+		}
 		ioStreamer.closeTag();
 	}
 	ioStreamer.closeTag();
@@ -280,11 +359,11 @@ SimulationContext::Handle SimulationContext::deepCopy() const {
 	}
 
 	// copy clock observers
-	for (unsigned int i = 0; i < this->mClockObservers.mProcessEnvironment.size(); i++) {
-		lCopy->mClockObservers.mProcessEnvironment.push_back(Core::castHandleT<Process>(this->mClockObservers.mProcessEnvironment[i]->deepCopy(*mSystem)));
+	for (ObserverMap::const_iterator lIt_i = mObserversForEnvironment.begin(); lIt_i != mObserversForEnvironment.end(); lIt_i++) {
+		lCopy->mObserversForEnvironment.insert(std::pair<std::string, Observer>(lIt_i->first, Observer(lIt_i->second.mProcess->deepCopy(*mSystem), lIt_i->second.mStart, lIt_i->second.mEnd, lIt_i->second.mStep, lIt_i->second.mUnits)));
 	}
-	for (unsigned int i = 0; i < this->mClockObservers.mProcessIndividual.size(); i++) {
-		lCopy->mClockObservers.mProcessIndividual.push_back(Core::castHandleT<Process>(this->mClockObservers.mProcessIndividual[i]->deepCopy(*mSystem)));
+	for (ObserverMap::const_iterator lIt_i = mObserversForIndividuals.begin(); lIt_i != mObserversForIndividuals.end(); lIt_i++) {
+		lCopy->mObserversForIndividuals.insert(std::pair<std::string, Observer>(lIt_i->first, Observer(lIt_i->second.mProcess->deepCopy(*mSystem), lIt_i->second.mStart, lIt_i->second.mEnd, lIt_i->second.mStep, lIt_i->second.mUnits)));
 	}
 
 	// copy scenarios

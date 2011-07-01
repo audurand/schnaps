@@ -52,11 +52,11 @@ Process::Process(const std::string& inLabel, Core::PrimitiveTree::Handle inPrimi
 {}
 
 /*!
- * \brief  Return a handle to a deep copy of the object.
+ * \brief  Return a handle to a deep copy of the process.
  * \param  A const reference to the system.
- * \return A handle to a deep copy of the object.
+ * \return A handle to a deep copy of the process.
  */
-Core::Object::Handle Process::deepCopy(const Core::System& inSystem) const {
+Process::Handle Process::deepCopy(const Core::System& inSystem) const {
 	schnaps_StackTraceBeginM();
 	Process::Handle lCopy = new Process(mLabel, Core::castHandleT<Core::PrimitiveTree>(mPrimitiveTree->deepCopy(inSystem)));
 	for (unsigned int i = 0; i < this->mLocalVariables.size(); i++) {
@@ -65,7 +65,7 @@ Core::Object::Handle Process::deepCopy(const Core::System& inSystem) const {
 			this->mLocalVariables[i].second));
 	}
 	return lCopy;
-	schnaps_StackTraceEndM("SCHNAPS::Core::Object::Handle SCHNAPS::Simulation::Process::deepCopy(const SCHNAPS::Core::System&) const ");
+	schnaps_StackTraceEndM("SCHNAPS::Simulation::Process::Handle SCHNAPS::Simulation::Process::deepCopy(const SCHNAPS::Core::System&) const ");
 }
 
 /*!

@@ -76,6 +76,11 @@ private:
 	Simulation::Process::Target mTarget;	//!< Target of the push.
 	Core::ULong::Handle mDelay;				//!< A handle to the delay before execution.
 	std::string mDelay_Ref;					//!< Reference to the delay value.
+	Core::ULong::Handle mRepeat;			//!< A handle to the number of repetition.
+	std::string mRepeat_Ref;				//!< Reference to the number of repetition value.
+	Core::ULong::Handle mDelta;				//!< A handle to the delta between repetitions.
+	std::string mDelta_Ref;					//!< Reference to the delta value between repetitions.
+	Simulation::Clock::Units mUnits;		//!< The units in which the delay, repeat and delta attributes are expressed.
 };
 } // end of Control namespace
 } // end of Plugins namespace

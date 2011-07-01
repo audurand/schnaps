@@ -63,18 +63,6 @@ Object& Object::operator=(const Object& inOriginal) {
 	return *this;
 	schnaps_StackTraceEndM("SCHNAPS::Core::Object& SCHNAPS::Core::Object::operator=(const SCHNAPS::Core::Object&)");
 }
-	
-/*!
- * \brief  Return a handle to a deep copy of the object.
- * \param  inSystem A const reference to the system.
- * \return A handle to a deep copy of the object.
- * \throw  SCHNAPS::Core::InternalException if the method is not overdefined in a subclass.
- */
-Object::Handle Object::deepCopy(const System& inSystem) const {
-	schnaps_StackTraceBeginM();
-	throw schnaps_UndefinedMethodInternalExceptionM("deepCopy", "Object", getName());
-	schnaps_StackTraceEndM("SCHNAPS::Core::Object::Handle SCHNAPS::Core::Object::deepCopy(const SCHNAPS::Core::System&) const");
-}
 
 /*!
  * \brief  Return a const reference to the name of object.

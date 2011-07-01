@@ -31,7 +31,12 @@ ProcessPush::ProcessPush() :
 	Primitive(0),
 	mLabel(""),
 	mDelay(NULL),
-	mDelay_Ref("")
+	mDelay_Ref(""),
+	mRepeat(NULL),
+	mRepeat_Ref(""),
+	mDelta(NULL),
+	mDelta_Ref(""),
+	mUnits(Simulation::Clock::eOther)
 {}
 
 /*!
@@ -43,7 +48,12 @@ ProcessPush::ProcessPush(const ProcessPush& inOriginal) :
 	mLabel(inOriginal.mLabel.c_str()),
 	mTarget(inOriginal.mTarget),
 	mDelay(inOriginal.mDelay),
-	mDelay_Ref(inOriginal.mDelay_Ref.c_str())
+	mDelay_Ref(inOriginal.mDelay_Ref.c_str()),
+	mRepeat(inOriginal.mRepeat),
+	mRepeat_Ref(inOriginal.mRepeat_Ref.c_str()),
+	mDelta(inOriginal.mDelta),
+	mDelta_Ref(inOriginal.mDelta_Ref.c_str()),
+	mUnits(inOriginal.mUnits)
 {}
 
 /*!
@@ -55,6 +65,8 @@ ProcessPush& ProcessPush::operator=(const ProcessPush& inOriginal) {
 	mLabel.assign(inOriginal.mLabel.c_str());
 	mTarget = inOriginal.mTarget;
 	mDelay_Ref.assign(inOriginal.mDelay_Ref.c_str());
+	mRepeat_Ref.assign(inOriginal.mRepeat_Ref.c_str());
+	mDelta_Ref.assign(inOriginal.mDelta_Ref.c_str());
 	
 	switch (mDelay_Ref[0]) {
 		case '@':
@@ -74,6 +86,46 @@ ProcessPush& ProcessPush::operator=(const ProcessPush& inOriginal) {
 			mDelay = Core::castHandleT<Core::ULong>(inOriginal.mDelay->clone());
 			break;
 	}
+	
+	switch (mRepeat_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mRepeat = NULL;
+			break;
+		case '$':
+			// parameter value
+			mRepeat = inOriginal.mRepeat;
+			break;
+		default:
+			// direct value
+			mRepeat = Core::castHandleT<Core::ULong>(inOriginal.mRepeat->clone());
+			break;
+	}
+	
+	switch (mDelta_Ref[0]) {
+		case '@':
+			// individual variable value
+		case '#':
+			// environment variable value
+		case '%':
+			// local variable value
+			mDelta = NULL;
+			break;
+		case '$':
+			// parameter value
+			mDelta = inOriginal.mDelta;
+			break;
+		default:
+			// direct value
+			mDelta = Core::castHandleT<Core::ULong>(inOriginal.mDelta->clone());
+			break;
+	}
+	
+	mUnits = inOriginal.mUnits;
 
 	return *this;
 	schnaps_StackTraceEndM("SCHNAPS::Plugins::Control::ProcessPush& SCHNAPS::Plugins::Control::ProcessPush::operator=(const SCHNAPS::Plugins::Control::ProcessPush&)");
@@ -144,6 +196,71 @@ void ProcessPush::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
 				break;
 		}
 	}
+
+	mRepeat_Ref.assign(inIter->getAttribute("inRepeat"));
+	if (mRepeat_Ref.empty()) {
+		mRepeat = new Core::ULong(0);
+	} else {
+		switch (mRepeat_Ref[0]) {
+			case '@':
+				// individual variable value
+			case '#':
+				// environment variable value
+			case '%':
+				// local variable value
+				mRepeat = NULL;
+				break;
+			case '$':
+				// parameter value
+				mRepeat = Core::castHandleT<Core::ULong>(ioSystem.getParameters().getParameterHandle(mRepeat_Ref.substr(1).c_str()));
+				break;
+			default:
+				// direct value
+				mRepeat = new Core::ULong();
+				mRepeat->readStr(mRepeat_Ref);
+				break;
+		}
+	}
+
+	mDelta_Ref.assign(inIter->getAttribute("inDelta"));
+	if (mDelta_Ref.empty()) {
+		mDelta = new Core::ULong(1);
+	} else {
+		switch (mDelta_Ref[0]) {
+			case '@':
+				// individual variable value
+			case '#':
+				// environment variable value
+			case '%':
+				// local variable value
+				mDelta = NULL;
+				break;
+			case '$':
+				// parameter value
+				mDelta = Core::castHandleT<Core::ULong>(ioSystem.getParameters().getParameterHandle(mDelta_Ref.substr(1).c_str()));
+				break;
+			default:
+				// direct value
+				mDelta = new Core::ULong();
+				mDelta->readStr(mDelta_Ref);
+				break;
+		}
+	}
+	
+	std::string lUnits = inIter->getAttribute("inUnits");
+	if (lUnits.empty()) {
+		mUnits = Simulation::Clock::eOther;
+	} else {
+		if (lUnits == "year") {
+			mUnits = Simulation::Clock::eYear;
+		} else if (lUnits == "month") {
+			mUnits = Simulation::Clock::eMonth;
+		} else if (lUnits == "day") {
+			mUnits = Simulation::Clock::eDay;
+		} else {
+			mUnits = Simulation::Clock::eOther;
+		}
+	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Control::ProcessPush::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
@@ -155,19 +272,35 @@ void ProcessPush::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
 void ProcessPush::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
 		ioStreamer.insertAttribute("inLabel", mLabel);
-		ioStreamer.insertAttribute("inDelay", mDelay_Ref);
 		switch (mTarget) {
-		case Simulation::Process::eCurrent:
-			ioStreamer.insertAttribute("inTarget", "current");
-			break;
-		case Simulation::Process::eEnvironment:
-			ioStreamer.insertAttribute("inTarget", "environment");
-			break;
-		case Simulation::Process::eIndividuals:
-			ioStreamer.insertAttribute("inTarget", "individuals");
-			break;
-		default:
-			break;
+			case Simulation::Process::eCurrent:
+				ioStreamer.insertAttribute("inTarget", "current");
+				break;
+			case Simulation::Process::eEnvironment:
+				ioStreamer.insertAttribute("inTarget", "environment");
+				break;
+			case Simulation::Process::eIndividuals:
+				ioStreamer.insertAttribute("inTarget", "individuals");
+				break;
+			default:
+				break;
+		}
+		ioStreamer.insertAttribute("inDelay", mDelay_Ref);
+		ioStreamer.insertAttribute("inRepeat", mRepeat_Ref);
+		ioStreamer.insertAttribute("inDelta", mDelta_Ref);
+		switch (mUnits) {
+			case Simulation::Clock::eYear:
+				ioStreamer.insertAttribute("units", "year");
+				break;
+			case Simulation::Clock::eMonth:
+				ioStreamer.insertAttribute("units", "month");
+				break;
+			case Simulation::Clock::eDay:
+				ioStreamer.insertAttribute("units", "day");
+				break;
+			default:
+				ioStreamer.insertAttribute("units", "other");
+				break;
 		}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Control::ProcessPush::writeContent(PACC::XML::Streamer&, bool) const");
 }
@@ -177,35 +310,70 @@ void ProcessPush::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) c
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
- * \throw  SCHNAPS::Core::RunTimeException if the method is undefined for the specified delay source.
  */
 Core::AnyType::Handle ProcessPush::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
 	
-	if (mDelay == NULL) {
-		unsigned long lDelay;
-		switch (mDelay_Ref[0]) {
-			case '@':
-				// individual variable value
-				lDelay = Core::castHandleT<Core::ULong>(lContext.getIndividual().getState().getVariableHandle(mDelay_Ref.substr(1).c_str()))->getValue();
-				break;
-			case '#':
-				// environment variable value
-				lDelay = Core::castHandleT<Core::ULong>(lContext.getEnvironment().getState().getVariableHandle(mDelay_Ref.substr(1).c_str()))->getValue();
-				break;
-			case '%':
-				// local variable value
-				lDelay = Core::castHandleT<Core::ULong>(lContext.getLocalVariableHandle(mDelay_Ref.substr(1).c_str()))->getValue();
-				break;
-			default:
-				throw schnaps_RunTimeExceptionM("The method is undefined for the specified delay source!");
-				break;
-		}
-		lContext.getPushList().push_back(Simulation::Push(mLabel, mTarget, lContext.getClock().getValue()+lDelay));
-	} else {
-		// direct value or parameter value
-		lContext.getPushList().push_back(Simulation::Push(mLabel, mTarget, lContext.getClock().getValue()+mDelay->getValue()));
+	unsigned long lDelay, lRepeat, lDelta;
+	switch (mDelay_Ref[0]) {
+		case '@':
+			// individual variable value
+			lDelay = Core::castHandleT<Core::ULong>(lContext.getIndividual().getState().getVariableHandle(mDelay_Ref.substr(1).c_str()))->getValue();
+			break;
+		case '#':
+			// environment variable value
+			lDelay = Core::castHandleT<Core::ULong>(lContext.getEnvironment().getState().getVariableHandle(mDelay_Ref.substr(1).c_str()))->getValue();
+			break;
+		case '%':
+			// local variable value
+			lDelay = Core::castHandleT<Core::ULong>(lContext.getLocalVariableHandle(mDelay_Ref.substr(1).c_str()))->getValue();
+			break;
+		default:
+			// parameter or direct value
+			lDelay = mDelay->getValue();
+			break;
+	}
+	switch (mRepeat_Ref[0]) {
+		case '@':
+			// individual variable value
+			lRepeat = Core::castHandleT<Core::ULong>(lContext.getIndividual().getState().getVariableHandle(mRepeat_Ref.substr(1).c_str()))->getValue();
+			break;
+		case '#':
+			// environment variable value
+			lRepeat = Core::castHandleT<Core::ULong>(lContext.getEnvironment().getState().getVariableHandle(mRepeat_Ref.substr(1).c_str()))->getValue();
+			break;
+		case '%':
+			// local variable value
+			lRepeat = Core::castHandleT<Core::ULong>(lContext.getLocalVariableHandle(mRepeat_Ref.substr(1).c_str()))->getValue();
+			break;
+		default:
+			// parameter or direct value
+			lRepeat = mRepeat->getValue();
+			break;
+	}
+	switch (mDelta_Ref[0]) {
+		case '@':
+			// individual variable value
+			lDelta = Core::castHandleT<Core::ULong>(lContext.getIndividual().getState().getVariableHandle(mDelta_Ref.substr(1).c_str()))->getValue();
+			break;
+		case '#':
+			// environment variable value
+			lDelta = Core::castHandleT<Core::ULong>(lContext.getEnvironment().getState().getVariableHandle(mDelta_Ref.substr(1).c_str()))->getValue();
+			break;
+		case '%':
+			// local variable value
+			lDelta = Core::castHandleT<Core::ULong>(lContext.getLocalVariableHandle(mDelta_Ref.substr(1).c_str()))->getValue();
+			break;
+		default:
+			// parameter or direct value
+			lDelta = mDelta->getValue();
+			break;
+	}
+	
+	unsigned long lStartValue = lContext.getClock().getValue(mUnits) + lDelay;
+	for (unsigned int i = 0; i < lRepeat; i++) {
+		lContext.getPushList().push_back(Simulation::Push(mLabel, mTarget, lContext.getClock().getTick(lStartValue + i * lDelta, mUnits)));
 	}
 	return NULL;
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Control::ProcessPush::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");
