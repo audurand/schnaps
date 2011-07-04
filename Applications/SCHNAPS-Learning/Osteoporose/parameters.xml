@@ -179,6 +179,18 @@
               </IndividualModel>
               <SimulationVariables file="Populations/SimulationVariables.xml"/>
             </GenProfile>
+            <GenProfile label="Femmes_Apprentissage">
+              <Demography file="Populations/Demography_Apprentissage.xml"/>
+              <AcceptFunction>
+                <PrimitiveTree>
+                  <Data_Value inValue="true" inValue_Type="Bool"/>
+                </PrimitiveTree>
+              </AcceptFunction>
+              <IndividualModel>
+                <Variable label="Age"/>
+              </IndividualModel>
+              <SimulationVariables file="Populations/SimulationVariables.xml"/>
+            </GenProfile>
           </Profiles>
         </Generator>
         <Population>
@@ -253,7 +265,16 @@
           <Variable label="Nb_Fracture_Colonne"/>
           <Variable label="Nb_Fracture_Hanche"/>
           <Variable label="Cout"/>
-          <Variable label="Mort"/>
+          <Variable label="Taux_Mortalite"/>
+          <Variable label="QALY"/>
+          <Variable label="Duree_Vie"/>
+        </SubPopulation>
+        <SubPopulation profile="Femmes_Apprentissage">
+          <Variable label="DMO"/>
+          <Variable label="Nb_Fracture_Poignet"/>
+          <Variable label="Nb_Fracture_Colonne"/>
+          <Variable label="Nb_Fracture_Hanche"/>
+          <Variable label="Cout"/>
           <Variable label="Taux_Mortalite"/>
           <Variable label="QALY"/>
           <Variable label="Duree_Vie"/>

@@ -2,9 +2,6 @@
   <Process label="CAROC_PostFracture_Depistee">
     <LocalVariables/>
     <PrimitiveTree size="1">
-      <Control_IfThenElse>
-        <Data_Value inValue="@Mort"/>
-        <Control_Nothing/>
         <Control_Sequential>
           <Data_Log inMessage="CAROC" inType="Test"/>
           <Control_IfThenElse>
@@ -122,6 +119,5 @@
             </Control_IfThenElse>
           </Control_IfThenElse>
         </Control_Sequential>
-      </Control_IfThenElse>
     </PrimitiveTree>
   </Process>

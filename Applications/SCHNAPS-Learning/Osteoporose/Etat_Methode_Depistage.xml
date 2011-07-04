@@ -1,14 +1,12 @@
 <FunctionState>
 	<LocalVariables/>
 	<PrimitiveTree>
-	  <Control_ChoiceIsBetween inValue="@Age" inBounds="40|50|60|70|80|90|100" inBounds_Type="Int">
+	  <Control_ChoiceIsBetween inValue="@Age" inBounds="40|50|60|70|80" inBounds_Type="Int">
 		  <Data_Value inValue="40-49" inValue_Type="String"/>
 		  <Data_Value inValue="50-59" inValue_Type="String"/>
 		  <Data_Value inValue="60-69" inValue_Type="String"/>
 		  <Data_Value inValue="70-79" inValue_Type="String"/>
-		  <Data_Value inValue="80-89" inValue_Type="String"/>
-		  <Data_Value inValue="90-99" inValue_Type="String"/>
-		  <Data_Value inValue="100+" inValue_Type="String"/>
+		  <Data_Value inValue="80+" inValue_Type="String"/>
 	  </Control_ChoiceIsBetween>
 	</PrimitiveTree>
 </FunctionState>

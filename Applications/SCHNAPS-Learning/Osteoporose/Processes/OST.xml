@@ -2,9 +2,6 @@
   <Process label="OST">
     <LocalVariables/>
     <PrimitiveTree size="1">
-      <Control_IfThenElse>
-        <Data_Value inValue="@Mort"/>
-        <Control_Nothing/>
         <Control_IfThenElse>
           <Operators_OrComplex>
             <Data_Value inValue="@Depistage"/>
@@ -155,6 +152,5 @@
             </Control_ChoiceIsEqual>
           </Control_Sequential>
         </Control_IfThenElse>
-      </Control_IfThenElse>
     </PrimitiveTree>
   </Process>

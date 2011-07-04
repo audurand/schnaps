@@ -2,9 +2,6 @@
   <Process label="MAJ_ProbabiliteFracture">
     <LocalVariables/>
     <PrimitiveTree>
-      <Control_IfThenElse>
-        <Data_Value inValue="@Mort"/>
-        <Control_Nothing/>
         <Control_Sequential>
           <Data_SetVariableComplex outVariable="@Probabilite_Fracture_Hanche">
             <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
@@ -136,6 +133,5 @@
             </Control_ChoiceIsEqual>
           </Data_SetVariableComplex>
         </Control_Sequential>
-      </Control_IfThenElse>
     </PrimitiveTree>
   </Process>

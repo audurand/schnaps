@@ -2,10 +2,6 @@
   <Process label="MAJ_TauxMortalite_PostColonne_1ereAnnee">
     <LocalVariables/>
     <PrimitiveTree size="1">
-      <Control_IfThenElse>
-        <Data_Value inValue="@Mort"/>
-        <Control_Nothing/>
-        <Operators_MultVariable inArgRight="2.85" inArgRight_Type="Double" inArgLeft="@Taux_Mortalite" outResult="@Taux_Mortalite"/>
-      </Control_IfThenElse>
+      <Operators_MultVariable inArgRight="2.85" inArgRight_Type="Double" inArgLeft="@Taux_Mortalite" outResult="@Taux_Mortalite"/>
     </PrimitiveTree>
   </Process>

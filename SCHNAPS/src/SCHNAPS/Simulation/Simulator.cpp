@@ -553,7 +553,11 @@ void Simulator::processClockStep(SimulationThread::Handle inThread) {
 		
 		// process clock observers
 		for (unsigned int j = 0; j < lContext.getCurrentObserversForIndividuals().size(); j++) {
-			lContext.getCurrentObserversForIndividuals()[j]->execute(lContext);
+			if (lIndividual->isActive()) {
+				lContext.getCurrentObserversForIndividuals()[j]->execute(lContext);
+			} else {
+				break;
+			}
 		}
 
 		// process current individual FIFO until it is empty or individual is set idle

@@ -2,9 +2,6 @@
   <Process label="MAJ_DMO">
     <LocalVariables/>
     <PrimitiveTree>
-      <Control_IfThenElse>
-        <Data_Value inValue="@Mort"/>
-        <Control_Nothing/>
         <Control_Switch inKeys="50|60|70|80|90" inKeys_Type="Int">
           <Data_Value inValue="@Age"/>
           <Control_Nothing/>
@@ -64,6 +61,5 @@
             <Control_Nothing/>
           </Control_ChoiceIsEqual>
         </Control_Switch>
-      </Control_IfThenElse>
     </PrimitiveTree>
   </Process>

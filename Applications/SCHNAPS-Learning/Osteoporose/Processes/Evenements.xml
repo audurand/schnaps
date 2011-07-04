@@ -2,9 +2,6 @@
   <Process label="Evenements">
     <LocalVariables/>
     <PrimitiveTree size="1">
-      <Control_IfThenElse>
-        <Data_Value inValue="@Mort"/>
-        <Control_Nothing/>
         <Control_Sequential>
           <Control_IfThenElse>
             <!--Appliquer les effets du traitement ou de la prevention s'il y a lieu.-->
@@ -90,13 +87,12 @@
           </Meds_Event>
           <Control_ProcessCall inLabel="MAJ_QALY"/>
           <Meds_Event inLabel="Deces" inProbability="@Taux_Mortalite">
-            <Data_SetVariable inValue="true" outVariable="@Mort" inValue_Type="Bool"/>
+            <Data_SetIdle/>
             <Control_Sequential>
               <Operators_AddVariable inArgRight="1" inArgRight_Type="Int" inArgLeft="@Duree_Vie" outResult="@Duree_Vie"/>
               <Control_ProcessPush inDelay="1" inTarget="current" inLabel="Evenements"/>
             </Control_Sequential>
           </Meds_Event>
         </Control_Sequential>
-      </Control_IfThenElse>
     </PrimitiveTree>
   </Process>

@@ -220,25 +220,19 @@
         </Control_ChoiceIsBetween>
       </PrimitiveTree>
     </Variable>
-    <Variable gui.position="14" type="Bool" label="Mort">
-      <LocalVariables/>
-      <PrimitiveTree>
-        <Data_Value inValue="false" inValue_Type="Bool"/>
-      </PrimitiveTree>
-    </Variable>
-    <Variable gui.position="15" type="Int" label="Duree_Vie">
+    <Variable gui.position="14" type="Int" label="Duree_Vie">
       <LocalVariables/>
       <PrimitiveTree>
         <Data_Value inValue="1" inValue_Type="Int"/>
       </PrimitiveTree>
     </Variable>
-    <Variable gui.position="16" type="Bool" label="Pratiquant">
+    <Variable gui.position="15" type="Bool" label="Pratiquant">
       <LocalVariables/>
       <PrimitiveTree>
         <Data_Value inValue="false" inValue_Type="Bool"/>
       </PrimitiveTree>
     </Variable>
-    <Variable gui.position="17" type="Bool" label="ActPhys_Pratiquant">
+    <Variable gui.position="16" type="Bool" label="ActPhys_Pratiquant">
       <LocalVariables/>
       <PrimitiveTree>
         <Control_ChoiceIsBetween inValue="@Age" inBounds="$ref.tranche_age_40_90_5ans">
@@ -289,7 +283,7 @@
         </Control_ChoiceIsBetween>
       </PrimitiveTree>
     </Variable>
-    <Variable gui.position="18" type="Bool" label="VitDCalcium_Pratiquant">
+    <Variable gui.position="17" type="Bool" label="VitDCalcium_Pratiquant">
       <LocalVariables/>
       <PrimitiveTree>
         <Control_ChoiceIsBetween inValue="@Age" inBounds="$ref.tranche_age_40_90_5ans">
@@ -337,7 +331,7 @@
         </Control_ChoiceIsBetween>
       </PrimitiveTree>
     </Variable>
-    <Variable gui.position="19" type="Bool" label="ActPhys+VitDCalcium_Pratiquant">
+    <Variable gui.position="18" type="Bool" label="ActPhys+VitDCalcium_Pratiquant">
       <LocalVariables/>
       <PrimitiveTree>
         <Control_ChoiceIsBetween inValue="@Age" inBounds="$ref.tranche_age_40_90_5ans">
@@ -386,13 +380,13 @@
         </Control_ChoiceIsBetween>
       </PrimitiveTree>
     </Variable>
-    <Variable gui.position="20" type="String" label="Methode_Prevention">
+    <Variable gui.position="19" type="String" label="Methode_Prevention">
       <LocalVariables/>
       <PrimitiveTree>
         <Data_Value inValue="Aucune" inValue_Type="String"/>
       </PrimitiveTree>
     </Variable>
-    <Variable gui.position="21" type="String" label="Methode_Depistage">
+    <Variable gui.position="20" type="String" label="Methode_Depistage">
       <LocalVariables/>
       <PrimitiveTree>
         <Data_Value inValue="Aucune" inValue_Type="String"/>

@@ -199,7 +199,7 @@ void ProcessPush::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
 
 	mRepeat_Ref.assign(inIter->getAttribute("inRepeat"));
 	if (mRepeat_Ref.empty()) {
-		mRepeat = new Core::ULong(0);
+		mRepeat = new Core::ULong(1);
 	} else {
 		switch (mRepeat_Ref[0]) {
 			case '@':

@@ -63,9 +63,9 @@ Core::AnyType::Handle Sequential::execute(unsigned int inIndex, Core::ExecutionC
 
 	for (unsigned int i = 0; i < getNumberArguments(); i++) {
 		lResult = getArgument(inIndex, i, lContext);
-		if (lContext.getIndividual().isActive() == false) {
-			break;
-		}
+		//if (lContext.getIndividual().isActive() == false) {
+			//break;
+		//} TODO: should sequential stop if individual becomes inactive (only in simulation execution context)?
 	}
 	
 	return lResult;

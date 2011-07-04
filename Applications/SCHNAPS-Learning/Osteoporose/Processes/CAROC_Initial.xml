@@ -2,9 +2,6 @@
   <Process label="CAROC_Initial">
     <LocalVariables/>
     <PrimitiveTree size="1">
-      <Control_IfThenElse>
-        <Data_Value inValue="@Mort"/>
-        <Control_Nothing/>
         <Control_Sequential>
           <Data_Log inMessage="CAROC" inType="Test"/>
           <Data_SetVariable inValue="true" outVariable="@Depistage" inValue_Type="Bool"/>
@@ -185,6 +182,5 @@
             </Control_Sequential>
           </Control_ChoiceIsEqual>
         </Control_Sequential>
-      </Control_IfThenElse>
     </PrimitiveTree>
   </Process>
