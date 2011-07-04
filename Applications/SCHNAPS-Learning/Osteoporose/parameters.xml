@@ -25,10 +25,10 @@
           </Vector>
         </Entry>
         <Entry label="threads.simulator">
-          <UInt value="4"/>
+          <UInt value="1"/>
         </Entry>
         <Entry label="threads.generator">
-          <UInt value="4"/>
+          <UInt value="1"/>
         </Entry>
         <Entry label="ref.taux_actualisation">
           <Double value="0.03"/>

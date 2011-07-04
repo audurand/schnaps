@@ -24,12 +24,21 @@ using namespace SCHNAPS;
 using namespace Plugins;
 using namespace Learning;
 
+UpdateThread::UpdateThread() :
+	mParallel(NULL),
+	mSequential(NULL),
+	mDecisionMaker(NULL)
+{
+	run();
+}
+
 UpdateThread::UpdateThread(PACC::Threading::Condition* inParallel,
 							PACC::Threading::Semaphore* inSequential,
 							const std::string& inFileName) :
 	mParallel(inParallel),
 	mSequential(inSequential),
-	mFileName(inFileName.c_str())
+	mFileName(inFileName.c_str()),
+	mDecisionMaker(NULL)
 {
 	run();
 }

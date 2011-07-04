@@ -6,10 +6,10 @@
 #
 
 project(SCHNAPS_PLUGINS_LEARNING CXX)
-set(SCHNAPS_PLUGINS_LEARNING_VERSION 1.1.0)
+set(SCHNAPS_PLUGINS_LEARNING_VERSION 1.2.1)
 
 # This is the shared library versioning info
-set(LIBRARY_VERSION 1.1.0)
+set(LIBRARY_VERSION 1.2.1)
 #                   | | |
 #            +------+ | +---+
 #            |        |     |

@@ -146,6 +146,14 @@ void LearningModule::update(const std::string& inFileName) {
 	
 #ifdef PARALLEL_UPDATE
 	// multi-thread parallel update
+	
+	// subthreads used when updating
+	UpdateThread::Bag lSubThreads;
+	// thread condition for triggering parallel execution in update process
+	PACC::Threading::Condition* lParallel = new PACC::Threading::Condition();
+	// thread semaphore for triggering sequential execution in update process
+	PACC::Threading::Semaphore* lSequential = new PACC::Threading::Semaphore(0);
+	
 	std::stringstream lSS;
 	
 	// create one subthread per decision maker
@@ -153,54 +161,51 @@ void LearningModule::update(const std::string& inFileName) {
 		lSS.str("");
 		lSS << inFileName << "_" << i;
 		
-		mSubThreads.push_back(new UpdateThread(mParallel, mSequential, lSS.str()));
-		mSequential->wait();
+		lSubThreads.push_back(new UpdateThread(lParallel, lSequential, lSS.str()));
+		lSequential->wait();
 		
 		// set the current decision maker of subthread
-		mSubThreads.back()->setDecisionMaker(mDecisionMakers[i]);
+		lSubThreads.back()->setDecisionMaker(mDecisionMakers[i]);
 		
 		// set position of subthread
-		mSubThreads.back()->setPosition(UpdateThread::eREADANDUPDATE);
+		lSubThreads.back()->setPosition(UpdateThread::eREADANDUPDATE);
 	}
 	
 	// launch read and update step and wait
-	mParallel->lock();
-	mParallel->broadcast();
-	mParallel->unlock();
-	for (unsigned int i = 0; i < mSubThreads.size(); i++) {
-		mSequential->wait();
+	lParallel->lock();
+	lParallel->broadcast();
+	lParallel->unlock();
+	for (unsigned int i = 0; i < lSubThreads.size(); i++) {
+		lSequential->wait();
 	}
 	
 	// rotate decision makers and update
 	for (unsigned int i = 1; i < mDecisionMakers.size(); i++) {
-		for (unsigned int j = 0; j < mSubThreads.size(); j++) {
+		for (unsigned int j = 0; j < lSubThreads.size(); j++) {
 			// set the current decision maker of subthread
-			mSubThreads[j]->setDecisionMaker(mDecisionMakers[(j+i)%mDecisionMakers.size()]);
+			lSubThreads[j]->setDecisionMaker(mDecisionMakers[(j+i)%mDecisionMakers.size()]);
 
 			// set position of subthread
-			mSubThreads[j]->setPosition(UpdateThread::eUPDATE);
+			lSubThreads[j]->setPosition(UpdateThread::eUPDATE);
 		}
 		
 		
 		// launch update step and wait
-		mParallel->lock();
-		mParallel->broadcast();
-		mParallel->unlock();
-		for (unsigned int j = 0; j < mSubThreads.size(); j++) {
-			mSequential->wait();
+		lParallel->lock();
+		lParallel->broadcast();
+		lParallel->unlock();
+		for (unsigned int j = 0; j < lSubThreads.size(); j++) {
+			lSequential->wait();
 		}
 	}
 	
 	// terminate subthreads
-	for (unsigned int i = 0; i < mSubThreads.size(); i++) {
-		mSubThreads[i]->setPosition(UpdateThread::eEND);
+	for (unsigned int i = 0; i < lSubThreads.size(); i++) {
+		lSubThreads[i]->setPosition(UpdateThread::eEND);
 	}
-	mParallel->lock();
-	mParallel->broadcast();
-	mParallel->unlock();
-	
-	// destroy threads
-	mSubThreads.clear();
+	lParallel->lock();
+	lParallel->broadcast();
+	lParallel->unlock();
 #else
 	// sequential update
 	std::stringstream lSS;

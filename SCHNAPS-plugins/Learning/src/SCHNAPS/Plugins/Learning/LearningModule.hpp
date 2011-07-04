@@ -22,12 +22,9 @@
 #define SCHNAPS_Plugins_Learning_LearningModule_hpp
 
 #include "SCHNAPS/Plugins/Learning/DecisionMaker.hpp"
-#include "SCHNAPS/Plugins/Learning/UpdateThread.hpp"
 
 #include "SCHNAPS/SCHNAPS.hpp"
 #include "PACC/PACC.hpp"
-
-#include <vector>
 
 namespace SCHNAPS {
 namespace Plugins {
@@ -97,13 +94,6 @@ public:
 	
 private:
 	DecisionMaker::Bag mDecisionMakers;
-	
-#ifdef PARALLEL_UPDATE
-	// multi-threads update management structures
-	UpdateThread::Bag mSubThreads;				//!< Subthreads used when updating.
-	PACC::Threading::Condition* mParallel;		//!< Thread condition for triggering parallel execution in update process.
-	PACC::Threading::Semaphore* mSequential;	//!< Thread semaphore for triggering sequential execution in update process.
-#endif
 };
 } // end of Learning namespace
 } // end of Plugins namespace

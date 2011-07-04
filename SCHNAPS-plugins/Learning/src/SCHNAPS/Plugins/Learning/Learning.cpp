@@ -21,7 +21,7 @@
 #include "SCHNAPS/SCHNAPS.hpp"
 #include "SCHNAPS/Plugins/Learning/Learning.hpp"
 
-SCHNAPS_Plugin_BeginDefinitionM("Learning", "1.2.0");
+SCHNAPS_Plugin_BeginDefinitionM("Learning", "1.2.1");
 
 SCHNAPS_Plugin_AddAllocM("Learning_DecisionNode", SCHNAPS::Plugins::Learning::DecisionNode::Alloc);
 SCHNAPS_Plugin_AddAllocM("Learning_LearningModule", SCHNAPS::Plugins::Learning::LearningModule::Alloc);

@@ -60,7 +60,8 @@ public:
 	//! The position of threads in the simulation process.
 	enum Position {eREADANDUPDATE, eUPDATE, eEND};
 
-	explicit UpdateThread(PACC::Threading::Condition* inParallel,
+	UpdateThread();
+	UpdateThread(PACC::Threading::Condition* inParallel,
 		PACC::Threading::Semaphore* inSequential,
 		const std::string& inFileName);
 	~UpdateThread();
