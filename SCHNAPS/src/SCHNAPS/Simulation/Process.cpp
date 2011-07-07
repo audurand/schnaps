@@ -168,7 +168,7 @@ void Process::readLocalVariables(PACC::XML::ConstIterator inIter, Core::System& 
 		}
 		
 #ifdef SCHNAPS_FULL_DEBUG
-		printf("\tReading local variable: %s\n", mLocalVariables.back().first.c_str());
+		printf("\tReading local variable: %s\n", lChild->getAttribute("label").c_str());
 #endif
 
 		lAlloc = ioSystem.getFactory().getAllocator(lChild->getFirstChild()->getValue());

@@ -261,7 +261,7 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 			for (unsigned int k = 0; k < lContext->getGenProfile().getSimulationVariables().getVariable(j).mLocalVariables.size(); k++) {
 				lContext->insertLocalVariable(
 					lContext->getGenProfile().getSimulationVariables().getVariable(j).mLocalVariables[k].first,
-					Core::castHandleT<Core::AnyType>(lContext->getGenProfile().getDemography().getVariable(j).mLocalVariables[k].second->clone()));
+					Core::castHandleT<Core::AnyType>(lContext->getGenProfile().getSimulationVariables().getVariable(j).mLocalVariables[k].second->clone()));
 			}
 			
 			// compute variable init value

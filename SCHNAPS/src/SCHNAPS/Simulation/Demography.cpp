@@ -202,7 +202,7 @@ void Demography::readLocalVariables(PACC::XML::ConstIterator inIter, Core::Syste
 		}
 		
 #ifdef SCHNAPS_FULL_DEBUG
-		printf("\tReading local variable: %s\n", mVariables.back().mLocalVariables.back().first.c_str());
+		printf("\tReading local variable: %s\n", lChild->getAttribute("label").c_str());
 #endif
 
 		lAlloc = ioSystem.getFactory().getAllocator(lChild->getFirstChild()->getValue());

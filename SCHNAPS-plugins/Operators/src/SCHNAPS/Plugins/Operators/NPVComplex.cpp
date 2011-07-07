@@ -157,7 +157,7 @@ void NPVComplex::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) co
 Core::AnyType::Handle NPVComplex::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
-	double lTime = lContext.getClock().getValue();
+	double lTime = lContext.getClock().getValue(SCHNAPS::Simulation::Clock::eYear);
 	double lDiscountRate;
 	Core::Double::Handle lDenum;
 	

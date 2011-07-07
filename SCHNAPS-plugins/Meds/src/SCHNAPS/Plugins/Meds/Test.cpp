@@ -493,7 +493,7 @@ Core::AnyType::Handle Test::execute(unsigned int inIndex, Core::ExecutionContext
 	
 	if (ioContext.getRandomizer().rollUniform() <= lCompliance) {
 		// individual is compliant
-		double lTime = lContext.getClock().getValue();
+		double lTime = lContext.getClock().getValue(SCHNAPS::Simulation::Clock::eYear);
 		double lCost, lCurrentCost, lDiscountRate;
 
 		switch (mCost_Ref[0]) {

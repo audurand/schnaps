@@ -356,7 +356,7 @@ Core::AnyType::Handle Treatment::execute(unsigned int inIndex, Core::ExecutionCo
 	
 	if (ioContext.getRandomizer().rollUniform() <= lCompliance) {
 		// individual is compliant
-		double lTime = lContext.getClock().getValue();
+		double lTime = lContext.getClock().getValue(SCHNAPS::Simulation::Clock::eYear);
 		double lCost, lCurrentCost, lDiscountRate;
 
 		switch (mCost_Ref[0]) {
@@ -406,7 +406,7 @@ Core::AnyType::Handle Treatment::execute(unsigned int inIndex, Core::ExecutionCo
 	} else {
 		// individual is not compliant
 		if (mChargeNonCompliant) {
-			double lTime = lContext.getClock().getValue();
+			double lTime = lContext.getClock().getValue(SCHNAPS::Simulation::Clock::eYear);
 			double lCost, lCurrentCost, lDiscountRate;
 
 			switch (mCost_Ref[0]) {

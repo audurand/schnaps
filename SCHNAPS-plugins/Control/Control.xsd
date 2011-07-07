@@ -503,9 +503,7 @@
 							<pmt:childBranchTag lang="en">Default choice</pmt:childBranchTag>
 						</xsd:appinfo>
 					</xsd:annotation>
-					<xsd:element ref="_operator"/>
-					<xsd:element ref="_tokenBase"/>
-					<xsd:element ref="Control_Nothing"/>
+					<xsd:element ref="_primitive"/>
 				</xsd:choice>
 				<xsd:sequence minOccurs="0" maxOccurs="unbounded">
 					<xsd:choice>
@@ -514,9 +512,7 @@
 								<pmt:childType definedBy="staticType">Any</pmt:childType>
 							</xsd:appinfo>
 						</xsd:annotation>
-						<xsd:element ref="_operator"/>
-						<xsd:element ref="_tokenBase"/>
-						<xsd:element ref="Control_Nothing"/>
+						<xsd:element ref="_primitive"/>
 					</xsd:choice>
 				</xsd:sequence>
 			</xsd:sequence>

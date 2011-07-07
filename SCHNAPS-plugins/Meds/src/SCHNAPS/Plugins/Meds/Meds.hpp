@@ -23,6 +23,7 @@
 
 #include "SCHNAPS/Plugins/Meds/Event.hpp"
 #include "SCHNAPS/Plugins/Meds/PreventionCampaign.hpp"
+#include "SCHNAPS/Plugins/Meds/Qaly.hpp"
 #include "SCHNAPS/Plugins/Meds/Test.hpp"
 #include "SCHNAPS/Plugins/Meds/Treatment.hpp"
 
