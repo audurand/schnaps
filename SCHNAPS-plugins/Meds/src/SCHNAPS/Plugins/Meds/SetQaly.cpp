@@ -1,5 +1,5 @@
 /*
- * Qaly.cpp
+ * SetQaly.cpp
  *
  * SCHNAPS
  * Copyright (C) 2009-2011 by Audrey Durand
@@ -24,7 +24,7 @@ using namespace SCHNAPS;
 using namespace Plugins;
 using namespace Meds;
 
-Qaly::Qaly() :
+SetQaly::SetQaly() :
 	Primitive(0),
 	mOutQaly_Ref(""),
 	mOldQaly_Ref(""),
@@ -34,7 +34,7 @@ Qaly::Qaly() :
 	mDiscountRate(NULL)
 {}
 
-Qaly::Qaly(const Qaly& inOriginal) :
+SetQaly::SetQaly(const SetQaly& inOriginal) :
 	mOutQaly_Ref(inOriginal.mOutQaly_Ref.c_str()),
 	mOldQaly_Ref(inOriginal.mOldQaly_Ref.c_str()),
 	mQaly_Ref(inOriginal.mQaly_Ref.c_str()),
@@ -85,7 +85,7 @@ Qaly::Qaly(const Qaly& inOriginal) :
  * \brief  Copy operator.
  * \return A reference to the current object.
  */
-Qaly& Qaly::operator=(const Qaly& inOriginal) {
+SetQaly& SetQaly::operator=(const SetQaly& inOriginal) {
 	schnaps_StackTraceBeginM();
 	mOutQaly_Ref.assign(inOriginal.mOutQaly_Ref.c_str());
 	mOldQaly_Ref.assign(inOriginal.mOldQaly_Ref.c_str());
@@ -131,7 +131,7 @@ Qaly& Qaly::operator=(const Qaly& inOriginal) {
 	}
 
 	return *this;
-	schnaps_StackTraceEndM("SCHNAPS::Plugins::Meds::Qaly& SCHNAPS::Plugins::Meds::Qaly::operator=(const SCHNAPS::Plugins::Meds::Qaly&)");
+	schnaps_StackTraceEndM("SCHNAPS::Plugins::Meds::SetQaly& SCHNAPS::Plugins::Meds::SetQaly::operator=(const SCHNAPS::Plugins::Meds::SetQaly&)");
 }
 
 /*!
@@ -139,9 +139,9 @@ Qaly& Qaly::operator=(const Qaly& inOriginal) {
  * \param inIter XML iterator of input document.
  * \param ioSystem A reference to the system.
  * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
- * \throw SCHNAPS::Core::IOException if inLabel, outQaly, inOldQaly, inQaly or inDiscountRate attributes are missing.
+ * \throw SCHNAPS::Core::IOException if outQaly, inOldQaly, inQaly or inDiscountRate attributes are missing.
  */
-void Qaly::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
+void SetQaly::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSystem) {
 	schnaps_StackTraceBeginM();
 	if (inIter->getType() != PACC::XML::eData) {
 		throw schnaps_IOExceptionNodeM(*inIter, "tag expected!");
@@ -223,7 +223,7 @@ void Qaly::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSyste
 			break;
 		}
 
-	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Meds::Qaly::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
+	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Meds::SetQaly::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
 /*!
@@ -231,13 +231,13 @@ void Qaly::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSyste
  * \param ioStreamer XML streamer to output document.
  * \param inIndent Wether to indent or not.
  */
-void Qaly::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
+void SetQaly::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 	schnaps_StackTraceBeginM();
 	ioStreamer.insertAttribute("outQaly", mOutQaly_Ref);
 	ioStreamer.insertAttribute("inOldQaly", mOldQaly_Ref);
 	ioStreamer.insertAttribute("inQaly", mQaly_Ref);
 	ioStreamer.insertAttribute("inDiscountRate", mDiscountRate_Ref);
-	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Meds::Qaly::writeContent(PACC::XML::Streamer&, bool) const");
+	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Meds::SetQaly::writeContent(PACC::XML::Streamer&, bool) const");
 }
 
 /*!
@@ -246,7 +246,7 @@ void Qaly::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
  * \param  ioContext A reference to the execution context.
  * \return A handle to the execution result.
  */
-Core::AnyType::Handle Qaly::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
+Core::AnyType::Handle SetQaly::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
 	double lTime = lContext.getClock().getValue(SCHNAPS::Simulation::Clock::eYear);
@@ -299,7 +299,7 @@ Core::AnyType::Handle Qaly::execute(unsigned int inIndex, Core::ExecutionContext
 	}
 	
 	return NULL;
-	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Meds::Qaly::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
+	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Meds::SetQaly::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 
 /*!
@@ -308,9 +308,9 @@ Core::AnyType::Handle Qaly::execute(unsigned int inIndex, Core::ExecutionContext
  * \param  ioContext A reference to the execution context.
  * \return A const reference to the return type.
  */
-const std::string& Qaly::getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
+const std::string& SetQaly::getReturnType(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	const static std::string lType("Void");
 	return lType;
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Meds::Qaly::getReturnType(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
+	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Meds::SetQaly::getReturnType(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }

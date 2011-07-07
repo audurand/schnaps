@@ -25,9 +25,11 @@ SCHNAPS_Plugin_BeginDefinitionM("Meds", "2.0.0");
 
 SCHNAPS_Plugin_AddAllocM("Meds_Event", SCHNAPS::Plugins::Meds::Event::Alloc);
 SCHNAPS_Plugin_AddAllocM("Meds_PreventionCampaign", SCHNAPS::Plugins::Meds::PreventionCampaign::Alloc);
-SCHNAPS_Plugin_AddAllocM("Meds_Qaly", SCHNAPS::Plugins::Meds::Qaly::Alloc);
+SCHNAPS_Plugin_AddAllocM("Meds_SetBaseQaly", SCHNAPS::Plugins::Meds::SetBaseQaly::Alloc);
+SCHNAPS_Plugin_AddAllocM("Meds_SetQaly", SCHNAPS::Plugins::Meds::SetQaly::Alloc);
 SCHNAPS_Plugin_AddAllocM("Meds_Test", SCHNAPS::Plugins::Meds::Test::Alloc);
 SCHNAPS_Plugin_AddAllocM("Meds_Treatment", SCHNAPS::Plugins::Meds::Treatment::Alloc);
+SCHNAPS_Plugin_AddAllocM("Meds_UpdateQaly", SCHNAPS::Plugins::Meds::UpdateQaly::Alloc);
 
 
 SCHNAPS_Plugin_EndDefinitionM();

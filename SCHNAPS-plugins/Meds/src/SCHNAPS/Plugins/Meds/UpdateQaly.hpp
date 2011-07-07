@@ -1,5 +1,5 @@
 /*
- * Qaly.hpp
+ * UpdateQaly.hpp
  *
  * SCHNAPS
  * Copyright (C) 2009-2011 by Audrey Durand
@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SCHNAPS_Plugins_Meds_Qaly_hpp
-#define SCHNAPS_Plugins_Meds_Qaly_hpp
+#ifndef SCHNAPS_Plugins_Meds_UpdateQaly_hpp
+#define SCHNAPS_Plugins_Meds_UpdateQaly_hpp
 
 #include "SCHNAPS/SCHNAPS.hpp"
 
@@ -30,24 +30,24 @@ namespace Plugins {
 namespace Meds {
 
 /*!
- *  \class Qaly SCHNAPS/Plugins/Meds/Qaly.hpp "SCHNAPS/Plugins/Meds/Qaly.hpp"
- *  \brief Compute new QALY and possibly replace old QALY if new QALY is smaller.
+ *  \class UpdateQaly SCHNAPS/Plugins/Meds/UpdateQaly.hpp "SCHNAPS/Plugins/Meds/UpdateQaly.hpp"
+ *  \brief Compute new qaly value after updating old qaly value with current qaly value
  */
-class Qaly: public Core::Primitive {
+class UpdateQaly: public Core::Primitive {
 public:
-	//! Qaly allocator type.
-	typedef Core::AllocatorT<Qaly, Core::Primitive::Alloc> Alloc;
-	//! Qaly handle type.
-	typedef Core::PointerT<Qaly, Core::Primitive::Handle> Handle;
-	//! Qaly bag type.
-	typedef Core::ContainerT<Qaly, Core::Primitive::Bag> Bag;
+	//! UpdateQaly allocator type.
+	typedef Core::AllocatorT<UpdateQaly, Core::Primitive::Alloc> Alloc;
+	//! UpdateQaly handle type.
+	typedef Core::PointerT<UpdateQaly, Core::Primitive::Handle> Handle;
+	//! UpdateQaly bag type.
+	typedef Core::ContainerT<UpdateQaly, Core::Primitive::Bag> Bag;
 
-	Qaly();
-	Qaly(const Qaly& inOriginal);
-	virtual ~Qaly() {}
+	UpdateQaly();
+	UpdateQaly(const UpdateQaly& inOriginal);
+	virtual ~UpdateQaly() {}
 
 	//! Copy operator.
-	Qaly& operator=(const Qaly& inOriginal);
+	UpdateQaly& operator=(const UpdateQaly& inOriginal);
 
 	/*!
 	 * \brief  Return a const reference to the name of object.
@@ -55,9 +55,9 @@ public:
 	 */
 	virtual const std::string& getName() const {
 		schnaps_StackTraceBeginM();
-		const static std::string lName("Meds_Qaly");
+		const static std::string lName("Meds_UpdateQaly");
 		return lName;
-		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Meds::Qaly::getName() const");
+		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Meds::UpdateQaly::getName() const");
 	}
 
 	//! Read object from XML using system.
@@ -83,4 +83,4 @@ private:
 } // end of Plugins namespace
 } // end of SCHNAPS namespace
 
-#endif /* SCHNAPS_Plugins_Meds_Qaly_hpp */
+#endif /* SCHNAPS_Plugins_Meds_UpdateQaly_hpp */

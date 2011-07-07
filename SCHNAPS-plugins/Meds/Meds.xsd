@@ -13,7 +13,7 @@
 		</xsd:documentation>
 	</xsd:annotation>
 	
-	<xsd:include schemaLocation="BaseTypes.xsd"/>
+	<xsd:include schemaLocation="XSD/BaseTypes.xsd"/>
 	
 	<xsd:element name="Meds_Event" substitutionGroup="_primitive">
 		<xsd:annotation>
@@ -374,11 +374,11 @@
 		</xsd:complexType>
 	</xsd:element>
 
-	<xsd:element name="Meds_Qaly" substitutionGroup="_primitive">
+	<xsd:element name="Meds_SetQaly" substitutionGroup="_primitive">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<pmt:info lang="en">Add QALY value to the total QALY of the individual. QALY value is only added if it results in having a smaller total QALY that the actual one.</pmt:info>
-				<pmt:mappedName lang="en">QALY</pmt:mappedName>
+				<pmt:mappedName lang="en">Set QALY</pmt:mappedName>
 				<pmt:returnType definedBy="staticType">Void</pmt:returnType>
 			</xsd:appinfo>
 		</xsd:annotation>
@@ -439,4 +439,112 @@
 			</xsd:attribute>
 		</xsd:complexType>
 	</xsd:element>
+
+
+	<xsd:element name="Meds_UpdateQaly" substitutionGroup="_primitive">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Add qaly value to the total qaly of the individual. Update old qaly value with current qaly value before doing so.</pmt:info>
+				<pmt:mappedName lang="en">Update QALY</pmt:mappedName>
+				<pmt:returnType definedBy="staticType">Void</pmt:returnType>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:attribute name="outQaly" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Output Qaly destination</pmt:attributeMappedName>
+						<pmt:attributeInfo lang="en">Variable used to cumulate individual's total qaly.</pmt:attributeInfo>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="inOldQaly" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>	
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Previous Qaly</pmt:attributeMappedName>
+						<pmt:attributeInfo lang="en">Variable used to store individual's previous total qaly.</pmt:attributeInfo>
+						<pmt:attributeType>Double</pmt:attributeType>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="inQaly" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">QALY</pmt:attributeMappedName>
+						<pmt:attributeInfo lang="en">Base qaly value to be added to the total qaly.</pmt:attributeInfo>
+						<pmt:attributeType>Double</pmt:attributeType>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="inDiscountRate" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="indVariables" allowEdition="False"/>
+							<gui:list type="envVariables" allowEdition="False"/>
+							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list type="allParameters" allowEdition="False"/>		
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Discount rate</pmt:attributeMappedName>
+						<pmt:attributeType>Double</pmt:attributeType>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+
+
+	<xsd:element name="Meds_SetBaseQaly" substitutionGroup="_modifierOp">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Set variable's value(if value is smaller). Variable must hold base qaly value used in other qaly primitives.</pmt:info>
+				<pmt:mappedName lang="en">Set base QALY</pmt:mappedName>
+				<pmt:returnType definedBy="staticType">Void</pmt:returnType>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:attribute name="outBaseQaly" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:displayValue delimiter="=" position="br" showAttr="inBaseQaly"/>
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Base Qaly variable</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="inBaseQaly" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>		
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">New base Qaly</pmt:attributeMappedName>
+						<pmt:attributeType>Double</pmt:attributeType>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
 </xsd:schema>
+
+
