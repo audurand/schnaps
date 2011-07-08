@@ -9,25 +9,6 @@
 		</xsd:documentation>
 	</xsd:annotation>
 	
-	<xsd:element name="childBehavior">
-		<xsd:annotation>
-			<xsd:documentation>
-				Define a behavior for the childs of a primitive
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:complexType>
-			<xsd:sequence maxOccurs="unbounded">
-				<xsd:choice>
-					<xsd:element name="displayAtPosition" minOccurs="0" maxOccurs="1">
-						<xsd:complexType>
-							<xsd:attribute name="pos" type="xsd:integer" use="required"/>
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
-			</xsd:sequence>
-		</xsd:complexType>
-	</xsd:element>
-	
 	<xsd:element name="behavior">
 	<xsd:annotation>
 			<xsd:documentation>
@@ -61,8 +42,8 @@
 					<xsd:element name="mapToBranches" minOccurs="0" maxOccurs="1">
 						<xsd:complexType>
 							<xsd:sequence minOccurs="1" maxOccurs="1">
-								<xsd:element name="individualType">
-									<xsd:complexType mixed="true">
+								<xsd:element name="individualType">							
+									<xsd:complexType>
 										<xsd:attribute name="definedBy" use="required">
 											<xsd:simpleType>
 												<xsd:restriction base="xsd:string">
@@ -74,16 +55,22 @@
 										</xsd:attribute>
 									</xsd:complexType>
 								</xsd:element>
+								<xsd:element name="sum">
+									<xsd:complexType>
+    										<xsd:simpleContent>
+      											<xsd:extension base="xsd:decimal"/>
+								    		</xsd:simpleContent>
+								  	</xsd:complexType>
+								</xsd:element>
 							</xsd:sequence>
 							<xsd:attribute name="regexp" type="xsd:string" use="required"/>
 							<xsd:attribute name="startIndex" type="xsd:nonNegativeInteger" use="optional"/>
 							<xsd:attribute name="endIndex" type="xsd:nonNegativeInteger" use="optional"/>
-							<xsd:attribute name="defaultAtomValue" type="xsd:string" use="optional"/>
 							<xsd:attribute name="editable" type="xsd:boolean" use="optional" default="false"/>
 							<xsd:attribute name="displayAttribute" type="xsd:boolean" use="optional" default="false"/>
 						</xsd:complexType>
 					</xsd:element>
-					<xsd:element name="list" minOccurs="0" maxOccurs="1">
+					<xsd:element name="list" minOccurs="0" maxOccurs="unbounded">
 						<xsd:complexType>
 							<xsd:attribute name="type" use="required">
 								<xsd:simpleType>
@@ -96,6 +83,8 @@
 										<xsd:enumeration value="processesAndScenarios"/>
 										<xsd:enumeration value="allVariables"/>
 										<xsd:enumeration value="envVariables"/>
+										<xsd:enumeration value="indVariables"/>
+										<xsd:enumeration value="locVariables"/>
 										<xsd:enumeration value="allParameters"/>
 									</xsd:restriction>
 								</xsd:simpleType>
@@ -104,7 +93,22 @@
 						</xsd:complexType>
 					</xsd:element>
 					<xsd:element name="readOnly" minOccurs="0" maxOccurs="1"/>
-					<xsd:element name="displayValue" minOccurs="0" maxOccurs="1"/>
+					<xsd:element name="displayValue" minOccurs="0" maxOccurs="1">
+						<xsd:complexType>
+							<xsd:attribute name="position" use="required">
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:enumeration value="br"/>
+										<xsd:enumeration value="bl"/>
+										<xsd:enumeration value="tr"/>
+										<xsd:enumeration value="tl"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:attribute>
+							<xsd:attribute name="showAttr" type="xsd:string" use="optional" default=""/>
+							<xsd:attribute name="delimiter" type="xsd:string" use="optional" default=""/>
+						</xsd:complexType>
+					</xsd:element>
 				</xsd:choice>
 			</xsd:sequence>
 		</xsd:complexType>

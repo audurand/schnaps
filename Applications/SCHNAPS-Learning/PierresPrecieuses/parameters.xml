@@ -24,7 +24,7 @@
 		 </Parameters>
 		 <Learning_LearningModule>
 			 <Learning_DecisionMaker>
-			  <Learning_Choice label="Groupe_1">
+			  <Choice label="Groupe_1">
 				  <Options>
 					  <Option label="TestA"/>
 					  <Option label="TestB"/>
@@ -35,8 +35,8 @@
 				  <FunctionState file="Etat.xml"/>
 				  <FunctionReward file="Recompense.xml"/>
 				  <ChoiceMap/>
-			  </Learning_Choice>
-			  <Learning_Choice label="Groupe_2">
+			  </Choice>
+			  <Choice label="Groupe_2">
 				  <Options>
 					  <Option label="TestA"/>
 					  <Option label="TestB"/>
@@ -47,8 +47,8 @@
 				  <FunctionState file="Etat.xml"/>
 				  <FunctionReward file="Recompense.xml"/>
 				  <ChoiceMap/>
-			  </Learning_Choice>
-			  <Learning_Choice label="Groupe_3">
+			  </Choice>
+			  <Choice label="Groupe_3">
 				  <Options>
 					  <Option label="TestE"/>
 					  <Option label="NULL"/>
@@ -56,7 +56,7 @@
 				  <FunctionState file="Etat.xml"/>
 				  <FunctionReward file="Recompense.xml"/>
 				  <ChoiceMap/>
-			  </Learning_Choice>
+			  </Choice>
 			 </Learning_DecisionMaker>
 		 </Learning_LearningModule>
 	 </System>
@@ -101,7 +101,7 @@
 	 </Input>
 	 <Simulation>
 		<RandomizerInfo/>
-		 <Clock>
+		 <Clock units="year">
 			 <PrimitiveTree>
 				  <Operators_IsEqualComplex>
 					  <Data_Clock/>

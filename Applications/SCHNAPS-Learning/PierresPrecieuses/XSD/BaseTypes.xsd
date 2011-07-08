@@ -8,8 +8,8 @@
 		</xsd:documentation>
 	</xsd:annotation>
 	
-	<xsd:import namespace="graphical_user_interface_info" schemaLocation="XSD/GUI.xsd"/>
-	<xsd:import namespace="primitives_info" schemaLocation="XSD/PMT.xsd"/>
+	<xsd:import namespace="graphical_user_interface_info" schemaLocation="GUI.xsd"/>
+	<xsd:import namespace="primitives_info" schemaLocation="PMT.xsd"/>
 
 	
 	<!-- ///////////////////////////////////////////////////////////////////////// -->
@@ -22,7 +22,6 @@
 				<xsd:choice minOccurs="1" maxOccurs="1"> <!-- First argument -->
 					<xsd:annotation>
 						<xsd:appinfo>
-							<gui:childBehavior/>
 							<pmt:childType definedBy="staticType">Number</pmt:childType>
 							<pmt:childBranchTag lang="en">Operator argument</pmt:childBranchTag>
 						</xsd:appinfo>
@@ -40,7 +39,6 @@
 					<xsd:choice minOccurs="1" maxOccurs="1"> <!-- First argument -->
 						<xsd:annotation>
 							<xsd:appinfo>
-								<gui:childBehavior/>
 								<pmt:childType definedBy="staticType">Number</pmt:childType>
 								<pmt:childBranchTag lang="en">First argument</pmt:childBranchTag>
 							</xsd:appinfo>
@@ -53,7 +51,6 @@
 					<xsd:choice minOccurs="1" maxOccurs="1"> <!-- Second argument -->
 						<xsd:annotation>
 							<xsd:appinfo>
-								<gui:childBehavior/>
 								<pmt:childType definedBy="staticType">Number</pmt:childType>
 								<pmt:childBranchTag lang="en">Second argument</pmt:childBranchTag>
 							</xsd:appinfo>
@@ -67,13 +64,11 @@
 	</xsd:complexType>
 	
 	<xsd:complexType name="_logicalOpComplexType">
-				<xsd:sequence minOccurs="1" maxOccurs="unbounded">
-					<xsd:choice> <!--Argument -->
+				<xsd:sequence minOccurs="2" maxOccurs="unbounded">
+					<xsd:choice> 
 						<xsd:annotation>
 							<xsd:appinfo>
-								<gui:childBehavior/>
 								<pmt:childType definedBy="staticType">Bool</pmt:childType>
-								<pmt:childBranchTag lang="en">Argument</pmt:childBranchTag>
 							</xsd:appinfo>
 						</xsd:annotation>
 						<xsd:element ref="_booleanOp"/>
@@ -89,9 +84,7 @@
 					<xsd:choice minOccurs="1" maxOccurs="1"> <!-- First argument -->
 						<xsd:annotation>
 							<xsd:appinfo>
-								<gui:childBehavior/>
 								<pmt:childType definedBy="staticType">Atom</pmt:childType>
-								<pmt:childBranchTag lang="en">First argument</pmt:childBranchTag>
 							</xsd:appinfo>
 						</xsd:annotation>
 						<xsd:element ref="_arithmeticOp"/>
@@ -102,9 +95,7 @@
 					<xsd:choice minOccurs="1" maxOccurs="1"> <!-- Second argument -->
 						<xsd:annotation>
 							<xsd:appinfo>
-								<gui:childBehavior/>
 								<pmt:childType definedBy="argument">1</pmt:childType>
-								<pmt:childBranchTag lang="en">Second argument</pmt:childBranchTag>
 							</xsd:appinfo>
 						</xsd:annotation>
 						<xsd:element ref="_arithmeticOp"/>
@@ -198,6 +189,7 @@
 	<!-- ///////////////////////////////////////////////////////////////////////// -->
 					<!-- ABSTRACT ELEMENTS DEFINITION -->
 	<!-- ///////////////////////////////////////////////////////////////////////// -->
+	<xsd:element name="_component" abstract="true"/>	
 
 	<xsd:element name="_primitive" abstract="true">
 		<xsd:annotation>
@@ -221,7 +213,12 @@
 				<pmt:event eventName="BadVariableType" gravity="Error" forceCorrection="false" addComment="false" warn="true">
 				Wrong variable type for variable <pmt:eventArg argIndex="3"/> specified in attribute named <pmt:eventArg argIndex="4"/> : expecting <pmt:eventArg argIndex="1"/>, but got <pmt:eventArg argIndex="2"/>
 				</pmt:event>
-				
+				<pmt:event eventName="BadBranchTag" gravity="Error" forceCorrection="false" addComment="false" warn="true">
+				Bad branch tag value for child <pmt:eventArg argIndex="1"/> at position <pmt:eventArg argIndex="2"/> : <pmt:eventArg argIndex="3"/> is not a number
+				</pmt:event>
+				<pmt:event eventName="BadBranchSum" gravity="Error" forceCorrection="false" addComment="false" warn="true">
+				Branches weights must sum to <pmt:eventArg argIndex="1"/>. Current sum is <pmt:eventArg argIndex="2"/>
+				</pmt:event>
 				<pmt:event eventName="MissingChild" gravity="Error" forceCorrection="false" addComment="false" warn="true">
 				Missing child at position <pmt:eventArg argIndex="1"/> (default child at this position is <pmt:eventArg argIndex="2"/>)
 				</pmt:event>
@@ -278,7 +275,9 @@
 				</xsd:annotation>
 			</xsd:element>
 			<xsd:element name="_multiOp" substitutionGroup="_arithmeticOp" abstract="true"/>
-			
+		
+		<xsd:element name="_stringOp" substitutionGroup="_operator" abstract="true"/>
+	
 		<xsd:element name="_conditionOp" substitutionGroup="_operator" abstract="true"/>
 			<xsd:element name="_multiBranchesConditionOp" substitutionGroup="_conditionOp" abstract="true"/>
 						
@@ -292,19 +291,23 @@
 	<xsd:element name="_tokenBase" substitutionGroup="_primitive" abstract="true"/>
 		<xsd:element name="_staticTk" substitutionGroup="_tokenBase" type="_staticTkComplexType" abstract="true"/>
 		<xsd:element name="_dynamicTk" substitutionGroup="_tokenBase" type="_dynamicTkComplexType" abstract="true">
-			<xsd:appinfo>
-				<gui:behavior>
+			<xsd:annotation>
+				<xsd:appinfo>
+					<gui:behavior>
 						<gui:openOnDoubleClick/>
-				</gui:behavior>
-			</xsd:appinfo>
+					</gui:behavior>
+				</xsd:appinfo>
+			</xsd:annotation>
 		</xsd:element>
 		
 		<xsd:element name="_callTk" substitutionGroup="_tokenBase" abstract="true">
-			<xsd:appinfo>
-				<gui:behavior>
+			<xsd:annotation>
+				<xsd:appinfo>
+					<gui:behavior>
 						<gui:openOnDoubleClick/>
-				</gui:behavior>
-			</xsd:appinfo>
+					</gui:behavior>
+				</xsd:appinfo>
+			</xsd:annotation>
 		</xsd:element>
 
 	<xsd:element name="_genericType" substitutionGroup="_primitive" abstract="true"/>

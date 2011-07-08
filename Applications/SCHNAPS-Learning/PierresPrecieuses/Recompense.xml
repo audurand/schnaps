@@ -1,6 +1,8 @@
 <FunctionReward>
   <LocalVariables>
-	  <LocalVariable label="Recompense" type="Double" value="0"/>
+	  <LocalVariable label="Recompense">
+		  <Double value="0"/>
+	  </LocalVariable>
   </LocalVariables>
   <PrimitiveTree>
     <Control_Sequential>

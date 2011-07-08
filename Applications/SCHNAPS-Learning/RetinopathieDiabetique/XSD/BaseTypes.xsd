@@ -22,7 +22,6 @@
 				<xsd:choice minOccurs="1" maxOccurs="1"> <!-- First argument -->
 					<xsd:annotation>
 						<xsd:appinfo>
-							<gui:childBehavior/>
 							<pmt:childType definedBy="staticType">Number</pmt:childType>
 							<pmt:childBranchTag lang="en">Operator argument</pmt:childBranchTag>
 						</xsd:appinfo>
@@ -40,7 +39,6 @@
 					<xsd:choice minOccurs="1" maxOccurs="1"> <!-- First argument -->
 						<xsd:annotation>
 							<xsd:appinfo>
-								<gui:childBehavior/>
 								<pmt:childType definedBy="staticType">Number</pmt:childType>
 								<pmt:childBranchTag lang="en">First argument</pmt:childBranchTag>
 							</xsd:appinfo>
@@ -53,7 +51,6 @@
 					<xsd:choice minOccurs="1" maxOccurs="1"> <!-- Second argument -->
 						<xsd:annotation>
 							<xsd:appinfo>
-								<gui:childBehavior/>
 								<pmt:childType definedBy="staticType">Number</pmt:childType>
 								<pmt:childBranchTag lang="en">Second argument</pmt:childBranchTag>
 							</xsd:appinfo>
@@ -71,7 +68,6 @@
 					<xsd:choice> 
 						<xsd:annotation>
 							<xsd:appinfo>
-								<gui:childBehavior/>
 								<pmt:childType definedBy="staticType">Bool</pmt:childType>
 							</xsd:appinfo>
 						</xsd:annotation>
@@ -88,7 +84,6 @@
 					<xsd:choice minOccurs="1" maxOccurs="1"> <!-- First argument -->
 						<xsd:annotation>
 							<xsd:appinfo>
-								<gui:childBehavior/>
 								<pmt:childType definedBy="staticType">Atom</pmt:childType>
 							</xsd:appinfo>
 						</xsd:annotation>
@@ -100,7 +95,6 @@
 					<xsd:choice minOccurs="1" maxOccurs="1"> <!-- Second argument -->
 						<xsd:annotation>
 							<xsd:appinfo>
-								<gui:childBehavior/>
 								<pmt:childType definedBy="argument">1</pmt:childType>
 							</xsd:appinfo>
 						</xsd:annotation>
@@ -297,19 +291,23 @@
 	<xsd:element name="_tokenBase" substitutionGroup="_primitive" abstract="true"/>
 		<xsd:element name="_staticTk" substitutionGroup="_tokenBase" type="_staticTkComplexType" abstract="true"/>
 		<xsd:element name="_dynamicTk" substitutionGroup="_tokenBase" type="_dynamicTkComplexType" abstract="true">
-			<xsd:appinfo>
-				<gui:behavior>
+			<xsd:annotation>
+				<xsd:appinfo>
+					<gui:behavior>
 						<gui:openOnDoubleClick/>
-				</gui:behavior>
-			</xsd:appinfo>
+					</gui:behavior>
+				</xsd:appinfo>
+			</xsd:annotation>
 		</xsd:element>
 		
 		<xsd:element name="_callTk" substitutionGroup="_tokenBase" abstract="true">
-			<xsd:appinfo>
-				<gui:behavior>
+			<xsd:annotation>
+				<xsd:appinfo>
+					<gui:behavior>
 						<gui:openOnDoubleClick/>
-				</gui:behavior>
-			</xsd:appinfo>
+					</gui:behavior>
+				</xsd:appinfo>
+			</xsd:annotation>
 		</xsd:element>
 
 	<xsd:element name="_genericType" substitutionGroup="_primitive" abstract="true"/>

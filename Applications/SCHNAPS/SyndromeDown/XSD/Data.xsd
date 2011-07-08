@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:gui="graphical_user_interface_info" xmlns:pmt="primitives_info">
+<xsd:schema xmlns:gui="graphical_user_interface_info" xmlns:pmt="primitives_info" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 	<xsd:annotation>
 		<xsd:appinfo>
 			<string dictName="Data"/>
@@ -13,7 +13,8 @@
 		</xsd:documentation>
 	</xsd:annotation>
 	
-	<xsd:include schemaLocation="XSD/BaseTypes.xsd"/>
+	<xsd:include schemaLocation="BaseTypes.xsd"/>
+	<xsd:include schemaLocation="Control.xsd"/>
 	
 	<xsd:element name="Data_Clock" substitutionGroup="_staticTk">
 		<xsd:annotation>
@@ -38,10 +39,10 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Type</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -51,10 +52,10 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Message</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -93,12 +94,21 @@
 					</xsd:annotation>
 					<xsd:element ref="_arithmeticOp"/>
 					<xsd:element ref="_conditionOp"/>
-					<xsd:element ref="_multiBranchesConditionOp"/>
 					<xsd:element ref="_staticTk"/>
-					<xsd:element ref="Data_ProcessCall"/>
+					<xsd:element ref="Control_ProcessCall"/>
 				</xsd:choice>
 			</xsd:sequence>
 		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="Data_SetIdle" substitutionGroup="_modifierOp">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<pmt:info lang="en">Set an individual status to IDLE.</pmt:info>
+				<pmt:mappedName lang="en">Set IDLE</pmt:mappedName>
+				<pmt:returnType definedBy="staticType">Void</pmt:returnType>
+			</xsd:appinfo>
+		</xsd:annotation>
 	</xsd:element>
 	
 	<xsd:element name="Data_SetVariable" substitutionGroup="_modifierOp">
@@ -114,9 +124,9 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:displayValue position="br" showAttr="inValue" delimiter="="/>
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:displayValue delimiter="=" position="br" showAttr="inValue"/>
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -126,10 +136,10 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inValue_Type"/>
 						<pmt:attributeMappedName lang="en">Value</pmt:attributeMappedName>
@@ -140,7 +150,7 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="atomTypes" allowEdition="False"/>
+							<gui:list allowEdition="False" type="atomTypes"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en">Type of value to set. WARNING: type must be the same as variable!</pmt:attributeInfo>
 						<pmt:attributeMappedName lang="en">Value type</pmt:attributeMappedName>
@@ -179,7 +189,6 @@
 						<pmt:childBranchTag lang="en">New value</pmt:childBranchTag>
 					</xsd:appinfo>
 				</xsd:annotation>
-				<xsd:element ref="_multiBranchesConditionOp"/>
 				<xsd:element ref="_operator"/>
 				<xsd:element ref="Data_Value"/>
 				<xsd:element ref="Data_Clock"/>
@@ -188,8 +197,8 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
 							<gui:displayValue position="br"/>
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
@@ -210,15 +219,15 @@
 		<xsd:complexType>
 			<xsd:complexContent>
 				<xsd:extension base="_staticTkComplexType">
-					<xsd:attribute name="inValue" use="required" type="xsd:string">
+					<xsd:attribute name="inValue" type="xsd:string" use="required">
 						<xsd:annotation>
 							<xsd:appinfo>
 								<gui:attributeBehavior>
-									<gui:list type="indVariables" allowEdition="False"/>
-									<gui:list type="envVariables" allowEdition="False"/>
-									<gui:list type="locVariables" allowEdition="False"/>
-									<gui:list type="allParameters" allowEdition="False"/>
-									<gui:displayValue  position="br"/>
+									<gui:list allowEdition="False" type="indVariables"/>
+									<gui:list allowEdition="False" type="envVariables"/>
+									<gui:list allowEdition="False" type="locVariables"/>
+									<gui:list allowEdition="False" type="allParameters"/>
+									<gui:displayValue position="br"/>
 								</gui:attributeBehavior>
 								<pmt:attributeMappedName lang="en">Value</pmt:attributeMappedName>
 								<pmt:attributeInfo lang="en" pairedAttr="inValue_Type"/>
@@ -229,7 +238,7 @@
 						<xsd:annotation>
 							<xsd:appinfo>
 								<gui:attributeBehavior>
-									<gui:list type="allTypes" allowEdition="False"/>
+									<gui:list allowEdition="False" type="allTypes"/>
 								</gui:attributeBehavior>
 								<pmt:attributeMappedName lang="en">Value type</pmt:attributeMappedName>
 							</xsd:appinfo>

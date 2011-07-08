@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:gui="graphical_user_interface_info" xmlns:pmt="primitives_info">
+<xsd:schema xmlns:gui="graphical_user_interface_info" xmlns:pmt="primitives_info" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 	<xsd:annotation>
 		<xsd:appinfo>
 			<string dictName="Operators"/>
@@ -46,8 +46,8 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -57,11 +57,11 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>
-							<gui:displayValue position="br" showAttr="inArgRight" delimiter="+"/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>
+							<gui:displayValue delimiter="+" position="br" showAttr="inArgRight"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Left number</pmt:attributeMappedName>
@@ -72,7 +72,7 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="numericTypes" allowEdition="False"/>
+							<gui:list allowEdition="False" type="numericTypes"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en">Type of left argument. WARNING: type must be the same as variable!</pmt:attributeInfo>
 						<pmt:attributeMappedName lang="en">Left argument type</pmt:attributeMappedName>
@@ -93,10 +93,10 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
@@ -107,7 +107,7 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="numericTypes" allowEdition="False"/>
+							<gui:list allowEdition="False" type="numericTypes"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en">Type of right argument. WARNING: type must be the same as variable!</pmt:attributeInfo>
 						<pmt:attributeMappedName lang="en">Right argument type</pmt:attributeMappedName>
@@ -149,8 +149,8 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -160,11 +160,11 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>
-							<gui:displayValue position="br" showAttr="inArgRight" delimiter="/"/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>
+							<gui:displayValue delimiter="/" position="br" showAttr="inArgRight"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Left number</pmt:attributeMappedName>
@@ -175,7 +175,7 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="numericTypes" allowEdition="False"/>
+							<gui:list allowEdition="False" type="numericTypes"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en">Type of left argument. WARNING: type must be the same as variable!</pmt:attributeInfo>
 						<pmt:attributeMappedName lang="en">Left argument type</pmt:attributeMappedName>
@@ -196,10 +196,10 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
@@ -210,7 +210,7 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="numericTypes" allowEdition="False"/>
+							<gui:list allowEdition="False" type="numericTypes"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en">Type of right argument. WARNING: type must be the same as variable!</pmt:attributeInfo>
 						<pmt:attributeMappedName lang="en">Right argument type</pmt:attributeMappedName>
@@ -230,26 +230,13 @@
 		</xsd:complexType>
 	</xsd:element>
 
-	<xsd:element name="Operators_ExpComplex" substitutionGroup="_unaryOp">
+	<xsd:element name="Operators_ExpComplex" substitutionGroup="_unaryOp" type="_unaryOpComplexType">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<pmt:info lang="en">Compute the exponential e-based function of child (number).</pmt:info>
 				<pmt:mappedName lang="en">Exp (complex)</pmt:mappedName>
 			</xsd:appinfo>
 		</xsd:annotation>
-		<xsd:complexType>
-			<xsd:choice minOccurs="1" maxOccurs="1">
-				<xsd:annotation>
-					<xsd:appinfo>
-						<pmt:childType definedBy="staticType">Number</pmt:childType>
-					</xsd:appinfo>
-				</xsd:annotation>
-				<xsd:element ref="_arithmeticOp"/>
-				<xsd:element ref="_conditionOp"/>
-				<xsd:element ref="_staticTk"/>
-				<xsd:element ref="_callTk"/>
-			</xsd:choice>
-		</xsd:complexType>
 	</xsd:element>
 	
 	<xsd:element name="Operators_ModComplex" substitutionGroup="_binaryOp">
@@ -257,35 +244,40 @@
 			<xsd:appinfo>
 				<pmt:info lang="en">Compute the modulo of left child (number) by right child (number).</pmt:info>
 				<pmt:mappedName lang="en">Modulo (complex)</pmt:mappedName>
+				<pmt:returnType definedBy="staticType">Int</pmt:returnType>
 			</xsd:appinfo>
 		</xsd:annotation>
 		<xsd:complexType>
-			<xsd:sequence minOccurs="1" maxOccurs="1">
-				<xsd:choice minOccurs="1" maxOccurs="1">
-					<xsd:annotation>
-						<xsd:appinfo>
-							<pmt:childType definedBy="staticType">Integer</pmt:childType>
-							<pmt:childBranchTag lang="en">Right number</pmt:childBranchTag>
-						</xsd:appinfo>
-					</xsd:annotation>
-					<xsd:element ref="_arithmeticOp"/>
-					<xsd:element ref="_conditionOp"/>
-					<xsd:element ref="_staticTk"/>
-					<xsd:element ref="_callTk"/>
-				</xsd:choice>
-				<xsd:choice minOccurs="1" maxOccurs="1">
-					<xsd:annotation>
-						<xsd:appinfo>
-							<pmt:childType definedBy="staticType">Integer</pmt:childType>
-							<pmt:childBranchTag lang="en">Left number</pmt:childBranchTag>
-						</xsd:appinfo>
-					</xsd:annotation>
-					<xsd:element ref="_arithmeticOp"/>
-					<xsd:element ref="_conditionOp"/>
-					<xsd:element ref="_staticTk"/>
-					<xsd:element ref="_callTk"/>
-				</xsd:choice>
-			</xsd:sequence>
+			<xsd:complexContent>
+				<xsd:restriction base="_binaryOpComplexType">
+					<xsd:sequence maxOccurs="1" minOccurs="1">
+						<xsd:choice maxOccurs="1" minOccurs="1">
+							<xsd:annotation>
+								<xsd:appinfo>
+									<pmt:childType definedBy="staticType">Integer</pmt:childType>
+									<pmt:childBranchTag lang="en">Right number</pmt:childBranchTag>
+								</xsd:appinfo>
+							</xsd:annotation>
+							<xsd:element ref="_arithmeticOp"/>
+							<xsd:element ref="_conditionOp"/>
+							<xsd:element ref="_staticTk"/>
+							<xsd:element ref="_callTk"/>
+						</xsd:choice>
+						<xsd:choice maxOccurs="1" minOccurs="1">
+							<xsd:annotation>
+								<xsd:appinfo>
+									<pmt:childType definedBy="staticType">Integer</pmt:childType>
+									<pmt:childBranchTag lang="en">Left number</pmt:childBranchTag>
+								</xsd:appinfo>
+							</xsd:annotation>
+							<xsd:element ref="_arithmeticOp"/>
+							<xsd:element ref="_conditionOp"/>
+							<xsd:element ref="_staticTk"/>
+							<xsd:element ref="_callTk"/>
+						</xsd:choice>
+					</xsd:sequence>
+				</xsd:restriction>
+			</xsd:complexContent>
 		</xsd:complexType>
 	</xsd:element>
 	
@@ -311,8 +303,8 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -322,11 +314,11 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>
-							<gui:displayValue position="br" showAttr="inArgRight" delimiter="*"/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>
+							<gui:displayValue delimiter="*" position="br" showAttr="inArgRight"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Left number</pmt:attributeMappedName>
@@ -337,7 +329,7 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="numericTypes" allowEdition="False"/>
+							<gui:list allowEdition="False" type="numericTypes"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en">Type of left argument. WARNING: type must be the same as variable!</pmt:attributeInfo>
 						<pmt:attributeMappedName lang="en">Left argument type</pmt:attributeMappedName>
@@ -358,10 +350,10 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
@@ -372,7 +364,7 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="numericTypes" allowEdition="False"/>
+							<gui:list allowEdition="False" type="numericTypes"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en">Type of right argument. WARNING: type must be the same as variable!</pmt:attributeInfo>
 						<pmt:attributeMappedName lang="en">Right argument type</pmt:attributeMappedName>
@@ -423,8 +415,8 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -434,11 +426,11 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>
-							<gui:displayValue position="br" showAttr="inArgRight" delimiter="-"/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>
+							<gui:displayValue delimiter="-" position="br" showAttr="inArgRight"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Left number</pmt:attributeMappedName>
@@ -449,7 +441,7 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="numericTypes" allowEdition="False"/>
+							<gui:list allowEdition="False" type="numericTypes"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en">Type of left argument. WARNING: type must be the same as variable!</pmt:attributeInfo>
 						<pmt:attributeMappedName lang="en">Left argument type</pmt:attributeMappedName>
@@ -470,10 +462,10 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
@@ -484,7 +476,7 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="numericTypes" allowEdition="False"/>
+							<gui:list allowEdition="False" type="numericTypes"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en">Type of right argument. WARNING: type must be the same as variable!</pmt:attributeInfo>
 						<pmt:attributeMappedName lang="en">Right argument type</pmt:attributeMappedName>
@@ -505,7 +497,7 @@
 	</xsd:element>
 	
 	
-	<xsd:element name="Operators_IsBetween" substitutionGroup="_comparisonOp">
+	<xsd:element name="Operators_IsBetween" substitutionGroup="_booleanOp">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<pmt:info lang="en">Test inclusive between on numbers.</pmt:info>
@@ -517,10 +509,10 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inValue_Type"/>
 						<pmt:attributeMappedName lang="en">Test number</pmt:attributeMappedName>
@@ -531,7 +523,7 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="numericTypes" allowEdition="False"/>
+							<gui:list allowEdition="False" type="numericTypes"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en">Type of test value. WARNING: type must be the same as min and max arguments!</pmt:attributeInfo>
 						<pmt:attributeMappedName lang="en">Test value type</pmt:attributeMappedName>
@@ -552,10 +544,10 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Min number</pmt:attributeMappedName>
@@ -566,7 +558,7 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="numericTypes" allowEdition="False"/>
+							<gui:list allowEdition="False" type="numericTypes"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en">Type of min argument. WARNING: type must be the same as test value and max argument!</pmt:attributeInfo>
 						<pmt:attributeMappedName lang="en">Min argument type</pmt:attributeMappedName>
@@ -587,10 +579,10 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Max number</pmt:attributeMappedName>
@@ -601,7 +593,7 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="numericTypes" allowEdition="False"/>
+							<gui:list allowEdition="False" type="numericTypes"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en">Type of max argument. WARNING: type must be the same as test value and min argument!</pmt:attributeInfo>
 						<pmt:attributeMappedName lang="en">Max argument type</pmt:attributeMappedName>
@@ -621,7 +613,7 @@
 		</xsd:complexType>
 	</xsd:element>
 	
-	<xsd:element name="Operators_IsBetweenComplex" substitutionGroup="_comparisonOp">
+	<xsd:element name="Operators_IsBetweenComplex" substitutionGroup="_booleanOp">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<pmt:info lang="en">Test inclusive between on children (numbers).</pmt:info>
@@ -629,7 +621,7 @@
 			</xsd:appinfo>
 		</xsd:annotation>
 		<xsd:complexType>
-			<xsd:sequence minOccurs="1" maxOccurs="1">
+			<xsd:sequence maxOccurs="1" minOccurs="1">
 				<xsd:choice> <!-- Value -->
 					<xsd:annotation>
 						<xsd:appinfo>
@@ -670,7 +662,7 @@
 		</xsd:complexType>
 	</xsd:element>
 	
-	<xsd:element name="Operators_IsEqual" substitutionGroup="_comparisonOp">
+	<xsd:element name="Operators_IsEqual" substitutionGroup="_booleanOp">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<pmt:info lang="en">Test is left argument is equal to right argument.</pmt:info>
@@ -682,11 +674,11 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>
-							<gui:displayValue position="br" showAttr="inArgRight" delimiter="=?"/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>
+							<gui:displayValue delimiter="=?" position="br" showAttr="inArgRight"/>		
 						</gui:attributeBehavior>	
 						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Left argument</pmt:attributeMappedName>
@@ -697,7 +689,7 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="numericTypes" allowEdition="False"/>
+							<gui:list allowEdition="False" type="numericTypes"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en">Type of left argument. WARNING: type must be the same as right argument!</pmt:attributeInfo>
 						<pmt:attributeMappedName lang="en">Left argument type</pmt:attributeMappedName>
@@ -718,10 +710,10 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
@@ -732,7 +724,7 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="numericTypes" allowEdition="False"/>
+							<gui:list allowEdition="False" type="numericTypes"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en">Type of right argument. WARNING: type must be the same as test left argument!</pmt:attributeInfo>
 						<pmt:attributeMappedName lang="en">Right argument type</pmt:attributeMappedName>
@@ -761,7 +753,7 @@
 		</xsd:annotation>
 	</xsd:element>
 	
-	<xsd:element name="Operators_IsGreater" substitutionGroup="_comparisonOp">
+	<xsd:element name="Operators_IsGreater" substitutionGroup="_booleanOp">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<pmt:info lang="en">Test is left argument is greater than right argument.</pmt:info>
@@ -773,11 +765,11 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>
-							<gui:displayValue position="br" showAttr="inArgRight" delimiter="&gt;"/>			
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>
+							<gui:displayValue delimiter="&gt;" position="br" showAttr="inArgRight"/>			
 						</gui:attributeBehavior>	
 						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Left argument</pmt:attributeMappedName>
@@ -788,7 +780,7 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="numericTypes" allowEdition="False"/>
+							<gui:list allowEdition="False" type="numericTypes"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en">Type of left argument. WARNING: type must be the same as right argument!</pmt:attributeInfo>
 						<pmt:attributeMappedName lang="en">Left argument type</pmt:attributeMappedName>
@@ -809,10 +801,10 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
@@ -823,7 +815,7 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="numericTypes" allowEdition="False"/>
+							<gui:list allowEdition="False" type="numericTypes"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en">Type of right argument. WARNING: type must be the same as test left argument!</pmt:attributeInfo>
 						<pmt:attributeMappedName lang="en">Right argument type</pmt:attributeMappedName>
@@ -852,7 +844,7 @@
 		</xsd:annotation>
 	</xsd:element>
 	
-	<xsd:element name="Operators_IsGreaterOrEqual" substitutionGroup="_comparisonOp">
+	<xsd:element name="Operators_IsGreaterOrEqual" substitutionGroup="_booleanOp">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<pmt:info lang="en">Test is left argument is greater or equal to right argument.</pmt:info>
@@ -864,11 +856,11 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>
-							<gui:displayValue position="br" showAttr="inArgRight" delimiter="&gt;="/>			
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>
+							<gui:displayValue delimiter="&gt;=" position="br" showAttr="inArgRight"/>			
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Left argument</pmt:attributeMappedName>
@@ -879,7 +871,7 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="numericTypes" allowEdition="False"/>
+							<gui:list allowEdition="False" type="numericTypes"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en">Type of left argument. WARNING: type must be the same as right argument!</pmt:attributeInfo>
 						<pmt:attributeMappedName lang="en">Left argument type</pmt:attributeMappedName>
@@ -900,10 +892,10 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
@@ -914,7 +906,7 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="numericTypes" allowEdition="False"/>
+							<gui:list allowEdition="False" type="numericTypes"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en">Type of right argument. WARNING: type must be the same as test left argument!</pmt:attributeInfo>
 						<pmt:attributeMappedName lang="en">Right argument type</pmt:attributeMappedName>
@@ -943,7 +935,7 @@
 		</xsd:annotation>
 	</xsd:element>
 	
-	<xsd:element name="Operators_IsLess" substitutionGroup="_comparisonOp">
+	<xsd:element name="Operators_IsLess" substitutionGroup="_booleanOp">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<pmt:info lang="en">Test is left argument is less than right argument.</pmt:info>
@@ -955,11 +947,11 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>
-							<gui:displayValue position="br" showAttr="inArgRight" delimiter="&lt;"/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>
+							<gui:displayValue delimiter="&lt;" position="br" showAttr="inArgRight"/>		
 						</gui:attributeBehavior>	
 						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Left argument</pmt:attributeMappedName>
@@ -970,7 +962,7 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="numericTypes" allowEdition="False"/>
+							<gui:list allowEdition="False" type="numericTypes"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en">Type of left argument. WARNING: type must be the same as right argument!</pmt:attributeInfo>
 						<pmt:attributeMappedName lang="en">Left argument type</pmt:attributeMappedName>
@@ -991,10 +983,10 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
@@ -1005,7 +997,7 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="numericTypes" allowEdition="False"/>
+							<gui:list allowEdition="False" type="numericTypes"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en">Type of right argument. WARNING: type must be the same as test left argument!</pmt:attributeInfo>
 						<pmt:attributeMappedName lang="en">Right argument type</pmt:attributeMappedName>
@@ -1034,7 +1026,7 @@
 		</xsd:annotation>
 	</xsd:element>
 	
-	<xsd:element name="Operators_IsLessOrEqual" substitutionGroup="_comparisonOp">
+	<xsd:element name="Operators_IsLessOrEqual" substitutionGroup="_booleanOp">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<pmt:info lang="en">Test is left argument is less or equal to right argument.</pmt:info>
@@ -1046,11 +1038,11 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>
-							<gui:displayValue position="br" showAttr="inArgRight" delimiter="&lt;="/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>
+							<gui:displayValue delimiter="&lt;=" position="br" showAttr="inArgRight"/>		
 						</gui:attributeBehavior>	
 						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Left argument</pmt:attributeMappedName>
@@ -1061,7 +1053,7 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="numericTypes" allowEdition="False"/>
+							<gui:list allowEdition="False" type="numericTypes"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en">Type of left argument. WARNING: type must be the same as right argument!</pmt:attributeInfo>
 						<pmt:attributeMappedName lang="en">Left argument type</pmt:attributeMappedName>
@@ -1082,10 +1074,10 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
@@ -1096,7 +1088,7 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="numericTypes" allowEdition="False"/>
+							<gui:list allowEdition="False" type="numericTypes"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en">Type of right argument. WARNING: type must be the same as test left argument!</pmt:attributeInfo>
 						<pmt:attributeMappedName lang="en">Right argument type</pmt:attributeMappedName>
@@ -1126,7 +1118,7 @@
 	</xsd:element>
 	
 	
-	<xsd:element name="Operators_And" substitutionGroup="_logicalOp" >
+	<xsd:element name="Operators_And" substitutionGroup="_booleanOp">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<pmt:info lang="en">Compute a logical AND between left and right booleans.</pmt:info>
@@ -1138,11 +1130,11 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>
-							<gui:displayValue position="br" showAttr="inArgRight" delimiter="&amp;"/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>
+							<gui:displayValue delimiter="&amp;" position="br" showAttr="inArgRight"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Left boolean</pmt:attributeMappedName>
 						<pmt:attributeType>Bool</pmt:attributeType>
@@ -1153,10 +1145,10 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Right boolean</pmt:attributeMappedName>
 						<pmt:attributeType>Bool</pmt:attributeType>
@@ -1175,7 +1167,7 @@
 		</xsd:annotation>
 	</xsd:element>
 	
-	<xsd:element name="Operators_Not" substitutionGroup="_logicalOp" >
+	<xsd:element name="Operators_Not" substitutionGroup="_booleanOp">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<pmt:info lang="en">Compute a logical NOT on boolean.</pmt:info>
@@ -1187,10 +1179,10 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>
 							<gui:displayValue position="br"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Boolean</pmt:attributeMappedName>
@@ -1201,7 +1193,7 @@
 		</xsd:complexType>
 	</xsd:element>
 	
-	<xsd:element name="Operators_NotComplex" substitutionGroup="_logicalOp">
+	<xsd:element name="Operators_NotComplex" substitutionGroup="_booleanOp">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<pmt:info lang="en">Compute a logical NOT on child (boolean).</pmt:info>
@@ -1209,7 +1201,7 @@
 			</xsd:appinfo>
 		</xsd:annotation>
 		<xsd:complexType>
-			<xsd:sequence minOccurs="1" maxOccurs="1">
+			<xsd:sequence maxOccurs="1" minOccurs="1">
 				<xsd:choice>
 					<xsd:element ref="_booleanOp"/>
 					<xsd:element ref="_conditionOp"/>
@@ -1220,7 +1212,7 @@
 		</xsd:complexType>
 	</xsd:element>
 	
-	<xsd:element name="Operators_Or" substitutionGroup="_logicalOp" >
+	<xsd:element name="Operators_Or" substitutionGroup="_booleanOp">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<pmt:info lang="en">Compute a logical OR between left and right booleans.</pmt:info>
@@ -1232,11 +1224,11 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>
-							<gui:displayValue position="br" showAttr="inArgRight" delimiter="|"/>			
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>
+							<gui:displayValue delimiter="|" position="br" showAttr="inArgRight"/>			
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Left boolean</pmt:attributeMappedName>
 						<pmt:attributeType>Bool</pmt:attributeType>
@@ -1247,10 +1239,10 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Right boolean</pmt:attributeMappedName>
 						<pmt:attributeType>Bool</pmt:attributeType>
@@ -1278,7 +1270,7 @@
 			</xsd:appinfo>
 		</xsd:annotation>
 		<xsd:complexType>
-			<xsd:sequence minOccurs="2" maxOccurs="unbounded">
+			<xsd:sequence maxOccurs="unbounded" minOccurs="2">
 				<xsd:choice>
 					<xsd:element ref="_conditionOp"/>
 					<xsd:element ref="_stringOp"/>
@@ -1301,8 +1293,8 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -1312,11 +1304,11 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>
-							<gui:displayValue position="br" showAttr="inArgRight" delimiter="&lt;"/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>
+							<gui:displayValue delimiter="&lt;" position="br" showAttr="inArgRight"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Left string</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -1326,10 +1318,10 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<gui:attributeBehavior>
-							<gui:list type="indVariables" allowEdition="False"/>
-							<gui:list type="envVariables" allowEdition="False"/>
-							<gui:list type="locVariables" allowEdition="False"/>
-							<gui:list type="allParameters" allowEdition="False"/>		
+							<gui:list allowEdition="False" type="indVariables"/>
+							<gui:list allowEdition="False" type="envVariables"/>
+							<gui:list allowEdition="False" type="locVariables"/>
+							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Right string</pmt:attributeMappedName>
 					</xsd:appinfo>
@@ -1338,7 +1330,7 @@
 		</xsd:complexType>
 	</xsd:element>
 	
-	<xsd:element name="Operators_NPV" substitutionGroup="_unaryOp">
+	<xsd:element name="Operators_NPVComplex" substitutionGroup="_unaryOp">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<pmt:info lang="en">Compute the Nearest Present Value of the child (number).</pmt:info>
@@ -1348,14 +1340,14 @@
 		<xsd:complexType>
 			<xsd:complexContent>
 				<xsd:extension base="_unaryOpComplexType">
-					<xsd:attribute name="rate" type="xsd:string" use="required">
+					<xsd:attribute name="inDiscountRate" type="xsd:string" use="required">
 						<xsd:annotation>
 							<xsd:appinfo>
 								<gui:attributeBehavior>
-									<gui:list type="indVariables" allowEdition="False"/>
-									<gui:list type="envVariables" allowEdition="False"/>
-									<gui:list type="locVariables" allowEdition="False"/>
-									<gui:list type="allParameters" allowEdition="False"/>	
+									<gui:list allowEdition="False" type="indVariables"/>
+									<gui:list allowEdition="False" type="envVariables"/>
+									<gui:list allowEdition="False" type="locVariables"/>
+									<gui:list allowEdition="False" type="allParameters"/>	
 									<gui:displayValue position="br"/>	
 								</gui:attributeBehavior>
 								<pmt:attributeMappedName lang="en">Actualization rate</pmt:attributeMappedName>

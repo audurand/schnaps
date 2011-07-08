@@ -200,7 +200,7 @@
     </Input>
     <Simulation>
       <RandomizerInfo/>
-      <Clock>
+      <Clock units="year">
         <PrimitiveTree>
 					<Operators_IsEqualComplex>
 						<Data_Clock/>

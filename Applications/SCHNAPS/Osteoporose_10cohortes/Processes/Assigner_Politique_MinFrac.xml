@@ -18,7 +18,7 @@
           </Operators_IsEqualComplex>
           <Control_Sequential>
             <Control_IfThenElse>
-              <Operators_IsEqual inArgRight="50" inArgRight_Type="Int" inArgLeft="@Age"/>
+              <Operators_IsEqual inArgRight="60" inArgRight_Type="Int" inArgLeft="@Age"/>
               <Control_Sequential>
                 <!--Changement de politique: CAROC + prevention activite physique et vitamine D/calcium-->
                 <Data_SetVariable inValue="false" outVariable="@Prevention" inValue_Type="Bool"/>
@@ -40,9 +40,8 @@
                   <Control_Nothing/>
                 </Control_IfThenElse>
               </Control_Sequential>
-              <Control_Nothing/>
+              <Control_ProcessPush inDelay="1" inTarget="current" inLabel="Assigner_Politique_MinFrac"/>
             </Control_IfThenElse>
-            <Control_ProcessPush inDelay="10" inTarget="current" inLabel="Assigner_Politique_MinFrac"/>
           </Control_Sequential>
           <Control_ProcessPush inDelay="1" inTarget="current" inLabel="Assigner_Politique_MinFrac"/>
         </Control_IfThenElse>

@@ -5,22 +5,23 @@
 			<string dictName="Learning"/>
 			<int dictPriority="0"/>
 			<string dictRequires=""/>
-			<string shortDescription="Primitives to bring learning to SCHNAPS!"/>
+			<string shortDescription="Learning primitives and components for SCHNAPS"/>
 		</xsd:appinfo>
 		<xsd:documentation>
-		W3C XML Schema for SCHNAPS Monte-Carlo learning plugin files by Audrey Durand, November 2010.
+		W3C XML Schema for Learning plugin by Audrey Durand, 2011.
+		Primitive structures by Marc-Andre Gardner, 2010.
 		</xsd:documentation>
 	</xsd:annotation>
 	
 	<xsd:include schemaLocation="XSD/BaseTypes.xsd"/>
 	
-	<xsd:element name="LearningModule" substitutionGroup="_component">
+	<xsd:element name="Learning_LearningModule" substitutionGroup="_component">
 		<xsd:complexType>
 			<xsd:sequence minOccurs="1" maxOccurs="1">
-				<xsd:element name="DecisionMaker">
+				<xsd:element name="Learning_DecisionMaker">
 					<xsd:complexType>
 						<xsd:sequence minOccurs="0" maxOccurs="unbounded">
-							<xsd:element name="LearningChoice">
+							<xsd:element name="Choice">
 								<xsd:complexType>
 									<xsd:sequence minOccurs="1" maxOccurs="1">
 										<xsd:element name="Options">
@@ -36,15 +37,15 @@
 										</xsd:element>
 										<xsd:element name="FunctionState">
 											<xsd:complexType>
-												<xsd:attribute name="file" type="xsd:string" use="required"/>
+												<xsd:attribute name="file" type="xsd:string" use="optional"/>
 											</xsd:complexType>
 										</xsd:element>
 										<xsd:element name="FunctionReward">
 											<xsd:complexType>
-												<xsd:attribute name="file" type="xsd:string" use="required"/>
+												<xsd:attribute name="file" type="xsd:string" use="optional"/>
 											</xsd:complexType>
 										</xsd:element>
-										<xsd:element name="Map">
+										<xsd:element name="ChoiceMap">
 											<xsd:complexType>
 												<xsd:sequence minOccurs="0" maxOccurs="unbounded">
 													<xsd:element name="State">
@@ -53,7 +54,7 @@
 																<xsd:element name="Action">
 																	<xsd:complexType>
 																		<xsd:attribute name="tried" type="xsd:boolean" use="required"/>
-																		<xsd:attribute name="updateTimes" type="xsd:integer" use="required"/>
+																		<xsd:attribute name="updatedTimes" type="xsd:integer" use="required"/>
 																		<xsd:attribute name="reward" type="xsd:double" use="required"/>
 																		<xsd:attribute name="reward2" type="xsd:double" use="required"/>
 																	</xsd:complexType>
@@ -66,7 +67,7 @@
 											</xsd:complexType>
 										</xsd:element>
 									</xsd:sequence>
-									<xsd:attribute name="choice" type="xsd:string" use="required"/>
+									<xsd:attribute name="label" type="xsd:string" use="required"/>
 								</xsd:complexType>
 							</xsd:element>
 						</xsd:sequence>
@@ -75,32 +76,31 @@
 			</xsd:sequence>
 		</xsd:complexType>
 	</xsd:element>
-
-	<xsd:element name="Learning_Choice" substitutionGroup="_primitive">
+	
+	<xsd:element name="Learning_DecisionNode" substitutionGroup="_primitive">
 		<xsd:annotation>
 			<xsd:appinfo>
-				<pmt:info lang="en">A choice of action must be made.</pmt:info>
-				<pmt:mappedName lang="en">Choice (learning)</pmt:mappedName>
+				<pmt:info lang="en">Make a choice between several actions.</pmt:info>
+				<pmt:mappedName lang="en">Decision (learning)</pmt:mappedName>
 				<pmt:returnType definedBy="staticType">Void</pmt:returnType>
 			</xsd:appinfo>
 		</xsd:annotation>
 		<xsd:complexType>
-			<xsd:choice minOccurs="0" maxOccurs="unbounded">
-				<xsd:annotation>
-					<xsd:appinfo>
-						<pmt:childType definedBy="staticType">Any</pmt:childType>
-						<pmt:childBranchTag lang="en">Action</pmt:childBranchTag>
-					</xsd:appinfo>
-				</xsd:annotation>
+			<xsd:choice minOccurs="1" maxOccurs="unbounded">
+				<xsd:appinfo>
+					<pmt:childType definedBy="staticType">Any</pmt:childType>
+					<pmt:childBranchTag lang="en">Action</pmt:childBranchTag>
+				</xsd:appinfo>
 				<xsd:element ref="_primitive"/>
 			</xsd:choice>
 			<xsd:attribute name="label" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:appinfo>
-						<pmt:attributeMappedName>Name</pmt:attributeMappedName>
+						<pmt:attributeMappedName lang="en">Name</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
 		</xsd:complexType>
 	</xsd:element>
+
 </xsd:schema>
