@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Simulator version="0.1">
+    <System>
+      <Plugins>
+        <Plugin source="libcontrol.so" xsdfile="XSD/Control.xsd"/>
+        <Plugin source="libdata.so" xsdfile="XSD/Data.xsd"/>
+        <Plugin source="liboperators.so" xsdfile="XSD/Operators.xsd"/>
+        <Plugin source="libmeds.so" xsdfile="XSD/Meds.xsd"/>
+      </Plugins>
+      <Parameters>
+        <Entry label="ref.tranche_age_40_90_5ans">
+          <Vector>
+            <Int value="40"/>
+            <Int value="45"/>
+            <Int value="50"/>
+            <Int value="55"/>
+            <Int value="60"/>
+            <Int value="65"/>
+            <Int value="70"/>
+            <Int value="75"/>
+            <Int value="80"/>
+            <Int value="85"/>
+            <Int value="90"/>
+          </Vector>
+        </Entry>
+        <Entry label="threads.simulator">
+          <UInt value="8"/>
+        </Entry>
+        <Entry label="threads.generator">
+          <UInt value="8"/>
+        </Entry>
+        <Entry label="ref.taux_actualisation">
+          <Double value="0.03"/>
+        </Entry>
+        <Entry label="ref.SCORE_specificite">
+          <Double value="0.32"/>
+        </Entry>
+        <Entry label="ref.SCORE_sensibilite">
+          <Double value="0.90"/>
+        </Entry>
+        <Entry label="ref.probabilite_soins_longue_duree_hanche">
+          <Double value="0.42"/>
+        </Entry>
+        <Entry label="ref.probabilite_investigation">
+          <Double value="0.21"/>
+        </Entry>
+        <Entry label="ref.OST_specificite">
+          <Double value="0.514"/>
+        </Entry>
+        <Entry label="ref.OST_sensibilite">
+          <Double value="0.768"/>
+        </Entry>
+        <Entry label="ref.ORAI_specificite">
+          <Double value="0.451"/>
+        </Entry>
+        <Entry label="ref.ORAI_sensibilite">
+          <Double value="0.90"/>
+        </Entry>
+        <Entry label="ref.effet_vitDCalcium_poignet_osteo">
+          <Double value="0.88"/>
+        </Entry>
+        <Entry label="ref.effet_vitDcalcium_poignet_normale">
+          <Double value="0.79"/>
+        </Entry>
+        <Entry label="ref.effet_vitDCalcium_hanche_osteo">
+          <Double value="0.88"/>
+        </Entry>
+        <Entry label="ref.effet_vitDcalcium_hanche_normale">
+          <Double value="0.72"/>
+        </Entry>
+        <Entry label="ref.effet_vitDCalcium_colonne_osteo">
+          <Double value="0.88"/>
+        </Entry>
+        <Entry label="ref.effet_risendronate_poignet_osteo">
+          <Double value="0.55"/>
+        </Entry>
+        <Entry label="ref.effet_risendronate_poignet_normale">
+          <Double value="0.55"/>
+        </Entry>
+        <Entry label="ref.effet_risendronate_hanche_osteo">
+          <Double value="0.55"/>
+        </Entry>
+        <Entry label="ref.effet_risendronate_hanche_normale">
+          <Double value="0.55"/>
+        </Entry>
+        <Entry label="ref.effet_risendronate_colonne_osteo">
+          <Double value="0.53"/>
+        </Entry>
+        <Entry label="ref.effet_risendronate_colonne_normale">
+          <Double value="0.53"/>
+        </Entry>
+        <Entry label="ref.effet_actphys_hanche_osteo">
+          <Double value="0.62"/>
+        </Entry>
+        <Entry label="ref.effet_actphys_hanche_normale">
+          <Double value="0.62"/>
+        </Entry>
+        <Entry label="ref.DMO">
+          <Vector>
+            <String value="Normale"/>
+            <String value="Osteopenie"/>
+            <String value="Osteoporose"/>
+          </Vector>
+        </Entry>
+        <Entry label="ref.cout_hospitalisation_hanche">
+          <Double value="19759.91"/>
+        </Entry>
+        <Entry label="ref.cout_hospitalisation_colonne">
+          <Double value="8076.00"/>
+        </Entry>
+        <Entry label="ref.cout_campagne_ActPhys">
+          <Double value="5"/>
+        </Entry>
+        <Entry label="ref.compliance_depistage">
+          <Double value="0.531"/>
+        </Entry>
+      </Parameters>
+    </System>
+    <Input>
+      <Environment file="Environment/Environment.xml"/>
+      <PopulationManager>
+        <Generator>
+          <RandomizerInfo/>
+          <Profiles>
+            <GenProfile label="Femmes_2006">
+              <Demography file="Populations/Demography.xml"/>
+              <AcceptFunction>
+                <PrimitiveTree>
+                  <Data_Value inValue="true" inValue_Type="Bool"/>
+                </PrimitiveTree>
+              </AcceptFunction>
+              <IndividualModel>
+                <Variable label="Age"/>
+              </IndividualModel>
+              <SimulationVariables file="Populations/SimulationVariables.xml"/>
+            </GenProfile>
+          </Profiles>
+        </Generator>
+        <Population>
+          <SubPopulation profile="Femmes_2006" size="500000" time="0"/>
+        </Population>
+      </PopulationManager>
+    </Input>
+    <Simulation>
+      <RandomizerInfo/>
+      <Clock units="year">
+        <PrimitiveTree>
+          <Operators_OrComplex>
+            <Operators_IsEqual inArgRight="0" inArgRight_Type="Int" inArgLeft="#IndividusVivants"/>
+            <Operators_IsEqualComplex>
+              <Data_Clock/>
+              <Data_Value inValue="80" inValue_Type="ULong"/>
+            </Operators_IsEqualComplex>
+          </Operators_OrComplex>
+        </PrimitiveTree>
+      </Clock>
+      <Processes>
+        <Process file="Processes/ActPhys.xml" label="ActPhys"/>
+        <Process file="Processes/ActPhys+VitDCalcium.xml" label="ActPhys+VitDCalcium"/>
+        <Process file="Processes/Campagne_Prevention_ActPhys.xml" label="Campagne_Prevention_ActPhys"/>
+        <Process file="Processes/CAROC_Ctrl.xml" label="CAROC_Ctrl"/>
+        <Process file="Processes/CAROC_Initial.xml" label="CAROC_Initial"/>
+        <Process file="Processes/CAROC_PostFracture.xml" label="CAROC_PostFracture"/>
+        <Process file="Processes/CAROC_PostFracture_Depistee.xml" label="CAROC_PostFracture_Depistee"/>
+        <Process file="Processes/Effets_ActPhys.xml" label="Effets_ActPhys"/>
+        <Process file="Processes/Effets_ActPhys+VitDCalcium.xml" label="Effets_ActPhys+VitDCalcium"/>
+        <Process file="Processes/Effets_Risendronate.xml" label="Effets_Risendronate"/>
+        <Process file="Processes/Effets_VitDCalcium.xml" label="Effets_VitDCalcium"/>
+        <Process file="Processes/Evenements_ActPhys.xml" label="Evenements_ActPhys"/>
+        <Process file="Processes/Evenements_ActPhys+VitDCalcium.xml" label="Evenements_ActPhys+VitDCalcium"/>
+        <Process file="Processes/Evenements_AucunePrevention.xml" label="Evenements_AucunePrevention"/>
+        <Process file="Processes/Evenements_VitDCalcium.xml" label="Evenements_VitDCalcium"/>
+        <Process file="Processes/Fracture_Colonne.xml" label="Fracture_Colonne"/>
+        <Process file="Processes/Fracture_Hanche.xml" label="Fracture_Hanche"/>
+        <Process file="Processes/Fracture_Poignet.xml" label="Fracture_Poignet"/>
+        <Process file="Processes/MAJ_Age.xml" label="MAJ_Age"/>
+        <Process file="Processes/MAJ_DMO.xml" label="MAJ_DMO"/>
+        <Process file="Processes/MAJ_ProbabiliteFracture.xml" label="MAJ_ProbabiliteFracture"/>
+        <Process file="Processes/MAJ_QALY.xml" label="MAJ_QALY"/>
+        <Process file="Processes/MAJ_TauxMortalite.xml" label="MAJ_TauxMortalite"/>
+        <Process file="Processes/MAJ_TauxMortalite_PostColonne_1ereAnnee.xml" label="MAJ_TauxMortalite_PostColonne_1ereAnnee"/>
+        <Process file="Processes/MAJ_TauxMortalite_PostColonne_2eAnnee.xml" label="MAJ_TauxMortalite_PostColonne_2eAnnee"/>
+        <Process file="Processes/MAJ_TauxMortalite_PostHanche_1ereAnnee.xml" label="MAJ_TauxMortalite_PostHanche_1ereAnnee"/>
+        <Process file="Processes/MAJ_TauxMortalite_PostHanche_2eAnnee.xml" label="MAJ_TauxMortalite_PostHanche_2eAnnee"/>
+        <Process file="Processes/MAJ_TauxMortalite_PostHanche_3eAnnee.xml" label="MAJ_TauxMortalite_PostHanche_3eAnnee"/>
+        <Process file="Processes/MAJ_TauxMortalite_PostPoignet_1ereAnnee.xml" label="MAJ_TauxMortalite_PostPoignet_1ereAnnee"/>
+        <Process file="Processes/MAJ_TauxMortalite_PostPoignet_2eAnnee.xml" label="MAJ_TauxMortalite_PostPoignet_2eAnnee"/>
+        <Process file="Processes/ORAI.xml" label="ORAI"/>
+        <Process file="Processes/OST.xml" label="OST"/>
+        <Process file="Processes/Retirer_Individu.xml" label="Retirer_Individu"/>
+        <Process file="Processes/Scenario_ActivitePhysique.xml" label="Scenario_ActivitePhysique"/>
+        <Process file="Processes/Scenario_ActivitePhysique+VitamineDCalcium.xml" label="Scenario_ActivitePhysique+VitamineDCalcium"/>
+        <Process file="Processes/Scenario_AucunePrevention.xml" label="Scenario_AucunePrevention"/>
+        <Process file="Processes/Scenario_CAROC_ActivitePhysique.xml" label="Scenario_CAROC_ActivitePhysique"/>
+        <Process file="Processes/Scenario_CAROC_ActivitePhysique+VitamineDCalcium.xml" label="Scenario_CAROC_ActivitePhysique+VitamineDCalcium"/>
+        <Process file="Processes/Scenario_CAROC_VitamineDCalcium.xml" label="Scenario_CAROC_VitamineDCalcium"/>
+        <Process file="Processes/Scenario_ORAI_ActivitePhysique.xml" label="Scenario_ORAI_ActivitePhysique"/>
+        <Process file="Processes/Scenario_ORAI_ActivitePhysique+VitamineDCalcium.xml" label="Scenario_ORAI_ActivitePhysique+VitamineDCalcium"/>
+        <Process file="Processes/Scenario_ORAI_VitamineDCalcium.xml" label="Scenario_ORAI_VitamineDCalcium"/>
+        <Process file="Processes/Scenario_OST_ActivitePhysique.xml" label="Scenario_OST_ActivitePhysique"/>
+        <Process file="Processes/Scenario_OST_ActivitePhysique+VitamineDCalcium.xml" label="Scenario_OST_ActivitePhysique+VitamineDCalcium"/>
+        <Process file="Processes/Scenario_OST_VitamineDCalcium.xml" label="Scenario_OST_VitamineDCalcium"/>
+        <Process file="Processes/Scenario_SCORE_ActivitePhysique.xml" label="Scenario_SCORE_ActivitePhysique"/>
+        <Process file="Processes/Scenario_SCORE_ActivitePhysique+VitamineDCalcium.xml" label="Scenario_SCORE_ActivitePhysique+VitamineDCalcium"/>
+        <Process file="Processes/Scenario_SCORE_VitamineDCalcium.xml" label="Scenario_SCORE_VitamineDCalcium"/>
+        <Process file="Processes/Scenario_VitamineDCalcium.xml" label="Scenario_VitamineDCalcium"/>
+        <Process file="Processes/Scenario_Apprentissage.xml" label="Scenario_Apprentissage"/>
+        <Process file="Processes/SCORE.xml" label="SCORE"/>
+        <Process file="Processes/Traitement_ActPhys.xml" label="Traitement_ActPhys"/>
+        <Process file="Processes/Traitement_ActPhys+VitDCalcium.xml" label="Traitement_ActPhys+VitDCalcium"/>
+        <Process file="Processes/Traitement_VitDCalcium.xml" label="Traitement_VitDCalcium"/>
+        <Process file="Processes/VitDCalcium.xml" label="VitDCalcium"/>
+      </Processes>
+      <Scenarios>
+        <Scenario processIndividual="Scenario_CAROC_ActivitePhysique" label="Scenario_CAROC_ActivitePhysique"/>
+        <Scenario processIndividual="Scenario_AucunePrevention" label="Scenario_AucunePrevention"/>
+        <Scenario processIndividual="Scenario_CAROC_VitamineDCalcium" label="Scenario_CAROC_VitamineDCalcium"/>
+        <Scenario processIndividual="Scenario_ActivitePhysique" label="Scenario_ActivitePhysique"/>
+        <Scenario processIndividual="Scenario_VitamineDCalcium" label="Scenario_VitamineDCalcium"/>
+        <Scenario processIndividual="Scenario_ORAI_VitamineDCalcium" label="Scenario_ORAI_VitamineDCalcium"/>
+        <Scenario processIndividual="Scenario_ORAI_ActivitePhysique" label="Scenario_ORAI_ActivitePhysique"/>
+        <Scenario processIndividual="Scenario_OST_ActivitePhysique" label="Scenario_OST_ActivitePhysique"/>
+        <Scenario processIndividual="Scenario_OST_VitamineDCalcium" label="Scenario_OST_VitamineDCalcium"/>
+        <Scenario processIndividual="Scenario_SCORE_ActivitePhysique" label="Scenario_SCORE_ActivitePhysique"/>
+        <Scenario processIndividual="Scenario_SCORE_VitamineDCalcium" label="Scenario_SCORE_VitamineDCalcium"/>
+        <Scenario processIndividual="Scenario_ActivitePhysique+VitamineDCalcium" label="Scenario_ActivitePhysique+VitamineDCalcium"/>
+        <Scenario processIndividual="Scenario_CAROC_ActivitePhysique+VitamineDCalcium" label="Scenario_CAROC_ActivitePhysique+VitamineDCalcium"/>
+        <Scenario processIndividual="Scenario_ORAI_ActivitePhysique+VitamineDCalcium" label="Scenario_ORAI_ActivitePhysique+VitamineDCalcium"/>
+        <Scenario processIndividual="Scenario_OST_ActivitePhysique+VitamineDCalcium" label="Scenario_OST_ActivitePhysique+VitamineDCalcium"/>
+        <Scenario processIndividual="Scenario_SCORE_ActivitePhysique+VitamineDCalcium" label="Scenario_SCORE_ActivitePhysique+VitamineDCalcium"/>
+        <Scenario processIndividual="Scenario_Apprentissage" label="Scenario_Apprentissage"/>
+      </Scenarios>
+      <ClockObservers>
+        <Observer target="individuals" process="MAJ_Age"/>
+        <Observer target="individuals" process="MAJ_DMO" />
+        <Observer target="individuals" process="MAJ_ProbabiliteFracture"/>
+        <Observer target="individuals" process="MAJ_TauxMortalite"/>
+      </ClockObservers>
+    </Simulation>
+    <Output>
+      <Environment>
+        <Variable label="IndividusVivants"/>
+      </Environment>
+      <Population>
+        <SubPopulation profile="Femmes_2006">
+          <Variable label="DMO"/>
+          <Variable label="Nb_Fracture_Poignet"/>
+          <Variable label="Nb_Fracture_Colonne"/>
+          <Variable label="Nb_Fracture_Hanche"/>
+          <Variable label="Cout"/>
+          <Variable label="Taux_Mortalite"/>
+          <Variable label="QALY"/>
+          <Variable label="Duree_Vie"/>
+        </SubPopulation>
+      </Population>
+    </Output>
+  </Simulator>

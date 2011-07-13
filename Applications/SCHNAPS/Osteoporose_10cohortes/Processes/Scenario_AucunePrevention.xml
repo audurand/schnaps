@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="Scenario_AucunePrevention">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Control_IfThenElse>
+          <!--Mettre pratiquant a true car individu va peut etre se faire offrir de pratiquer de la prevention apres une fracture-->
+          <Data_Value inValue="@VitDCalcium_Pratiquant"/>
+          <Data_SetVariable inValue="true" outVariable="@Pratiquant" inValue_Type="Bool"/>
+          <Control_Nothing/>
+        </Control_IfThenElse>
+        <Control_ProcessCall inLabel="Evenements_AucunePrevention"/>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="Evenements_Apprentissage">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Control_IfThenElse>
+          <!--Appliquer les effets du traitement ou de la prevention s'il y a lieu.-->
+          <Data_Value inValue="@Traitement"/>
+          <Control_ChoiceIsBetween inValue="@Age" inBounds="40|50|60|70|80|90|100" inBounds_Type="Int">
+            <Control_ProcessCall inLabel="Traitement_ActPhys"/>
+            <Control_ProcessCall inLabel="Traitement_ActPhys+VitDCalcium"/>
+            <Control_ProcessCall inLabel="Traitement_ActPhys+VitDCalcium"/>
+            <Control_ProcessCall inLabel="Traitement_ActPhys+VitDCalcium"/>
+            <Control_ProcessCall inLabel="Traitement_ActPhys+VitDCalcium"/>
+            <Control_ProcessCall inLabel="Traitement_ActPhys+VitDCalcium"/>
+            <Control_ProcessCall inLabel="Traitement_ActPhys+VitDCalcium"/>
+          </Control_ChoiceIsBetween>
+          <Control_IfThenElse>
+            <Data_Value inValue="@Prevention"/>
+            <Control_ChoiceIsEqual inChoices="$ref.methode_prevention" inValue="@Methode_Prevention">
+              <Control_Nothing/>
+              <Control_ProcessCall inLabel="ActPhys"/>
+              <Control_ProcessCall inLabel="VitDCalcium"/>
+              <Control_ProcessCall inLabel="ActPhys+VitDCalcium"/>
+            </Control_ChoiceIsEqual>
+            <Control_Nothing/>
+          </Control_IfThenElse>
+        </Control_IfThenElse>
+        <Control_IfThenElse>
+          <Operators_IsEqual inArgRight="2" inArgRight_Type="Int" inArgLeft="@Nb_Fracture_Hanche"/>
+          <Control_Nothing/>
+          <Meds_Event inLabel="Fracture_Hanche" inProbability="@Probabilite_Fracture_Hanche">
+            <Control_Sequential>
+              <Control_ProcessCall inLabel="Fracture_Hanche"/>
+              <Control_IfThenElse>
+                <Data_Value inValue="@Traitement"/>
+                <Control_Nothing/>
+                <Control_IfThenElse>
+                  <Data_Value inValue="@Depistage"/>
+                  <Control_ProcessCall inLabel="CAROC_PostFracture_Depistee"/>
+                  <Control_Branch inProbability="$ref.probabilite_investigation">
+                    <Control_ProcessCall inLabel="CAROC_PostFracture"/>
+                    <Control_Branch inProbability="0.105">
+                      <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                      <Control_Nothing/>
+                    </Control_Branch>
+                  </Control_Branch>
+                </Control_IfThenElse>
+              </Control_IfThenElse>
+            </Control_Sequential>
+            <Control_Nothing/>
+          </Meds_Event>
+        </Control_IfThenElse>
+        <Meds_Event inLabel="Fracture_Poignet" inProbability="@Probabilite_Fracture_Poignet">
+          <Control_Sequential>
+            <Control_ProcessCall inLabel="Fracture_Poignet"/>
+            <Control_IfThenElse>
+              <Data_Value inValue="@Traitement"/>
+              <Control_Nothing/>
+              <Control_IfThenElse>
+                <Data_Value inValue="@Depistage"/>
+                <Control_ProcessCall inLabel="CAROC_PostFracture_Depistee"/>
+                <Control_Branch inProbability="$ref.probabilite_investigation">
+                  <Control_ProcessCall inLabel="CAROC_PostFracture"/>
+                  <Control_Branch inProbability="0.105">
+                    <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                    <Control_Nothing/>
+                  </Control_Branch>
+                </Control_Branch>
+              </Control_IfThenElse>
+            </Control_IfThenElse>
+          </Control_Sequential>
+          <Control_Nothing/>
+        </Meds_Event>
+        <Meds_Event inLabel="Fracture_Colonne" inProbability="@Probabilite_Fracture_Colonne">
+          <Control_Sequential>
+            <Control_ProcessCall inLabel="Fracture_Colonne"/>
+            <Control_IfThenElse>
+              <Data_Value inValue="@Traitement"/>
+              <Control_Nothing/>
+              <Control_IfThenElse>
+                <Data_Value inValue="@Depistage"/>
+                <Control_ProcessCall inLabel="CAROC_PostFracture_Depistee"/>
+                <Control_Branch inProbability="$ref.probabilite_investigation">
+                  <Control_ProcessCall inLabel="CAROC_PostFracture"/>
+                  <Control_Branch inProbability="0.105">
+                    <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                    <Control_Nothing/>
+                  </Control_Branch>
+                </Control_Branch>
+              </Control_IfThenElse>
+            </Control_IfThenElse>
+          </Control_Sequential>
+          <Control_Nothing/>
+        </Meds_Event>
+        <Control_ProcessCall inLabel="MAJ_QALY"/>
+        <Meds_Event inLabel="Deces" inProbability="@Taux_Mortalite">
+          <Control_Sequential>
+            <Control_ProcessPush inDelay="0" inTarget="environment" inLabel="Retirer_Individu"/>
+            <Data_SetIdle/>
+          </Control_Sequential>
+          <Control_Sequential>
+            <Operators_AddVariable inArgRight="1" inArgRight_Type="Int" inArgLeft="@Duree_Vie" outResult="@Duree_Vie"/>
+            <Control_ProcessPush inDelay="1" inTarget="current" inLabel="Evenements_Apprentissage"/>
+          </Control_Sequential>
+        </Meds_Event>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

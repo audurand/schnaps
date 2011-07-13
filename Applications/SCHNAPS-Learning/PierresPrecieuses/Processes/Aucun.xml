@@ -1,0 +1,9 @@
+ <Process label="Aucun">
+	 <LocalVariables/>
+	 <PrimitiveTree size="1">
+		 <Control_Sequential>
+			 <Data_Log inMessage="." inType="Aucun"/>
+			 <Operators_ConcatVariable inArgLeft="@Historique" inArgRight="." outResult="@Historique"/>
+		 </Control_Sequential>
+	 </PrimitiveTree>
+ </Process>

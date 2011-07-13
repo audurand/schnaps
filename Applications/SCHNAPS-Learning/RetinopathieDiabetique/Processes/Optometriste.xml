@@ -1,0 +1,97 @@
+  <Process label="Optometriste">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Control_IfThenElse>
+          <!--Compter le cout et le passage au depistage seulement quand le systeme est stable.-->
+          <Operators_IsGreaterComplex>
+            <Data_Clock/>
+            <Data_Value inValue_Type="ULong" inValue="11"/>
+          </Operators_IsGreaterComplex>
+          <Control_Sequential>
+            <Operators_AddVariable inArgRight="$Optometriste_Cout" inArgLeft="@Cout" outResult="@Cout"/>
+            <Control_ProcessPush inTarget="environment" inLabel="Ajouter_Optometriste" inUnits="month" inDelay="0"/>
+          </Control_Sequential>
+          <Control_Nothing/>
+        </Control_IfThenElse>
+        <Operators_OrComplex>
+          <Control_ChoiceIsEqual inChoices="$BDR" inValue="@BDR_D">
+            <!--Detection BDR oeil droit-->
+            <Control_Branch inProbability="$Optometriste_Specificite">
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+            </Control_Branch>
+            <Control_Branch inProbability="$Optometriste_Specificite">
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+            </Control_Branch>
+            <Control_Branch inProbability="$Optometriste_Sensibilite">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="$Optometriste_Sensibilite">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_ChoiceIsEqual>
+          <Control_ChoiceIsEqual inChoices="$BDR" inValue="@BDR_G">
+            <!--Detection BDR oeil gauche-->
+            <Control_Branch inProbability="$Optometriste_Specificite">
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+            </Control_Branch>
+            <Control_Branch inProbability="$Optometriste_Specificite">
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+            </Control_Branch>
+            <Control_Branch inProbability="$Optometriste_Sensibilite">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Control_Branch inProbability="$Optometriste_Sensibilite">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_ChoiceIsEqual>
+          <Control_ChoiceIsEqual inChoices="$DMO" inValue="@DMO_D">
+            <!--Detection DMO oeil droit-->
+            <Control_Branch inProbability="$Optometriste_Specificite">
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+            </Control_Branch>
+            <Control_Branch inProbability="$Optometriste_Specificite">
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+            </Control_Branch>
+            <Control_Branch inProbability="$Optometriste_Sensibilite">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_ChoiceIsEqual>
+          <Control_ChoiceIsEqual inChoices="$DMO" inValue="@DMO_G">
+            <!--Detection DMO oeil gauche-->
+            <Control_Branch inProbability="$Optometriste_Specificite">
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+            </Control_Branch>
+            <Control_Branch inProbability="$Optometriste_Specificite">
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+            </Control_Branch>
+            <Control_Branch inProbability="$Optometriste_Sensibilite">
+              <Data_Value inValue_Type="Bool" inValue="true"/>
+              <Data_Value inValue_Type="Bool" inValue="false"/>
+            </Control_Branch>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_ChoiceIsEqual>
+        </Operators_OrComplex>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

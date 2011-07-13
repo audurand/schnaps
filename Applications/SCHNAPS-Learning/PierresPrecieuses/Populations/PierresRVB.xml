@@ -1,0 +1,31 @@
+ <Demography>
+	 <Variable inType="String" label="Couleur">
+		 <LocalVariables/>
+		 <PrimitiveTree>
+			 <Control_BranchMulti inProbabilities="0.34|0.33|0.33">
+				  <Data_Value inValue_Type="String" inValue="Rouge"/>
+				  <Data_Value inValue_Type="String" inValue="Vert"/>
+				  <Data_Value inValue_Type="String" inValue="Bleu"/>
+			 </Control_BranchMulti>
+		</PrimitiveTree>
+	 </Variable>
+	 <Variable inType="Bool" label="Precieuse">
+		 <LocalVariables/>
+		 <PrimitiveTree>
+			 <Control_ChoiceIsEqual inChoices="$Couleur" inValue="@Couleur">
+				  <Control_Branch inProbability="0.70">
+					  <Data_Value inValue_Type="Bool" inValue="true"/>
+					  <Data_Value inValue_Type="Bool" inValue="false"/>
+				  </Control_Branch>
+				  <Control_Branch inProbability="0.50">
+					  <Data_Value inValue_Type="Bool" inValue="true"/>
+					  <Data_Value inValue_Type="Bool" inValue="false"/>
+				  </Control_Branch>
+				  <Control_Branch inProbability="0.50">
+					  <Data_Value inValue_Type="Bool" inValue="true"/>
+					  <Data_Value inValue_Type="Bool" inValue="false"/>
+				  </Control_Branch>
+			 </Control_ChoiceIsEqual>
+		 </PrimitiveTree>
+	 </Variable>
+ </Demography>

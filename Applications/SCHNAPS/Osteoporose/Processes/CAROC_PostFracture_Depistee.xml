@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="CAROC_PostFracture_Depistee">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Data_Log inMessage="CAROC" inType="Test"/>
+        <Control_IfThenElse>
+          <Operators_OrComplex>
+            <Operators_IsGreater inArgRight="0" inArgRight_Type="Int" inArgLeft="@Nb_Fracture_Hanche"/>
+            <Operators_IsGreater inArgRight="0" inArgRight_Type="Int" inArgLeft="@Nb_Fracture_Colonne"/>
+          </Operators_OrComplex>
+          <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
+            <Control_Branch inProbability="0.09">
+              <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+              <Control_Nothing/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.294">
+              <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+              <Control_Nothing/>
+            </Control_Branch>
+            <Control_Branch inProbability="0.756">
+              <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+              <Control_Nothing/>
+            </Control_Branch>
+          </Control_ChoiceIsEqual>
+          <Control_IfThenElse>
+            <Operators_AndComplex>
+              <Operators_IsGreater inArgRight="64" inArgRight_Type="Int" inArgLeft="@Age"/>
+              <Operators_IsGreater inArgRight="0" inArgRight_Type="Int" inArgLeft="@Nb_Fracture_Poignet"/>
+            </Operators_AndComplex>
+            <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
+              <Control_Branch inProbability="0.09">
+                <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                <Control_Nothing/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.294">
+                <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                <Control_Nothing/>
+              </Control_Branch>
+              <Control_Branch inProbability="0.756">
+                <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                <Control_Nothing/>
+              </Control_Branch>
+            </Control_ChoiceIsEqual>
+            <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
+              <Control_Nothing/>
+              <Control_Nothing/>
+              <Control_ChoiceIsBetween inValue="@Age" inBounds="$ref.tranche_age_40_90_5ans">
+                <Control_Branch inProbability="0.009">
+                  <Control_Branch inProbability="0.756">
+                    <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                    <Control_Nothing/>
+                  </Control_Branch>
+                  <Control_Nothing/>
+                </Control_Branch>
+                <Control_Branch inProbability="0.029">
+                  <Control_Branch inProbability="0.756">
+                    <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                    <Control_Nothing/>
+                  </Control_Branch>
+                  <Control_Nothing/>
+                </Control_Branch>
+                <Control_Branch inProbability="0.029">
+                  <Control_Branch inProbability="0.756">
+                    <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                    <Control_Nothing/>
+                  </Control_Branch>
+                  <Control_Nothing/>
+                </Control_Branch>
+                <Control_Branch inProbability="0.034">
+                  <Control_Branch inProbability="0.756">
+                    <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                    <Control_Nothing/>
+                  </Control_Branch>
+                  <Control_Nothing/>
+                </Control_Branch>
+                <Control_Branch inProbability="0.084">
+                  <Control_Branch inProbability="0.756">
+                    <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                    <Control_Nothing/>
+                  </Control_Branch>
+                  <Control_Nothing/>
+                </Control_Branch>
+                <Control_Branch inProbability="0.175">
+                  <Control_Branch inProbability="0.756">
+                    <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                    <Control_Nothing/>
+                  </Control_Branch>
+                  <Control_Nothing/>
+                </Control_Branch>
+                <Control_Branch inProbability="0.314">
+                  <Control_Branch inProbability="0.756">
+                    <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                    <Control_Nothing/>
+                  </Control_Branch>
+                  <Control_Nothing/>
+                </Control_Branch>
+                <Control_Branch inProbability="0.572">
+                  <Control_Branch inProbability="0.756">
+                    <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                    <Control_Nothing/>
+                  </Control_Branch>
+                  <Control_Nothing/>
+                </Control_Branch>
+                <Control_Branch inProbability="0.756">
+                  <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                  <Control_Nothing/>
+                </Control_Branch>
+                <Control_Branch inProbability="0.756">
+                  <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                  <Control_Nothing/>
+                </Control_Branch>
+                <Control_Branch inProbability="0.756">
+                  <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                  <Control_Nothing/>
+                </Control_Branch>
+              </Control_ChoiceIsBetween>
+            </Control_ChoiceIsEqual>
+          </Control_IfThenElse>
+        </Control_IfThenElse>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

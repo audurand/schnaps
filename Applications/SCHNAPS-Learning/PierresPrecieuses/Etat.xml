@@ -1,0 +1,10 @@
+  <FunctionState>
+    <LocalVariables/>
+    <PrimitiveTree>
+      <Operators_ConcatComplex>
+        <Data_Value inValue="@Couleur"/>
+        <Data_Value inValue_Type="String" inValue="/"/>
+        <Data_Value inValue="@Historique"/>
+      </Operators_ConcatComplex>
+    </PrimitiveTree>
+  </FunctionState>
