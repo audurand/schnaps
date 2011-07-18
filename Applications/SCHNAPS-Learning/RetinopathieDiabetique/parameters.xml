@@ -116,323 +116,645 @@
         </Entry>
       </Parameters>
       <Learning_LearningModule>
-		<Learning_DecisionMaker>
-		  <Choice label="Age_Depart">
-		    <Options>
-		      <Option label="30"/>
-		      <Option label="35"/>
-		      <Option label="40"/>
-		      <Option label="45"/>
-		      <Option label="50"/>
-		      <Option label="55"/>
-		      <Option label="60"/>
-		      <Option label="65"/>
-		      <Option label="70"/>
-		      <Option label="75"/>
-		      <Option label="80"/>
-		      <Option label="85"/>
-		      <Option label="90"/>
-		      <Option label="95"/>
-		    </Options>
-		    <FunctionState file="Etat_Age_Depart.xml"/>
-		    <FunctionReward file="Recompense.xml"/>
-		    <ChoiceMap/>
-		  </Choice>
-		  <Choice label="Age_Fin_30">
-		    <Options>
-		      <Option label="30"/>
-		      <Option label="35"/>
-		      <Option label="40"/>
-		      <Option label="45"/>
-		      <Option label="50"/>
-		      <Option label="55"/>
-		      <Option label="60"/>
-		      <Option label="65"/>
-		      <Option label="70"/>
-		      <Option label="75"/>
-		      <Option label="80"/>
-		      <Option label="85"/>
-		      <Option label="90"/>
-		      <Option label="95"/>
-		      <Option label="100"/>
-		    </Options>
-		    <FunctionState file="Etat_Age_Fin.xml"/>
-		    <FunctionReward file="Recompense.xml"/>
-		    <ChoiceMap/>
-		  </Choice>
-		  <Choice label="Age_Fin_35">
-		    <Options>
-		      <Option label="35"/>
-		      <Option label="40"/>
-		      <Option label="45"/>
-		      <Option label="50"/>
-		      <Option label="55"/>
-		      <Option label="60"/>
-		      <Option label="65"/>
-		      <Option label="70"/>
-		      <Option label="75"/>
-		      <Option label="80"/>
-		      <Option label="85"/>
-		      <Option label="90"/>
-		      <Option label="95"/>
-		      <Option label="100"/>
-		    </Options>
-		    <FunctionState file="Etat_Age_Fin.xml"/>
-		    <FunctionReward file="Recompense.xml"/>
-		    <ChoiceMap/>
-		  </Choice>
-		  <Choice label="Age_Fin_40">
-		    <Options>
-		      <Option label="40"/>
-		      <Option label="45"/>
-		      <Option label="50"/>
-		      <Option label="55"/>
-		      <Option label="60"/>
-		      <Option label="65"/>
-		      <Option label="70"/>
-		      <Option label="75"/>
-		      <Option label="80"/>
-		      <Option label="85"/>
-		      <Option label="90"/>
-		      <Option label="95"/>
-		      <Option label="100"/>
-		    </Options>
-		    <FunctionState file="Etat_Age_Fin.xml"/>
-		    <FunctionReward file="Recompense.xml"/>
-		    <ChoiceMap/>
-		  </Choice>
-		  <Choice label="Age_Fin_45">
-		    <Options>
-		      <Option label="45"/>
-		      <Option label="50"/>
-		      <Option label="55"/>
-		      <Option label="60"/>
-		      <Option label="65"/>
-		      <Option label="70"/>
-		      <Option label="75"/>
-		      <Option label="80"/>
-		      <Option label="85"/>
-		      <Option label="90"/>
-		      <Option label="95"/>
-		      <Option label="100"/>
-		    </Options>
-		    <FunctionState file="Etat_Age_Fin.xml"/>
-		    <FunctionReward file="Recompense.xml"/>
-		    <ChoiceMap/>
-		  </Choice>
-		  <Choice label="Age_Fin_50">
-		    <Options>
-		      <Option label="50"/>
-		      <Option label="55"/>
-		      <Option label="60"/>
-		      <Option label="65"/>
-		      <Option label="70"/>
-		      <Option label="75"/>
-		      <Option label="80"/>
-		      <Option label="85"/>
-		      <Option label="90"/>
-		      <Option label="95"/>
-		      <Option label="100"/>
-		    </Options>
-		    <FunctionState file="Etat_Age_Fin.xml"/>
-		    <FunctionReward file="Recompense.xml"/>
-		    <ChoiceMap/>
-		  </Choice>
-		  <Choice label="Age_Fin_55">
-		    <Options>
-		      <Option label="55"/>
-		      <Option label="60"/>
-		      <Option label="65"/>
-		      <Option label="70"/>
-		      <Option label="75"/>
-		      <Option label="80"/>
-		      <Option label="85"/>
-		      <Option label="90"/>
-		      <Option label="95"/>
-		      <Option label="100"/>
-		    </Options>
-		    <FunctionState file="Etat_Age_Fin.xml"/>
-		    <FunctionReward file="Recompense.xml"/>
-		    <ChoiceMap/>
-		  </Choice>
-		  <Choice label="Age_Fin_60">
-		    <Options>
-		      <Option label="60"/>
-		      <Option label="65"/>
-		      <Option label="70"/>
-		      <Option label="75"/>
-		      <Option label="80"/>
-		      <Option label="85"/>
-		      <Option label="90"/>
-		      <Option label="95"/>
-		      <Option label="100"/>
-		    </Options>
-		    <FunctionState file="Etat_Age_Fin.xml"/>
-		    <FunctionReward file="Recompense.xml"/>
-		    <ChoiceMap/>
-		  </Choice>
-		  <Choice label="Age_Fin_65">
-		    <Options>
-		      <Option label="65"/>
-		      <Option label="70"/>
-		      <Option label="75"/>
-		      <Option label="80"/>
-		      <Option label="85"/>
-		      <Option label="90"/>
-		      <Option label="95"/>
-		      <Option label="100"/>
-		    </Options>
-		    <FunctionState file="Etat_Age_Fin.xml"/>
-		    <FunctionReward file="Recompense.xml"/>
-		    <ChoiceMap/>
-		  </Choice>
-		  <Choice label="Age_Fin_70">
-		    <Options>
-		      <Option label="70"/>
-		      <Option label="75"/>
-		      <Option label="80"/>
-		      <Option label="85"/>
-		      <Option label="90"/>
-		      <Option label="95"/>
-		      <Option label="100"/>
-		    </Options>
-		    <FunctionState file="Etat_Age_Fin.xml"/>
-		    <FunctionReward file="Recompense.xml"/>
-		    <ChoiceMap/>
-		  </Choice>
-		  <Choice label="Age_Fin_75">
-		    <Options>
-		      <Option label="75"/>
-		      <Option label="80"/>
-		      <Option label="85"/>
-		      <Option label="90"/>
-		      <Option label="95"/>
-		      <Option label="100"/>
-		    </Options>
-		    <FunctionState file="Etat_Age_Fin.xml"/>
-		    <FunctionReward file="Recompense.xml"/>
-		    <ChoiceMap/>
-		  </Choice>
-		  <Choice label="Age_Fin_80">
-		    <Options>
-		      <Option label="80"/>
-		      <Option label="85"/>
-		      <Option label="90"/>
-		      <Option label="95"/>
-		      <Option label="100"/>
-		    </Options>
-		    <FunctionState file="Etat_Age_Fin.xml"/>
-		    <FunctionReward file="Recompense.xml"/>
-		    <ChoiceMap/>
-		  </Choice>
-		  <Choice label="Age_Fin_85">
-		    <Options>
-		      <Option label="85"/>
-		      <Option label="90"/>
-		      <Option label="95"/>
-		      <Option label="100"/>
-		    </Options>
-		    <FunctionState file="Etat_Age_Fin.xml"/>
-		    <FunctionReward file="Recompense.xml"/>
-		    <ChoiceMap/>
-		  </Choice>
-		  <Choice label="Age_Fin_90">
-		    <Options>
-		      <Option label="90"/>
-		      <Option label="95"/>
-		      <Option label="100"/>
-		    </Options>
-		    <FunctionState file="Etat_Age_Fin.xml"/>
-		    <FunctionReward file="Recompense.xml"/>
-		    <ChoiceMap/>
-		  </Choice>
-		  <Choice label="Age_Fin_95">
-		    <Options>
-		      <Option label="95"/>
-		      <Option label="100"/>
-		    </Options>
-		    <FunctionState file="Etat_Age_Fin.xml"/>
-		    <FunctionReward file="Recompense.xml"/>
-		    <ChoiceMap/>
-		  </Choice>
-		  <Choice label="Optometriste_Intervalle">
-		    <Options>
-		      <Option label="6"/>
-		      <Option label="12"/>
-		      <Option label="18"/>
-		      <Option label="24"/>
-		      <Option label="30"/>
-		      <Option label="36"/>
-		    </Options>
-		    <FunctionState file="Etat_Optometriste_Intervalle.xml"/>
-		    <FunctionReward file="Recompense.xml"/>
-		    <ChoiceMap/>
-		  </Choice>
-		  <Choice label="Ophtalmologiste_Intervalle_6">
-		    <Options>
-		      <Option label="6"/>
-		    </Options>
-		    <FunctionState file="Etat_Ophtalmologiste_Intervalle.xml"/>
-		    <FunctionReward file="Recompense.xml"/>
-		    <ChoiceMap/>
-		  </Choice>
-		  <Choice label="Ophtalmologiste_Intervalle_12">
-		    <Options>
-		      <Option label="6"/>
-		      <Option label="12"/>
-		    </Options>
-		    <FunctionState file="Etat_Ophtalmologiste_Intervalle.xml"/>
-		    <FunctionReward file="Recompense.xml"/>
-		    <ChoiceMap/>
-		  </Choice>
-		  <Choice label="Ophtalmologiste_Intervalle_18">
-		    <Options>
-		      <Option label="6"/>
-		      <Option label="12"/>
-		      <Option label="18"/>
-		    </Options>
-		    <FunctionState file="Etat_Ophtalmologiste_Intervalle.xml"/>
-		    <FunctionReward file="Recompense.xml"/>
-		    <ChoiceMap/>
-		  </Choice>
-		  <Choice label="Ophtalmologiste_Intervalle_24">
-		    <Options>
-		      <Option label="6"/>
-		      <Option label="12"/>
-		      <Option label="18"/>
-		      <Option label="24"/>
-		    </Options>
-		    <FunctionState file="Etat_Ophtalmologiste_Intervalle.xml"/>
-		    <FunctionReward file="Recompense.xml"/>
-		    <ChoiceMap/>
-		  </Choice>
-		  <Choice label="Ophtalmologiste_Intervalle_30">
-		    <Options>
-		      <Option label="6"/>
-		      <Option label="12"/>
-		      <Option label="18"/>
-		      <Option label="24"/>
-		      <Option label="30"/>
-		    </Options>
-		    <FunctionState file="Etat_Ophtalmologiste_Intervalle.xml"/>
-		    <FunctionReward file="Recompense.xml"/>
-		    <ChoiceMap/>
-		  </Choice>
-		  <Choice label="Ophtalmologiste_Intervalle_36">
-		    <Options>
-		      <Option label="6"/>
-		      <Option label="12"/>
-		      <Option label="18"/>
-		      <Option label="24"/>
-		      <Option label="30"/>
-		      <Option label="36"/>
-		    </Options>
-		    <FunctionState file="Etat_Ophtalmologiste_Intervalle.xml"/>
-		    <FunctionReward file="Recompense.xml"/>
-		    <ChoiceMap/>
-		  </Choice>
-		</Learning_DecisionMaker>
-      </Learning_LearningModule>
+				<Learning_DecisionMaker>
+					<Choice label="Age_Depart">
+						<Options>
+						  <Option label="30"/>
+						  <Option label="35"/>
+						  <Option label="40"/>
+						  <Option label="45"/>
+						  <Option label="50"/>
+						  <Option label="55"/>
+						  <Option label="60"/>
+						  <Option label="65"/>
+						  <Option label="70"/>
+						  <Option label="75"/>
+						  <Option label="80"/>
+						  <Option label="85"/>
+						  <Option label="90"/>
+						  <Option label="95"/>
+						</Options>
+						<FunctionState file="Etat_Age_Depart.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Age_Fin_30">
+						<Options>
+						  <Option label="30"/>
+						  <Option label="35"/>
+						  <Option label="40"/>
+						  <Option label="45"/>
+						  <Option label="50"/>
+						  <Option label="55"/>
+						  <Option label="60"/>
+						  <Option label="65"/>
+						  <Option label="70"/>
+						  <Option label="75"/>
+						  <Option label="80"/>
+						  <Option label="85"/>
+						  <Option label="90"/>
+						  <Option label="95"/>
+						  <Option label="100"/>
+						</Options>
+						<FunctionState file="Etat_Age_Fin.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Age_Fin_35">
+						<Options>
+						  <Option label="35"/>
+						  <Option label="40"/>
+						  <Option label="45"/>
+						  <Option label="50"/>
+						  <Option label="55"/>
+						  <Option label="60"/>
+						  <Option label="65"/>
+						  <Option label="70"/>
+						  <Option label="75"/>
+						  <Option label="80"/>
+						  <Option label="85"/>
+						  <Option label="90"/>
+						  <Option label="95"/>
+						  <Option label="100"/>
+						</Options>
+						<FunctionState file="Etat_Age_Fin.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Age_Fin_40">
+						<Options>
+						  <Option label="40"/>
+						  <Option label="45"/>
+						  <Option label="50"/>
+						  <Option label="55"/>
+						  <Option label="60"/>
+						  <Option label="65"/>
+						  <Option label="70"/>
+						  <Option label="75"/>
+						  <Option label="80"/>
+						  <Option label="85"/>
+						  <Option label="90"/>
+						  <Option label="95"/>
+						  <Option label="100"/>
+						</Options>
+						<FunctionState file="Etat_Age_Fin.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Age_Fin_45">
+						<Options>
+						  <Option label="45"/>
+						  <Option label="50"/>
+						  <Option label="55"/>
+						  <Option label="60"/>
+						  <Option label="65"/>
+						  <Option label="70"/>
+						  <Option label="75"/>
+						  <Option label="80"/>
+						  <Option label="85"/>
+						  <Option label="90"/>
+						  <Option label="95"/>
+						  <Option label="100"/>
+						</Options>
+						<FunctionState file="Etat_Age_Fin.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Age_Fin_50">
+						<Options>
+						  <Option label="50"/>
+						  <Option label="55"/>
+						  <Option label="60"/>
+						  <Option label="65"/>
+						  <Option label="70"/>
+						  <Option label="75"/>
+						  <Option label="80"/>
+						  <Option label="85"/>
+						  <Option label="90"/>
+						  <Option label="95"/>
+						  <Option label="100"/>
+						</Options>
+						<FunctionState file="Etat_Age_Fin.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Age_Fin_55">
+						<Options>
+						  <Option label="55"/>
+						  <Option label="60"/>
+						  <Option label="65"/>
+						  <Option label="70"/>
+						  <Option label="75"/>
+						  <Option label="80"/>
+						  <Option label="85"/>
+						  <Option label="90"/>
+						  <Option label="95"/>
+						  <Option label="100"/>
+						</Options>
+						<FunctionState file="Etat_Age_Fin.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Age_Fin_60">
+						<Options>
+						  <Option label="60"/>
+						  <Option label="65"/>
+						  <Option label="70"/>
+						  <Option label="75"/>
+						  <Option label="80"/>
+						  <Option label="85"/>
+						  <Option label="90"/>
+						  <Option label="95"/>
+						  <Option label="100"/>
+						</Options>
+						<FunctionState file="Etat_Age_Fin.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Age_Fin_65">
+						<Options>
+						  <Option label="65"/>
+						  <Option label="70"/>
+						  <Option label="75"/>
+						  <Option label="80"/>
+						  <Option label="85"/>
+						  <Option label="90"/>
+						  <Option label="95"/>
+						  <Option label="100"/>
+						</Options>
+						<FunctionState file="Etat_Age_Fin.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Age_Fin_70">
+						<Options>
+						  <Option label="70"/>
+						  <Option label="75"/>
+						  <Option label="80"/>
+						  <Option label="85"/>
+						  <Option label="90"/>
+						  <Option label="95"/>
+						  <Option label="100"/>
+						</Options>
+						<FunctionState file="Etat_Age_Fin.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Age_Fin_75">
+						<Options>
+						  <Option label="75"/>
+						  <Option label="80"/>
+						  <Option label="85"/>
+						  <Option label="90"/>
+						  <Option label="95"/>
+						  <Option label="100"/>
+						</Options>
+						<FunctionState file="Etat_Age_Fin.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Age_Fin_80">
+						<Options>
+						  <Option label="80"/>
+						  <Option label="85"/>
+						  <Option label="90"/>
+						  <Option label="95"/>
+						  <Option label="100"/>
+						</Options>
+						<FunctionState file="Etat_Age_Fin.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Age_Fin_85">
+						<Options>
+						  <Option label="85"/>
+						  <Option label="90"/>
+						  <Option label="95"/>
+						  <Option label="100"/>
+						</Options>
+						<FunctionState file="Etat_Age_Fin.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Age_Fin_90">
+						<Options>
+						  <Option label="90"/>
+						  <Option label="95"/>
+						  <Option label="100"/>
+						</Options>
+						<FunctionState file="Etat_Age_Fin.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Age_Fin_95">
+						<Options>
+						  <Option label="95"/>
+						  <Option label="100"/>
+						</Options>
+						<FunctionState file="Etat_Age_Fin.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Optometriste_Intervalle">
+						<Options>
+						  <Option label="6"/>
+						  <Option label="12"/>
+						  <Option label="18"/>
+						  <Option label="24"/>
+						  <Option label="30"/>
+						  <Option label="36"/>
+						</Options>
+						<FunctionState file="Etat_Optometriste_Intervalle.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Optometriste_Sensibilite">
+						<Options>
+						  <Option label="0.50"/>
+						  <Option label="0.55"/>
+						  <Option label="0.60"/>
+						  <Option label="0.65"/>
+						  <Option label="0.70"/>
+						  <Option label="0.75"/>
+						  <Option label="0.80"/>
+						  <Option label="0.85"/>
+						  <Option label="0.90"/>
+						  <Option label="0.95"/>
+						  <Option label="1.00"/>
+						</Options>
+						<FunctionState file="Etat_Optometriste_Sensibilite.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Optometriste_Specificite">
+						<Options>
+						  <Option label="0.50"/>
+						  <Option label="0.55"/>
+						  <Option label="0.60"/>
+						  <Option label="0.65"/>
+						  <Option label="0.70"/>
+						  <Option label="0.75"/>
+						  <Option label="0.80"/>
+						  <Option label="0.85"/>
+						  <Option label="0.90"/>
+						  <Option label="0.95"/>
+						  <Option label="1.00"/>
+						</Options>
+						<FunctionState file="Etat_Optometriste_Specificite.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Intervalle_6">
+						<Options>
+						  <Option label="6"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Intervalle.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Intervalle_12">
+						<Options>
+						  <Option label="6"/>
+						  <Option label="12"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Intervalle.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Intervalle_18">
+						<Options>
+						  <Option label="6"/>
+						  <Option label="12"/>
+						  <Option label="18"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Intervalle.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Intervalle_24">
+						<Options>
+						  <Option label="6"/>
+						  <Option label="12"/>
+						  <Option label="18"/>
+						  <Option label="24"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Intervalle.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Intervalle_30">
+						<Options>
+						  <Option label="6"/>
+						  <Option label="12"/>
+						  <Option label="18"/>
+						  <Option label="24"/>
+						  <Option label="30"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Intervalle.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Intervalle_36">
+						<Options>
+						  <Option label="6"/>
+						  <Option label="12"/>
+						  <Option label="18"/>
+						  <Option label="24"/>
+						  <Option label="30"/>
+						  <Option label="36"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Intervalle.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Sensibilite_50">
+						<Options>
+						  <Option label="0.50"/>
+						  <Option label="0.55"/>
+						  <Option label="0.60"/>
+						  <Option label="0.65"/>
+						  <Option label="0.70"/>
+						  <Option label="0.75"/>
+						  <Option label="0.80"/>
+						  <Option label="0.85"/>
+						  <Option label="0.90"/>
+						  <Option label="0.95"/>
+						  <Option label="1.00"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Sensibilite.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Sensibilite_55">
+						<Options>
+						  <Option label="0.55"/>
+						  <Option label="0.60"/>
+						  <Option label="0.65"/>
+						  <Option label="0.70"/>
+						  <Option label="0.75"/>
+						  <Option label="0.80"/>
+						  <Option label="0.85"/>
+						  <Option label="0.90"/>
+						  <Option label="0.95"/>
+						  <Option label="1.00"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Sensibilite.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Sensibilite_60">
+						<Options>
+						  <Option label="0.60"/>
+						  <Option label="0.65"/>
+						  <Option label="0.70"/>
+						  <Option label="0.75"/>
+						  <Option label="0.80"/>
+						  <Option label="0.85"/>
+						  <Option label="0.90"/>
+						  <Option label="0.95"/>
+						  <Option label="1.00"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Sensibilite.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Sensibilite_65">
+						<Options>
+						  <Option label="0.65"/>
+						  <Option label="0.70"/>
+						  <Option label="0.75"/>
+						  <Option label="0.80"/>
+						  <Option label="0.85"/>
+						  <Option label="0.90"/>
+						  <Option label="0.95"/>
+						  <Option label="1.00"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Sensibilite.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Sensibilite_70">
+						<Options>
+						  <Option label="0.70"/>
+						  <Option label="0.75"/>
+						  <Option label="0.80"/>
+						  <Option label="0.85"/>
+						  <Option label="0.90"/>
+						  <Option label="0.95"/>
+						  <Option label="1.00"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Sensibilite.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Sensibilite_75">
+						<Options>
+						  <Option label="0.75"/>
+						  <Option label="0.80"/>
+						  <Option label="0.85"/>
+						  <Option label="0.90"/>
+						  <Option label="0.95"/>
+						  <Option label="1.00"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Sensibilite.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Sensibilite_80">
+						<Options>
+						  <Option label="0.80"/>
+						  <Option label="0.85"/>
+						  <Option label="0.90"/>
+						  <Option label="0.95"/>
+						  <Option label="1.00"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Sensibilite.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Sensibilite_85">
+						<Options>
+						  <Option label="0.85"/>
+						  <Option label="0.90"/>
+						  <Option label="0.95"/>
+						  <Option label="1.00"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Sensibilite.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Sensibilite_90">
+						<Options>
+						  <Option label="0.90"/>
+						  <Option label="0.95"/>
+						  <Option label="1.00"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Sensibilite.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Sensibilite_95">
+						<Options>
+						  <Option label="0.95"/>
+						  <Option label="1.00"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Sensibilite.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Sensibilite_100">
+						<Options>
+						  <Option label="1.00"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Sensibilite.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Specificite_50">
+						<Options>
+						  <Option label="0.50"/>
+						  <Option label="0.55"/>
+						  <Option label="0.60"/>
+						  <Option label="0.65"/>
+						  <Option label="0.70"/>
+						  <Option label="0.75"/>
+						  <Option label="0.80"/>
+						  <Option label="0.85"/>
+						  <Option label="0.90"/>
+						  <Option label="0.95"/>
+						  <Option label="1.00"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Specificite.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Specificite_55">
+						<Options>
+						  <Option label="0.55"/>
+						  <Option label="0.60"/>
+						  <Option label="0.65"/>
+						  <Option label="0.70"/>
+						  <Option label="0.75"/>
+						  <Option label="0.80"/>
+						  <Option label="0.85"/>
+						  <Option label="0.90"/>
+						  <Option label="0.95"/>
+						  <Option label="1.00"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Specificite.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Specificite_60">
+						<Options>
+						  <Option label="0.60"/>
+						  <Option label="0.65"/>
+						  <Option label="0.70"/>
+						  <Option label="0.75"/>
+						  <Option label="0.80"/>
+						  <Option label="0.85"/>
+						  <Option label="0.90"/>
+						  <Option label="0.95"/>
+						  <Option label="1.00"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Specificite.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Specificite_65">
+						<Options>
+						  <Option label="0.65"/>
+						  <Option label="0.70"/>
+						  <Option label="0.75"/>
+						  <Option label="0.80"/>
+						  <Option label="0.85"/>
+						  <Option label="0.90"/>
+						  <Option label="0.95"/>
+						  <Option label="1.00"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Specificite.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Specificite_70">
+						<Options>
+						  <Option label="0.70"/>
+						  <Option label="0.75"/>
+						  <Option label="0.80"/>
+						  <Option label="0.85"/>
+						  <Option label="0.90"/>
+						  <Option label="0.95"/>
+						  <Option label="1.00"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Specificite.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Specificite_75">
+						<Options>
+						  <Option label="0.75"/>
+						  <Option label="0.80"/>
+						  <Option label="0.85"/>
+						  <Option label="0.90"/>
+						  <Option label="0.95"/>
+						  <Option label="1.00"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Specificite.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Specificite_80">
+						<Options>
+						  <Option label="0.80"/>
+						  <Option label="0.85"/>
+						  <Option label="0.90"/>
+						  <Option label="0.95"/>
+						  <Option label="1.00"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Specificite.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Specificite_85">
+						<Options>
+						  <Option label="0.85"/>
+						  <Option label="0.90"/>
+						  <Option label="0.95"/>
+						  <Option label="1.00"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Specificite.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Specificite_90">
+						<Options>
+						  <Option label="0.90"/>
+						  <Option label="0.95"/>
+						  <Option label="1.00"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Specificite.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Specificite_95">
+						<Options>
+						  <Option label="0.95"/>
+						  <Option label="1.00"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Specificite.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+					<Choice label="Ophtalmologiste_Specificite_100">
+						<Options>
+						  <Option label="1.00"/>
+						</Options>
+						<FunctionState file="Etat_Ophtalmologiste_Specificite.xml"/>
+						<FunctionReward file="Recompense_B.xml"/>
+						<ChoiceMap/>
+					</Choice>
+				</Learning_DecisionMaker>
+    </Learning_LearningModule>
     </System>
     <Input>
       <Environment file="Environment/Environment.xml"/>
@@ -457,7 +779,7 @@
                 <Variable label="DMO_D"/>
                 <Variable label="DMO_G"/>
               </IndividualModel>
-              <SimulationVariables file="Populations/SimulationVariables.xml"/>
+              <SimulationVariables file="Populations/SimulationVariables_v2.xml"/>
             </GenProfile>
             <GenProfile label="EnglandWales_1991_NIDDM">
               <Demography file="Populations/England_Wales_1991.xml"/>
@@ -476,7 +798,7 @@
                 <Variable label="DMO_D"/>
                 <Variable label="DMO_G"/>
               </IndividualModel>
-              <SimulationVariables file="Populations/SimulationVariables.xml"/>
+              <SimulationVariables file="Populations/SimulationVariables_v2.xml"/>
             </GenProfile>
           </Profiles>
         </Generator>

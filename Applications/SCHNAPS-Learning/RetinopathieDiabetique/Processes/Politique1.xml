@@ -5,208 +5,246 @@
         <!--Verifier si l'individu est atteint de diabete de type 2.-->
         <Data_Value inValue="@NIDDM"/>
         <Control_Sequential>
-			<!--Assigner un age de depart et de fin.-->
-			<Learning_DecisionNode inLabel="Age_Depart">
-				<Control_Sequential>
-					<Data_SetVariable inValue="30" inValue_Type="Int" outVariable="@Age_Depart"/>
-					<Learning_DecisionNode inLabel="Age_Fin_30">
-						<Data_SetVariable inValue="30" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="35" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="40" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="45" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="50" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="55" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="60" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="65" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="70" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="75" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="80" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="85" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
+					<!--Assigner un age de depart et de fin.-->
+					<Learning_DecisionNode inLabel="Age_Depart">
+						<Control_Sequential>
+							<Data_SetVariable inValue="30" inValue_Type="Int" outVariable="@Age_Depart"/>
+							<Learning_DecisionNode inLabel="Age_Fin_30">
+								<Data_SetVariable inValue="30" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="35" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="40" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="45" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="50" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="55" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="60" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="65" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="70" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="75" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="80" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="85" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
+							</Learning_DecisionNode>
+						</Control_Sequential>
+						<Control_Sequential>
+							<Data_SetVariable inValue="35" inValue_Type="Int" outVariable="@Age_Depart"/>
+							<Learning_DecisionNode inLabel="Age_Fin_35">
+								<Data_SetVariable inValue="35" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="40" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="45" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="50" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="55" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="60" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="65" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="70" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="75" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="80" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="85" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
+							</Learning_DecisionNode>
+						</Control_Sequential>
+						<Control_Sequential>
+							<Data_SetVariable inValue="40" inValue_Type="Int" outVariable="@Age_Depart"/>
+							<Learning_DecisionNode inLabel="Age_Fin_40">
+								<Data_SetVariable inValue="40" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="45" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="50" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="55" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="60" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="65" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="70" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="75" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="80" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="85" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
+							</Learning_DecisionNode>
+						</Control_Sequential>
+						<Control_Sequential>
+							<Data_SetVariable inValue="45" inValue_Type="Int" outVariable="@Age_Depart"/>
+							<Learning_DecisionNode inLabel="Age_Fin_45">
+								<Data_SetVariable inValue="45" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="50" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="55" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="60" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="65" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="70" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="75" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="80" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="85" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
+							</Learning_DecisionNode>
+						</Control_Sequential>
+						<Control_Sequential>
+							<Data_SetVariable inValue="50" inValue_Type="Int" outVariable="@Age_Depart"/>
+							<Learning_DecisionNode inLabel="Age_Fin_50">
+								<Data_SetVariable inValue="50" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="55" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="60" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="65" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="70" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="75" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="80" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="85" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
+							</Learning_DecisionNode>
+						</Control_Sequential>
+						<Control_Sequential>
+							<Data_SetVariable inValue="55" inValue_Type="Int" outVariable="@Age_Depart"/>
+							<Learning_DecisionNode inLabel="Age_Fin_55">
+								<Data_SetVariable inValue="55" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="60" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="65" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="70" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="75" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="80" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="85" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
+							</Learning_DecisionNode>
+						</Control_Sequential>
+						<Control_Sequential>
+							<Data_SetVariable inValue="60" inValue_Type="Int" outVariable="@Age_Depart"/>
+							<Learning_DecisionNode inLabel="Age_Fin_60">
+								<Data_SetVariable inValue="60" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="65" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="70" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="75" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="80" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="85" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
+							</Learning_DecisionNode>
+						</Control_Sequential>
+						<Control_Sequential>
+							<Data_SetVariable inValue="65" inValue_Type="Int" outVariable="@Age_Depart"/>
+							<Learning_DecisionNode inLabel="Age_Fin_65">
+								<Data_SetVariable inValue="65" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="70" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="75" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="80" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="85" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
+							</Learning_DecisionNode>
+						</Control_Sequential>
+						<Control_Sequential>
+							<Data_SetVariable inValue="70" inValue_Type="Int" outVariable="@Age_Depart"/>
+							<Learning_DecisionNode inLabel="Age_Fin_70">
+								<Data_SetVariable inValue="70" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="75" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="80" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="85" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
+							</Learning_DecisionNode>
+						</Control_Sequential>
+						<Control_Sequential>
+							<Data_SetVariable inValue="75" inValue_Type="Int" outVariable="@Age_Depart"/>
+							<Learning_DecisionNode inLabel="Age_Fin_75">
+								<Data_SetVariable inValue="75" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="80" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="85" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
+							</Learning_DecisionNode>
+						</Control_Sequential>
+						<Control_Sequential>
+							<Data_SetVariable inValue="80" inValue_Type="Int" outVariable="@Age_Depart"/>
+							<Learning_DecisionNode inLabel="Age_Fin_80">
+								<Data_SetVariable inValue="80" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="85" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
+							</Learning_DecisionNode>
+						</Control_Sequential>
+						<Control_Sequential>
+							<Data_SetVariable inValue="85" inValue_Type="Int" outVariable="@Age_Depart"/>
+							<Learning_DecisionNode inLabel="Age_Fin_85">
+								<Data_SetVariable inValue="85" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
+							</Learning_DecisionNode>
+						</Control_Sequential>
+						<Control_Sequential>
+							<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Depart"/>
+							<Learning_DecisionNode inLabel="Age_Fin_90">
+								<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
+							</Learning_DecisionNode>
+						</Control_Sequential>
+						<Control_Sequential>
+							<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Depart"/>
+							<Learning_DecisionNode inLabel="Age_Fin_95">
+								<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
+								<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
+							</Learning_DecisionNode>
+						</Control_Sequential>
 					</Learning_DecisionNode>
-				</Control_Sequential>
-				<Control_Sequential>
-					<Data_SetVariable inValue="35" inValue_Type="Int" outVariable="@Age_Depart"/>
-					<Learning_DecisionNode inLabel="Age_Fin_35">
-						<Data_SetVariable inValue="35" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="40" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="45" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="50" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="55" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="60" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="65" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="70" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="75" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="80" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="85" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
+					<!--Assigner un intervalle de depistage chez l'optometriste.-->
+					<Learning_DecisionNode inLabel="Optometriste_Intervalle">
+						<Data_SetVariable inValue="6" inValue_Type="ULong" outVariable="@Optometriste_Intervalle"/>
+						<Data_SetVariable inValue="12" inValue_Type="ULong" outVariable="@Optometriste_Intervalle"/>
+						<Data_SetVariable inValue="18" inValue_Type="ULong" outVariable="@Optometriste_Intervalle"/>
+						<Data_SetVariable inValue="24" inValue_Type="ULong" outVariable="@Optometriste_Intervalle"/>
+						<Data_SetVariable inValue="30" inValue_Type="ULong" outVariable="@Optometriste_Intervalle"/>
+						<Data_SetVariable inValue="36" inValue_Type="ULong" outVariable="@Optometriste_Intervalle"/>
 					</Learning_DecisionNode>
-				</Control_Sequential>
-				<Control_Sequential>
-					<Data_SetVariable inValue="40" inValue_Type="Int" outVariable="@Age_Depart"/>
-					<Learning_DecisionNode inLabel="Age_Fin_40">
-						<Data_SetVariable inValue="40" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="45" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="50" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="55" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="60" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="65" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="70" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="75" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="80" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="85" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
+					<!--Assigner la sensibilite de l'optometriste.-->
+					<Learning_DecisionNode inLabel="Optometriste_Sensibilite">
+						<Data_SetVariable inValue="0.50" inValue_Type="Double" outVariable="@Optometriste_Sensibilite"/>
+						<Data_SetVariable inValue="0.55" inValue_Type="Double" outVariable="@Optometriste_Sensibilite"/>
+						<Data_SetVariable inValue="0.60" inValue_Type="Double" outVariable="@Optometriste_Sensibilite"/>
+						<Data_SetVariable inValue="0.65" inValue_Type="Double" outVariable="@Optometriste_Sensibilite"/>
+						<Data_SetVariable inValue="0.70" inValue_Type="Double" outVariable="@Optometriste_Sensibilite"/>
+						<Data_SetVariable inValue="0.75" inValue_Type="Double" outVariable="@Optometriste_Sensibilite"/>
+						<Data_SetVariable inValue="0.80" inValue_Type="Double" outVariable="@Optometriste_Sensibilite"/>
+						<Data_SetVariable inValue="0.85" inValue_Type="Double" outVariable="@Optometriste_Sensibilite"/>
+						<Data_SetVariable inValue="0.90" inValue_Type="Double" outVariable="@Optometriste_Sensibilite"/>
+						<Data_SetVariable inValue="0.95" inValue_Type="Double" outVariable="@Optometriste_Sensibilite"/>
+						<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Optometriste_Sensibilite"/>
 					</Learning_DecisionNode>
-				</Control_Sequential>
-				<Control_Sequential>
-					<Data_SetVariable inValue="45" inValue_Type="Int" outVariable="@Age_Depart"/>
-					<Learning_DecisionNode inLabel="Age_Fin_45">
-						<Data_SetVariable inValue="45" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="50" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="55" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="60" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="65" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="70" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="75" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="80" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="85" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
+					<!--Assigner la specificite de l'optometriste.-->
+					<Learning_DecisionNode inLabel="Optometriste_Specificite">
+						<Data_SetVariable inValue="0.50" inValue_Type="Double" outVariable="@Optometriste_Specificite"/>
+						<Data_SetVariable inValue="0.55" inValue_Type="Double" outVariable="@Optometriste_Specificite"/>
+						<Data_SetVariable inValue="0.60" inValue_Type="Double" outVariable="@Optometriste_Specificite"/>
+						<Data_SetVariable inValue="0.65" inValue_Type="Double" outVariable="@Optometriste_Specificite"/>
+						<Data_SetVariable inValue="0.70" inValue_Type="Double" outVariable="@Optometriste_Specificite"/>
+						<Data_SetVariable inValue="0.75" inValue_Type="Double" outVariable="@Optometriste_Specificite"/>
+						<Data_SetVariable inValue="0.80" inValue_Type="Double" outVariable="@Optometriste_Specificite"/>
+						<Data_SetVariable inValue="0.85" inValue_Type="Double" outVariable="@Optometriste_Specificite"/>
+						<Data_SetVariable inValue="0.90" inValue_Type="Double" outVariable="@Optometriste_Specificite"/>
+						<Data_SetVariable inValue="0.95" inValue_Type="Double" outVariable="@Optometriste_Specificite"/>
+						<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Optometriste_Specificite"/>
 					</Learning_DecisionNode>
-				</Control_Sequential>
-				<Control_Sequential>
-					<Data_SetVariable inValue="50" inValue_Type="Int" outVariable="@Age_Depart"/>
-					<Learning_DecisionNode inLabel="Age_Fin_50">
-						<Data_SetVariable inValue="50" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="55" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="60" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="65" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="70" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="75" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="80" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="85" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
-					</Learning_DecisionNode>
-				</Control_Sequential>
-				<Control_Sequential>
-					<Data_SetVariable inValue="55" inValue_Type="Int" outVariable="@Age_Depart"/>
-					<Learning_DecisionNode inLabel="Age_Fin_55">
-						<Data_SetVariable inValue="55" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="60" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="65" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="70" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="75" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="80" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="85" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
-					</Learning_DecisionNode>
-				</Control_Sequential>
-				<Control_Sequential>
-					<Data_SetVariable inValue="60" inValue_Type="Int" outVariable="@Age_Depart"/>
-					<Learning_DecisionNode inLabel="Age_Fin_60">
-						<Data_SetVariable inValue="60" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="65" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="70" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="75" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="80" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="85" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
-					</Learning_DecisionNode>
-				</Control_Sequential>
-				<Control_Sequential>
-					<Data_SetVariable inValue="65" inValue_Type="Int" outVariable="@Age_Depart"/>
-					<Learning_DecisionNode inLabel="Age_Fin_65">
-						<Data_SetVariable inValue="65" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="70" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="75" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="80" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="85" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
-					</Learning_DecisionNode>
-				</Control_Sequential>
-				<Control_Sequential>
-					<Data_SetVariable inValue="70" inValue_Type="Int" outVariable="@Age_Depart"/>
-					<Learning_DecisionNode inLabel="Age_Fin_70">
-						<Data_SetVariable inValue="70" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="75" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="80" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="85" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
-					</Learning_DecisionNode>
-				</Control_Sequential>
-				<Control_Sequential>
-					<Data_SetVariable inValue="75" inValue_Type="Int" outVariable="@Age_Depart"/>
-					<Learning_DecisionNode inLabel="Age_Fin_75">
-						<Data_SetVariable inValue="75" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="80" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="85" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
-					</Learning_DecisionNode>
-				</Control_Sequential>
-				<Control_Sequential>
-					<Data_SetVariable inValue="80" inValue_Type="Int" outVariable="@Age_Depart"/>
-					<Learning_DecisionNode inLabel="Age_Fin_80">
-						<Data_SetVariable inValue="80" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="85" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
-					</Learning_DecisionNode>
-				</Control_Sequential>
-				<Control_Sequential>
-					<Data_SetVariable inValue="85" inValue_Type="Int" outVariable="@Age_Depart"/>
-					<Learning_DecisionNode inLabel="Age_Fin_85">
-						<Data_SetVariable inValue="85" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
-					</Learning_DecisionNode>
-				</Control_Sequential>
-				<Control_Sequential>
-					<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Depart"/>
-					<Learning_DecisionNode inLabel="Age_Fin_90">
-						<Data_SetVariable inValue="90" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
-					</Learning_DecisionNode>
-				</Control_Sequential>
-				<Control_Sequential>
-					<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Depart"/>
-					<Learning_DecisionNode inLabel="Age_Fin_95">
-						<Data_SetVariable inValue="95" inValue_Type="Int" outVariable="@Age_Fin"/>
-						<Data_SetVariable inValue="100" inValue_Type="Int" outVariable="@Age_Fin"/>
-					</Learning_DecisionNode>
-				</Control_Sequential>
-			</Learning_DecisionNode>
-			<!--Assigner un intervalle de depistage chez l'optometriste.-->
-			<Learning_DecisionNode inLabel="Optometriste_Intervalle">
-				<Data_SetVariable inValue="6" inValue_Type="ULong" outVariable="@Optometriste_Intervalle"/>
-				<Data_SetVariable inValue="12" inValue_Type="ULong" outVariable="@Optometriste_Intervalle"/>
-				<Data_SetVariable inValue="18" inValue_Type="ULong" outVariable="@Optometriste_Intervalle"/>
-				<Data_SetVariable inValue="24" inValue_Type="ULong" outVariable="@Optometriste_Intervalle"/>
-				<Data_SetVariable inValue="30" inValue_Type="ULong" outVariable="@Optometriste_Intervalle"/>
-				<Data_SetVariable inValue="36" inValue_Type="ULong" outVariable="@Optometriste_Intervalle"/>
-			</Learning_DecisionNode>
-			<Control_ProcessCall inLabel="Pre-Detection"/>
+					<!--Assigner le cout de l'optometriste.-->
+					<Data_SetVariableComplex outVariable="@Optometriste_Cout">
+						<Operators_SubComplex>
+							<Operators_MultComplex>
+								<Data_Value inValue="120" inValue_Type="Double"/>
+								<Data_Value inValue="@Optometriste_Sensibilite"/>
+							</Operators_MultComplex>
+							<Data_Value inValue="40" inValue_Type="Double"/>
+						</Operators_SubComplex>
+					</Data_SetVariableComplex>
+					<Control_ProcessCall inLabel="Pre-Detection"/>
         </Control_Sequential>
         <Control_ProcessPush inTarget="current" inLabel="Politique1" inUnits="year" inDelay="1"/>
       </Control_IfThenElse>
