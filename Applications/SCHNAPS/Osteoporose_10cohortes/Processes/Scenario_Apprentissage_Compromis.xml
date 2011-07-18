@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="Scenario_Apprentissage_Compromis">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Control_ProcessCall inLabel="Campagne_Prevention_ActPhys"/>
+        <Control_Branch inProbability="$ref.compliance_depistage">
+          <!--Verifier si l'individu est compliant aux interventions de prevention/depistage-->
+          <Data_SetVariable inValue="true" outVariable="@Compliant" inValue_Type="Bool"/>
+          <Control_Nothing/>
+        </Control_Branch>
+        <Control_ChoiceIsBetween inValue="@Age" inBounds="40|50|70" inBounds_Type="Int">
+          <Control_Sequential>
+            <!--40-49: CAROC + prevention activite physique -->
+            <Data_SetVariable inValue="ActPhys" outVariable="@Methode_Prevention" inValue_Type="String"/>
+            <Control_IfThenElse>
+              <Data_Value inValue="@ActPhys_Pratiquant"/>
+              <Data_SetVariable inValue="true" outVariable="@Pratiquant" inValue_Type="Bool"/>
+              <Control_Nothing/>
+            </Control_IfThenElse>
+            <Control_IfThenElse>
+              <Data_Value inValue="@Compliant"/>
+              <Control_Sequential>
+				<Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Visite_Medicale" inCompliance="1" outCost="@Cout" inCost="99.53" inChargeNonCompliant="false">
+					<Control_Nothing/>
+					<Control_Nothing/>
+				</Meds_Treatment>
+                <Control_ProcessCall inLabel="ORAI"/>
+				<Control_ProcessPush inDelay="1" inUnits="year" inTarget="current" inLabel="Assigner_Politique_Compromis"/>
+              </Control_Sequential>
+              <Control_Nothing/>
+            </Control_IfThenElse>
+          </Control_Sequential>
+          <Control_Sequential>
+            <!--50-69: CAROC + prevention activite physique -->
+            <Data_SetVariable inValue="ActPhys" outVariable="@Methode_Prevention" inValue_Type="String"/>
+            <Control_IfThenElse>
+              <Data_Value inValue="@ActPhys_Pratiquant"/>
+              <Data_SetVariable inValue="true" outVariable="@Pratiquant" inValue_Type="Bool"/>
+              <Control_Nothing/>
+            </Control_IfThenElse>
+            <Control_IfThenElse>
+              <Data_Value inValue="@Compliant"/>
+              <Control_Sequential>
+				<Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Visite_Medicale" inCompliance="1" outCost="@Cout" inCost="99.53" inChargeNonCompliant="false">
+					<Control_Nothing/>
+					<Control_Nothing/>
+				</Meds_Treatment>
+                <Control_ProcessCall inLabel="CAROC_Initial"/>
+              </Control_Sequential>
+              <Control_Nothing/>
+            </Control_IfThenElse>
+          </Control_Sequential>
+          <Control_Sequential>
+            <!--70+: CAROC + prevention activite physique -->
+            <Data_SetVariable inValue="ActPhys" outVariable="@Methode_Prevention" inValue_Type="String"/>
+            <Control_IfThenElse>
+              <Data_Value inValue="@ActPhys_Pratiquant"/>
+              <Data_SetVariable inValue="true" outVariable="@Pratiquant" inValue_Type="Bool"/>
+              <Control_Nothing/>
+            </Control_IfThenElse>
+            <Control_IfThenElse>
+              <Data_Value inValue="@Compliant"/>
+              <Control_Sequential>
+                <Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Visite_Medicale" inCompliance="1" outCost="@Cout" inCost="102.78" inChargeNonCompliant="false">
+					<Control_Nothing/>
+					<Control_Nothing/>
+				</Meds_Treatment>
+                <Control_ProcessCall inLabel="CAROC_Initial"/>
+              </Control_Sequential>
+              <Control_Nothing/>
+            </Control_IfThenElse>
+          </Control_Sequential>
+        </Control_ChoiceIsBetween>
+        <Control_ProcessCall inLabel="Evenements_Apprentissage_Compromis"/>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

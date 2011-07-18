@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <Process label="Assigner_Politique_MinFrac">
+  <Process label="Assigner_Politique_Compromis">
     <LocalVariables/>
     <PrimitiveTree size="1">
       <Control_IfThenElse>
@@ -8,14 +8,14 @@
           <Data_Value inValue="@Traitement"/>
         </Operators_OrComplex>
         <Control_Nothing/>
-		<Control_IfThenElse>
-		  <Operators_IsEqual inArgRight="60" inArgRight_Type="Int" inArgLeft="@Age"/>
+	    <Control_IfThenElse>
+		  <Operators_IsEqual inArgRight="50" inArgRight_Type="Int" inArgLeft="@Age"/>
 		  <Control_Sequential>
-			<!--Changement de politique: CAROC + prevention activite physique et vitamine D/calcium-->
+			<!--Changement de politique: CAROC + prevention activite physique-->
 			<Data_SetVariable inValue="false" outVariable="@Prevention" inValue_Type="Bool"/>
-			<Data_SetVariable inValue="ActPhys+VitDCalcium" outVariable="@Methode_Prevention" inValue_Type="String"/>
+			<Data_SetVariable inValue="ActPhys" outVariable="@Methode_Prevention" inValue_Type="String"/>
 			<Control_IfThenElse>
-			  <Data_Value inValue="@ActPhys+VitDCalcium_Pratiquant"/>
+			  <Data_Value inValue="@ActPhys_Pratiquant"/>
 			  <Data_SetVariable inValue="true" outVariable="@Pratiquant" inValue_Type="Bool"/>
 			  <Data_SetVariable inValue="false" outVariable="@Pratiquant" inValue_Type="Bool"/>
 			</Control_IfThenElse>
@@ -31,8 +31,8 @@
 			  <Control_Nothing/>
 			</Control_IfThenElse>
 		  </Control_Sequential>
-		  <Control_ProcessPush inDelay="1" inUnits="year" inTarget="current" inLabel="Assigner_Politique_MinFrac"/>
-		</Control_IfThenElse>
-      </Control_IfThenElse>
+		  <Control_ProcessPush inDelay="1" inUnits="year" inTarget="current" inLabel="Assigner_Politique_Compromis"/>
+	    </Control_IfThenElse>
+	</Control_IfThenElse>
     </PrimitiveTree>
   </Process>

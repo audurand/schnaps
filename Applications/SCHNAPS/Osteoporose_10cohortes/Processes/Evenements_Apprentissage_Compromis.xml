@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <Process label="Evenements_Apprentissage_MinCout">
+  <Process label="Evenements_Apprentissage_Compromis">
     <LocalVariables/>
     <PrimitiveTree size="1">
       <Control_Sequential>
         <Control_IfThenElse>
           <!--Appliquer les effets du traitement ou de la prevention s'il y a lieu.-->
           <Data_Value inValue="@Traitement"/>
-          <Control_ChoiceIsBetween inValue="@Age" inBounds="40|50|60|70|80|90|100" inBounds_Type="Int">
-            <Control_ProcessCall inLabel="Traitement_ActPhys"/>
-            <Control_ProcessCall inLabel="Traitement_ActPhys"/>
-            <Control_ProcessCall inLabel="Traitement_ActPhys"/>
-            <Control_ProcessCall inLabel="Traitement_ActPhys"/>
-            <Control_ProcessCall inLabel="Traitement_ActPhys"/>
-            <Control_ProcessCall inLabel="Traitement_ActPhys"/>
-            <Control_ProcessCall inLabel="Traitement_ActPhys"/>
-          </Control_ChoiceIsBetween>
+          <Control_ProcessCall inLabel="Traitement_ActPhys"/>
           <Control_IfThenElse>
             <Data_Value inValue="@Prevention"/>
             <Control_ChoiceIsEqual inChoices="$ref.methode_prevention" inValue="@Methode_Prevention">
@@ -101,7 +93,7 @@
           </Control_Sequential>
           <Control_Sequential>
             <Operators_AddVariable inArgRight="1" inArgRight_Type="Int" inArgLeft="@Duree_Vie" outResult="@Duree_Vie"/>
-            <Control_ProcessPush inDelay="1" inTarget="current" inLabel="Evenements_Apprentissage"/>
+            <Control_ProcessPush inDelay="1" inTarget="current" inLabel="Evenements_Apprentissage_Compromis"/>
           </Control_Sequential>
         </Meds_Event>
       </Control_Sequential>
