@@ -19,7 +19,9 @@
         </Operators_AddComplex>
       </Data_SetVariableComplex>
       <Data_SetVariableComplex outVariable="%Recompense">
-        <Data_Value inValue="%Nb_Fractures_Total"/>
+        <Operators_ExpComplex>
+			<Data_Value inValue="%Nb_Fractures_Total"/>
+		</Operators_ExpComplex>
       </Data_SetVariableComplex>
       <Operators_MultVariable inArgLeft="%Recompense" inArgRight="-1" inArgRight_Type="Double" outResult="%Recompense"/>
       <Data_Value inValue="%Recompense"/>
