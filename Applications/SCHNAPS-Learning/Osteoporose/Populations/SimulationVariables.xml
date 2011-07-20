@@ -530,4 +530,10 @@
         </Control_ChoiceIsEqual>
       </PrimitiveTree>
     </Variable>
+    <Variable gui.position="21" type="Bool" label="Compliant">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="true" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
   </SimulationVariables>

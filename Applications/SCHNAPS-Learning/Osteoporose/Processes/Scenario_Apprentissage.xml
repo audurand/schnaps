@@ -3,9 +3,7 @@
     <LocalVariables/>
     <PrimitiveTree size="1">
       <Control_Sequential>
-        <Control_ProcessCall inLabel="Campagne_Prevention_ActPhys">
-          <!--On la charge de toute facon, a tester sans-->
-        </Control_ProcessCall>
+        <Control_ProcessCall inLabel="Campagne_Prevention_ActPhys"/>
         <Control_ProcessCall inLabel="Apprentissage"/>
         <Control_ProcessCall inLabel="Evenements"/>
       </Control_Sequential>

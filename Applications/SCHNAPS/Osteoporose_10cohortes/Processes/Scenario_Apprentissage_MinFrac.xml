@@ -9,7 +9,7 @@
           <Data_SetVariable inValue="true" outVariable="@Compliant" inValue_Type="Bool"/>
           <Control_Nothing/>
         </Control_Branch>
-        <Control_ChoiceIsBetween inValue="@Age" inBounds="40|60|70" inBounds_Type="Int">
+        <Control_ChoiceIsBetween inValue="@Age" inBounds="40|50|70" inBounds_Type="Int">
           <Control_Sequential>
             <!--40-59: prevention activite physique et vitamine D/calcium-->
             <Data_SetVariable inValue="ActPhys+VitDCalcium" outVariable="@Methode_Prevention" inValue_Type="String"/>
