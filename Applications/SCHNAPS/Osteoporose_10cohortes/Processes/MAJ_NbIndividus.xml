@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="MAJ_NbIndividus">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Switch inKeys="1|2|3|4|5|6|7|8|9|10" inKeys_Type="ULong">
+        <Data_Clock/>
+        <Control_Nothing/>
+        <Operators_AddVariable inArgRight="13171" inArgRight_Type="Int" inArgLeft="@IndividusVivants" outResult="@IndividusVivants"/>
+        <Operators_AddVariable inArgRight="12697" inArgRight_Type="Int" inArgLeft="@IndividusVivants" outResult="@IndividusVivants"/>
+        <Operators_AddVariable inArgRight="12577" inArgRight_Type="Int" inArgLeft="@IndividusVivants" outResult="@IndividusVivants"/>
+        <Operators_AddVariable inArgRight="12586" inArgRight_Type="Int" inArgLeft="@IndividusVivants" outResult="@IndividusVivants"/>
+        <Operators_AddVariable inArgRight="12446" inArgRight_Type="Int" inArgLeft="@IndividusVivants" outResult="@IndividusVivants"/>
+        <Operators_AddVariable inArgRight="12025" inArgRight_Type="Int" inArgLeft="@IndividusVivants" outResult="@IndividusVivants"/>
+        <Operators_AddVariable inArgRight="11951" inArgRight_Type="Int" inArgLeft="@IndividusVivants" outResult="@IndividusVivants"/>
+        <Operators_AddVariable inArgRight="12319" inArgRight_Type="Int" inArgLeft="@IndividusVivants" outResult="@IndividusVivants"/>
+        <Operators_AddVariable inArgRight="12918" inArgRight_Type="Int" inArgLeft="@IndividusVivants" outResult="@IndividusVivants"/>
+        <Operators_AddVariable inArgRight="13050" inArgRight_Type="Int" inArgLeft="@IndividusVivants" outResult="@IndividusVivants"/>
+      </Control_Switch>
+    </PrimitiveTree>
+  </Process>

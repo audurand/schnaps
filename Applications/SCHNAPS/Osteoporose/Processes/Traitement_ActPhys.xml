@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="Traitement_ActPhys">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_IfThenElse>
+        <Operators_OrComplex>
+          <Operators_IsGreater inArgRight="0" inArgRight_Type="Int" inArgLeft="@Nb_Fracture_Hanche"/>
+          <Operators_IsGreater inArgRight="0" inArgRight_Type="Int" inArgLeft="@Nb_Fracture_Colonne"/>
+        </Operators_OrComplex>
+        <Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Risendronate" inCompliance="0.49" outCost="@Cout" inCost="149.65" inChargeNonCompliant="true">
+          <Control_ProcessCall inLabel="Effets_Risendronate"/>
+          <Control_Nothing/>
+        </Meds_Treatment>
+        <Control_IfThenElse>
+          <Operators_AndComplex>
+            <Operators_IsGreater inArgRight="64" inArgRight_Type="Int" inArgLeft="@Age"/>
+            <Operators_IsGreater inArgRight="0" inArgRight_Type="Int" inArgLeft="@Nb_Fracture_Poignet"/>
+          </Operators_AndComplex>
+          <Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Risendronate" inCompliance="0.49" outCost="@Cout" inCost="149.65" inChargeNonCompliant="true">
+            <Control_ProcessCall inLabel="Effets_Risendronate"/>
+            <Control_Nothing/>
+          </Meds_Treatment>
+          <Control_IfThenElse>
+            <Data_Value inValue="@Pratiquant"/>
+            <Control_Nothing/>
+            <Control_ProcessCall inLabel="ActPhys"/>
+          </Control_IfThenElse>
+        </Control_IfThenElse>
+      </Control_IfThenElse>
+    </PrimitiveTree>
+  </Process>

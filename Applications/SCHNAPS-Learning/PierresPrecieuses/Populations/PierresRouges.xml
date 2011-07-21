@@ -1,0 +1,17 @@
+ <Demography>
+	 <Variable inType="String" label="Couleur">
+		 <LocalVariables/>
+		 <PrimitiveTree>
+			<Data_Value inValue_Type="String" inValue="Rouge"/>
+		 </PrimitiveTree>
+	 </Variable>
+	 <Variable inType="Bool" label="Precieuse">
+		 <LocalVariables/>
+		 <PrimitiveTree>
+			 <Control_Branch inProbability="0.70">
+				  <Data_Value inValue_Type="Bool" inValue="true"/>
+				  <Data_Value inValue_Type="Bool" inValue="false"/>
+			 </Control_Branch>
+		 </PrimitiveTree>
+	 </Variable>
+ </Demography>

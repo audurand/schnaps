@@ -1,0 +1,18 @@
+  <Process label="TestC">
+	<LocalVariables/>
+    <PrimitiveTree size="1">
+      <Meds_Test inCompliance="1.0" inState="@Precieuse" outCost="@Cout" inSpecificity="0.7" inCost="100" inDiscountRate="0" inLabel="TestC" inSensitivity="0.6">
+        <Control_Sequential>
+          <Data_Log inMessage="P" inType="TestC"/>
+          <Operators_ConcatVariable inArgLeft="@Historique" inArgRight="P" outResult="@Historique"/>
+          <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Classee_Precieuse"/>
+        </Control_Sequential>
+        <Control_Sequential>
+          <Data_Log inMessage="N" inType="TestC"/>
+          <Operators_ConcatVariable inArgLeft="@Historique" inArgRight="N" outResult="@Historique"/>
+          <Data_SetVariable inValue_Type="Bool" inValue="false" outVariable="@Classee_Precieuse"/>
+        </Control_Sequential>
+        <Control_Nothing/>
+      </Meds_Test>
+    </PrimitiveTree>
+  </Process>

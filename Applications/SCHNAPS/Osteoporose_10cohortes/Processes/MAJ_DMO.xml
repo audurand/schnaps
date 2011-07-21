@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="MAJ_DMO">
+    <LocalVariables/>
+    <PrimitiveTree>
+      <Control_Switch inKeys="50|60|70|80|90" inKeys_Type="Int">
+        <Data_Value inValue="@Age"/>
+        <Control_Nothing/>
+        <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
+          <Control_Branch inProbability="0.1228">
+            <Data_SetVariable inValue="Osteopenie" outVariable="@DMO" inValue_Type="String"/>
+            <Control_Nothing/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.0909">
+            <Data_SetVariable inValue="Osteoporose" outVariable="@DMO" inValue_Type="String"/>
+            <Control_Nothing/>
+          </Control_Branch>
+          <Control_Nothing/>
+        </Control_ChoiceIsEqual>
+        <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
+          <Control_Branch inProbability="0.3356">
+            <Data_SetVariable inValue="Osteopenie" outVariable="@DMO" inValue_Type="String"/>
+            <Control_Nothing/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.3996">
+            <Data_SetVariable inValue="Osteoporose" outVariable="@DMO" inValue_Type="String"/>
+            <Control_Nothing/>
+          </Control_Branch>
+          <Control_Nothing/>
+        </Control_ChoiceIsEqual>
+        <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
+          <Control_Branch inProbability="0.4114">
+            <Data_SetVariable inValue="Osteopenie" outVariable="@DMO" inValue_Type="String"/>
+            <Control_Nothing/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.1678">
+            <Data_SetVariable inValue="Osteoporose" outVariable="@DMO" inValue_Type="String"/>
+            <Control_Nothing/>
+          </Control_Branch>
+          <Control_Nothing/>
+        </Control_ChoiceIsEqual>
+        <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
+          <Control_Branch inProbability="0.4375">
+            <Data_SetVariable inValue="Osteopenie" outVariable="@DMO" inValue_Type="String"/>
+            <Control_Nothing/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.2229">
+            <Data_SetVariable inValue="Osteoporose" outVariable="@DMO" inValue_Type="String"/>
+            <Control_Nothing/>
+          </Control_Branch>
+          <Control_Nothing/>
+        </Control_ChoiceIsEqual>
+        <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
+          <Control_Branch inProbability="0.8990">
+            <Data_SetVariable inValue="Osteopenie" outVariable="@DMO" inValue_Type="String"/>
+            <Control_Nothing/>
+          </Control_Branch>
+          <Control_Branch inProbability="0.4644">
+            <Data_SetVariable inValue="Osteoporose" outVariable="@DMO" inValue_Type="String"/>
+            <Control_Nothing/>
+          </Control_Branch>
+          <Control_Nothing/>
+        </Control_ChoiceIsEqual>
+      </Control_Switch>
+    </PrimitiveTree>
+  </Process>
