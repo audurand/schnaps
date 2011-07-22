@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="Visite_Conseiller">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_IfThenElse>
+        <Data_Value inValue="@SD"/>
+        <Operators_AddVariable inArgRight="$Cout_Conseiller" inArgLeft="@Cout" outResult="@Cout"/>
+        <Control_Nothing/>
+      </Control_IfThenElse>
+    </PrimitiveTree>
+  </Process>

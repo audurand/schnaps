@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="MAJ_TauxMortalite_PostHanche_1ereAnnee">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Operators_MultVariable inArgRight="4.31" inArgRight_Type="Double" inArgLeft="@Taux_Mortalite" outResult="@Taux_Mortalite"/>
+    </PrimitiveTree>
+  </Process>

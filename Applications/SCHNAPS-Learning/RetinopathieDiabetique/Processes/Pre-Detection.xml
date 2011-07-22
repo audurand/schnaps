@@ -1,0 +1,334 @@
+  <Process label="Pre-Detection">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+        <Control_IfThenElse>
+        	<Operators_IsLess inArgLeft="@Age" inArgRight="@Age_Depart">
+        		<!--L'individu n'est pas encore dans le range de depistage-->
+        	</Operators_IsLess>
+        	<Control_ProcessPush inTarget="current" inLabel="Pre-Detection" inUnits="year" inDelay="1"/>
+        	<Control_IfThenElse>
+        		<Operators_IsGreater inArgLeft="@Age" inArgRight="@Age_Fin">
+        			<!--L'individu est sorti du range de depistage-->
+        		</Operators_IsGreater>
+        		<Control_Nothing/>
+        		<Control_IfThenElse>
+				      <Operators_AndComplex>
+				        <!--L'individu est aveugle des deux yeux-->
+				        <Operators_OrComplex>
+				          <Operators_IsEqual inArgLeft="@BDR_D" inArgRight="Aveugle" inArgRight_Type="String"/>
+				          <Operators_IsEqual inArgLeft="@DMO_D" inArgRight="Aveugle" inArgRight_Type="String"/>
+				        </Operators_OrComplex>
+				        <Operators_OrComplex>
+				          <Operators_IsEqual inArgLeft="@BDR_G" inArgRight="Aveugle" inArgRight_Type="String"/>
+				          <Operators_IsEqual inArgLeft="@DMO_G" inArgRight="Aveugle" inArgRight_Type="String"/>
+				        </Operators_OrComplex>
+				      </Operators_AndComplex>
+				      <Control_Nothing/>
+				      <Control_Branch inProbability="$Optometriste_Compliance">
+				        <Control_IfThenElse>
+				          <Control_ProcessCall inLabel="Optometriste"/>
+				          <Control_IfThenElse>
+				            <Control_ProcessCall inLabel="Confirmation_Detection"/>
+				            <Control_Sequential>
+				              <!--Depistage confirme-->
+				              <Control_IfThenElse>
+				                <!--Traitement PDR oeil droit?-->
+				                <Data_Value inValue="@Resultat_GoldStandard_PDR_D"/>
+				                <Control_Sequential>
+                    			<Control_ProcessPush inTarget="environment" inLabel="Ajouter_Traitement_PDR" inUnits="month" inDelay="0"/>
+				                  <Control_IfThenElse>
+				                    <Control_ProcessCall inLabel="Traitement_PDR"/>
+				                    <Data_SetVariable inValue="Traite" inValue_Type="String" outVariable="@BDR_D"/>
+				                    <Control_Nothing/>
+				                  </Control_IfThenElse>
+				                </Control_Sequential>
+				                <Control_Nothing/>
+				              </Control_IfThenElse>
+				              <Control_IfThenElse>
+				                <!--Traitement PDR oeil gauche?-->
+				                <Data_Value inValue="@Resultat_GoldStandard_PDR_G"/>
+				                <Control_Sequential>
+                    			<Control_ProcessPush inTarget="environment" inLabel="Ajouter_Traitement_PDR" inUnits="month" inDelay="0"/>
+				                  <Control_IfThenElse>
+				                    <Control_ProcessCall inLabel="Traitement_PDR"/>
+				                    <Data_SetVariable inValue="Traite" inValue_Type="String" outVariable="@BDR_G"/>
+				                    <Control_Nothing/>
+				                  </Control_IfThenElse>
+				                </Control_Sequential>
+				                <Control_Nothing/>
+				              </Control_IfThenElse>
+				              <Control_IfThenElse>
+				                <!--Traitement CSMO oeil droit?-->
+				                <Data_Value inValue="@Resultat_GoldStandard_CSMO_D"/>
+				                <Control_Sequential>
+                    			<Control_ProcessPush inTarget="environment" inLabel="Ajouter_Traitement_CSMO" inUnits="month" inDelay="0"/>
+				                  <Control_IfThenElse>
+				                    <Control_ProcessCall inLabel="Traitement_CSMO"/>
+				                    <Data_SetVariable inValue="Traite" inValue_Type="String" outVariable="@DMO_D"/>
+				                    <Control_Nothing/>
+				                  </Control_IfThenElse>
+				                </Control_Sequential>
+				                <Control_Nothing/>
+				              </Control_IfThenElse>
+				              <Control_IfThenElse>
+				                <!--Traitement CSMO oeil gauche?-->
+				                <Data_Value inValue="@Resultat_GoldStandard_CSMO_G"/>
+				                <Control_Sequential>
+                    			<Control_ProcessPush inTarget="environment" inLabel="Ajouter_Traitement_CSMO" inUnits="month" inDelay="0"/>
+				                  <Control_IfThenElse>
+				                    <Control_ProcessCall inLabel="Traitement_CSMO"/>
+				                    <Data_SetVariable inValue="Traite" inValue_Type="String" outVariable="@DMO_G"/>
+				                    <Control_Nothing/>
+				                  </Control_IfThenElse>
+				                </Control_Sequential>
+				                <Control_Nothing/>
+				              </Control_IfThenElse>
+				              <Control_Sequential>
+								<!--Assigner un intervalle de depistage chez l'ophtalmologiste.-->
+								<Control_ChoiceIsEqual inChoices="6|12|18|24|30|36" inChoices_Type="ULong" inValue="@Optometriste_Intervalle">
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Intervalle_6">
+										<Data_SetVariable inValue="6" inValue_Type="ULong" outVariable="@Ophtalmologiste_Intervalle"/>
+									</Learning_DecisionNode>
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Intervalle_12">
+										<Data_SetVariable inValue="6" inValue_Type="ULong" outVariable="@Ophtalmologiste_Intervalle"/>
+										<Data_SetVariable inValue="12" inValue_Type="ULong" outVariable="@Ophtalmologiste_Intervalle"/>
+									</Learning_DecisionNode>
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Intervalle_18">
+										<Data_SetVariable inValue="6" inValue_Type="ULong" outVariable="@Ophtalmologiste_Intervalle"/>
+										<Data_SetVariable inValue="12" inValue_Type="ULong" outVariable="@Ophtalmologiste_Intervalle"/>
+										<Data_SetVariable inValue="18" inValue_Type="ULong" outVariable="@Ophtalmologiste_Intervalle"/>
+									</Learning_DecisionNode>
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Intervalle_24">
+										<Data_SetVariable inValue="6" inValue_Type="ULong" outVariable="@Ophtalmologiste_Intervalle"/>
+										<Data_SetVariable inValue="12" inValue_Type="ULong" outVariable="@Ophtalmologiste_Intervalle"/>
+										<Data_SetVariable inValue="18" inValue_Type="ULong" outVariable="@Ophtalmologiste_Intervalle"/>
+										<Data_SetVariable inValue="24" inValue_Type="ULong" outVariable="@Ophtalmologiste_Intervalle"/>
+									</Learning_DecisionNode>
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Intervalle_30">
+										<Data_SetVariable inValue="6" inValue_Type="ULong" outVariable="@Ophtalmologiste_Intervalle"/>
+										<Data_SetVariable inValue="12" inValue_Type="ULong" outVariable="@Ophtalmologiste_Intervalle"/>
+										<Data_SetVariable inValue="18" inValue_Type="ULong" outVariable="@Ophtalmologiste_Intervalle"/>
+										<Data_SetVariable inValue="24" inValue_Type="ULong" outVariable="@Ophtalmologiste_Intervalle"/>
+										<Data_SetVariable inValue="30" inValue_Type="ULong" outVariable="@Ophtalmologiste_Intervalle"/>
+									</Learning_DecisionNode>
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Intervalle_36">
+										<Data_SetVariable inValue="6" inValue_Type="ULong" outVariable="@Ophtalmologiste_Intervalle"/>
+										<Data_SetVariable inValue="12" inValue_Type="ULong" outVariable="@Ophtalmologiste_Intervalle"/>
+										<Data_SetVariable inValue="18" inValue_Type="ULong" outVariable="@Ophtalmologiste_Intervalle"/>
+										<Data_SetVariable inValue="24" inValue_Type="ULong" outVariable="@Ophtalmologiste_Intervalle"/>
+										<Data_SetVariable inValue="30" inValue_Type="ULong" outVariable="@Ophtalmologiste_Intervalle"/>
+										<Data_SetVariable inValue="36" inValue_Type="ULong" outVariable="@Ophtalmologiste_Intervalle"/>
+									</Learning_DecisionNode>
+								</Control_ChoiceIsEqual>
+								<!--Assigner la sensibilite de l'ophtalmologiste.-->
+								<Control_ChoiceIsEqual inChoices="0.50|0.55|0.60|0.65|0.70|0.75|0.80|0.85|0.90|0.95|1.00" inChoices_Type="Double" inValue="@Optometriste_Sensibilite">
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Sensibilite_50">
+										<Data_SetVariable inValue="0.50" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.55" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.60" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.65" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.70" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.75" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.80" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.85" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.90" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.95" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+									</Learning_DecisionNode>
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Sensibilite_55">
+										<Data_SetVariable inValue="0.55" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.60" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.65" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.70" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.75" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.80" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.85" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.90" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.95" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+									</Learning_DecisionNode>
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Sensibilite_60">
+										<Data_SetVariable inValue="0.60" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.65" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.70" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.75" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.80" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.85" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.90" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.95" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+									</Learning_DecisionNode>
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Sensibilite_65">
+										<Data_SetVariable inValue="0.65" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.70" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.75" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.80" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.85" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.90" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.95" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+									</Learning_DecisionNode>
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Sensibilite_70">
+										<Data_SetVariable inValue="0.70" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.75" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.80" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.85" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.90" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.95" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+									</Learning_DecisionNode>
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Sensibilite_75">
+										<Data_SetVariable inValue="0.75" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.80" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.85" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.90" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.95" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+									</Learning_DecisionNode>
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Sensibilite_80">
+										<Data_SetVariable inValue="0.80" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.85" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.90" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.95" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+									</Learning_DecisionNode>
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Sensibilite_85">
+										<Data_SetVariable inValue="0.85" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.90" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.95" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+									</Learning_DecisionNode>
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Sensibilite_90">
+										<Data_SetVariable inValue="0.90" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="0.95" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+									</Learning_DecisionNode>
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Sensibilite_95">
+										<Data_SetVariable inValue="0.95" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+										<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+									</Learning_DecisionNode>
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Sensibilite_100">
+										<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Sensibilite"/>
+									</Learning_DecisionNode>
+								</Control_ChoiceIsEqual>
+								<!--Assigner la specificite de l'ophtalmologiste.-->
+								<Control_ChoiceIsEqual inChoices="0.50|0.55|0.60|0.65|0.70|0.75|0.80|0.85|0.90|0.95|1.00" inChoices_Type="Double" inValue="@Optometriste_Specificite">
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Specificite_50">
+										<Data_SetVariable inValue="0.50" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.55" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.60" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.65" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.70" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.75" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.80" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.85" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.90" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.95" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+									</Learning_DecisionNode>
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Specificite_55">
+										<Data_SetVariable inValue="0.55" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.60" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.65" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.70" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.75" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.80" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.85" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.90" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.95" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+									</Learning_DecisionNode>
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Specificite_60">
+										<Data_SetVariable inValue="0.60" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.65" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.70" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.75" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.80" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.85" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.90" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.95" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+									</Learning_DecisionNode>
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Specificite_65">
+										<Data_SetVariable inValue="0.65" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.70" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.75" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.80" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.85" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.90" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.95" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+									</Learning_DecisionNode>
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Specificite_70">
+										<Data_SetVariable inValue="0.70" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.75" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.80" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.85" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.90" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.95" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+									</Learning_DecisionNode>
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Specificite_75">
+										<Data_SetVariable inValue="0.75" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.80" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.85" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.90" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.95" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+									</Learning_DecisionNode>
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Specificite_80">
+										<Data_SetVariable inValue="0.80" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.85" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.90" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.95" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+									</Learning_DecisionNode>
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Specificite_85">
+										<Data_SetVariable inValue="0.85" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.90" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.95" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+									</Learning_DecisionNode>
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Specificite_90">
+										<Data_SetVariable inValue="0.90" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="0.95" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+									</Learning_DecisionNode>
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Specificite_95">
+										<Data_SetVariable inValue="0.95" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+										<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+									</Learning_DecisionNode>
+									<Learning_DecisionNode inLabel="Ophtalmologiste_Specificite_100">
+										<Data_SetVariable inValue="1.00" inValue_Type="Double" outVariable="@Ophtalmologiste_Specificite"/>
+									</Learning_DecisionNode>
+								</Control_ChoiceIsEqual>
+								<!--Assigner le cout de l'ophtalmologiste.-->
+								<Data_SetVariableComplex outVariable="@Ophtalmologiste_Cout">
+									<Operators_SubComplex>
+										<Operators_MultComplex>
+											<Data_Value inValue="120" inValue_Type="Double"/>
+											<Data_Value inValue="@Ophtalmologiste_Sensibilite"/>
+										</Operators_MultComplex>
+										<Data_Value inValue="40" inValue_Type="Double"/>
+									</Operators_SubComplex>
+								</Data_SetVariableComplex>
+								<Control_ProcessPush inTarget="current" inLabel="Post-Detection" inUnits="month" inDelay="@Ophtalmologiste_Intervalle"/>
+				              </Control_Sequential>
+				            </Control_Sequential>
+				            <Control_ProcessPush inTarget="current" inLabel="Pre-Detection" inUnits="month" inDelay="@Optometriste_Intervalle">
+				              <!--Depistage infirme-->
+				            </Control_ProcessPush>
+				          </Control_IfThenElse>
+				          <Control_ProcessPush inTarget="current" inLabel="Pre-Detection" inUnits="month" inDelay="@Optometriste_Intervalle">
+				            <!--Depistage negatif-->
+				          </Control_ProcessPush>
+				        </Control_IfThenElse>
+				        <Control_ProcessPush inTarget="current" inLabel="Pre-Detection" inUnits="month" inDelay="@Optometriste_Intervalle">
+				          <!--Non-consentant au depistage-->
+				        </Control_ProcessPush>
+				      </Control_Branch>
+				    </Control_IfThenElse>
+        	</Control_IfThenElse>
+        </Control_IfThenElse>
+    </PrimitiveTree>
+  </Process>

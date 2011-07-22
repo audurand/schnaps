@@ -1,0 +1,41 @@
+<FunctionReward>
+  <LocalVariables>
+	  <LocalVariable label="Recompense">
+		  <Double value="0"/>
+	  </LocalVariable>
+  </LocalVariables>
+  <PrimitiveTree>
+    <Control_Sequential>
+    	<Data_SetVariableComplex outVariable="%Recompense">
+    		<Operators_MultComplex>
+    			<Data_Value inValue="@Cout"/>
+    			<Data_Value inValue_Type="Double" inValue="-1"/>
+    		</Operators_MultComplex>
+    	</Data_SetVariableComplex>
+      <Control_IfThenElse>
+    	  <Data_Value inValue="@Precieuse"/>
+    	  <Control_IfThenElse>
+    	    <Data_Value inValue="@Classee_Precieuse"/>
+    	    <!-- VP -->
+    	    <Control_Sequential>
+      	    <Operators_AddVariable outResult="%Recompense" inArgLeft="%Recompense" inArgRight_Type="Double" inArgRight="1000"/>
+      	    <!-- Valeur de la pierre -->
+      	    <Operators_SubVariable outResult="%Recompense" inArgLeft="%Recompense" inArgRight_Type="Double" inArgRight="100"/>
+      	    <!-- Cout du transport -->
+    	    </Control_Sequential>
+    	    <!-- FN -->
+    	    <Control_Nothing/>
+    	  </Control_IfThenElse>
+    	  <Control_IfThenElse>
+    	    <Data_Value inValue="@Classee_Precieuse"/>
+    	    <!-- FP -->
+    	    <Operators_SubVariable outResult="%Recompense" inArgLeft="%Recompense" inArgRight_Type="Double" inArgRight="100"/>
+    	    <!-- Cout du transport inutile -->
+    	    <!-- VN -->
+    	    <Control_Nothing/>
+      	</Control_IfThenElse>
+      </Control_IfThenElse>
+      <Data_Value inValue="%Recompense"/>
+    </Control_Sequential>
+  </PrimitiveTree>
+</FunctionReward>

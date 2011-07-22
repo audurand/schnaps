@@ -1,0 +1,92 @@
+  <Process label="Post-Detection">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+		<Control_IfThenElse>
+			<Operators_IsGreater inArgLeft="@Age" inArgRight="$ref.Age_Fin">
+				<!--L'individu est sorti du range de depistage-->
+			</Operators_IsGreater>
+			<Control_Nothing/>
+			<Control_IfThenElse>
+			  <Operators_AndComplex>
+				<!--L'individu est aveugle des deux yeux ou a deja ete traite pour tout-->
+				<Operators_OrComplex>
+				  <Operators_IsEqual inArgRight_Type="String" inArgRight="Aveugle" inArgLeft="@BDR_D"/>
+				  <Operators_IsEqual inArgRight_Type="String" inArgRight="Aveugle" inArgLeft="@DMO_D"/>
+				  <Operators_AndComplex>
+					<Operators_IsEqual inArgRight_Type="String" inArgRight="Traite" inArgLeft="@BDR_D"/>
+					<Operators_IsEqual inArgRight_Type="String" inArgRight="Traite" inArgLeft="@DMO_D"/>
+				  </Operators_AndComplex>
+				</Operators_OrComplex>
+				<Operators_OrComplex>
+				  <Operators_IsEqual inArgRight_Type="String" inArgRight="Aveugle" inArgLeft="@BDR_G"/>
+				  <Operators_IsEqual inArgRight_Type="String" inArgRight="Aveugle" inArgLeft="@DMO_G"/>
+				  <Operators_AndComplex>
+					<Operators_IsEqual inArgRight_Type="String" inArgRight="Traite" inArgLeft="@BDR_G"/>
+					<Operators_IsEqual inArgRight_Type="String" inArgRight="Traite" inArgLeft="@DMO_G"/>
+				  </Operators_AndComplex>
+				</Operators_OrComplex>
+			  </Operators_AndComplex>
+			  <Control_Nothing/>
+			  <Control_Branch inProbability="$ref.GoldStandard_Compliance">
+				<Control_Sequential>
+				  <Control_ProcessCall inLabel="Ophtalmologiste"/>
+				  <Control_IfThenElse>
+					<!--Traitement PDR oeil droit?-->
+					<Data_Value inValue="@Resultat_GoldStandard_PDR_D"/>
+					<Control_Sequential>
+						<Control_ProcessPush inTarget="environment" inLabel="Ajouter_Traitement_PDR" inUnits="month" inDelay="0"/>
+						  <Control_IfThenElse>
+							<Control_ProcessCall inLabel="Traitement_PDR"/>
+							<Data_SetVariable inValue_Type="String" inValue="Traite" outVariable="@BDR_D"/>
+							<Control_Nothing/>
+						  </Control_IfThenElse>
+						</Control_Sequential>
+					<Control_Nothing/>
+				  </Control_IfThenElse>
+				  <Control_IfThenElse>
+					<!--Traitement PDR oeil gauche?-->
+					<Data_Value inValue="@Resultat_GoldStandard_PDR_G"/>
+					<Control_Sequential>
+						<Control_ProcessPush inTarget="environment" inLabel="Ajouter_Traitement_PDR" inUnits="month" inDelay="0"/>
+							  <Control_IfThenElse>
+								<Control_ProcessCall inLabel="Traitement_PDR"/>
+								<Data_SetVariable inValue_Type="String" inValue="Traite" outVariable="@BDR_G"/>
+								<Control_Nothing/>
+							  </Control_IfThenElse>
+							</Control_Sequential>
+					<Control_Nothing/>
+				  </Control_IfThenElse>
+				  <Control_IfThenElse>
+					<!--Traitement CSMO oeil droit?-->
+					<Data_Value inValue="@Resultat_GoldStandard_CSMO_D"/>
+					<Control_Sequential>
+						<Control_ProcessPush inTarget="environment" inLabel="Ajouter_Traitement_CSMO" inUnits="month" inDelay="0"/>
+						  <Control_IfThenElse>
+							<Control_ProcessCall inLabel="Traitement_CSMO"/>
+							<Data_SetVariable inValue_Type="String" inValue="Traite" outVariable="@DMO_D"/>
+							<Control_Nothing/>
+						  </Control_IfThenElse>
+						</Control_Sequential>
+					<Control_Nothing/>
+				  </Control_IfThenElse>
+				  <Control_IfThenElse>
+					<!--Traitement CSMO oeil gauche?-->
+					<Data_Value inValue="@Resultat_GoldStandard_CSMO_G"/>
+					<Control_Sequential>
+						<Control_ProcessPush inTarget="environment" inLabel="Ajouter_Traitement_CSMO" inUnits="month" inDelay="0"/>
+						  <Control_IfThenElse>
+							<Control_ProcessCall inLabel="Traitement_CSMO"/>
+							<Data_SetVariable inValue_Type="String" inValue="Traite" outVariable="@DMO_G"/>
+							<Control_Nothing/>
+						  </Control_IfThenElse>
+						</Control_Sequential>
+					<Control_Nothing/>
+				  </Control_IfThenElse>
+				  <Control_ProcessPush inTarget="current" inLabel="Post-Detection" inUnits="month" inDelay="$ref.GoldStandard_Intervalle"/>
+				</Control_Sequential>
+				<Control_ProcessPush inTarget="current" inLabel="Post-Detection" inUnits="month" inDelay="$ref.GoldStandard_Intervalle"/>
+			  </Control_Branch>
+			</Control_IfThenElse>
+		</Control_IfThenElse>
+    </PrimitiveTree>
+  </Process>

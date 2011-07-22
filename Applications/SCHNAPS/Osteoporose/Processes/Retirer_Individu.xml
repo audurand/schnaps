@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="Retirer_Individu">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Operators_SubVariable inArgRight="1" inArgRight_Type="Int" inArgLeft="@IndividusVivants" outResult="@IndividusVivants"/>
+    </PrimitiveTree>
+  </Process>

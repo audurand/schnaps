@@ -1,0 +1,35 @@
+<FunctionReward>
+  <LocalVariables>
+	  <LocalVariable label="Recompense">
+		  <Double value="0"/>
+	  </LocalVariable>
+	  <LocalVariable label="Nb_Fractures_Total">
+		  <Int value="0"/>
+	  </LocalVariable>
+  </LocalVariables>
+  <PrimitiveTree>
+    <Control_Sequential>
+      <Data_SetVariableComplex outVariable="%Nb_Fractures_Total">
+        <Operators_AddComplex>
+          <Operators_AddComplex>
+            <Data_Value inValue="@Nb_Fracture_Colonne"/>
+            <Data_Value inValue="@Nb_Fracture_Hanche"/>
+          </Operators_AddComplex>
+          <Data_Value inValue="@Nb_Fracture_Poignet"/>
+        </Operators_AddComplex>
+      </Data_SetVariableComplex>
+      <Data_SetVariableComplex outVariable="%Recompense">
+		<Operators_DivComplex>
+			<Operators_ExpComplex>
+				<Operators_MultComplex>
+					<Data_Value inValue="%Nb_Fractures_Total"/>
+					<Data_Value inValue="-1" inValue_Type="Double"/>
+				</Operators_MultComplex>
+			</Operators_ExpComplex>
+			<Data_Value inValue="@Cout"/>
+		</Operators_DivComplex>
+      </Data_SetVariableComplex>
+      <Data_Value inValue="%Recompense"/>
+    </Control_Sequential>
+  </PrimitiveTree>
+</FunctionReward>

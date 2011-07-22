@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="ORAI">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+        <Control_IfThenElse>
+          <Operators_OrComplex>
+            <Data_Value inValue="@Depistage"/>
+            <Data_Value inValue="@Traitement"/>
+          </Operators_OrComplex>
+          <Control_Nothing/>
+          <Control_Sequential>
+            <Data_Log inMessage="ORAI" inType="Test"/>
+            <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
+              <Control_Branch inProbability="$ref.ORAI_specificite">
+                <Control_Branch inProbability="0.09">
+                  <Control_Sequential>
+                    <Control_IfThenElse>
+                      <Data_Value inValue="@Pratiquant"/>
+                      <Control_Nothing/>
+                      <Data_SetVariable inValue="true" outVariable="@Prevention" inValue_Type="Bool"/>
+                    </Control_IfThenElse>
+                    <Control_IfThenElse>
+											<Operators_IsEqualComplex>
+												<Operators_ModComplex>
+													<Data_Value inValue="@Age"/>
+													<Data_Value inValue="10" inValue_Type="Int"/>
+												</Operators_ModComplex>
+												<Operators_ModComplex>
+													<Operators_AddComplex>
+														<Data_Value inValue="@Age"/>
+														<Data_Value inValue="5" inValue_Type="Int"/>
+													</Operators_AddComplex>
+													<Data_Value inValue="10" inValue_Type="Int"/>
+												</Operators_ModComplex>
+											</Operators_IsEqualComplex>
+											<Control_ProcessPush inDelay="5" inTarget="current" inLabel="ORAI"/>
+											<Control_Nothing/>
+                    </Control_IfThenElse>
+                  </Control_Sequential>
+                  <Control_IfThenElse>
+										<Operators_IsEqualComplex>
+											<Operators_ModComplex>
+												<Data_Value inValue="@Age"/>
+												<Data_Value inValue="10" inValue_Type="Int"/>
+											</Operators_ModComplex>
+											<Operators_ModComplex>
+												<Operators_AddComplex>
+													<Data_Value inValue="@Age"/>
+													<Data_Value inValue="5" inValue_Type="Int"/>
+												</Operators_AddComplex>
+												<Data_Value inValue="10" inValue_Type="Int"/>
+											</Operators_ModComplex>
+										</Operators_IsEqualComplex>
+										<Control_ProcessPush inDelay="5" inTarget="current" inLabel="ORAI"/>
+										<Control_Nothing/>
+									</Control_IfThenElse>
+                </Control_Branch>
+                <Control_ProcessCall inLabel="CAROC_Initial"/>
+              </Control_Branch>
+              <Control_Branch inProbability="$ref.ORAI_sensibilite">
+                <Control_ProcessCall inLabel="CAROC_Initial"/>
+                <Control_Branch inProbability="0.09">
+                  <Control_Sequential>
+                    <Control_IfThenElse>
+                      <Data_Value inValue="@Pratiquant"/>
+                      <Control_Nothing/>
+                      <Data_SetVariable inValue="true" outVariable="@Prevention" inValue_Type="Bool"/>
+                    </Control_IfThenElse>
+                    <Control_IfThenElse>
+											<Operators_IsEqualComplex>
+												<Operators_ModComplex>
+													<Data_Value inValue="@Age"/>
+													<Data_Value inValue="10" inValue_Type="Int"/>
+												</Operators_ModComplex>
+												<Operators_ModComplex>
+													<Operators_AddComplex>
+														<Data_Value inValue="@Age"/>
+														<Data_Value inValue="5" inValue_Type="Int"/>
+													</Operators_AddComplex>
+													<Data_Value inValue="10" inValue_Type="Int"/>
+												</Operators_ModComplex>
+											</Operators_IsEqualComplex>
+											<Control_ProcessPush inDelay="5" inTarget="current" inLabel="ORAI"/>
+											<Control_Nothing/>
+                    </Control_IfThenElse>
+                  </Control_Sequential>
+                  <Control_IfThenElse>
+										<Operators_IsEqualComplex>
+											<Operators_ModComplex>
+												<Data_Value inValue="@Age"/>
+												<Data_Value inValue="10" inValue_Type="Int"/>
+											</Operators_ModComplex>
+											<Operators_ModComplex>
+												<Operators_AddComplex>
+													<Data_Value inValue="@Age"/>
+													<Data_Value inValue="5" inValue_Type="Int"/>
+												</Operators_AddComplex>
+												<Data_Value inValue="10" inValue_Type="Int"/>
+											</Operators_ModComplex>
+										</Operators_IsEqualComplex>
+										<Control_ProcessPush inDelay="5" inTarget="current" inLabel="ORAI"/>
+										<Control_Nothing/>
+									</Control_IfThenElse>
+                </Control_Branch>
+              </Control_Branch>
+              <Control_Branch inProbability="$ref.ORAI_sensibilite">
+                <Control_ProcessCall inLabel="CAROC_Initial"/>
+                <Control_Branch inProbability="0.09">
+                  <Control_Sequential>
+                    <Control_IfThenElse>
+                      <Data_Value inValue="@Pratiquant"/>
+                      <Control_Nothing/>
+                      <Data_SetVariable inValue="true" outVariable="@Prevention" inValue_Type="Bool"/>
+                    </Control_IfThenElse>
+                    <Control_IfThenElse>
+											<Operators_IsEqualComplex>
+												<Operators_ModComplex>
+													<Data_Value inValue="@Age"/>
+													<Data_Value inValue="10" inValue_Type="Int"/>
+												</Operators_ModComplex>
+												<Operators_ModComplex>
+													<Operators_AddComplex>
+														<Data_Value inValue="@Age"/>
+														<Data_Value inValue="5" inValue_Type="Int"/>
+													</Operators_AddComplex>
+													<Data_Value inValue="10" inValue_Type="Int"/>
+												</Operators_ModComplex>
+											</Operators_IsEqualComplex>
+											<Control_ProcessPush inDelay="5" inTarget="current" inLabel="ORAI"/>
+											<Control_Nothing/>
+                    </Control_IfThenElse>
+                  </Control_Sequential>
+                  <Control_IfThenElse>
+										<Operators_IsEqualComplex>
+											<Operators_ModComplex>
+												<Data_Value inValue="@Age"/>
+												<Data_Value inValue="10" inValue_Type="Int"/>
+											</Operators_ModComplex>
+											<Operators_ModComplex>
+												<Operators_AddComplex>
+													<Data_Value inValue="@Age"/>
+													<Data_Value inValue="5" inValue_Type="Int"/>
+												</Operators_AddComplex>
+												<Data_Value inValue="10" inValue_Type="Int"/>
+											</Operators_ModComplex>
+										</Operators_IsEqualComplex>
+										<Control_ProcessPush inDelay="5" inTarget="current" inLabel="ORAI"/>
+										<Control_Nothing/>
+									</Control_IfThenElse>
+                </Control_Branch>
+              </Control_Branch>
+            </Control_ChoiceIsEqual>
+          </Control_Sequential>
+        </Control_IfThenElse>
+    </PrimitiveTree>
+  </Process>
