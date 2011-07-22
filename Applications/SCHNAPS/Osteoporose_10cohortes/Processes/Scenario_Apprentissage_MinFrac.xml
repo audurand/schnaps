@@ -9,9 +9,9 @@
           <Data_SetVariable inValue="true" outVariable="@Compliant" inValue_Type="Bool"/>
           <Control_Nothing/>
         </Control_Branch>
-        <Control_ChoiceIsBetween inValue="@Age" inBounds="40|50|70" inBounds_Type="Int">
+        <Control_ChoiceIsBetween inValue="@Age" inBounds="40|50|60|70" inBounds_Type="Int">
           <Control_Sequential>
-            <!--40-59: prevention activite physique et vitamine D/calcium-->
+            <!--40-49: prevention activite physique et vitamine D/calcium-->
             <Data_SetVariable inValue="ActPhys+VitDCalcium" outVariable="@Methode_Prevention" inValue_Type="String"/>
             <Control_IfThenElse>
               <Data_Value inValue="@ActPhys+VitDCalcium_Pratiquant"/>
@@ -19,16 +19,13 @@
               <Control_IfThenElse>
                 <!--Verifier si l'individu est rejoint par la campagne de prevention-->
                 <Data_Value inValue="@Compliant"/>
-                <Control_Sequential>
-					<Data_SetVariable inValue="true" outVariable="@Prevention" inValue_Type="Bool"/>
-					<Control_ProcessPush inDelay="1" inUnits="year" inTarget="current" inLabel="Assigner_Politique_MinFrac"/>
-                </Control_Sequential>
+                <Data_SetVariable inValue="true" outVariable="@Prevention" inValue_Type="Bool"/>
                 <Control_Nothing/>
               </Control_IfThenElse>
             </Control_IfThenElse>
           </Control_Sequential>
           <Control_Sequential>
-            <!--60-69: CAROC + prevention activite physique et vitamine D/calcium-->
+            <!--50-59: CAROC + prevention activite physique et vitamine D/calcium-->
             <Data_SetVariable inValue="ActPhys+VitDCalcium" outVariable="@Methode_Prevention" inValue_Type="String"/>
             <Control_IfThenElse>
               <Data_Value inValue="@ActPhys+VitDCalcium_Pratiquant"/>
@@ -47,7 +44,26 @@
             </Control_IfThenElse>
           </Control_Sequential>
           <Control_Sequential>
-            <!--70+: CAROC + prevention activite physique et vitamine D/calcium-->
+            <!--60-69: SCORE + prevention activite physique et vitamine D/calcium-->
+            <Data_SetVariable inValue="ActPhys+VitDCalcium" outVariable="@Methode_Prevention" inValue_Type="String"/>
+            <Control_IfThenElse>
+              <Data_Value inValue="@ActPhys+VitDCalcium_Pratiquant"/>
+              <Data_SetVariable inValue="true" outVariable="@Pratiquant" inValue_Type="Bool"/>
+              <Control_IfThenElse>
+                <Data_Value inValue="@Compliant"/>
+                <Control_Sequential>
+                  <Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Visite_Medicale" inCompliance="1" outCost="@Cout" inCost="99.53" inChargeNonCompliant="false">
+                    <Control_Nothing/>
+                    <Control_Nothing/>
+                  </Meds_Treatment>
+                  <Control_ProcessCall inLabel="SCORE"/>
+                </Control_Sequential>
+                <Control_Nothing/>
+              </Control_IfThenElse>
+            </Control_IfThenElse>
+          </Control_Sequential>
+          <Control_Sequential>
+            <!--70+: SCORE + prevention activite physique et vitamine D/calcium-->
             <Data_SetVariable inValue="ActPhys+VitDCalcium" outVariable="@Methode_Prevention" inValue_Type="String"/>
             <Control_IfThenElse>
               <Data_Value inValue="@ActPhys+VitDCalcium_Pratiquant"/>
@@ -59,13 +75,14 @@
                     <Control_Nothing/>
                     <Control_Nothing/>
                   </Meds_Treatment>
-                  <Control_ProcessCall inLabel="CAROC_Initial"/>
+                  <Control_ProcessCall inLabel="SCORE"/>
                 </Control_Sequential>
                 <Control_Nothing/>
               </Control_IfThenElse>
             </Control_IfThenElse>
           </Control_Sequential>
         </Control_ChoiceIsBetween>
+        <Control_ProcessPush inDelay="1" inTarget="current" inLabel="Assigner_Politique_MinFrac"/>
         <Control_ProcessCall inLabel="Evenements_Apprentissage_MinFrac"/>
       </Control_Sequential>
     </PrimitiveTree>

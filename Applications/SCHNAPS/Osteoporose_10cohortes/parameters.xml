@@ -24,10 +24,10 @@
           </Vector>
         </Entry>
         <Entry label="threads.simulator">
-          <UInt value="1"/>
+          <UInt value="4"/>
         </Entry>
         <Entry label="threads.generator">
-          <UInt value="1"/>
+          <UInt value="4"/>
         </Entry>
         <Entry label="ref.taux_actualisation">
           <Double value="0.03"/>
@@ -173,7 +173,7 @@
     </Input>
     <Simulation>
       <RandomizerInfo/>
-      <Clock units="year">
+      <Clock>
         <PrimitiveTree>
           <Operators_OrComplex>
             <Operators_IsEqual inArgRight="0" inArgRight_Type="Int" inArgLeft="#IndividusVivants"/>
@@ -200,7 +200,8 @@
         <Process file="Processes/Evenements_ActPhys+VitDCalcium.xml" label="Evenements_ActPhys+VitDCalcium"/>
         <Process file="Processes/Evenements_AucunePrevention.xml" label="Evenements_AucunePrevention"/>
         <Process file="Processes/Evenements_VitDCalcium.xml" label="Evenements_VitDCalcium"/>
-        <Process file="Processes/Evenements_Apprentissage_Compromis.xml" label="Evenements_Apprentissage_Compromis"/>
+        <Process file="Processes/Evenements_Apprentissage.xml" label="Evenements_Apprentissage"/>
+        <Process file="Processes/Evenements_Apprentissage_MinCout.xml" label="Evenements_Apprentissage_MinCout"/>
         <Process file="Processes/Evenements_Apprentissage_MinFrac.xml" label="Evenements_Apprentissage_MinFrac"/>
         <Process file="Processes/Fracture_Colonne.xml" label="Fracture_Colonne"/>
         <Process file="Processes/Fracture_Hanche.xml" label="Fracture_Hanche"/>
@@ -237,14 +238,16 @@
         <Process file="Processes/Scenario_SCORE_ActivitePhysique+VitamineDCalcium.xml" label="Scenario_SCORE_ActivitePhysique+VitamineDCalcium"/>
         <Process file="Processes/Scenario_SCORE_VitamineDCalcium.xml" label="Scenario_SCORE_VitamineDCalcium"/>
         <Process file="Processes/Scenario_VitamineDCalcium.xml" label="Scenario_VitamineDCalcium"/>
-        <Process file="Processes/Scenario_Apprentissage_Compromis.xml" label="Scenario_Apprentissage_Compromis"/>
+        <Process file="Processes/Scenario_Apprentissage.xml" label="Scenario_Apprentissage"/>
+        <Process file="Processes/Scenario_Apprentissage_MinCout.xml" label="Scenario_Apprentissage_MinCout"/>
         <Process file="Processes/Scenario_Apprentissage_MinFrac.xml" label="Scenario_Apprentissage_MinFrac"/>
         <Process file="Processes/SCORE.xml" label="SCORE"/>
         <Process file="Processes/Traitement_ActPhys.xml" label="Traitement_ActPhys"/>
         <Process file="Processes/Traitement_ActPhys+VitDCalcium.xml" label="Traitement_ActPhys+VitDCalcium"/>
         <Process file="Processes/Traitement_VitDCalcium.xml" label="Traitement_VitDCalcium"/>
         <Process file="Processes/VitDCalcium.xml" label="VitDCalcium"/>
-        <Process file="Processes/Assigner_Politique_Compromis.xml" label="Assigner_Politique_Compromis"/>
+        <Process file="Processes/Assigner_Politique.xml" label="Assigner_Politique"/>
+        <Process file="Processes/Assigner_Politique_MinCout.xml" label="Assigner_Politique_MinCout"/>
         <Process file="Processes/Assigner_Politique_MinFrac.xml" label="Assigner_Politique_MinFrac"/>
       </Processes>
       <Scenarios>
@@ -264,15 +267,16 @@
         <Scenario processIndividual="Scenario_ORAI_ActivitePhysique+VitamineDCalcium" label="Scenario_ORAI_ActivitePhysique+VitamineDCalcium"/>
         <Scenario processIndividual="Scenario_OST_ActivitePhysique+VitamineDCalcium" label="Scenario_OST_ActivitePhysique+VitamineDCalcium"/>
         <Scenario processIndividual="Scenario_SCORE_ActivitePhysique+VitamineDCalcium" label="Scenario_SCORE_ActivitePhysique+VitamineDCalcium"/>
-        <Scenario processIndividual="Scenario_Apprentissage_Compromis" label="Scenario_Apprentissage_Compromis"/>
+        <Scenario processIndividual="Scenario_Apprentissage" label="Scenario_Apprentissage"/>
+        <Scenario processIndividual="Scenario_Apprentissage_MinCout" label="Scenario_Apprentissage_MinCout"/>
         <Scenario processIndividual="Scenario_Apprentissage_MinFrac" label="Scenario_Apprentissage_MinFrac"/>
       </Scenarios>
       <ClockObservers>
-        <Observer target="individuals" process="MAJ_Age" start="1" step="1" end="0" units="year"/>
-        <Observer target="individuals" process="MAJ_DMO" start="1" step="1" end="0" units="year"/>
-        <Observer target="individuals" process="MAJ_ProbabiliteFracture" start="1" step="1" end="0" units="year"/>
-        <Observer target="individuals" process="MAJ_TauxMortalite" start="1" step="1" end="0" units="year"/>
-        <Observer target="environment" process="MAJ_NbIndividus" start="1" step="1" end="0" units="year"/>
+        <Observer target="individuals" process="MAJ_Age"/>
+        <Observer target="individuals" process="MAJ_DMO"/>
+        <Observer target="individuals" process="MAJ_ProbabiliteFracture"/>
+        <Observer target="individuals" process="MAJ_TauxMortalite"/>
+        <Observer target="environment" process="MAJ_NbIndividus"/>
       </ClockObservers>
     </Simulation>
     <Output>
