@@ -8,31 +8,44 @@
           <Data_Value inValue="@Traitement"/>
         </Operators_OrComplex>
         <Control_Nothing/>
-		<Control_IfThenElse>
-		  <Operators_IsEqual inArgRight="50" inArgRight_Type="Int" inArgLeft="@Age"/>
-		  <Control_Sequential>
-			<!--Changement de politique: CAROC + prevention activite physique et vitamine D/calcium-->
-			<Data_SetVariable inValue="false" outVariable="@Prevention" inValue_Type="Bool"/>
-			<Data_SetVariable inValue="ActPhys+VitDCalcium" outVariable="@Methode_Prevention" inValue_Type="String"/>
-			<Control_IfThenElse>
-			  <Data_Value inValue="@ActPhys+VitDCalcium_Pratiquant"/>
-			  <Data_SetVariable inValue="true" outVariable="@Pratiquant" inValue_Type="Bool"/>
-			  <Data_SetVariable inValue="false" outVariable="@Pratiquant" inValue_Type="Bool"/>
-			</Control_IfThenElse>
-			<Control_IfThenElse>
-			  <Data_Value inValue="@Compliant"/>
-			  <Control_Sequential>
-				<Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Visite_Medicale" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="99.53">
-				  <Control_Nothing/>
-				  <Control_Nothing/>
-				</Meds_Treatment>
-				<Control_ProcessCall inLabel="CAROC_Initial"/>
-			  </Control_Sequential>
-			  <Control_Nothing/>
-			</Control_IfThenElse>
-		  </Control_Sequential>
-		  <Control_ProcessPush inDelay="1" inUnits="year" inTarget="current" inLabel="Assigner_Politique_MinFrac"/>
-		</Control_IfThenElse>
+        <Control_IfThenElse>
+          <Operators_IsEqualComplex>
+            <Operators_ModComplex>
+              <Data_Value inValue="@Age"/>
+              <Data_Value inValue="10" inValue_Type="Int"/>
+            </Operators_ModComplex>
+            <Data_Value inValue="0" inValue_Type="Int"/>
+          </Operators_IsEqualComplex>
+          <Control_Sequential>
+            <Control_IfThenElse>
+              <Operators_IsEqual inArgRight="50" inArgRight_Type="Int" inArgLeft="@Age"/>
+              <Control_Sequential>
+                <!--Changement de politique: CAROC + prevention activite physique et vitamine D/calcium-->
+                <Data_SetVariable inValue="false" outVariable="@Prevention" inValue_Type="Bool"/>
+                <Data_SetVariable inValue="ActPhys+VitDCalcium" outVariable="@Methode_Prevention" inValue_Type="String"/>
+                <Control_IfThenElse>
+                  <Data_Value inValue="@ActPhys+VitDCalcium_Pratiquant"/>
+                  <Data_SetVariable inValue="true" outVariable="@Pratiquant" inValue_Type="Bool"/>
+                  <Data_SetVariable inValue="false" outVariable="@Pratiquant" inValue_Type="Bool"/>
+                </Control_IfThenElse>
+                <Control_IfThenElse>
+                  <Data_Value inValue="@Compliant"/>
+                  <Control_Sequential>
+                    <Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Visite_Medicale" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="99.53">
+                      <Control_Nothing/>
+                      <Control_Nothing/>
+                    </Meds_Treatment>
+                    <Control_ProcessCall inLabel="CAROC_Initial"/>
+                  </Control_Sequential>
+                  <Control_Nothing/>
+                </Control_IfThenElse>
+              </Control_Sequential>
+              <Control_Nothing/>
+            </Control_IfThenElse>
+            <Control_ProcessPush inDelay="10" inTarget="current" inLabel="Assigner_Politique_MinFrac"/>
+          </Control_Sequential>
+          <Control_ProcessPush inDelay="1" inTarget="current" inLabel="Assigner_Politique_MinFrac"/>
+        </Control_IfThenElse>
       </Control_IfThenElse>
     </PrimitiveTree>
   </Process>

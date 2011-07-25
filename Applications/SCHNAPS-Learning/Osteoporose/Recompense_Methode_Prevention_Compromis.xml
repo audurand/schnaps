@@ -19,16 +19,14 @@
         </Operators_AddComplex>
       </Data_SetVariableComplex>
       <Data_SetVariableComplex outVariable="%Recompense">
-		<Operators_DivComplex>
+		<Operators_MultComplex>
 			<Operators_ExpComplex>
-				<Operators_MultComplex>
-					<Data_Value inValue="%Nb_Fractures_Total"/>
-					<Data_Value inValue="-1" inValue_Type="Double"/>
-				</Operators_MultComplex>
+				<Data_Value inValue="%Nb_Fractures_Total"/>
 			</Operators_ExpComplex>
 			<Data_Value inValue="@Cout"/>
-		</Operators_DivComplex>
+		</Operators_MultComplex>
       </Data_SetVariableComplex>
+      <Operators_MultVariable inArgLeft="%Recompense" inArgRight="-1" inArgRight_Type="Double" outResult="%Recompense"/>
       <Data_Value inValue="%Recompense"/>
     </Control_Sequential>
   </PrimitiveTree>
