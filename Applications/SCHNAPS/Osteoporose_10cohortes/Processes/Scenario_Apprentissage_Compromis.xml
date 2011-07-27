@@ -72,7 +72,7 @@
             </Control_IfThenElse>
           </Control_Sequential>
         </Control_ChoiceIsBetween>
-        <Control_ProcessCall inLabel="Evenements_Apprentissage_Compromis"/>
+        <Control_ProcessCall inLabel="Evenements_Apprentissage"/>
       </Control_Sequential>
     </PrimitiveTree>
   </Process>
