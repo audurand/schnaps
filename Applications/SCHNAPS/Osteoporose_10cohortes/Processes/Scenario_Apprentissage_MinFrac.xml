@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <Process label="Scenario_Apprentissage_MinFrac_e">
+  <Process label="Scenario_Apprentissage_MinFrac">
     <LocalVariables/>
     <PrimitiveTree size="1">
       <Control_Sequential>
@@ -22,7 +22,7 @@
 				<Data_Value inValue="@Compliant"/>
 				<Control_Sequential>
 				  <Data_SetVariable inValue="true" outVariable="@Prevention" inValue_Type="Bool"/>
-				  <Control_ProcessPush inDelay="1" inUnits="year" inTarget="current" inLabel="Assigner_Politique_MinFrac_e"/>
+				  <Control_ProcessPush inDelay="1" inUnits="year" inTarget="current" inLabel="Assigner_Politique_MinFrac"/>
 				</Control_Sequential>
 				<Control_Nothing/>
 			</Control_IfThenElse>
@@ -43,7 +43,7 @@
                     <Control_Nothing/>
                   </Meds_Treatment>
                   <Control_ProcessCall inLabel="ORAI"/>
-				  <Control_ProcessPush inDelay="1" inUnits="year" inTarget="current" inLabel="Assigner_Politique_MinFrac_e"/>
+				  <Control_ProcessPush inDelay="1" inUnits="year" inTarget="current" inLabel="Assigner_Politique_MinFrac"/>
                 </Control_Sequential>
                 <Control_Nothing/>
             </Control_IfThenElse>

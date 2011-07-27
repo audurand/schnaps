@@ -247,8 +247,6 @@
         <Process file="Processes/Scenario_VitamineDCalcium.xml" label="Scenario_VitamineDCalcium"/>
         <Process file="Processes/Scenario_Apprentissage_Compromis.xml" label="Scenario_Apprentissage_Compromis"/>
         <Process file="Processes/Scenario_Apprentissage_MinFrac.xml" label="Scenario_Apprentissage_MinFrac"/>
-        <Process file="Processes/Scenario_Apprentissage_MinFrac_e.xml" label="Scenario_Apprentissage_MinFrac_e"/>
-        <Process file="Processes/Scenario_Apprentissage_Test.xml" label="Scenario_Apprentissage_Test"/>
         <Process file="Processes/SCORE.xml" label="SCORE"/>
         <Process file="Processes/Traitement_ActPhys.xml" label="Traitement_ActPhys"/>
         <Process file="Processes/Traitement_ActPhys+VitDCalcium.xml" label="Traitement_ActPhys+VitDCalcium"/>
@@ -256,8 +254,6 @@
         <Process file="Processes/VitDCalcium.xml" label="VitDCalcium"/>
         <Process file="Processes/Assigner_Politique_Compromis.xml" label="Assigner_Politique_Compromis"/>
         <Process file="Processes/Assigner_Politique_MinFrac.xml" label="Assigner_Politique_MinFrac"/>
-        <Process file="Processes/Assigner_Politique_MinFrac_e.xml" label="Assigner_Politique_MinFrac_e"/>
-        <Process file="Processes/Assigner_Politique_Test.xml" label="Assigner_Politique_Test"/>
       </Processes>
       <Scenarios>
         <Scenario processIndividual="Scenario_CAROC_ActivitePhysique" label="Scenario_CAROC_ActivitePhysique"/>
@@ -278,8 +274,6 @@
         <Scenario processIndividual="Scenario_SCORE_ActivitePhysique+VitamineDCalcium" label="Scenario_SCORE_ActivitePhysique+VitamineDCalcium"/>
         <Scenario processIndividual="Scenario_Apprentissage_Compromis" label="Scenario_Apprentissage_Compromis"/>
         <Scenario processIndividual="Scenario_Apprentissage_MinFrac" label="Scenario_Apprentissage_MinFrac"/>
-        <Scenario processIndividual="Scenario_Apprentissage_MinFrac_e" label="Scenario_Apprentissage_MinFrac_e"/>
-        <Scenario processIndividual="Scenario_Apprentissage_Test" label="Scenario_Apprentissage_Test"/>
       </Scenarios>
       <ClockObservers>
         <Observer target="individuals" process="MAJ_Age" start="1" step="1" end="0" units="year"/>

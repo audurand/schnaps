@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <Process label="Assigner_Politique_MinFrac_e">
+  <Process label="Assigner_Politique_MinFrac">
     <LocalVariables/>
     <PrimitiveTree size="1">
       <Control_IfThenElse>
@@ -67,9 +67,9 @@
               </Control_Sequential>
               <Control_Nothing/>
             </Control_IfThenElse>
-            <Control_ProcessPush inDelay="10" inTarget="current" inLabel="Assigner_Politique_MinFrac_e"/>
+            <Control_ProcessPush inDelay="10" inTarget="current" inLabel="Assigner_Politique_MinFrac"/>
           </Control_Sequential>
-          <Control_ProcessPush inDelay="1" inTarget="current" inLabel="Assigner_Politique_MinFrac_e"/>
+          <Control_ProcessPush inDelay="1" inTarget="current" inLabel="Assigner_Politique_MinFrac"/>
         </Control_IfThenElse>
       </Control_IfThenElse>
     </PrimitiveTree>
