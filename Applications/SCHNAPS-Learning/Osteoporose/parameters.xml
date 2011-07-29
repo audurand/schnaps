@@ -144,7 +144,7 @@
 		      <Option label="SCORE+CAROC"/>
 		    </Options>
 		    <FunctionState file="Etat_Methode_Depistage.xml"/>
-		    <FunctionReward file="Recompense_Methode_Depistage_MinFrac.xml"/>
+		    <FunctionReward file="Recompense_Compromis.xml"/>
 		    <ChoiceMap/>
 		  </Choice>
 		  <Choice label="Methode_Prevention">
@@ -155,7 +155,7 @@
 		      <Option label="ActPhys+VitDCalcium"/>
 		    </Options>
 		    <FunctionState file="Etat_Methode_Prevention.xml"/>
-		    <FunctionReward file="Recompense_Methode_Prevention_MinFrac.xml"/>
+		    <FunctionReward file="Recompense_Compromis.xml"/>
 		    <ChoiceMap/>
 		  </Choice>
 		</Learning_DecisionMaker>

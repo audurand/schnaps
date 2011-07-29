@@ -4,7 +4,7 @@
 		  <Double value="0"/>
 	  </LocalVariable>
 	  <LocalVariable label="Nb_Fractures_Total">
-		  <Int value="0"/>
+		  <Double value="0"/>
 	  </LocalVariable>
   </LocalVariables>
   <PrimitiveTree>
