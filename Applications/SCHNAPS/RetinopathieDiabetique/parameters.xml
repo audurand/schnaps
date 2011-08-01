@@ -8,10 +8,10 @@
       </Plugins>
       <Parameters>
         <Entry label="threads.simulator">
-          <UInt value="1"/>
+          <UInt value="8"/>
         </Entry>
         <Entry label="threads.generator">
-          <UInt value="1"/>
+          <UInt value="8"/>
         </Entry>
         <Entry label="ref.Age_Depart">
           <Int value="0"/>

@@ -1,0 +1,227 @@
+     <Simulator version="0.1">
+          <System>
+               <Plugins>
+                    <Plugin source="libcontrol.so" xsdfile="XSD/Control.xsd"/>
+                    <Plugin source="libdata.so" xsdfile="XSD/Data.xsd"/>
+                    <Plugin source="liboperators.so" xsdfile="XSD/Operators.xsd"/>
+                    <Plugin source="libmeds.so" xsdfile="XSD/Meds.xsd"/>
+               </Plugins>
+               <Parameters>
+                    <Entry label="threads.simulator">
+                         <UInt value="8"/>
+                    </Entry>
+                    <Entry label="threads.generator">
+                         <UInt value="8"/>
+                    </Entry>
+                    <Entry label="ref.Age_Depart">
+                         <Int value="0"/>
+                    </Entry>
+                    <Entry label="ref.Age_Fin">
+                         <Int value="150"/>
+                    </Entry>
+                    <Entry label="ref.Traitement_PDR_Efficacite">
+                         <Double value="0.80"/>
+                    </Entry>
+                    <Entry label="ref.Traitement_PDR_Cout">
+                         <Double value="180.00"/>
+                    </Entry>
+                    <Entry label="ref.Traitement_CSMO_Efficacite">
+                         <Double value="0.62"/>
+                    </Entry>
+                    <Entry label="ref.Traitement_CSMO_Cout">
+                         <Double value="180.00"/>
+                    </Entry>
+                    <Entry label="ref.Optometriste_Specificite">
+                         <Double value="0.93"/>
+                    </Entry>
+                    <Entry label="ref.Optometriste_Sensibilite">
+                         <Double value="0.73"/>
+                    </Entry>
+                    <Entry label="ref.Optometriste_Cout">
+                         <Double value="20.00"/>
+                    </Entry>
+                    <Entry label="ref.Optometriste_Intervalle">
+                         <ULong value="12"/>
+                    </Entry>
+                    <Entry label="ref.Optometriste_Compliance">
+                         <Double value="0.80"/>
+                    </Entry>
+                    <Entry label="ref.GoldStandard_Specificite">
+                         <Double value="1.00"/>
+                    </Entry>
+                    <Entry label="ref.GoldStandard_Sensibilite">
+                         <Double value="0.98"/>
+                    </Entry>
+                    <Entry label="ref.GoldStandard_Cout">
+                         <Double value="60.00"/>
+                    </Entry>
+                    <Entry label="ref.GoldStandard_Intervalle">
+                         <ULong value="6"/>
+                    </Entry>
+                    <Entry label="ref.GoldStandard_Compliance">
+                         <Double value="0.95"/>
+                    </Entry>
+                    <Entry label="ref.Genre">
+                         <Vector>
+                              <String value="Homme"/>
+                              <String value="Femme"/>
+                         </Vector>
+                    </Entry>
+                    <Entry label="ref.Ethnie">
+                         <Vector>
+                              <String value="Caucasien"/>
+                              <String value="Autre"/>
+                         </Vector>
+                    </Entry>
+                    <Entry label="ref.DMO">
+                         <Vector>
+                              <String value="Aucune"/>
+                              <String value="DMO"/>
+                              <String value="CSMO"/>
+                              <String value="Aveugle"/>
+                              <String value="Traite"/>
+                         </Vector>
+                    </Entry>
+                    <Entry label="ref.BDR">
+                         <Vector>
+                              <String value="Aucune"/>
+                              <String value="BDR1"/>
+                              <String value="BDR2"/>
+                              <String value="PDR"/>
+                              <String value="Aveugle"/>
+                              <String value="Traite"/>
+                         </Vector>
+                    </Entry>
+                    <Entry label="ref.Age_5ans">
+                         <Vector>
+                              <Int value="0"/>
+                              <Int value="5"/>
+                              <Int value="10"/>
+                              <Int value="15"/>
+                              <Int value="20"/>
+                              <Int value="25"/>
+                              <Int value="30"/>
+                              <Int value="35"/>
+                              <Int value="40"/>
+                              <Int value="45"/>
+                              <Int value="50"/>
+                              <Int value="55"/>
+                              <Int value="60"/>
+                              <Int value="65"/>
+                              <Int value="70"/>
+                              <Int value="75"/>
+                              <Int value="80"/>
+                              <Int value="85"/>
+                         </Vector>
+                    </Entry>
+                    <Entry label="ref.Age_10ans">
+                         <Vector>
+                              <Int value="0"/>
+                              <Int value="10"/>
+                              <Int value="20"/>
+                              <Int value="30"/>
+                              <Int value="40"/>
+                              <Int value="50"/>
+                              <Int value="60"/>
+                              <Int value="70"/>
+                              <Int value="80"/>
+                              <Int value="90"/>
+                         </Vector>
+                    </Entry>
+               </Parameters>
+          </System>
+          <Input>
+               <Environment file="Environment/Environment.xml"/>
+               <PopulationManager>
+                    <Generator>
+                         <RandomizerInfo>
+                              <Randomizer seed="17301680723609708177" state=""/>
+                              <Randomizer seed="14697593741324034931" state=""/>
+                              <Randomizer seed="2219356380640109750" state=""/>
+                              <Randomizer seed="8524570918562040345" state=""/>
+                              <Randomizer seed="1347513098053772062" state=""/>
+                              <Randomizer seed="10751210478659522682" state=""/>
+                              <Randomizer seed="14354729794827820370" state=""/>
+                              <Randomizer seed="8389584360493321375" state=""/>
+                         </RandomizerInfo>
+                         <Profiles>
+                              <GenProfile label="EnglandWales_1991">
+                                   <Demography file="Populations/England_Wales_1991.xml"/>
+                                   <AcceptFunction>
+                                        <PrimitiveTree>
+                                             <Data_Value inValue="true" inValue_Type="Bool"/>
+                                        </PrimitiveTree>
+                                   </AcceptFunction>
+                                   <IndividualModel>
+                                        <Variable label="NIDDM"/>
+                                        <Variable label="Age"/>
+                                        <Variable label="Ethnie"/>
+                                        <Variable label="Genre"/>
+                                        <Variable label="BDR"/>
+                                        <Variable label="DMO"/>
+                                        <Variable label="Deux_Yeux_BDR"/>
+                                        <Variable label="Deux_Yeux_DMO"/>
+                                        <Variable label="Traitement_PDR"/>
+                                        <Variable label="Traitement_CSMO"/>
+                                   </IndividualModel>
+                                   <SimulationVariables file="Populations/SimulationVariables.xml"/>
+                              </GenProfile>
+                         </Profiles>
+                    </Generator>
+                    <Population>
+                         <SubPopulation profile="EnglandWales_1991" size="500000" time="0"/>
+                    </Population>
+               </PopulationManager>
+          </Input>
+          <Simulation>
+               <RandomizerInfo/>
+               <Clock units="month">
+                    <PrimitiveTree>
+                         <Operators_IsEqualComplex>
+                              <Data_Clock/>
+                              <Data_Value inValue="300" inValue_Type="ULong"/>
+                         </Operators_IsEqualComplex>
+                    </PrimitiveTree>
+               </Clock>
+               <Processes>
+                    <Process file="Processes/Ajouter_Optometriste.xml" label="Ajouter_Optometriste"/>
+                    <Process file="Processes/Ajouter_Ophtalmologiste.xml" label="Ajouter_Ophtalmologiste"/>
+                    <Process file="Processes/Ajouter_Traitement_PDR.xml" label="Ajouter_Traitement_PDR"/>
+                    <Process file="Processes/Ajouter_Traitement_CSMO.xml" label="Ajouter_Traitement_CSMO"/>
+                    <Process file="Processes/Optometriste.xml" label="Optometriste"/>
+                    <Process file="Processes/Ophtalmologiste.xml" label="Ophtalmologiste"/>
+                    <Process file="Processes/Confirmation_Detection.xml" label="Confirmation_Detection"/>
+                    <Process file="Processes/Traitement_PDR.xml" label="Traitement_PDR"/>
+                    <Process file="Processes/Traitement_CSMO.xml" label="Traitement_CSMO"/>
+                    <Process file="Processes/Scenario.xml" label="Scenario"/>
+                    <Process file="Processes/Pre-Detection.xml" label="Pre-Detection"/>
+                    <Process file="Processes/Post-Detection.xml" label="Post-Detection"/>
+                    <Process file="Processes/MAJ_Individus.xml" label="MAJ_Individus"/>
+                    <Process file="Processes/MAJ_Age.xml" label="MAJ_Age"/>
+                    <Process file="Processes/MAJ_NIDDM.xml" label="MAJ_NIDDM"/>
+                    <Process file="Processes/MAJ_Retinopathie.xml" label="MAJ_Retinopathie"/>
+                    <Process file="Processes/MAJ_Taux_Mortalite.xml" label="MAJ_Taux_Mortalite"/>
+               </Processes>
+               <Scenarios>
+                    <Scenario processIndividual="Scenario" label="Scenario"/>
+               </Scenarios>
+               <ClockObservers>
+                    <Observer target="individuals" inStart="1" inEnd="0" process="MAJ_Individus" units="year" inStep="1"/>
+               </ClockObservers>
+          </Simulation>
+          <Output>
+               <Environment>
+                    <Variable label="Total_Optometriste"/>
+                    <Variable label="Total_Ophtalmologiste"/>
+                    <Variable label="Total_Traitement_CSMO"/>
+                    <Variable label="Total_Traitement_PDR"/>
+               </Environment>
+               <Population>
+                    <SubPopulation profile="EnglandWales_1991">
+                         <Variable label="Cout"/>
+                         <Variable label="Annees_Aveugle"/>
+                         <Variable label="Cout_Aveugle"/>
+                    </SubPopulation>
+               </Population>
+          </Output>
+     </Simulator>

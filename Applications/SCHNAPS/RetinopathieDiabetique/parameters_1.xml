@@ -8,10 +8,10 @@
                </Plugins>
                <Parameters>
                     <Entry label="threads.simulator">
-                         <UInt value="1"/>
+                         <UInt value="8"/>
                     </Entry>
                     <Entry label="threads.generator">
-                         <UInt value="1"/>
+                         <UInt value="8"/>
                     </Entry>
                     <Entry label="ref.Age_Depart">
                          <Int value="0"/>
@@ -135,7 +135,14 @@
                <PopulationManager>
                     <Generator>
                          <RandomizerInfo>
-                              <Randomizer seed="8997998602380533595" state=""/>
+                              <Randomizer seed="13713302370515129084" state=""/>
+                              <Randomizer seed="3733657847210433649" state=""/>
+                              <Randomizer seed="16680615222235438786" state=""/>
+                              <Randomizer seed="15102391057814099970" state=""/>
+                              <Randomizer seed="14823907575087013160" state=""/>
+                              <Randomizer seed="4565657175659582504" state=""/>
+                              <Randomizer seed="14103712387103850857" state=""/>
+                              <Randomizer seed="2617724424062945772" state=""/>
                          </RandomizerInfo>
                          <Profiles>
                               <GenProfile label="EnglandWales_1991">
@@ -150,10 +157,12 @@
                                         <Variable label="Age"/>
                                         <Variable label="Ethnie"/>
                                         <Variable label="Genre"/>
-                                        <Variable label="BDR_D"/>
-                                        <Variable label="BDR_G"/>
-                                        <Variable label="DMO_D"/>
-                                        <Variable label="DMO_G"/>
+                                        <Variable label="BDR"/>
+                                        <Variable label="DMO"/>
+                                        <Variable label="Deux_Yeux_BDR"/>
+                                        <Variable label="Deux_Yeux_DMO"/>
+                                        <Variable label="Traitement_PDR"/>
+                                        <Variable label="Traitement_CSMO"/>
                                    </IndividualModel>
                                    <SimulationVariables file="Populations/SimulationVariables.xml"/>
                               </GenProfile>
@@ -184,7 +193,7 @@
                     <Process file="Processes/Confirmation_Detection.xml" label="Confirmation_Detection"/>
                     <Process file="Processes/Traitement_PDR.xml" label="Traitement_PDR"/>
                     <Process file="Processes/Traitement_CSMO.xml" label="Traitement_CSMO"/>
-                    <Process file="Processes/Politique1.xml" label="Politique1"/>
+                    <Process file="Processes/Scenario.xml" label="Scenario"/>
                     <Process file="Processes/Pre-Detection.xml" label="Pre-Detection"/>
                     <Process file="Processes/Post-Detection.xml" label="Post-Detection"/>
                     <Process file="Processes/MAJ_Individus.xml" label="MAJ_Individus"/>
@@ -194,7 +203,7 @@
                     <Process file="Processes/MAJ_Taux_Mortalite.xml" label="MAJ_Taux_Mortalite"/>
                </Processes>
                <Scenarios>
-                    <Scenario processIndividual="Politique1" label="Politique1"/>
+                    <Scenario processIndividual="Scenario" label="Scenario"/>
                </Scenarios>
                <ClockObservers>
                     <Observer target="individuals" inStart="1" inEnd="0" process="MAJ_Individus" units="year" inStep="1"/>
@@ -202,10 +211,10 @@
           </Simulation>
           <Output>
                <Environment>
-                    <Variable label="Total_Ophtalmologiste"/>
                     <Variable label="Total_Optometriste"/>
-                    <Variable label="Total_Traitement_PDR"/>
+                    <Variable label="Total_Ophtalmologiste"/>
                     <Variable label="Total_Traitement_CSMO"/>
+                    <Variable label="Total_Traitement_PDR"/>
                </Environment>
                <Population>
                     <SubPopulation profile="EnglandWales_1991">
