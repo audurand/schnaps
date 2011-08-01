@@ -503,7 +503,7 @@
         </Control_ChoiceIsEqual>
       </PrimitiveTree>
     </Variable>
-    <Variable type="String" label="BDR_D">
+    <Variable type="String" label="BDR">
       <LocalVariables/>
       <PrimitiveTree>
         <Control_IfThenElse>
@@ -538,45 +538,10 @@
         </Control_IfThenElse>
       </PrimitiveTree>
     </Variable>
-    <Variable type="String" label="BDR_G">
+    <Variable type="String" label="DMO">
       <LocalVariables/>
       <PrimitiveTree>
-        <Control_IfThenElse>
-          <Data_Value inValue="@NIDDM"/>
-          <Control_ChoiceIsBetween inBounds_Type="Int" inValue="@Age" inBounds="0|30|40|50|60">
-            <Data_Value inValue_Type="String" inValue="Aucune"/>
-            <Control_BranchMulti inProbabilities="0.67|0.29|0.04">
-              <Data_Value inValue_Type="String" inValue="Aucune"/>
-              <Data_Value inValue_Type="String" inValue="BDR1"/>
-              <Data_Value inValue_Type="String" inValue="PDR"/>
-            </Control_BranchMulti>
-            <Control_BranchMulti inProbabilities="0.57|0.35|0.07|0.01">
-              <Data_Value inValue_Type="String" inValue="Aucune"/>
-              <Data_Value inValue_Type="String" inValue="BDR1"/>
-              <Data_Value inValue_Type="String" inValue="PDR"/>
-              <Data_Value inValue_Type="String" inValue="Aveugle"/>
-            </Control_BranchMulti>
-            <Control_BranchMulti inProbabilities="0.52|0.38|0.09|0.01">
-              <Data_Value inValue_Type="String" inValue="Aucune"/>
-              <Data_Value inValue_Type="String" inValue="BDR1"/>
-              <Data_Value inValue_Type="String" inValue="PDR"/>
-              <Data_Value inValue_Type="String" inValue="Aveugle"/>
-            </Control_BranchMulti>
-            <Control_BranchMulti inProbabilities="0.52|0.41|0.05|0.02">
-              <Data_Value inValue_Type="String" inValue="Aucune"/>
-              <Data_Value inValue_Type="String" inValue="BDR1"/>
-              <Data_Value inValue_Type="String" inValue="PDR"/>
-              <Data_Value inValue_Type="String" inValue="Aveugle"/>
-            </Control_BranchMulti>
-          </Control_ChoiceIsBetween>
-          <Data_Value inValue_Type="String" inValue="Aucune"/>
-        </Control_IfThenElse>
-      </PrimitiveTree>
-    </Variable>
-    <Variable type="String" label="DMO_D">
-      <LocalVariables/>
-      <PrimitiveTree>
-        <Control_ChoiceIsEqual inChoices="$ref.BDR" inValue="@BDR_D">
+        <Control_ChoiceIsEqual inChoices="$ref.BDR" inValue="@BDR">
           <Data_Value inValue_Type="String" inValue="Aucune"/>
           <Control_Branch inProbability="0.15">
             <Control_Branch inProbability="0.80">
@@ -604,35 +569,66 @@
         </Control_ChoiceIsEqual>
       </PrimitiveTree>
     </Variable>
-    <Variable type="String" label="DMO_G">
+    <Variable type="Bool" label="Deux_Yeux_BDR">
       <LocalVariables/>
       <PrimitiveTree>
-        <Control_ChoiceIsEqual inChoices="$ref.BDR" inValue="@BDR_G">
-          <Data_Value inValue_Type="String" inValue="Aucune"/>
-          <Control_Branch inProbability="0.15">
-            <Control_Branch inProbability="0.80">
-              <Data_Value inValue_Type="String" inValue="CSMO"/>
-              <Data_Value inValue_Type="String" inValue="DMO"/>
-            </Control_Branch>
-            <Data_Value inValue_Type="String" inValue="Aucune"/>
+        <Control_ChoiceIsEqual inChoices="$ref.BDR" inValue="@BDR">
+          <Data_Value inValue_Type="Bool" inValue="false"/>
+          <Control_Branch inProbability="0.80">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
           </Control_Branch>
-          <Control_Branch inProbability="0.15">
-            <Control_Branch inProbability="0.80">
-              <Data_Value inValue_Type="String" inValue="CSMO"/>
-              <Data_Value inValue_Type="String" inValue="DMO"/>
-            </Control_Branch>
-            <Data_Value inValue_Type="String" inValue="Aucune"/>
+          <Control_Branch inProbability="0.80">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
           </Control_Branch>
-          <Control_Branch inProbability="0.50">
-            <Control_Branch inProbability="0.80">
-              <Data_Value inValue_Type="String" inValue="CSMO"/>
-              <Data_Value inValue_Type="String" inValue="DMO"/>
-            </Control_Branch>
-            <Data_Value inValue_Type="String" inValue="Aucune"/>
+          <Control_Branch inProbability="0.80">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
           </Control_Branch>
-          <Data_Value inValue_Type="String" inValue="Aveugle"/>
+          <Control_Branch inProbability="0.80">
+            <Data_Value inValue_Type="Bool" inValue="true"/>
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+          </Control_Branch>
           <Data_Value inValue_Type="String" inValue="Aucune"/>
         </Control_ChoiceIsEqual>
+      </PrimitiveTree>
+    </Variable>
+    <Variable type="Bool" label="Deux_Yeux_DMO">
+      <LocalVariables/>
+      <PrimitiveTree>
+		<Control_IfThenElse>
+			<Data_Value inValue="@Deux_Yeux_BDR"/>
+			<Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
+			  <Data_Value inValue_Type="Bool" inValue="false"/>
+			  <Control_Branch inProbability="0.50">
+				<Data_Value inValue_Type="Bool" inValue="true"/>
+				<Data_Value inValue_Type="Bool" inValue="false"/>
+			  </Control_Branch>
+			  <Control_Branch inProbability="0.50">
+				<Data_Value inValue_Type="Bool" inValue="true"/>
+				<Data_Value inValue_Type="Bool" inValue="false"/>
+			  </Control_Branch>
+			  <Control_Branch inProbability="0.50">
+				<Data_Value inValue_Type="Bool" inValue="true"/>
+				<Data_Value inValue_Type="Bool" inValue="false"/>
+			  </Control_Branch>
+			  <Data_Value inValue_Type="String" inValue="Aucune"/>
+			</Control_ChoiceIsEqual>
+			<Data_Value inValue_Type="Bool" inValue="false"/>
+		</Control_IfThenElse>
+      </PrimitiveTree>
+    </Variable>
+    <Variable type="Bool" label="Traitement_PDR">
+      <LocalVariables/>
+      <PrimitiveTree>
+		<Data_Value inValue_Type="Bool" inValue="false"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable type="Bool" label="Traitement_CSMO">
+      <LocalVariables/>
+      <PrimitiveTree>
+		<Data_Value inValue_Type="Bool" inValue="false"/>
       </PrimitiveTree>
     </Variable>
   </Demography>

@@ -12,19 +12,14 @@
         		</Operators_IsGreater>
         		<Control_Nothing/>
 				<Control_IfThenElse>
-				  <Operators_AndComplex>
-					<!--L'individu est aveugle des deux yeux-->
-					<Operators_OrComplex>
-					  <Operators_IsEqual inArgLeft="@BDR_D" inArgRight="Aveugle" inArgRight_Type="String"/>
-					  <Operators_IsEqual inArgLeft="@DMO_D" inArgRight="Aveugle" inArgRight_Type="String"/>
-					</Operators_OrComplex>
-					<Operators_OrComplex>
-					  <Operators_IsEqual inArgLeft="@BDR_G" inArgRight="Aveugle" inArgRight_Type="String"/>
-					  <Operators_IsEqual inArgLeft="@DMO_G" inArgRight="Aveugle" inArgRight_Type="String"/>
-					</Operators_OrComplex>
-				  </Operators_AndComplex>
+				  <Operators_OrComplex>
+					<!--L'individu n'est plus traitable-->
+					 <Operators_IsEqual inArgLeft="@BDR" inArgRight="Aveugle" inArgRight_Type="String"/>
+					 <Operators_IsEqual inArgLeft="@DMO" inArgRight="Aveugle" inArgRight_Type="String"/>
+				  </Operators_OrComplex>
 				  <Control_Nothing/>
-				  <Control_Branch inProbability="$ref.Optometriste_Compliance">
+				  <Control_IfThenElse>
+					<Data_Value inValue="@Compliant_Optometriste"/>
 					<Control_IfThenElse>
 					  <Control_ProcessCall inLabel="Optometriste"/>
 					  <Control_IfThenElse>
@@ -32,55 +27,23 @@
 						<Control_Sequential>
 						  <!--Depistage confirme-->
 						  <Control_IfThenElse>
-							<!--Traitement PDR oeil droit?-->
-							<Data_Value inValue="@Resultat_GoldStandard_PDR_D"/>
-							<Control_Sequential>
-								<Control_ProcessPush inTarget="environment" inLabel="Ajouter_Traitement_PDR" inUnits="month" inDelay="0"/>
-								  <Control_IfThenElse>
-									<Control_ProcessCall inLabel="Traitement_PDR"/>
-									<Data_SetVariable inValue="Traite" inValue_Type="String" outVariable="@BDR_D"/>
-									<Control_Nothing/>
-								  </Control_IfThenElse>
-								</Control_Sequential>
+							<!--Traitement PDR?-->
+							<Data_Value inValue="@Resultat_GoldStandard_PDR"/>
+							<Control_IfThenElse>
+								<Control_ProcessCall inLabel="Traitement_PDR"/>
+								<Data_SetVariable inValue="Traite" inValue_Type="String" outVariable="@BDR"/>
+								<Control_Nothing/>
+							</Control_IfThenElse>
 							<Control_Nothing/>
 						  </Control_IfThenElse>
 						  <Control_IfThenElse>
-							<!--Traitement PDR oeil gauche?-->
-							<Data_Value inValue="@Resultat_GoldStandard_PDR_G"/>
-							<Control_Sequential>
-								<Control_ProcessPush inTarget="environment" inLabel="Ajouter_Traitement_PDR" inUnits="month" inDelay="0"/>
-								  <Control_IfThenElse>
-									<Control_ProcessCall inLabel="Traitement_PDR"/>
-									<Data_SetVariable inValue="Traite" inValue_Type="String" outVariable="@BDR_G"/>
-									<Control_Nothing/>
-								  </Control_IfThenElse>
-								</Control_Sequential>
-							<Control_Nothing/>
-						  </Control_IfThenElse>
-						  <Control_IfThenElse>
-							<!--Traitement CSMO oeil droit?-->
-							<Data_Value inValue="@Resultat_GoldStandard_CSMO_D"/>
-							<Control_Sequential>
-								<Control_ProcessPush inTarget="environment" inLabel="Ajouter_Traitement_CSMO" inUnits="month" inDelay="0"/>
-								  <Control_IfThenElse>
-									<Control_ProcessCall inLabel="Traitement_CSMO"/>
-									<Data_SetVariable inValue="Traite" inValue_Type="String" outVariable="@DMO_D"/>
-									<Control_Nothing/>
-								  </Control_IfThenElse>
-								</Control_Sequential>
-							<Control_Nothing/>
-						  </Control_IfThenElse>
-						  <Control_IfThenElse>
-							<!--Traitement CSMO oeil gauche?-->
-							<Data_Value inValue="@Resultat_GoldStandard_CSMO_G"/>
-							<Control_Sequential>
-								<Control_ProcessPush inTarget="environment" inLabel="Ajouter_Traitement_CSMO" inUnits="month" inDelay="0"/>
-								  <Control_IfThenElse>
-									<Control_ProcessCall inLabel="Traitement_CSMO"/>
-									<Data_SetVariable inValue="Traite" inValue_Type="String" outVariable="@DMO_G"/>
-									<Control_Nothing/>
-								  </Control_IfThenElse>
-								</Control_Sequential>
+							<!--Traitement CSMO?-->
+							<Data_Value inValue="@Resultat_GoldStandard_CSMO"/>
+							<Control_IfThenElse>
+								<Control_ProcessCall inLabel="Traitement_CSMO"/>
+								<Data_SetVariable inValue="Traite" inValue_Type="String" outVariable="@DMO"/>
+								<Control_Nothing/>
+							</Control_IfThenElse>
 							<Control_Nothing/>
 						  </Control_IfThenElse>
 						  <Control_ProcessPush inTarget="current" inLabel="Post-Detection" inUnits="month" inDelay="$ref.GoldStandard_Intervalle"/>
@@ -93,10 +56,10 @@
 						<!--Depistage negatif-->
 					  </Control_ProcessPush>
 					</Control_IfThenElse>
-					<Control_ProcessPush inTarget="current" inLabel="Pre-Detection" inLabel="Pre-Detection" inUnits="month" inDelay="$ref.Optometriste_Intervalle">
+					<Control_Nothing>
 					  <!--Non-consentant au depistage-->
-					</Control_ProcessPush>
-				  </Control_Branch>
+					</Control_Nothing>
+				  </Control_IfThenElse>
 				</Control_IfThenElse>
 			</Control_IfThenElse>
 		</Control_IfThenElse>

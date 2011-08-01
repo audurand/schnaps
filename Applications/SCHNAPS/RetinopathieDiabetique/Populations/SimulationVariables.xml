@@ -11,31 +11,19 @@
   <Data_Value inValue_Type="Int" inValue="0"/>
   </PrimitiveTree>
  </Variable>
- <Variable gui.position="2" type="Bool" label="Resultat_GoldStandard_PDR_D">
+ <Variable gui.position="2" type="Bool" label="Resultat_GoldStandard_PDR">
   <LocalVariables/>
   <PrimitiveTree>
   <Data_Value inValue_Type="Bool" inValue="false"/>
   </PrimitiveTree>
  </Variable>
- <Variable gui.position="3" type="Bool" label="Resultat_GoldStandard_PDR_G">
+ <Variable gui.position="3" type="Bool" label="Resultat_GoldStandard_CSMO">
   <LocalVariables/>
   <PrimitiveTree>
   <Data_Value inValue_Type="Bool" inValue="false"/>
   </PrimitiveTree>
  </Variable>
- <Variable gui.position="4" type="Bool" label="Resultat_GoldStandard_CSMO_D">
-  <LocalVariables/>
-  <PrimitiveTree>
-  <Data_Value inValue_Type="Bool" inValue="false"/>
-  </PrimitiveTree>
- </Variable>
- <Variable gui.position="5" type="Bool" label="Resultat_GoldStandard_CSMO_G">
-  <LocalVariables/>
-  <PrimitiveTree>
-  <Data_Value inValue_Type="Bool" inValue="false"/>
-  </PrimitiveTree>
- </Variable>
- <Variable gui.position="6" type="Double" label="Taux_Mortalite">
+ <Variable gui.position="4" type="Double" label="Taux_Mortalite">
   <LocalVariables/>
   <PrimitiveTree>
   <Operators_MultComplex>
@@ -74,8 +62,7 @@
    <Control_IfThenElse>
    <Data_Value inValue="@NIDDM"/>
    <Operators_MultComplex>
-    <Operators_MultComplex>
-    <Control_ChoiceIsEqual inChoices="$ref.BDR" inValue="@BDR_D">
+    <Control_ChoiceIsEqual inChoices="$ref.BDR" inValue="@BDR">
      <Data_Value inValue_Type="Double" inValue="1.01"/>
      <Data_Value inValue_Type="Double" inValue="1.5"/>
      <Data_Value inValue_Type="Double" inValue="1.5"/>
@@ -83,47 +70,47 @@
      <Data_Value inValue_Type="Double" inValue="1"/>
      <Data_Value inValue_Type="Double" inValue="1"/>
     </Control_ChoiceIsEqual>
-    <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO_D">
+    <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
      <Data_Value inValue_Type="Double" inValue="1"/>
      <Data_Value inValue_Type="Double" inValue="2"/>
      <Data_Value inValue_Type="Double" inValue="2"/>
      <Data_Value inValue_Type="Double" inValue="1"/>
      <Data_Value inValue_Type="Double" inValue="1"/>
     </Control_ChoiceIsEqual>
-    </Operators_MultComplex>
-    <Operators_MultComplex>
-    <Control_ChoiceIsEqual inChoices="$ref.BDR" inValue="@BDR_G">
-     <Data_Value inValue_Type="Double" inValue="1.01"/>
-     <Data_Value inValue_Type="Double" inValue="1.5"/>
-     <Data_Value inValue_Type="Double" inValue="1.5"/>
-     <Data_Value inValue_Type="Double" inValue="2.2"/>
-     <Data_Value inValue_Type="Double" inValue="1"/>
-     <Data_Value inValue_Type="Double" inValue="1"/>
-    </Control_ChoiceIsEqual>
-    <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO_G">
-     <Data_Value inValue_Type="Double" inValue="1"/>
-     <Data_Value inValue_Type="Double" inValue="2"/>
-     <Data_Value inValue_Type="Double" inValue="2"/>
-     <Data_Value inValue_Type="Double" inValue="1"/>
-     <Data_Value inValue_Type="Double" inValue="1"/>
-    </Control_ChoiceIsEqual>
-    </Operators_MultComplex>
    </Operators_MultComplex>
    <Data_Value inValue_Type="Double" inValue="1"/>
    </Control_IfThenElse>
   </Operators_MultComplex>
   </PrimitiveTree>
  </Variable>
- <Variable gui.position="7" type="Bool" label="Mort">
+ <Variable gui.position="5" type="Bool" label="Mort">
   <LocalVariables/>
   <PrimitiveTree>
   <Data_Value inValue_Type="Bool" inValue="false"/>
   </PrimitiveTree>
  </Variable>
- <Variable gui.position="8" type="Double" label="Cout_Aveugle">
+ <Variable gui.position="6" type="Double" label="Cout_Aveugle">
   <LocalVariables/>
   <PrimitiveTree>
   <Data_Value inValue_Type="Double" inValue="0.00"/>
+  </PrimitiveTree>
+ </Variable>
+ <Variable gui.position="7" type="Bool" label="Compliant_Optometriste">
+  <LocalVariables/>
+  <PrimitiveTree>
+	<Control_Branch inProbability="$ref.Optometriste_Compliance">
+		<Data_Value inValue="true" inValue_Type="Bool"/>
+		<Data_Value inValue="false" inValue_Type="Bool"/>
+	</Control_Branch>
+  </PrimitiveTree>
+ </Variable>
+ <Variable gui.position="8" type="Bool" label="Compliant_Ophtalmologiste">
+  <LocalVariables/>
+  <PrimitiveTree>
+	<Control_Branch inProbability="$ref.GoldStandard_Compliance">
+		<Data_Value inValue="true" inValue_Type="Bool"/>
+		<Data_Value inValue="false" inValue_Type="Bool"/>
+	</Control_Branch>
   </PrimitiveTree>
  </Variable>
  </SimulationVariables>

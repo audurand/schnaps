@@ -16,53 +16,61 @@
      <Control_Nothing/>
     </Control_IfThenElse>
     <Control_IfThenElse>
-     <!--Detection PDR oeil droit-->
-     <Operators_IsEqual inArgRight_Type="String" inArgRight="PDR" inArgLeft="@BDR_D"/>
+		 <!--Detection PDR un oeil-->
+		 <Operators_IsEqual inArgRight_Type="String" inArgRight="PDR" inArgLeft="@BDR"/>
 		 <Control_Branch inProbability="$ref.GoldStandard_Sensibilite">
-		  <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_PDR_D"/>
-		  <Data_SetVariable inValue_Type="Bool" inValue="false" outVariable="@Resultat_GoldStandard_PDR_D"/>
+			 <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_PDR"/>
+			 <Data_SetVariable inValue_Type="Bool" inValue="false" outVariable="@Resultat_GoldStandard_PDR"/>
 		 </Control_Branch>
 		<Control_Branch inProbability="$ref.GoldStandard_Specificite">
-			<Data_SetVariable inValue_Type="Bool" inValue="false" outVariable="@Resultat_GoldStandard_PDR_D"/>
-			<Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_PDR_D"/>
+			<Data_SetVariable inValue_Type="Bool" inValue="false" outVariable="@Resultat_GoldStandard_PDR"/>
+			<Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_PDR"/>
 		</Control_Branch>
-    </Control_IfThenElse>
+	</Control_IfThenElse>
+	<Control_IfThenElse>
+		<Data_Value inValue="@Deux_Yeux_BDR"/>
+		<Control_IfThenElse>
+			 <!--Detection PDR l'autre oeil-->
+			 <Operators_IsEqual inArgRight_Type="String" inArgRight="PDR" inArgLeft="@BDR"/>
+			 <Control_Branch inProbability="$ref.GoldStandard_Sensibilite">
+				 <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_PDR"/>
+				 <Control_Nothing/>
+			 </Control_Branch>
+			<Control_Branch inProbability="$ref.GoldStandard_Specificite">
+				<Control_Nothing/>
+				<Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_PDR"/>
+			</Control_Branch>
+		</Control_IfThenElse>
+		<Control_Nothing/>
+	</Control_IfThenElse>
     <Control_IfThenElse>
-     <!--Detection PDR oeil gauche-->
-     <Operators_IsEqual inArgRight_Type="String" inArgRight="PDR" inArgLeft="@BDR_G"/>
+		 <!--Detection CSMO un oeil-->
+		 <Operators_IsEqual inArgRight_Type="String" inArgRight="CSMO" inArgLeft="@DMO"/>
 		 <Control_Branch inProbability="$ref.GoldStandard_Sensibilite">
-		  <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_PDR_G"/>
-		  <Data_SetVariable inValue_Type="Bool" inValue="false" outVariable="@Resultat_GoldStandard_PDR_G"/>
+			<Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_CSMO"/>
+			<Data_SetVariable inValue_Type="Bool" inValue="false" outVariable="@Resultat_GoldStandard_CSMO"/>
 		 </Control_Branch>
 		<Control_Branch inProbability="$ref.GoldStandard_Specificite">
-			<Data_SetVariable inValue_Type="Bool" inValue="false" outVariable="@Resultat_GoldStandard_PDR_G"/>
-			<Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_PDR_G"/>
+			<Data_SetVariable inValue_Type="Bool" inValue="false" outVariable="@Resultat_GoldStandard_CSMO"/>
+			<Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_CSMO"/>
 		</Control_Branch>
-    </Control_IfThenElse>
-    <Control_IfThenElse>
-     <!--Detection CSMO oeil droit-->
-     <Operators_IsEqual inArgRight_Type="String" inArgRight="CSMO" inArgLeft="@DMO_D"/>
-		 <Control_Branch inProbability="$ref.GoldStandard_Sensibilite">
-		  <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_CSMO_D"/>
-		  <Data_SetVariable inValue_Type="Bool" inValue="false" outVariable="@Resultat_GoldStandard_CSMO_D"/>
-		 </Control_Branch>
-		<Control_Branch inProbability="$ref.GoldStandard_Specificite">
-			<Data_SetVariable inValue_Type="Bool" inValue="false" outVariable="@Resultat_GoldStandard_CSMO_D"/>
-			<Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_CSMO_D"/>
-		</Control_Branch>
-    </Control_IfThenElse>
-    <Control_IfThenElse>
-     <!--Detection CSMO oeil gauche-->
-     <Operators_IsEqual inArgRight_Type="String" inArgRight="CSMO" inArgLeft="@DMO_G"/>
-		 <Control_Branch inProbability="$ref.GoldStandard_Sensibilite">
-		  <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_CSMO_G"/>
-		  <Data_SetVariable inValue_Type="Bool" inValue="false" outVariable="@Resultat_GoldStandard_CSMO_G"/>
-		 </Control_Branch>
-		<Control_Branch inProbability="$ref.GoldStandard_Specificite">
-			<Data_SetVariable inValue_Type="Bool" inValue="false" outVariable="@Resultat_GoldStandard_CSMO_G"/>
-			<Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_CSMO_G"/>
-		</Control_Branch>
-    </Control_IfThenElse>
+	</Control_IfThenElse>
+	<Control_IfThenElse>
+		<Data_Value inValue="@Deux_Yeux_DMO"/>
+		<Control_IfThenElse>
+			 <!--Detection CSMO l'autre oeil-->
+			 <Operators_IsEqual inArgRight_Type="String" inArgRight="CSMO" inArgLeft="@DMO"/>
+			 <Control_Branch inProbability="$ref.GoldStandard_Sensibilite">
+				 <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_CSMO"/>
+				 <Control_Nothing/>
+			 </Control_Branch>
+			<Control_Branch inProbability="$ref.GoldStandard_Specificite">
+				<Control_Nothing/>
+				<Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_CSMO"/>
+			</Control_Branch>
+		</Control_IfThenElse>
+		<Control_Nothing/>
+	</Control_IfThenElse>
    </Control_Sequential>
   </PrimitiveTree>
  </Process>
