@@ -247,6 +247,7 @@
         <Process file="Processes/Scenario_VitamineDCalcium.xml" label="Scenario_VitamineDCalcium"/>
         <Process file="Processes/Scenario_Apprentissage_Compromis.xml" label="Scenario_Apprentissage_Compromis"/>
         <Process file="Processes/Scenario_Apprentissage_MinFrac.xml" label="Scenario_Apprentissage_MinFrac"/>
+        <Process file="Processes/Scenario_Apprentissage_MinCout.xml" label="Scenario_Apprentissage_MinCout"/>
         <Process file="Processes/SCORE.xml" label="SCORE"/>
         <Process file="Processes/Traitement_ActPhys.xml" label="Traitement_ActPhys"/>
         <Process file="Processes/Traitement_ActPhys+VitDCalcium.xml" label="Traitement_ActPhys+VitDCalcium"/>
@@ -274,6 +275,7 @@
         <Scenario processIndividual="Scenario_SCORE_ActivitePhysique+VitamineDCalcium" label="Scenario_SCORE_ActivitePhysique+VitamineDCalcium"/>
         <Scenario processIndividual="Scenario_Apprentissage_Compromis" label="Scenario_Apprentissage_Compromis"/>
         <Scenario processIndividual="Scenario_Apprentissage_MinFrac" label="Scenario_Apprentissage_MinFrac"/>
+        <Scenario processIndividual="Scenario_Apprentissage_MinCout" label="Scenario_Apprentissage_MinCout"/>
       </Scenarios>
       <ClockObservers>
         <Observer target="individuals" process="MAJ_Age" start="1" step="1" end="0" units="year"/>
