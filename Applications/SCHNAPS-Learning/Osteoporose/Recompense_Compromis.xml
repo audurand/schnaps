@@ -21,15 +21,9 @@
       <Data_SetVariableComplex outVariable="%Recompense">
 		<Operators_MultComplex>
 			<Operators_ExpComplex>
-				<Operators_DivComplex>
-					<Data_Value inValue="%Nb_Fractures_Total"/>
-					<Data_Value inValue="0.56826317639914" inValue_Type="Double"/>
-				</Operators_DivComplex>
+				<Data_Value inValue="%Nb_Fractures_Total"/>
 			</Operators_ExpComplex>
-			<Operators_DivComplex>
-				<Data_Value inValue="@Cout"/>
-				<Data_Value inValue="5813.81" inValue_Type="Double"/>
-			</Operators_DivComplex>
+			<Data_Value inValue="@Cout"/>
 		</Operators_MultComplex>
       </Data_SetVariableComplex>
       <Operators_MultVariable inArgLeft="%Recompense" inArgRight="-1" inArgRight_Type="Double" outResult="%Recompense"/>

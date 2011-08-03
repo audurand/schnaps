@@ -245,7 +245,6 @@
         <Process file="Processes/Traitement_ActPhys+VitDCalcium.xml" label="Traitement_ActPhys+VitDCalcium"/>
         <Process file="Processes/Traitement_VitDCalcium.xml" label="Traitement_VitDCalcium"/>
         <Process file="Processes/VitDCalcium.xml" label="VitDCalcium"/>
-        <Process file="Processes/Assigner_Politique_Compromis.xml" label="Assigner_Politique_Compromis"/>
         <Process file="Processes/Assigner_Politique_MinFrac.xml" label="Assigner_Politique_MinFrac"/>
       </Processes>
       <Scenarios>
@@ -265,7 +264,6 @@
         <Scenario processIndividual="Scenario_ORAI_ActivitePhysique+VitamineDCalcium" label="Scenario_ORAI_ActivitePhysique+VitamineDCalcium"/>
         <Scenario processIndividual="Scenario_OST_ActivitePhysique+VitamineDCalcium" label="Scenario_OST_ActivitePhysique+VitamineDCalcium"/>
         <Scenario processIndividual="Scenario_SCORE_ActivitePhysique+VitamineDCalcium" label="Scenario_SCORE_ActivitePhysique+VitamineDCalcium"/>
-        <Scenario processIndividual="Scenario_Apprentissage_Compromis" label="Scenario_Apprentissage_Compromis"/>
         <Scenario processIndividual="Scenario_Apprentissage_MinFrac" label="Scenario_Apprentissage_MinFrac"/>
         <Scenario processIndividual="Scenario_Apprentissage_MinCout" label="Scenario_Apprentissage_MinCout"/>
       </Scenarios>

@@ -6,7 +6,12 @@
         <Control_IfThenElse>
           <!--Appliquer les effets du traitement ou de la prevention s'il y a lieu.-->
           <Data_Value inValue="@Traitement"/>
-          <Control_ProcessCall inLabel="Traitement_ActPhys+VitDCalcium"/>
+          <Control_ChoiceIsEqual inChoices="$ref.methode_prevention" inValue="@Methode_Prevention">
+              <Control_ProcessCall inLabel="Traitement_VitDCalcium"/>
+              <Control_ProcessCall inLabel="Traitement_ActPhys"/>
+              <Control_ProcessCall inLabel="Traitement_VitDCalcium"/>
+              <Control_ProcessCall inLabel="Traitement_ActPhys+VitDCalcium"/>
+          </Control_ChoiceIsEqual>
           <Control_IfThenElse>
             <Data_Value inValue="@Prevention"/>
             <Control_ChoiceIsEqual inChoices="$ref.methode_prevention" inValue="@Methode_Prevention">
