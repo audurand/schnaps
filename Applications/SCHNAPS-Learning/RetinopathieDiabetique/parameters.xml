@@ -14,52 +14,43 @@
         <Entry label="threads.generator">
           <UInt value="1"/>
         </Entry>
-        <Entry label="Traitement_PDR_Efficacite">
+        <Entry label="ref.Age_Depart">
+          <Int value="0"/>
+        </Entry>
+        <Entry label="ref.Age_Fin">
+          <Int value="150"/>
+        </Entry>
+        <Entry label="ref.Traitement_PDR_Efficacite">
           <Double value="0.80"/>
         </Entry>
-        <Entry label="Traitement_PDR_Cout">
+        <Entry label="ref.Traitement_PDR_Cout">
           <Double value="180.00"/>
         </Entry>
-        <Entry label="Traitement_CSMO_Efficacite">
+        <Entry label="ref.Traitement_CSMO_Efficacite">
           <Double value="0.62"/>
         </Entry>
-        <Entry label="Traitement_CSMO_Cout">
+        <Entry label="ref.Traitement_CSMO_Cout">
           <Double value="180.00"/>
         </Entry>
-        <Entry label="Optometriste_Specificite">
-          <Double value="0.93"/>
-        </Entry>
-        <Entry label="Optometriste_Sensibilite">
-          <Double value="0.73"/>
-        </Entry>
-        <Entry label="Optometriste_Cout">
-          <Double value="20.00"/>
-        </Entry>
-        <Entry label="Optometriste_Compliance">
+        <Entry label="ref.Optometriste_Compliance">
           <Double value="0.80"/>
         </Entry>
-        <Entry label="GoldStandard_Sensibilite">
-          <Double value="0.98"/>
-        </Entry>
-        <Entry label="GoldStandard_Cout">
-          <Double value="60.00"/>
-        </Entry>
-        <Entry label="GoldStandard_Compliance">
+        <Entry label="ref.GoldStandard_Compliance">
           <Double value="0.95"/>
         </Entry>
-        <Entry label="Genre">
+        <Entry label="ref.Genre">
           <Vector>
             <String value="Homme"/>
             <String value="Femme"/>
           </Vector>
         </Entry>
-        <Entry label="Ethnie">
+        <Entry label="ref.Ethnie">
           <Vector>
             <String value="Caucasien"/>
             <String value="Autre"/>
           </Vector>
         </Entry>
-        <Entry label="DMO">
+        <Entry label="ref.DMO">
           <Vector>
             <String value="Aucune"/>
             <String value="DMO"/>
@@ -68,7 +59,7 @@
             <String value="Traite"/>
           </Vector>
         </Entry>
-        <Entry label="BDR">
+        <Entry label="ref.BDR">
           <Vector>
             <String value="Aucune"/>
             <String value="BDR1"/>
@@ -78,7 +69,7 @@
             <String value="Traite"/>
           </Vector>
         </Entry>
-        <Entry label="Age_5ans">
+        <Entry label="ref.Age_5ans">
           <Vector>
             <Int value="0"/>
             <Int value="5"/>
@@ -100,7 +91,7 @@
             <Int value="85"/>
           </Vector>
         </Entry>
-        <Entry label="Age_10ans">
+        <Entry label="ref.Age_10ans">
           <Vector>
             <Int value="0"/>
             <Int value="10"/>
@@ -135,7 +126,7 @@
 						  <Option label="95"/>
 						</Options>
 						<FunctionState file="Etat_Age_Depart.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Age_Fin_30">
@@ -157,7 +148,7 @@
 						  <Option label="100"/>
 						</Options>
 						<FunctionState file="Etat_Age_Fin.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Age_Fin_35">
@@ -178,7 +169,7 @@
 						  <Option label="100"/>
 						</Options>
 						<FunctionState file="Etat_Age_Fin.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Age_Fin_40">
@@ -198,7 +189,7 @@
 						  <Option label="100"/>
 						</Options>
 						<FunctionState file="Etat_Age_Fin.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Age_Fin_45">
@@ -217,7 +208,7 @@
 						  <Option label="100"/>
 						</Options>
 						<FunctionState file="Etat_Age_Fin.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Age_Fin_50">
@@ -235,7 +226,7 @@
 						  <Option label="100"/>
 						</Options>
 						<FunctionState file="Etat_Age_Fin.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Age_Fin_55">
@@ -252,7 +243,7 @@
 						  <Option label="100"/>
 						</Options>
 						<FunctionState file="Etat_Age_Fin.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Age_Fin_60">
@@ -268,7 +259,7 @@
 						  <Option label="100"/>
 						</Options>
 						<FunctionState file="Etat_Age_Fin.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Age_Fin_65">
@@ -283,7 +274,7 @@
 						  <Option label="100"/>
 						</Options>
 						<FunctionState file="Etat_Age_Fin.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Age_Fin_70">
@@ -297,7 +288,7 @@
 						  <Option label="100"/>
 						</Options>
 						<FunctionState file="Etat_Age_Fin.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Age_Fin_75">
@@ -310,7 +301,7 @@
 						  <Option label="100"/>
 						</Options>
 						<FunctionState file="Etat_Age_Fin.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Age_Fin_80">
@@ -322,7 +313,7 @@
 						  <Option label="100"/>
 						</Options>
 						<FunctionState file="Etat_Age_Fin.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Age_Fin_85">
@@ -333,7 +324,7 @@
 						  <Option label="100"/>
 						</Options>
 						<FunctionState file="Etat_Age_Fin.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Age_Fin_90">
@@ -343,7 +334,7 @@
 						  <Option label="100"/>
 						</Options>
 						<FunctionState file="Etat_Age_Fin.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Age_Fin_95">
@@ -352,7 +343,7 @@
 						  <Option label="100"/>
 						</Options>
 						<FunctionState file="Etat_Age_Fin.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Optometriste_Intervalle">
@@ -365,7 +356,7 @@
 						  <Option label="36"/>
 						</Options>
 						<FunctionState file="Etat_Optometriste_Intervalle.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Optometriste_Sensibilite">
@@ -383,7 +374,7 @@
 						  <Option label="1.00"/>
 						</Options>
 						<FunctionState file="Etat_Optometriste_Sensibilite.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Optometriste_Specificite">
@@ -401,7 +392,7 @@
 						  <Option label="1.00"/>
 						</Options>
 						<FunctionState file="Etat_Optometriste_Specificite.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Intervalle_6">
@@ -409,7 +400,7 @@
 						  <Option label="6"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Intervalle.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Intervalle_12">
@@ -418,7 +409,7 @@
 						  <Option label="12"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Intervalle.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Intervalle_18">
@@ -428,7 +419,7 @@
 						  <Option label="18"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Intervalle.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Intervalle_24">
@@ -439,7 +430,7 @@
 						  <Option label="24"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Intervalle.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Intervalle_30">
@@ -451,7 +442,7 @@
 						  <Option label="30"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Intervalle.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Intervalle_36">
@@ -464,7 +455,7 @@
 						  <Option label="36"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Intervalle.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Sensibilite_50">
@@ -482,7 +473,7 @@
 						  <Option label="1.00"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Sensibilite.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Sensibilite_55">
@@ -499,7 +490,7 @@
 						  <Option label="1.00"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Sensibilite.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Sensibilite_60">
@@ -515,7 +506,7 @@
 						  <Option label="1.00"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Sensibilite.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Sensibilite_65">
@@ -530,7 +521,7 @@
 						  <Option label="1.00"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Sensibilite.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Sensibilite_70">
@@ -544,7 +535,7 @@
 						  <Option label="1.00"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Sensibilite.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Sensibilite_75">
@@ -557,7 +548,7 @@
 						  <Option label="1.00"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Sensibilite.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Sensibilite_80">
@@ -569,7 +560,7 @@
 						  <Option label="1.00"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Sensibilite.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Sensibilite_85">
@@ -580,7 +571,7 @@
 						  <Option label="1.00"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Sensibilite.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Sensibilite_90">
@@ -590,7 +581,7 @@
 						  <Option label="1.00"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Sensibilite.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Sensibilite_95">
@@ -599,7 +590,7 @@
 						  <Option label="1.00"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Sensibilite.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Sensibilite_100">
@@ -607,7 +598,7 @@
 						  <Option label="1.00"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Sensibilite.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Specificite_50">
@@ -625,7 +616,7 @@
 						  <Option label="1.00"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Specificite.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Specificite_55">
@@ -642,7 +633,7 @@
 						  <Option label="1.00"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Specificite.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Specificite_60">
@@ -658,7 +649,7 @@
 						  <Option label="1.00"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Specificite.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Specificite_65">
@@ -673,7 +664,7 @@
 						  <Option label="1.00"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Specificite.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Specificite_70">
@@ -687,7 +678,7 @@
 						  <Option label="1.00"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Specificite.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Specificite_75">
@@ -700,7 +691,7 @@
 						  <Option label="1.00"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Specificite.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Specificite_80">
@@ -712,7 +703,7 @@
 						  <Option label="1.00"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Specificite.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Specificite_85">
@@ -723,7 +714,7 @@
 						  <Option label="1.00"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Specificite.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Specificite_90">
@@ -733,7 +724,7 @@
 						  <Option label="1.00"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Specificite.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Specificite_95">
@@ -742,7 +733,7 @@
 						  <Option label="1.00"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Specificite.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 					<Choice label="Ophtalmologiste_Specificite_100">
@@ -750,7 +741,7 @@
 						  <Option label="1.00"/>
 						</Options>
 						<FunctionState file="Etat_Ophtalmologiste_Specificite.xml"/>
-						<FunctionReward file="Recompense_B.xml"/>
+						<FunctionReward file="Recompense_MinAnneesAveugle.xml"/>
 						<ChoiceMap/>
 					</Choice>
 				</Learning_DecisionMaker>
@@ -774,12 +765,14 @@
                 <Variable label="Age"/>
                 <Variable label="Ethnie"/>
                 <Variable label="Genre"/>
-                <Variable label="BDR_D"/>
-                <Variable label="BDR_G"/>
-                <Variable label="DMO_D"/>
-                <Variable label="DMO_G"/>
+                <Variable label="BDR"/>
+                <Variable label="DMO"/>
+                <Variable label="Deux_Yeux_BDR"/>
+                <Variable label="Deux_Yeux_DMO"/>
+                <Variable label="Traitement_PDR"/>
+                <Variable label="Traitement_CSMO"/>
               </IndividualModel>
-              <SimulationVariables file="Populations/SimulationVariables_v2.xml"/>
+              <SimulationVariables file="Populations/SimulationVariables.xml"/>
             </GenProfile>
             <GenProfile label="EnglandWales_1991_NIDDM">
               <Demography file="Populations/England_Wales_1991.xml"/>
@@ -793,17 +786,19 @@
                 <Variable label="Age"/>
                 <Variable label="Ethnie"/>
                 <Variable label="Genre"/>
-                <Variable label="BDR_D"/>
-                <Variable label="BDR_G"/>
-                <Variable label="DMO_D"/>
-                <Variable label="DMO_G"/>
+                <Variable label="BDR"/>
+                <Variable label="DMO"/>
+                <Variable label="Deux_Yeux_BDR"/>
+                <Variable label="Deux_Yeux_DMO"/>
+                <Variable label="Traitement_PDR"/>
+                <Variable label="Traitement_CSMO"/>
               </IndividualModel>
-              <SimulationVariables file="Populations/SimulationVariables_v2.xml"/>
+              <SimulationVariables file="Populations/SimulationVariables.xml"/>
             </GenProfile>
           </Profiles>
         </Generator>
         <Population>
-          <SubPopulation profile="EnglandWales_1991" size="10000" time="0"/>
+          <SubPopulation profile="EnglandWales_1991" size="0" time="0"/>
         </Population>
       </PopulationManager>
     </Input>
@@ -827,7 +822,7 @@
         <Process file="Processes/Confirmation_Detection.xml" label="Confirmation_Detection"/>
         <Process file="Processes/Traitement_PDR.xml" label="Traitement_PDR"/>
         <Process file="Processes/Traitement_CSMO.xml" label="Traitement_CSMO"/>
-        <Process file="Processes/Politique1.xml" label="Politique1"/>
+        <Process file="Processes/Scenario.xml" label="Scenario"/>
         <Process file="Processes/Pre-Detection.xml" label="Pre-Detection"/>
         <Process file="Processes/Post-Detection.xml" label="Post-Detection"/>
         <Process file="Processes/MAJ_Individus.xml" label="MAJ_Individus"/>
@@ -837,7 +832,7 @@
         <Process file="Processes/MAJ_Taux_Mortalite.xml" label="MAJ_Taux_Mortalite"/>
       </Processes>
       <Scenarios>
-        <Scenario processIndividual="Politique1" label="Politique1"/>
+        <Scenario processIndividual="Scenario" label="Scenario"/>
       </Scenarios>
       <ClockObservers>
         <Observer target="individuals" process="MAJ_Individus" units="year" inStart="1" inStep="1" inEnd="0"/>
@@ -845,20 +840,16 @@
     </Simulation>
     <Output>
       <Environment>
-        <Variable label="Total_Ophtalmologiste"/>
         <Variable label="Total_Optometriste"/>
-        <Variable label="Total_Traitement_PDR"/>
+        <Variable label="Total_Ophtalmologiste"/>
         <Variable label="Total_Traitement_CSMO"/>
+        <Variable label="Total_Traitement_PDR"/>
       </Environment>
       <Population>
         <SubPopulation profile="EnglandWales_1991">
           <Variable label="Cout"/>
-          <Variable label="Cout_Aveugle"/>
           <Variable label="Annees_Aveugle"/>
-          <Variable label="BDR_D"/>
-          <Variable label="DMO_D"/>
-          <Variable label="BDR_G"/>
-          <Variable label="DMO_G"/>
+          <Variable label="Cout_Aveugle"/>
         </SubPopulation>
         <SubPopulation profile="EnglandWales_1991_NIDDM">
           <Variable label="Cout"/>

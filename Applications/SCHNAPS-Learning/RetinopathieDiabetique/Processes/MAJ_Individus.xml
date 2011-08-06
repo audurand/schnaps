@@ -1,21 +1,24 @@
  <Process label="MAJ_Individus">
   <LocalVariables/>
   <PrimitiveTree size="1">
-     <Control_Sequential>
-      <Control_IfThenElse>
-       <Operators_OrComplex>
-        <!--L'individu est aveugle d'un oeil-->
-        <Operators_IsEqual inArgRight_Type="String" inArgRight="Aveugle" inArgLeft="@BDR_D"/>
-        <Operators_IsEqual inArgRight_Type="String" inArgRight="Aveugle" inArgLeft="@DMO_D"/>
-        <Operators_IsEqual inArgRight_Type="String" inArgRight="Aveugle" inArgLeft="@BDR_G"/>
-        <Operators_IsEqual inArgRight_Type="String" inArgRight="Aveugle" inArgLeft="@DMO_G"/>
-       </Operators_OrComplex>
-       <Control_IfThenElse>
-          <!--Compter les annees aveugles et le cout aveugle seulement quand le systeme est stable.-->
-          <Operators_IsGreaterComplex>
-            <Data_Clock/>
-            <Data_Value inValue_Type="ULong" inValue="11"/>
-          </Operators_IsGreaterComplex>
+	 <Control_Sequential>
+	  <Control_IfThenElse>
+		<Operators_IsGreaterComplex>
+			<Data_Clock/>
+			<Data_Value inValue="23" inValue_Type="ULong"/>
+		</Operators_IsGreaterComplex>
+		<Control_IfThenElse>
+		  <Operators_OrComplex>
+			  <!--L'individu est aveugle des deux yeux-->
+			  <Operators_AndComplex>
+				<Operators_IsEqual inArgLeft="@BDR" inArgRight="Aveugle" inArgRight_Type="String"/>
+				<Data_Value inValue="@Deux_Yeux_BDR"/>
+			  </Operators_AndComplex>
+			  <Operators_AndComplex>
+				<Operators_IsEqual inArgLeft="@DMO" inArgRight="Aveugle" inArgRight_Type="String"/>
+				<Data_Value inValue="@Deux_Yeux_DMO"/>
+			  </Operators_AndComplex>
+		  </Operators_OrComplex>
 		  <Control_Sequential>
 			 <Operators_AddVariable inArgRight_Type="Int" inArgRight="1" inArgLeft="@Annees_Aveugle" outResult="@Annees_Aveugle"/>
 			 <Control_ChoiceIsBetween inBounds="0|6|22|65" inBounds_Type="Int" inValue="@Age">
@@ -26,17 +29,17 @@
 			 </Control_ChoiceIsBetween>
 		  </Control_Sequential>
 		  <Control_Nothing/>
-       </Control_IfThenElse>
-       <Control_Nothing/>
-      </Control_IfThenElse>
-      <Meds_Event inProbability="@Taux_Mortalite" inLabel="Deces">
-       <Data_SetIdle/>
-       <Control_Sequential>
-        <Control_ProcessCall inLabel="MAJ_Age"/>
-        <Control_ProcessCall inLabel="MAJ_NIDDM"/>
-        <Control_ProcessCall inLabel="MAJ_Taux_Mortalite"/>
-       </Control_Sequential>
-      </Meds_Event>
-     </Control_Sequential>
+	    </Control_IfThenElse>
+	    <Control_Nothing/>
+	  </Control_IfThenElse>
+	  <Meds_Event inProbability="@Taux_Mortalite" inLabel="Deces">
+	   <Data_SetIdle/>
+	   <Control_Sequential>
+		<Control_ProcessCall inLabel="MAJ_Age"/>
+		<Control_ProcessCall inLabel="MAJ_NIDDM"/>
+		<Control_ProcessCall inLabel="MAJ_Taux_Mortalite"/>
+	   </Control_Sequential>
+	  </Meds_Event>
+	 </Control_Sequential>
   </PrimitiveTree>
  </Process>

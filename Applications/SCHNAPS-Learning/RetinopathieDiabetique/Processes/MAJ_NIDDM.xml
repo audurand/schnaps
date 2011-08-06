@@ -5,9 +5,9 @@
     <Data_Value inValue="@NIDDM"/>
     <Control_ProcessCall inLabel="MAJ_Retinopathie"/>
     <Control_Sequential>
-     <Control_ChoiceIsEqual inChoices="$Ethnie" inValue="@Ethnie">
-      <Control_ChoiceIsEqual inChoices="$Genre" inValue="@Genre">
-       <Control_ChoiceIsBetween inBounds="$Age_10ans" inValue="@Age">
+     <Control_ChoiceIsEqual inChoices="$ref.Ethnie" inValue="@Ethnie">
+      <Control_ChoiceIsEqual inChoices="$ref.Genre" inValue="@Genre">
+       <Control_ChoiceIsBetween inBounds="$ref.Age_10ans" inValue="@Age">
         <Control_Nothing/>
         <Control_Nothing/>
         <Control_Branch inProbability="0.0002">
@@ -43,7 +43,7 @@
          <Control_Nothing/>
         </Control_Branch>
        </Control_ChoiceIsBetween>
-       <Control_ChoiceIsBetween inBounds="$Age_10ans" inValue="@Age">
+       <Control_ChoiceIsBetween inBounds="$ref.Age_10ans" inValue="@Age">
         <Control_Nothing/>
         <Control_Nothing/>
         <Control_Branch inProbability="0.0002">
@@ -80,8 +80,8 @@
         </Control_Branch>
        </Control_ChoiceIsBetween>
       </Control_ChoiceIsEqual>
-      <Control_ChoiceIsEqual inChoices="$Genre" inValue="@Genre">
-       <Control_ChoiceIsBetween inBounds="$Age_10ans" inValue="@Age">
+      <Control_ChoiceIsEqual inChoices="$ref.Genre" inValue="@Genre">
+       <Control_ChoiceIsBetween inBounds="$ref.Age_10ans" inValue="@Age">
         <Control_Nothing/>
         <Control_Nothing/>
         <Control_Branch inProbability="0.0007">
@@ -117,7 +117,7 @@
          <Control_Nothing/>
         </Control_Branch>
        </Control_ChoiceIsBetween>
-       <Control_ChoiceIsBetween inBounds="$Age_10ans" inValue="@Age">
+       <Control_ChoiceIsBetween inBounds="$ref.Age_10ans" inValue="@Age">
         <Control_Nothing/>
         <Control_Nothing/>
         <Control_Branch inProbability="0.0005">
