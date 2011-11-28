@@ -1,0 +1,11 @@
+  <Process label="Scenario">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_IfThenElse>
+        <!--Verifier si l'individu est atteint de diabete de type 2.-->
+        <Data_Value inValue="@NIDDM"/>
+        <Control_ProcessCall inLabel="Pre-Detection"/>
+        <Control_ProcessPush inTarget="current" inLabel="Scenario" inUnits="year" inDelay="1"/>
+      </Control_IfThenElse>
+    </PrimitiveTree>
+  </Process>

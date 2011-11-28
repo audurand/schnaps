@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="Effets_VitDCalcium">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
+        <Control_Sequential>
+          <Operators_MultVariable inArgRight="$ref.effet_vitDcalcium_hanche_normale" inArgLeft="@Probabilite_Fracture_Hanche" outResult="@Probabilite_Fracture_Hanche"/>
+          <Operators_MultVariable inArgRight="$ref.effet_vitDcalcium_poignet_normale" inArgLeft="@Probabilite_Fracture_Poignet" outResult="@Probabilite_Fracture_Poignet"/>
+        </Control_Sequential>
+        <Control_Sequential>
+          <Operators_MultVariable inArgRight="$ref.effet_vitDCalcium_hanche_osteo" inArgLeft="@Probabilite_Fracture_Hanche" outResult="@Probabilite_Fracture_Hanche"/>
+          <Operators_MultVariable inArgRight="$ref.effet_vitDCalcium_poignet_osteo" inArgLeft="@Probabilite_Fracture_Poignet" outResult="@Probabilite_Fracture_Poignet"/>
+          <Operators_MultVariable inArgRight="$ref.effet_vitDCalcium_colonne_osteo" inArgLeft="@Probabilite_Fracture_Colonne" outResult="@Probabilite_Fracture_Colonne"/>
+        </Control_Sequential>
+        <Control_Sequential>
+          <Operators_MultVariable inArgRight="$ref.effet_vitDCalcium_hanche_osteo" inArgLeft="@Probabilite_Fracture_Hanche" outResult="@Probabilite_Fracture_Hanche"/>
+          <Operators_MultVariable inArgRight="$ref.effet_vitDCalcium_poignet_osteo" inArgLeft="@Probabilite_Fracture_Poignet" outResult="@Probabilite_Fracture_Poignet"/>
+          <Operators_MultVariable inArgRight="$ref.effet_vitDCalcium_colonne_osteo" inArgLeft="@Probabilite_Fracture_Colonne" outResult="@Probabilite_Fracture_Colonne"/>
+        </Control_Sequential>
+      </Control_ChoiceIsEqual>
+    </PrimitiveTree>
+  </Process>

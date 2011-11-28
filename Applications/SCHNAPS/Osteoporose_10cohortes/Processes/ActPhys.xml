@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="ActPhys">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Activite_Physique" inCompliance="0.49" outCost="@Cout" inCost="0" inChargeNonCompliant="false">
+        <Control_ProcessCall inLabel="Effets_ActPhys"/>
+        <Control_Nothing/>
+      </Meds_Treatment>
+    </PrimitiveTree>
+  </Process>

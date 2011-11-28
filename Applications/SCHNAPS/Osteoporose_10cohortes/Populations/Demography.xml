@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Demography>
+    <Variable type="Int" label="Age">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Control_BranchMulti inProbabilities="0.031|0.034|0.036|0.035|0.035|0.034|0.033|0.033|0.033|0.032|0.031|0.031|0.030|0.029|0.028|0.027|0.026|0.026|0.025|0.025|0.024|0.023|0.022|0.022|0.021|0.020|.019|0.018|0.017|0.016|0.015|0.014|0.014|0.014|0.013|0.013|0.012|0.010|0.010|0.009|0.008|0.008|0.008|0.007|0.006|0.006|0.005|0.003|0.002|0.002|0.001|0.001|0.0008|0.0007|0.0006|0.0004|0.0002|0.0001|0.00008|0.00007|0.00005">
+          <Data_Value inValue="40" inValue_Type="Int"/>
+          <Data_Value inValue="41" inValue_Type="Int"/>
+          <Data_Value inValue="42" inValue_Type="Int"/>
+          <Data_Value inValue="43" inValue_Type="Int"/>
+          <Data_Value inValue="44" inValue_Type="Int"/>
+          <Data_Value inValue="45" inValue_Type="Int"/>
+          <Data_Value inValue="46" inValue_Type="Int"/>
+          <Data_Value inValue="47" inValue_Type="Int"/>
+          <Data_Value inValue="48" inValue_Type="Int"/>
+          <Data_Value inValue="49" inValue_Type="Int"/>
+          <Data_Value inValue="50" inValue_Type="Int"/>
+          <Data_Value inValue="51" inValue_Type="Int"/>
+          <Data_Value inValue="52" inValue_Type="Int"/>
+          <Data_Value inValue="53" inValue_Type="Int"/>
+          <Data_Value inValue="54" inValue_Type="Int"/>
+          <Data_Value inValue="55" inValue_Type="Int"/>
+          <Data_Value inValue="56" inValue_Type="Int"/>
+          <Data_Value inValue="57" inValue_Type="Int"/>
+          <Data_Value inValue="58" inValue_Type="Int"/>
+          <Data_Value inValue="59" inValue_Type="Int"/>
+          <Data_Value inValue="60" inValue_Type="Int"/>
+          <Data_Value inValue="61" inValue_Type="Int"/>
+          <Data_Value inValue="62" inValue_Type="Int"/>
+          <Data_Value inValue="63" inValue_Type="Int"/>
+          <Data_Value inValue="64" inValue_Type="Int"/>
+          <Data_Value inValue="65" inValue_Type="Int"/>
+          <Data_Value inValue="66" inValue_Type="Int"/>
+          <Data_Value inValue="67" inValue_Type="Int"/>
+          <Data_Value inValue="68" inValue_Type="Int"/>
+          <Data_Value inValue="69" inValue_Type="Int"/>
+          <Data_Value inValue="70" inValue_Type="Int"/>
+          <Data_Value inValue="71" inValue_Type="Int"/>
+          <Data_Value inValue="72" inValue_Type="Int"/>
+          <Data_Value inValue="73" inValue_Type="Int"/>
+          <Data_Value inValue="74" inValue_Type="Int"/>
+          <Data_Value inValue="75" inValue_Type="Int"/>
+          <Data_Value inValue="76" inValue_Type="Int"/>
+          <Data_Value inValue="77" inValue_Type="Int"/>
+          <Data_Value inValue="78" inValue_Type="Int"/>
+          <Data_Value inValue="79" inValue_Type="Int"/>
+          <Data_Value inValue="80" inValue_Type="Int"/>
+          <Data_Value inValue="81" inValue_Type="Int"/>
+          <Data_Value inValue="82" inValue_Type="Int"/>
+          <Data_Value inValue="83" inValue_Type="Int"/>
+          <Data_Value inValue="84" inValue_Type="Int"/>
+          <Data_Value inValue="85" inValue_Type="Int"/>
+          <Data_Value inValue="86" inValue_Type="Int"/>
+          <Data_Value inValue="87" inValue_Type="Int"/>
+          <Data_Value inValue="88" inValue_Type="Int"/>
+          <Data_Value inValue="89" inValue_Type="Int"/>
+          <Data_Value inValue="90" inValue_Type="Int"/>
+          <Data_Value inValue="91" inValue_Type="Int"/>
+          <Data_Value inValue="92" inValue_Type="Int"/>
+          <Data_Value inValue="93" inValue_Type="Int"/>
+          <Data_Value inValue="94" inValue_Type="Int"/>
+          <Data_Value inValue="95" inValue_Type="Int"/>
+          <Data_Value inValue="96" inValue_Type="Int"/>
+          <Data_Value inValue="97" inValue_Type="Int"/>
+          <Data_Value inValue="98" inValue_Type="Int"/>
+          <Data_Value inValue="99" inValue_Type="Int"/>
+          <Data_Value inValue="100" inValue_Type="Int"/>
+        </Control_BranchMulti>
+      </PrimitiveTree>
+    </Variable>
+  </Demography>

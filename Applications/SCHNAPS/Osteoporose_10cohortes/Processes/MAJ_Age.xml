@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="MAJ_Age">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Operators_AddVariable inArgRight="1" inArgRight_Type="Int" inArgLeft="@Age" outResult="@Age"/>
+    </PrimitiveTree>
+  </Process>

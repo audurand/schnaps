@@ -1,0 +1,137 @@
+ <Process label="MAJ_Retinopathie">
+  <LocalVariables/>
+  <PrimitiveTree size="1">
+    <Control_ChoiceIsEqual inChoices="$ref.BDR" inValue="@BDR">
+     <Control_Branch inProbability="0.07">
+	  <Control_Sequential>
+		<Data_SetVariable inValue_Type="String" inValue="BDR1" outVariable="@BDR"/>
+		<Control_Branch inProbability="0.80">
+			<Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Deux_Yeux_BDR"/>
+			<Control_Nothing/>
+		</Control_Branch>
+	  </Control_Sequential>
+      <Control_Nothing/>
+     </Control_Branch>
+     <Control_Sequential>
+      <Control_Branch inProbability="0.12">
+       <Data_SetVariable inValue_Type="String" inValue="BDR2" outVariable="@BDR"/>
+       <Control_Nothing/>
+      </Control_Branch>
+      <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
+       <Control_Branch inProbability="0.03">
+		<Control_Sequential>
+			<Data_SetVariable inValue_Type="String" inValue="DMO" outVariable="@DMO"/>
+			<Control_IfThenElse>
+				<Data_Value inValue="@Deux_Yeux_BDR"/>
+				<Control_Branch inProbability="0.50">
+					<Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Deux_Yeux_DMO"/>
+					<Control_Nothing/>
+				</Control_Branch>
+				<Control_Nothing/>
+			</Control_IfThenElse>
+		</Control_Sequential>
+        <Control_Nothing/>
+       </Control_Branch>
+       <Control_Branch inProbability="0.3">
+        <Data_SetVariable inValue_Type="String" inValue="CSMO" outVariable="@DMO"/>
+        <Control_Nothing/>
+       </Control_Branch>
+       <Control_Branch inProbability="0.035">
+		<Data_SetVariable inValue_Type="String" inValue="Aveugle" outVariable="@DMO"/>
+        <Control_Nothing/>
+       </Control_Branch>
+       <Control_Nothing/>
+       <Control_Nothing/>
+      </Control_ChoiceIsEqual>
+     </Control_Sequential>
+     <Control_Sequential>
+      <Control_Branch inProbability="0.045">
+       <Data_SetVariable inValue_Type="String" inValue="PDR" outVariable="@BDR"/>
+       <Control_Nothing/>
+      </Control_Branch>
+      <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
+       <Control_Branch inProbability="0.03">
+		<Control_Sequential>
+			<Data_SetVariable inValue_Type="String" inValue="DMO" outVariable="@DMO"/>
+			<Control_IfThenElse>
+				<Data_Value inValue="@Deux_Yeux_BDR"/>
+				<Control_Branch inProbability="0.50">
+					<Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Deux_Yeux_DMO"/>
+					<Control_Nothing/>
+				</Control_Branch>
+				<Control_Nothing/>
+			</Control_IfThenElse>
+		</Control_Sequential>
+        <Control_Nothing/>
+       </Control_Branch>
+       <Control_Branch inProbability="0.3">
+        <Data_SetVariable inValue_Type="String" inValue="CSMO" outVariable="@DMO"/>
+        <Control_Nothing/>
+       </Control_Branch>
+       <Control_Branch inProbability="0.035">
+		<Data_SetVariable inValue_Type="String" inValue="Aveugle" outVariable="@DMO"/>
+        <Control_Nothing/>
+       </Control_Branch>
+       <Control_Nothing/>
+       <Control_Nothing/>
+      </Control_ChoiceIsEqual>
+     </Control_Sequential>
+     <Control_Branch inProbability="0.035">
+	  <Data_SetVariable inValue_Type="String" inValue="Aveugle" outVariable="@BDR"/>
+      <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
+       <Control_Branch inProbability="0.03">
+		<Control_Sequential>
+			<Data_SetVariable inValue_Type="String" inValue="DMO" outVariable="@DMO"/>
+			<Control_IfThenElse>
+				<Data_Value inValue="@Deux_Yeux_BDR"/>
+				<Control_Branch inProbability="0.50">
+					<Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Deux_Yeux_DMO"/>
+					<Control_Nothing/>
+				</Control_Branch>
+				<Control_Nothing/>
+			</Control_IfThenElse>
+		</Control_Sequential>
+        <Control_Nothing/>
+       </Control_Branch>
+       <Control_Branch inProbability="0.3">
+        <Data_SetVariable inValue_Type="String" inValue="CSMO" outVariable="@DMO"/>
+        <Control_Nothing/>
+       </Control_Branch>
+       <Control_Branch inProbability="0.035">
+		<Data_SetVariable inValue_Type="String" inValue="Aveugle" outVariable="@DMO"/>
+        <Control_Nothing/>
+       </Control_Branch>
+       <Control_Nothing/>
+       <Control_Nothing/>
+      </Control_ChoiceIsEqual>
+     </Control_Branch>
+     <Control_Nothing/>
+     <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
+      <Control_Branch inProbability="0.03">
+		<Control_Sequential>
+			<Data_SetVariable inValue_Type="String" inValue="DMO" outVariable="@DMO"/>
+			<Control_IfThenElse>
+				<Data_Value inValue="@Deux_Yeux_BDR"/>
+				<Control_Branch inProbability="0.50">
+					<Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Deux_Yeux_DMO"/>
+					<Control_Nothing/>
+				</Control_Branch>
+				<Control_Nothing/>
+			</Control_IfThenElse>
+		</Control_Sequential>
+       <Control_Nothing/>
+      </Control_Branch>
+      <Control_Branch inProbability="0.3">
+       <Data_SetVariable inValue_Type="String" inValue="CSMO" outVariable="@DMO"/>
+       <Control_Nothing/>
+      </Control_Branch>
+      <Control_Branch inProbability="0.035">
+	   <Data_SetVariable inValue_Type="String" inValue="Aveugle" outVariable="@DMO"/>
+       <Control_Nothing/>
+      </Control_Branch>
+      <Control_Nothing/>
+      <Control_Nothing/>
+     </Control_ChoiceIsEqual>
+    </Control_ChoiceIsEqual>
+  </PrimitiveTree>
+ </Process>

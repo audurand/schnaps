@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Demography>
+    <Variable type="Int" label="Age">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="40" inValue_Type="Int"/>
+      </PrimitiveTree>
+    </Variable>
+  </Demography>

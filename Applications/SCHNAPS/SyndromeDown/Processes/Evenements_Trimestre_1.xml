@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="Evenements_Trimestre_1">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Operators_OrComplex>
+        <Data_Value inValue="@PF_T1"/>
+        <Data_Value inValue="@IVG_T1"/>
+      </Operators_OrComplex>
+    </PrimitiveTree>
+  </Process>
