@@ -239,7 +239,7 @@
         <Process file="Processes/Scenario_Apprentissage_Compromis.xml" label="Scenario_Apprentissage_Compromis"/>
         <Process file="Processes/Scenario_Apprentissage_MinCout.xml" label="Scenario_Apprentissage_MinCout"/>
         <Process file="Processes/Scenario_Apprentissage_MinFrac.xml" label="Scenario_Apprentissage_MinFrac"/>
-        <Process file="Processes/Scenario_Apprentissage_MinCout.xml" label="Scenario_Apprentissage_MinCout"/>
+        <Process file="Processes/Scenario_Apprentissage_Compromis_Alpha.xml" label="Scenario_Apprentissage_Compromis_Alpha"/>
         <Process file="Processes/SCORE.xml" label="SCORE"/>
         <Process file="Processes/Traitement_ActPhys.xml" label="Traitement_ActPhys"/>
         <Process file="Processes/Traitement_ActPhys+VitDCalcium.xml" label="Traitement_ActPhys+VitDCalcium"/>
