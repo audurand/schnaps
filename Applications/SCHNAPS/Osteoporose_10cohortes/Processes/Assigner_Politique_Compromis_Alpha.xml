@@ -21,6 +21,7 @@
                     </Meds_Treatment>
                     <Control_ProcessCall inLabel="CAROC"/>
                 </Control_Sequential>
+                <Control_Nothing/>
             </Control_IfThenElse>
           </Control_Sequential>
           <Control_ProcessPush inDelay="1" inUnits="year" inTarget="current" inLabel="Assigner_Politique_Compromis_Alpha"/>
