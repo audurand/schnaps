@@ -19,7 +19,7 @@
                       <Control_Nothing/>
                       <Control_Nothing/>
                     </Meds_Treatment>
-                    <Control_ProcessCall inLabel="CAROC"/>
+                    <Control_ProcessCall inLabel="CAROC_Initial"/>
                 </Control_Sequential>
                 <Control_Nothing/>
             </Control_IfThenElse>
