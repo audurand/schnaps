@@ -38,7 +38,7 @@ protected:
 public:
 	//! Process target.
 	enum Target {
-		eCurrent, eEnvironment, eIndividuals,
+		eCurrent, eEnvironment, eIndividuals, eIndividualByID,
 	};
 
 	//! Process allocator type.
