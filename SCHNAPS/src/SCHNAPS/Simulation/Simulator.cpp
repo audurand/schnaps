@@ -302,7 +302,9 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 						}
 						break;
 					case Process::eIndividualByID: //en test
-						mWaitingQMaps->getIndividualsWaitingQMaps()[mContext[0]->getPushList().front().mTargetID][mContext[0]->getPushList().front().mTime].push(new ProcessPushed(mContext[0]->getPushList().front().mProcess));
+						if (mEnvironment->getPopulation()[mContext[0]->getPushList().front().mTargetID]->isActive()){ //check that individual is not idle
+							mWaitingQMaps->getIndividualsWaitingQMaps()[mContext[0]->getPushList().front().mTargetID][mContext[0]->getPushList().front().mTime].push(new ProcessPushed(mContext[0]->getPushList().front().mProcess));
+						}
 						break;
 					default:
 						throw schnaps_InternalExceptionM("Undefined process target!");
@@ -351,8 +353,9 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 						}
 						break;
 					case Process::eIndividualByID: //en test
-						mWaitingQMaps->getIndividualsWaitingQMaps()[lIt_i->second.front().mTargetID][lIt_i->second.front().mTime].push(
-								new ProcessPushed(lIt_i->second.front().mProcess));
+						if (mEnvironment->getPopulation()[lIt_i->second.front().mTargetID]->isActive()){ //check that individual is not idle
+							mWaitingQMaps->getIndividualsWaitingQMaps()[lIt_i->second.front().mTargetID][lIt_i->second.front().mTime].push(new ProcessPushed(lIt_i->second.front().mProcess));
+						}
 						break;
 					default:
 						throw schnaps_InternalExceptionM("Undefined process target!");
