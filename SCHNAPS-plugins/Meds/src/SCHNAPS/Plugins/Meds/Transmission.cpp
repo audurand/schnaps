@@ -214,7 +214,7 @@ void Transmission::readWithSystem(PACC::XML::ConstIterator inIter, Core::System&
 
 			mContacts = new Core::Vector();
 			while (lTokenizer.getNextToken(lContact)) {
-				mContacts->push_back(new Core::UInt(SCHNAPS::str2uint(lContact)));
+				mContacts->push_back(new Core::ULong(SCHNAPS::str2uint(lContact)));
 			}
 			
 			break; }
@@ -251,7 +251,7 @@ Core::AnyType::Handle Transmission::execute(unsigned int inIndex, Core::Executio
 	
 	double lRandom = ioContext.getRandomizer().rollUniform();
 	double lProbability;
-	unsigned int lIndividual;
+	unsigned long lIndividual;
 	
 	Core::Vector::Handle lContacts;
 
@@ -278,12 +278,15 @@ Core::AnyType::Handle Transmission::execute(unsigned int inIndex, Core::Executio
 			lContacts = mContacts;
 			break;
 	}
+	unsigned long lDelay=1;
+	unsigned long lDelta=1;
 	
-	unsigned long lStartValue = lContext.getClock().getValue(mUnits) + lDelay;
+	unsigned long lStartValue = lContext.getClock().getValue(Simulation::Clock::eOther) + lDelay;
 	for (unsigned int i = 0; i < lContacts->size(); i++) {
 		if (lRandom < lProbability) {
-			lIndividual = ((*lContacts)[i])->getValue();
-			lContext.getPushList().push_back(Simulation::Push(mLabel, mTarget, lContext.getClock().getTick(lStartValue + i * lDelta, mUnits)));	
+			lIndividual = Core::castHandleT<Core::ULong>((*lContacts)[i])->getValue();
+//						 Core::castHandleT<Core::Double>((*lProbabilities)[i])->getValue()
+			lContext.getPushList().push_back(Simulation::Push(mLabel, Simulation::Process::eIndividualByID, lContext.getClock().getTick(lStartValue + i * lDelta, Simulation::Clock::eOther),lIndividual));	
 		}
 		
 	}

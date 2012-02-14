@@ -27,6 +27,7 @@
 #include "SCHNAPS/Plugins/Meds/SetQaly.hpp"
 #include "SCHNAPS/Plugins/Meds/Test.hpp"
 #include "SCHNAPS/Plugins/Meds/Treatment.hpp"
+#include "SCHNAPS/Plugins/Meds/Transmission.hpp"
 #include "SCHNAPS/Plugins/Meds/UpdateQaly.hpp"
 
 #endif /* Meds_hpp */

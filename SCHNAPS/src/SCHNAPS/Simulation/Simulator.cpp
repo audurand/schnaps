@@ -301,6 +301,9 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 							(lIt_i->second)[mContext[0]->getPushList().front().mTime].push(new ProcessPushed(mContext[0]->getPushList().front().mProcess));
 						}
 						break;
+					case Process::eIndividualByID: //en test
+						mWaitingQMaps->getIndividualsWaitingQMaps()[mContext[0]->getPushList().front().mTargetID][mContext[0]->getPushList().front().mTime].push(new ProcessPushed(mContext[0]->getPushList().front().mProcess));
+						break;
 					default:
 						throw schnaps_InternalExceptionM("Undefined process target!");
 						break;
@@ -346,6 +349,10 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 						for (std::map<unsigned int, std::map<unsigned int, std::queue<Process::Handle> > >::iterator lIt_j = mWaitingQMaps->getIndividualsWaitingQMaps().begin(); lIt_j != mWaitingQMaps->getIndividualsWaitingQMaps().end(); lIt_j++) {
 							(lIt_j->second)[mContext[0]->getPushList().front().mTime].push(new ProcessPushed(mContext[0]->getPushList().front().mProcess));
 						}
+						break;
+					case Process::eIndividualByID: //en test
+						mWaitingQMaps->getIndividualsWaitingQMaps()[lIt_i->second.front().mTargetID][lIt_i->second.front().mTime].push(
+								new ProcessPushed(lIt_i->second.front().mProcess));
 						break;
 					default:
 						throw schnaps_InternalExceptionM("Undefined process target!");

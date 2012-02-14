@@ -38,7 +38,7 @@ struct Push {
 	std::string mProcess;		//!< The name of the process pushed.
 	Process::Target mTarget;	//!< The target of the push.
 	unsigned long mTime;		//!< The time step of process execution.
-	unsigned int mTargetID;		//!< 
+	unsigned long mTargetID;		//!< The individual ID in case the process is pushed to a specific individual
 
 	/*!
 	 * \brief Construct a push as a copy of an original.
@@ -57,7 +57,7 @@ struct Push {
 	 * \param inTime The time step of process execution.
          * \param inTargetID The individual ID to push the process on.
 	 */
-	Push(const std::string& inProcess, Process::Target inTarget, unsigned long inTime, unsigned int inTargetID=0) :
+	Push(const std::string& inProcess, Process::Target inTarget, unsigned long inTime, unsigned long inTargetID=0) :
 		mProcess(inProcess.c_str()),
 		mTarget(inTarget),
 		mTime(inTime),
