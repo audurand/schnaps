@@ -25,7 +25,7 @@ using namespace Plugins;
 using namespace Meds;
 
 Transmission::Transmission() :
-	Primitive(2),
+	Primitive(0),
 	mLabel(""),
 	mContacts_Ref(""),
 	mContacts(NULL),
@@ -158,6 +158,7 @@ void Transmission::readWithSystem(PACC::XML::ConstIterator inIter, Core::System&
 		throw schnaps_IOExceptionNodeM(*inIter, "label of event expected!");
 	}
 	mLabel.assign(inIter->getAttribute("inLabel"));
+	std::cout << mLabel << std::endl;
 	
 	// retrieve probability of infection
 	if (inIter->getAttribute("inProbability").empty()) {
@@ -219,9 +220,9 @@ void Transmission::readWithSystem(PACC::XML::ConstIterator inIter, Core::System&
 			
 			break; }
 	}
-	setNumberArguments(mContacts->size());
+//	setNumberArguments(mContacts->size());
 	
-	
+	std::cout << "bob123" << std::endl;
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Meds::Transmission::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 

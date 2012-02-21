@@ -29,6 +29,7 @@ SCHNAPS_Plugin_AddAllocM("Meds_SetBaseQaly", SCHNAPS::Plugins::Meds::SetBaseQaly
 SCHNAPS_Plugin_AddAllocM("Meds_SetQaly", SCHNAPS::Plugins::Meds::SetQaly::Alloc);
 SCHNAPS_Plugin_AddAllocM("Meds_Test", SCHNAPS::Plugins::Meds::Test::Alloc);
 SCHNAPS_Plugin_AddAllocM("Meds_Treatment", SCHNAPS::Plugins::Meds::Treatment::Alloc);
+SCHNAPS_Plugin_AddAllocM("Meds_Transmission", SCHNAPS::Plugins::Meds::Transmission::Alloc);
 SCHNAPS_Plugin_AddAllocM("Meds_UpdateQaly", SCHNAPS::Plugins::Meds::UpdateQaly::Alloc);
 
 
