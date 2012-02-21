@@ -158,7 +158,7 @@ void Transmission::readWithSystem(PACC::XML::ConstIterator inIter, Core::System&
 		throw schnaps_IOExceptionNodeM(*inIter, "label of event expected!");
 	}
 	mLabel.assign(inIter->getAttribute("inLabel"));
-	std::cout << mLabel << std::endl;
+	//std::cout << mLabel << std::endl;
 	
 	// retrieve probability of infection
 	if (inIter->getAttribute("inProbability").empty()) {
@@ -222,7 +222,7 @@ void Transmission::readWithSystem(PACC::XML::ConstIterator inIter, Core::System&
 	}
 //	setNumberArguments(mContacts->size());
 	
-	std::cout << "bob123" << std::endl;
+	//std::cout << "bob123" << std::endl;
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Meds::Transmission::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
@@ -250,7 +250,7 @@ Core::AnyType::Handle Transmission::execute(unsigned int inIndex, Core::Executio
 	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
 
 	
-	double lRandom = ioContext.getRandomizer().rollUniform();
+	
 	double lProbability;
 	unsigned long lIndividual;
 	
@@ -279,15 +279,37 @@ Core::AnyType::Handle Transmission::execute(unsigned int inIndex, Core::Executio
 			lContacts = mContacts;
 			break;
 	}
+	
+	switch (mProbability_Ref[0]) {
+		case '@':
+			// individual variable value
+			lProbability = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mProbability_Ref.substr(1))).getValue();
+			break;
+		case '#':
+			// environment variable value
+			lProbability = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mProbability_Ref.substr(1))).getValue();
+			break;
+		case '%':
+			// local variable value
+			lProbability = Core::castObjectT<const Core::Double&>(lContext.getLocalVariable(mProbability_Ref.substr(1))).getValue();
+			break;
+		default:
+			lProbability = mProbability->getValue();
+			break;
+	}
 	unsigned long lDelay=1;
 	unsigned long lDelta=1;
-	
+	std::cout << "taille: " << lContacts->size() << std::endl;
 	unsigned long lStartValue = lContext.getClock().getValue(Simulation::Clock::eOther) + lDelay;
 	for (unsigned int i = 0; i < lContacts->size(); i++) {
+		double lRandom = ioContext.getRandomizer().rollUniform();
+		std::cout << lRandom << std::endl;
 		if (lRandom < lProbability) {
 			lIndividual = Core::castHandleT<Core::ULong>((*lContacts)[i])->getValue();
+			std::cout << lIndividual << std::endl;
 //						 Core::castHandleT<Core::Double>((*lProbabilities)[i])->getValue()
-			lContext.getPushList().push_back(Simulation::Push(mLabel, Simulation::Process::eIndividualByID, lContext.getClock().getTick(lStartValue + i * lDelta, Simulation::Clock::eOther),lIndividual));	
+			//lContext.getPushList().push_back(Simulation::Push(mLabel, Simulation::Process::eIndividualByID, lContext.getClock().getTick(lStartValue + i * lDelta, Simulation::Clock::eOther),lIndividual));
+			lContext.getPushList().push_back(Simulation::Push(mLabel, Simulation::Process::eIndividualByID, lContext.getClock().getTick(lStartValue, Simulation::Clock::eOther),lIndividual));		
 		}
 		
 	}

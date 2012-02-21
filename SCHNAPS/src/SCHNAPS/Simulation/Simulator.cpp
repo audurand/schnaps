@@ -302,6 +302,7 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 						}
 						break;
 					case Process::eIndividualByID: //en test
+						std::cout << "process pushed by env" << std::endl;
 						if (mEnvironment->getPopulation()[mContext[0]->getPushList().front().mTargetID]->isActive()){ //check that individual is not idle
 							mWaitingQMaps->getIndividualsWaitingQMaps()[mContext[0]->getPushList().front().mTargetID][mContext[0]->getPushList().front().mTime].push(new ProcessPushed(mContext[0]->getPushList().front().mProcess));
 						}
@@ -353,8 +354,12 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 						}
 						break;
 					case Process::eIndividualByID: //en test
+						std::cout << "process pushed by individual " << lIt_i->first << " to individual " << lIt_i->second.front().mTargetID << " time " << lIt_i->second.front().mTime << std::endl;
 						if (mEnvironment->getPopulation()[lIt_i->second.front().mTargetID]->isActive()){ //check that individual is not idle
 							mWaitingQMaps->getIndividualsWaitingQMaps()[lIt_i->second.front().mTargetID][lIt_i->second.front().mTime].push(new ProcessPushed(lIt_i->second.front().mProcess));
+						}
+						else{
+							std::cout << "individus inactif " << std::endl;
 						}
 						break;
 					default:
