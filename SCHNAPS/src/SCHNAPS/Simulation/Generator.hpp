@@ -39,6 +39,10 @@
 #include <map>
 #endif
 
+#define TRANCHE_AGE_VARIABLE "trancheAge"
+#define NBCONTACTS_VARIABLE "ref.nbContacts_"
+#define CONTACTS_FLAG "ref.Contacts"
+
 namespace SCHNAPS {
 namespace Simulation {
 

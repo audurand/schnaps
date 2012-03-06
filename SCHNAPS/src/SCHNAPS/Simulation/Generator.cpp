@@ -221,14 +221,13 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 	GenerationContext::Handle lContext = inThread->getContextHandle();
 	std::stringstream lID;
 	unsigned int lIndividualIndex = inThread->getStartingIndex();
-	//unsigned int lNbContacts = 0;
-	unsigned int lNbTranchesAge = 0;
+	bool lContacts = false;
 
 	try {
-		//lNbContacts = Core::castObjectT<const Core::UInt&>(lContext->getSystem().getParameters().getParameter("nbContacts")).getValue();
-		lNbTranchesAge = Core::castObjectT<const Core::UInt&>(lContext->getSystem().getParameters().getParameter("ref.nbTranchesAge")).getValue();
+		lContacts = Core::castObjectT<const Core::Bool&>(lContext->getSystem().getParameters().getParameter(CONTACTS_FLAG)).getValue();
 	}
 	catch(Core::RunTimeException) {
+		lContacts = false;
 #ifdef SCHNAPS_FULL_DEBUG
 
 		std::cout << "Pas de liste de contacts " << std::endl;
@@ -295,25 +294,21 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 			lContext->getIndividual().getState().removeVariable(inThread->getEraseVariables()[j]);
 		}
 	}
-	if(lNbTranchesAge>0){ //code servant seulement lorsqu'il y a une liste de contacts
-		Core::UInt::Handle lTrancheAge;
+	if(lContacts){ //code servant seulement lorsqu'il y a une liste de contacts
 		if(str2uint(inThread->getPrefix()) > 0){
 			throw schnaps_RunTimeExceptionM("contact lists not supported when generator thread count > 1");
 		}
-		if(lNbTranchesAge<1){
-			throw schnaps_RunTimeExceptionM("tranches d'age requises");
-		}
+
 		unsigned long lRandom;
-		//unsigned int lNbContacts;
 		unsigned int lNbContactsMax=0;
 		std::vector<Core::Vector::Handle> lListe;
 		std::vector<unsigned int> lListeTranchesAge,lListeNbContacts;
 		for(unsigned int i=0; i<inThread->getSize() ; i++){ //loop over all individuals
 			lListe.push_back(new Core::Vector());
 			lContext->setIndividual(inThread->getIndividuals()[i]);
-			lListeTranchesAge.push_back(Core::castHandleT<Core::UInt>(lContext->getIndividual().getState().getVariable("trancheAge").clone())->getValue());
+			lListeTranchesAge.push_back(Core::castHandleT<Core::UInt>(lContext->getIndividual().getState().getVariable(TRANCHE_AGE_VARIABLE).clone())->getValue());
 			std::stringstream lSstm;
-			lSstm << "ref.nbContacts_" << lListeTranchesAge[i];
+			lSstm << NBCONTACTS_VARIABLE << lListeTranchesAge[i];
 			try{
 				lListeNbContacts.push_back(Core::castObjectT<const Core::UInt&>(lContext->getSystem().getParameters().getParameter(lSstm.str())).getValue());
 			}
@@ -328,17 +323,9 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 		}
 
 		for (unsigned int i=0; i<inThread->getSize() ; i++) { //loop over all individuals
-			//std::cout << "Individus " << inThread->getIndividuals()[i]->getID() << std::endl;
-			//lContext->setIndividual(inThread->getIndividuals()[i]);
-			//std::cout << "Individus " << lContext->getIndividual().getID() << std::endl;
-
-
-			//std::cout << " Génération d'une liste de contacts de taille " << lListeNbContacts[i] << std::endl;
 			if(lListeNbContacts[i] >= inThread->getSize()){
 				throw schnaps_RunTimeExceptionM("Le nombre de contacts doit être inférieur au nombre d'individus!");
 			}
-			//Core::Vector::Handle lListe = new Core::Vector();
-			//lListe->reserve(lNbContacts);
 			for (unsigned int j = lListe[i]->size(); j < lListeNbContacts[i]; j++){ //loop over all contacts to be generated
 				bool lInvalid = true;
 				unsigned int lCount=0;
@@ -348,11 +335,8 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 					if(i==lRandom)
 						lInvalid = true;
 					else{
-						//std::stringstream lSstm2;
-						//lSstm2 << "ref.nbContacts_" << Core::castHandleT<Core::UInt>(inThread->getIndividuals()[lRandom]->getState().getVariable("trancheAge").clone())->getValue();
 						if(lListe[lRandom]->size() >= lListeNbContacts[lRandom]){
 							lInvalid = true;
-							//std::cout << "marche pas parce que " << lListe[lRandom]->size() << " plus grand ou égal à " << Core::castObjectT<const Core::UInt&>(lContext->getSystem().getParameters().getParameter(lSstm2.str())).getValue() << std::endl;
 							if(lCount++>inThread->getSize()*1000){ //bad hack pour empêcher les boucles infinies
 								lInvalid = false;
 								for(unsigned int k=0;k<j;k++){ //loop over all contacts already generated
@@ -374,8 +358,6 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 				}
 				lListe[i]->push_back(new Core::ULong(lRandom));
 				lListe[lRandom]->push_back(new Core::ULong(i));
-				//std::cout << "paire " << i << "+" << lRandom << std::endl;
-				//std::cout << "liste temporaire #" << i << " " << lListe[i]->writeStr() << " et #" << lRandom << " " << lListe[lRandom]->writeStr() << std::endl;
 			}
 
 
