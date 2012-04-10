@@ -358,9 +358,12 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 						if (mEnvironment->getPopulation()[lIt_i->second.front().mTargetID]->isActive()){ //check that individual is not idle
 							mWaitingQMaps->getIndividualsWaitingQMaps()[lIt_i->second.front().mTargetID][lIt_i->second.front().mTime].push(new ProcessPushed(lIt_i->second.front().mProcess));
 						}
+#ifdef SCHNAPS_FULL_DEBUG
+
 						else{
 							std::cout << "individus inactif " << std::endl;
 						}
+#endif
 						break;
 					default:
 						throw schnaps_InternalExceptionM("Undefined process target!");
