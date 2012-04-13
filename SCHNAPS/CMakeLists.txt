@@ -6,10 +6,10 @@
 #
 
 project(SCHNAPS CXX)
-set(SCHNAPS_VERSION 2.2.0)
+set(SCHNAPS_VERSION 2.3.0)
 
 # This is the shared library versioning info
-set(LIBRARY_VERSION 2.2.0)
+set(LIBRARY_VERSION 2.3.0)
 #                   | | |
 #            +------+ | +---+
 #            |        |     |
