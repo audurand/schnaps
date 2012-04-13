@@ -10,8 +10,8 @@
 #define SCHNAPS_IS_UNIX
 /* #undef SCHNAPS_IS_WINDOWS */
 
-#define SCHNAPS_FULL_DEBUG
-/* #undef SCHNAPS_NDEBUG */
+/* #undef SCHNAPS_FULL_DEBUG */
+#define SCHNAPS_NDEBUG
 
 #define SCHNAPS_HAVE_DEV_URANDOM
 

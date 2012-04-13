@@ -308,7 +308,7 @@ Core::AnyType::Handle Transmission::execute(unsigned int inIndex, Core::Executio
 //		std::cout << lRandom << std::endl;
 		if (lRandom < lProbability) {
 			lIndividual = Core::castHandleT<Core::ULong>((*lContacts)[i])->getValue();
-			std::cout << lContext.getIndividual().getID() << " " << lIndividual << std::endl;
+//			std::cout << lContext.getIndividual().getID() << " " << lIndividual << std::endl;
 //						 Core::castHandleT<Core::Double>((*lProbabilities)[i])->getValue()
 			//lContext.getPushList().push_back(Simulation::Push(mLabel, Simulation::Process::eIndividualByID, lContext.getClock().getTick(lStartValue + i * lDelta, Simulation::Clock::eOther),lIndividual));
 			lContext.getPushList().push_back(Simulation::Push(mLabel, Simulation::Process::eIndividualByID, lContext.getClock().getTick(lStartValue, Simulation::Clock::eOther),lIndividual));		
