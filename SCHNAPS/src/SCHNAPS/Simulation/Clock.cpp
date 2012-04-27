@@ -73,6 +73,8 @@ void Clock::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& ioSyst
 			mUnits = eYear;
 		} else if (inIter->getAttribute("units") == "month") {
 			mUnits = eMonth;
+		} else if (inIter->getAttribute("units") == "week") {
+                        mUnits = eWeek;
 		} else if (inIter->getAttribute("units") == "day") {
 			mUnits = eDay;
 		} else {
@@ -100,6 +102,9 @@ void Clock::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 		case eMonth:
 			ioStreamer.insertAttribute("units", "month");
 			break;
+		case eWeek:
+                        ioStreamer.insertAttribute("units", "week");
+                        break;
 		case eDay:
 			ioStreamer.insertAttribute("units", "day");
 			break;

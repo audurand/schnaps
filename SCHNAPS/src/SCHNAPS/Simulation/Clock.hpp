@@ -42,7 +42,7 @@ public:
 	typedef Core::ContainerT<Clock, Core::Object::Bag> Bag;
 	
 	//! The units of each clock tick (left = less specific, right = more specific).
-	enum Units {eOther, eYear, eMonth, eDay};
+	enum Units {eOther, eYear, eMonth, eDay, eWeek};
 
 	Clock();
 	Clock(const Clock& inOriginal);
@@ -101,6 +101,8 @@ public:
 						return mValue;
 					case eMonth:
 						return mValue / 12;
+					case eWeek:
+						return mValue / 52;
 					case eDay:
 						return mValue / 365;
 					default:
@@ -128,6 +130,16 @@ public:
 						throw schnaps_RunTimeExceptionM("Cannot get value: these units are more specific than the simulation units!");
 				}
 				break;
+			case eWeek:
+                                switch (mUnits) {
+                                        case eDay:
+                                                return mValue;
+					case eWeek:
+						return mValue / 7;
+                                        default:
+                                                throw schnaps_RunTimeExceptionM("Cannot get value: these units are more specific than the simulation units!");
+                                }
+                                break;
 			case eDay:
 				switch (mUnits) {
 					case eDay:
@@ -156,6 +168,8 @@ public:
 				return inFromValue + 1;
 			case eMonth:
 				return (inFromValue/12 + 1) * 12;
+			case eWeek:
+				return (inFromValue/52 + 1) * 52;
 			case eDay:
 				return (inFromValue/365 + 1) * 365;
 			default:
@@ -207,6 +221,8 @@ public:
 						return inValue;
 					case eMonth:
 						return inValue * 12;
+					case eWeek:
+                                                return inValue * 52;
 					case eDay:
 						return inValue * 365;
 					default:
@@ -230,6 +246,16 @@ public:
 						throw schnaps_RunTimeExceptionM("Cannot get clock tick in units more specific than the simulation units!");
 				}
 				break;
+			case eWeek:
+				switch (mUnits) {
+                                        case eWeek:
+                                                return inValue;
+					case eDay:
+						return inValue * 7;
+                                        default:
+                                                throw schnaps_RunTimeExceptionM("Cannot get clock tick in units more specific than the simulation units!");
+                                }
+                                break;
 			case eDay:
 				switch (mUnits) {
 					case eDay:

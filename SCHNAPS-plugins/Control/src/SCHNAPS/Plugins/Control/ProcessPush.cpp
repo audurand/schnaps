@@ -255,6 +255,8 @@ void ProcessPush::readWithSystem(PACC::XML::ConstIterator inIter, Core::System& 
 			mUnits = Simulation::Clock::eYear;
 		} else if (lUnits == "month") {
 			mUnits = Simulation::Clock::eMonth;
+		} else if (lUnits == "week") {
+                        mUnits = Simulation::Clock::eWeek;
 		} else if (lUnits == "day") {
 			mUnits = Simulation::Clock::eDay;
 		} else {
@@ -295,6 +297,9 @@ void ProcessPush::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) c
 			case Simulation::Clock::eMonth:
 				ioStreamer.insertAttribute("units", "month");
 				break;
+			case Simulation::Clock::eWeek:
+                                ioStreamer.insertAttribute("units", "week");
+                                break;
 			case Simulation::Clock::eDay:
 				ioStreamer.insertAttribute("units", "day");
 				break;

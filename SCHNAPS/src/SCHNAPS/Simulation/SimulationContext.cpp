@@ -188,6 +188,8 @@ void SimulationContext::readObservers(PACC::XML::ConstIterator inIter) {
 					lUnits = Clock::eYear;
 				} else if (lChild->getAttribute("units") == "month") {
 					lUnits = Clock::eMonth;
+				} else if (lChild->getAttribute("units") == "week") {
+                                        lUnits = Clock::eWeek;
 				} else if (lChild->getAttribute("units") == "day") {
 					lUnits = Clock::eDay;
 				} else {
@@ -286,6 +288,9 @@ void SimulationContext::writeObservers(PACC::XML::Streamer& ioStreamer, bool inI
 			case Clock::eMonth:
 				ioStreamer.insertAttribute("units", "month");
 				break;
+			case Clock::eWeek:
+                                ioStreamer.insertAttribute("units", "week");
+                                break;
 			case Clock::eDay:
 				ioStreamer.insertAttribute("units", "day");
 				break;
@@ -309,6 +314,9 @@ void SimulationContext::writeObservers(PACC::XML::Streamer& ioStreamer, bool inI
 			case Clock::eMonth:
 				ioStreamer.insertAttribute("units", "Month");
 				break;
+			case Clock::eWeek:
+                                ioStreamer.insertAttribute("units", "Week");
+                                break;
 			case Clock::eDay:
 				ioStreamer.insertAttribute("units", "Day");
 				break;
