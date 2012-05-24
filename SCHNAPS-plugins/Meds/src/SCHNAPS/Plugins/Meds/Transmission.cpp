@@ -222,9 +222,6 @@ void Transmission::readWithSystem(PACC::XML::ConstIterator inIter, Core::System&
 			
 			break; }
 	}
-//	setNumberArguments(mContacts->size());
-	
-	//std::cout << "bob123" << std::endl;
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Meds::Transmission::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
 }
 
@@ -301,23 +298,15 @@ Core::AnyType::Handle Transmission::execute(unsigned int inIndex, Core::Executio
 	}
 	unsigned long lDelay=1;
 	unsigned long lDelta=1;
-//	std::cout << "taille: " << lContacts->size() << std::endl;
 	unsigned long lStartValue = lContext.getClock().getValue(Simulation::Clock::eOther) + lDelay;
 	for (unsigned int i = 0; i < lContacts->size(); i++) {
 		double lRandom = ioContext.getRandomizer().rollUniform();
-//		std::cout << lRandom << std::endl;
 		if (lRandom < lProbability) {
 			lIndividual = Core::castHandleT<Core::ULong>((*lContacts)[i])->getValue();
-//			std::cout << lContext.getIndividual().getID() << " " << lIndividual << std::endl;
-//						 Core::castHandleT<Core::Double>((*lProbabilities)[i])->getValue()
-			//lContext.getPushList().push_back(Simulation::Push(mLabel, Simulation::Process::eIndividualByID, lContext.getClock().getTick(lStartValue + i * lDelta, Simulation::Clock::eOther),lIndividual));
 			lContext.getPushList().push_back(Simulation::Push(mLabel, Simulation::Process::eIndividualByID, lContext.getClock().getTick(lStartValue, Simulation::Clock::eOther),lIndividual));		
 		}
 		
-	}
-	
-	
-		
+	}	
 
 	return NULL;
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Meds::Transmission::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
