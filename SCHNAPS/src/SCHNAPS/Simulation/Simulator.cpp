@@ -1007,7 +1007,7 @@ void Simulator::printIndividuals(std::ostream& ioStream, unsigned int inLowerInd
 	Individual::Handle lIndividual;
 	std::string lPrefix = "NONE";
 	std::map<std::string, std::vector<std::string> >::const_iterator lSubPopulationIt;
-	
+
 	schnaps_UpperBoundCheckAssertM(inUpperIndex, mEnvironment->getPopulation().size()-1);
 
 	for (unsigned int i = inLowerIndex; i < inUpperIndex+1; i++) {
@@ -1015,6 +1015,9 @@ void Simulator::printIndividuals(std::ostream& ioStream, unsigned int inLowerInd
 		if (lIndividual->getID().find(lPrefix) == std::string::npos) {
 			lPrefix = lIndividual->getPrefix();
 			lSubPopulationIt = mOutputParameters.mPopulation.find(mPopulationManager->getPrefixes().find(lPrefix)->second.mProfile);
+			if(lSubPopulationIt == mOutputParameters.mPopulation.end()) {
+				throw schnaps_RunTimeExceptionM("Missing outcome variables in XML");
+			}
 		}
 		lIndividual->print(ioStream, lSubPopulationIt->second);
 	}
