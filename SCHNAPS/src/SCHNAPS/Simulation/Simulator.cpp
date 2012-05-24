@@ -199,6 +199,9 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 		lSS.str("");
 		lSS << lPrintPrefix << "Input.gz";
 		lOGZS.open(lSS.str().c_str(), std::ios::out);
+		if(lOGZS.fail()) {
+			throw schnaps_IOExceptionMessageM("Can't write to " + lSS.str());
+		}
 		printEnvironment(lOGZS);
 	}
 
@@ -408,6 +411,9 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 		lSS.str("");
 		lSS << lPrintPrefix << "Output.gz";
 		lOGZS.open(lSS.str().c_str(), std::ios::out);
+		if(lOGZS.fail()) {
+			throw schnaps_IOExceptionMessageM("Can't write to " + lSS.str());
+		}
 		printEnvironment(lOGZS);
 		printIndividuals(lOGZS, 0, mEnvironment->getPopulation().size()-1);
 		lOGZS.close();
@@ -418,6 +424,9 @@ void Simulator::simulate(const std::string& inScenarioLabel) {
 		lSS.str("");
 		lSS << lPrintPrefix << "Summary.gz";
 		lOGZS.open(lSS.str().c_str(), std::ios::out);
+		if(lOGZS.fail()) {
+			throw schnaps_IOExceptionMessageM("Can't write to " + lSS.str());
+		}
 		printSummary(lOGZS);
 		lOGZS.close();
 	}
@@ -1016,7 +1025,7 @@ void Simulator::printIndividuals(std::ostream& ioStream, unsigned int inLowerInd
 			lPrefix = lIndividual->getPrefix();
 			lSubPopulationIt = mOutputParameters.mPopulation.find(mPopulationManager->getPrefixes().find(lPrefix)->second.mProfile);
 			if(lSubPopulationIt == mOutputParameters.mPopulation.end()) {
-				throw schnaps_RunTimeExceptionM("Missing outcome variables in XML");
+				throw schnaps_IOExceptionMessageM("Missing outcome variables in XML");
 			}
 		}
 		lIndividual->print(ioStream, lSubPopulationIt->second);

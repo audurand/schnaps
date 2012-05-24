@@ -365,9 +365,9 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 		for (unsigned int i=0; i<inThread->getSize() ; i++) { //loop over all individuals
 			lContext->setIndividual(inThread->getIndividuals()[i]);
 			lContext->getIndividual().getState().insertVariable("liste_contacts",lListe[i]);
-#ifdef SCHNAPS_FULL_DEBUG
+#ifdef SCHNAPS_DEBUG_CONTACTS
 
-			//std::cout << "individu " << i << " liste de " << lListe[i]->size() << "/" << lListeNbContacts[i] << " contacts " << lListe[i]->writeStr() << std::endl;
+			std::cout << "individu " << i << " liste de " << lListe[i]->size() << "/" << lListeNbContacts[i] << " contacts " << lListe[i]->writeStr() << std::endl;
 #endif
 		}
 	}
