@@ -471,7 +471,7 @@ printf("Reading randomizer info\n");
 				lOSS << "got tag <" << lChild->getValue() << "> instead!";
 				throw schnaps_IOExceptionNodeM(*lChild, lOSS.str());
 			}
-			mRandomizerInitSeed[lThreadNumber] = SCHNAPS::str2uint(lChild->getAttribute("seed"));
+			mRandomizerInitSeed[lThreadNumber] = static_cast<unsigned long>(SCHNAPS::str2ulonglong(lChild->getAttribute("seed")));
 			mRandomizerInitState[lThreadNumber] = lChild->getAttribute("state");
 			lThreadNumber++;
 		}

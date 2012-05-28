@@ -265,6 +265,18 @@ namespace SCHNAPS {
 	}
 
 	/*!
+	 *  \brief  Convert a string into an unsigned long long.
+	 *  \param  inString String to convert into an unsigned long long.
+	 *  \return Unsigned long long containing the conversion of the string.
+	 */
+	inline unsigned long long str2ulonglong(const std::string& inString) {
+		std::istringstream lStringIS(inString);
+		unsigned long long lInteger;
+		lStringIS >> lInteger;
+		return lInteger;
+	}
+
+	/*!
 	 *  \brief  Convert a double into a string.
 	 *  \param  inDouble Double to convert into a string.
 	 *  \param  inPrecision Precision of the conversion.
