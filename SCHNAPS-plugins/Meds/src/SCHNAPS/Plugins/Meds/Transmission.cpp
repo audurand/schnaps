@@ -209,17 +209,7 @@ void Transmission::readWithSystem(PACC::XML::ConstIterator inIter, Core::System&
 			break;
 		default: {
 			// direct value
-			std::stringstream lISS(mContacts_Ref);
-			PACC::Tokenizer lTokenizer(lISS);
-			lTokenizer.setDelimiters("|", "");
-			
-			std::string lContact;
-
-			mContacts = new Core::Vector();
-			while (lTokenizer.getNextToken(lContact)) {
-				mContacts->push_back(new Core::ULong(SCHNAPS::str2uint(lContact)));
-			}
-			
+			mContacts = NULL;
 			break; }
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Meds::Transmission::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
@@ -251,7 +241,7 @@ Core::AnyType::Handle Transmission::execute(unsigned int inIndex, Core::Executio
 	
 	
 	double lProbability;
-	unsigned long lIndividual;
+	unsigned int lIndividual;
 	
 	Core::Vector::Handle lContacts;
 
@@ -275,7 +265,8 @@ Core::AnyType::Handle Transmission::execute(unsigned int inIndex, Core::Executio
 			break;
 		default:
 			// direct value
-			lContacts = mContacts;
+			//do not contain a direct contact list, but a string refering to an individual variable to be created by the generator.
+			lContacts = Core::castHandleT<Core::Vector>(lContext.getIndividual().getState().getVariableHandle(mContacts_Ref));
 			break;
 	}
 	
@@ -302,7 +293,7 @@ Core::AnyType::Handle Transmission::execute(unsigned int inIndex, Core::Executio
 	for (unsigned int i = 0; i < lContacts->size(); i++) {
 		double lRandom = ioContext.getRandomizer().rollUniform();
 		if (lRandom < lProbability) {
-			lIndividual = Core::castHandleT<Core::ULong>((*lContacts)[i])->getValue();
+			lIndividual = Core::castHandleT<Core::UInt>((*lContacts)[i])->getValue();
 			lContext.getPushList().push_back(Simulation::Push(mLabel, Simulation::Process::eIndividualByID, lContext.getClock().getTick(lStartValue, Simulation::Clock::eOther),lIndividual));		
 		}
 		
