@@ -42,6 +42,7 @@
 #define TRANCHE_AGE_VARIABLE "trancheAge"
 #define NBCONTACTS_VARIABLE "ref.nbContacts_"
 #define CONTACTS_FLAG "ref.Contacts"
+#define VARIABLE_LISTE_CONTACTS "liste_contacts"
 
 namespace SCHNAPS {
 namespace Simulation {

@@ -304,18 +304,16 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 		unsigned long lRandom;
 		unsigned int lNbContactsMax=0;
 		std::vector<Core::Vector::Handle> lListe;
-		std::vector<unsigned int> lListeTranchesAge,lListeNbContacts;
-		for(unsigned int i=0; i<inThread->getSize() ; i++){ //loop over all individuals
+		std::vector<unsigned int> lListeNbContacts;
+		for(unsigned int i=0; i<inThread->getSize() ; i++){ //loop over all individuals to get their number of contacts
 			lListe.push_back(new Core::Vector());
-			lContext->setIndividual(inThread->getIndividuals()[i]);
-			lListeTranchesAge.push_back(Core::castHandleT<Core::UInt>(lContext->getIndividual().getState().getVariable(TRANCHE_AGE_VARIABLE).clone())->getValue());
 			std::stringstream lSstm;
-			lSstm << NBCONTACTS_VARIABLE << lListeTranchesAge[i];
 			try{
+				lSstm << NBCONTACTS_VARIABLE << Core::castObjectT<const Core::UInt&>(inThread->getIndividuals()[i]->getState().getVariable(TRANCHE_AGE_VARIABLE)).getValue();
 				lListeNbContacts.push_back(Core::castObjectT<const Core::UInt&>(lContext->getSystem().getParameters().getParameter(lSstm.str())).getValue());
 			}
 			catch(Core::RunTimeException) {
-				lSstm << " pas de nombre de contacts pour cette tranche d'âge";
+				lSstm << " pas de nombre de contacts pour cette tranche d'âge. Assurez-vous aussi d'avoir une variable " << TRANCHE_AGE_VARIABLE;
 				throw schnaps_RunTimeExceptionM(lSstm.str());
 			}
 			if(lNbContactsMax<lListeNbContacts[i]){
@@ -324,7 +322,7 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 			//std::cout << "individus # " << i << " a " << lListeNbContacts[i] << " contacts et une tranche " << lListeTranchesAge[i] << std::endl;
 		}
 
-		for (unsigned int i=0; i<inThread->getSize() ; i++) { //loop over all individuals
+		for (unsigned int i=0; i<inThread->getSize() ; i++) { //loop over all individuals to generate their contacts
 			if(lListeNbContacts[i] >= inThread->getSize()){
 				throw schnaps_RunTimeExceptionM("Le nombre de contacts doit être inférieur au nombre d'individus!");
 			}
@@ -364,8 +362,8 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 
 
 		}
-		for (unsigned int i=0; i<inThread->getSize() ; i++) { //loop over all individuals
-			inThread->getIndividuals()[i]->getState().insertVariable("liste_contacts",lListe[i]);
+		for (unsigned int i=0; i<inThread->getSize() ; i++) { //loop over all individuals to finally add their contact lists to the simulation variables
+			inThread->getIndividuals()[i]->getState().insertVariable(VARIABLE_LISTE_CONTACTS,lListe[i]);
 #ifdef SCHNAPS_DEBUG_CONTACTS
 
 			std::cout << "individu " << i << " liste de " << lListe[i]->size() << "/" << lListeNbContacts[i] << " contacts " << lListe[i]->writeStr() << std::endl;
