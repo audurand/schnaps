@@ -221,19 +221,6 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 	GenerationContext::Handle lContext = inThread->getContextHandle();
 	std::stringstream lID;
 	unsigned int lIndividualIndex = inThread->getStartingIndex();
-	bool lContacts = false;
-
-	try {
-		lContacts = Core::castObjectT<const Core::Bool&>(lContext->getSystem().getParameters().getParameter(CONTACTS_FLAG)).getValue();
-	}
-	catch(Core::RunTimeException) {
-		lContacts = false;
-#ifdef SCHNAPS_FULL_DEBUG
-
-		std::cout << "Pas de liste de contacts " << std::endl;
-#endif
-
-	}
 
 
 	inThread->getIndividuals().clear();
@@ -294,6 +281,21 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 			lContext->getIndividual().getState().removeVariable(inThread->getEraseVariables()[j]);
 		}
 	}
+	
+	bool lContacts = false;
+
+	try {
+		lContacts = Core::castObjectT<const Core::Bool&>(lContext->getSystem().getParameters().getParameter(CONTACTS_FLAG)).getValue();
+	}
+	catch(Core::RunTimeException) {
+		lContacts = false;
+#ifdef SCHNAPS_DEBUG_CONTACTS
+
+		std::cout << "Pas de liste de contacts " << std::endl;
+#endif
+
+	}
+	
 	if(lContacts){ //code servant seulement lorsqu'il y a une liste de contacts
 		if(str2uint(inThread->getPrefix()) > 0){
 			throw schnaps_RunTimeExceptionM("contact lists not supported when generator thread count > 1");
@@ -340,14 +342,14 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 							if(lCount++>inThread->getSize()*1000){ //bad hack pour empêcher les boucles infinies
 								lInvalid = false;
 								for(unsigned int k=0;k<j;k++){ //loop over all contacts already generated
-									if(Core::castHandleT<Core::ULong>((*(lListe[i]))[k])->getValue() == lRandom)
+									if(Core::castHandleT<Core::UInt>((*(lListe[i]))[k])->getValue() == lRandom)
 										lInvalid = true;
 								}
 							}
 						}
 						else{
 							for(unsigned int k=0;k<j;k++){ //loop over all contacts already generated
-								if(Core::castHandleT<Core::ULong>((*(lListe[i]))[k])->getValue() == lRandom)
+								if(Core::castHandleT<Core::UInt>((*(lListe[i]))[k])->getValue() == lRandom)
 									lInvalid = true;
 							}
 						}
@@ -356,15 +358,14 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 
 
 				}
-				lListe[i]->push_back(new Core::ULong(lRandom));
-				lListe[lRandom]->push_back(new Core::ULong(i));
+				lListe[i]->push_back(new Core::UInt(lRandom));
+				lListe[lRandom]->push_back(new Core::UInt(i));
 			}
 
 
 		}
 		for (unsigned int i=0; i<inThread->getSize() ; i++) { //loop over all individuals
-			lContext->setIndividual(inThread->getIndividuals()[i]);
-			lContext->getIndividual().getState().insertVariable("liste_contacts",lListe[i]);
+			inThread->getIndividuals()[i]->getState().insertVariable("liste_contacts",lListe[i]);
 #ifdef SCHNAPS_DEBUG_CONTACTS
 
 			std::cout << "individu " << i << " liste de " << lListe[i]->size() << "/" << lListeNbContacts[i] << " contacts " << lListe[i]->writeStr() << std::endl;
