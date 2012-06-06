@@ -118,6 +118,21 @@ public:
 		return lIterParameters->second;
 		schnaps_StackTraceEndM("const SCHNAPS::Core::AnyType::Handle SCHNAPS::Core::Parameters::getParameter(const std::string&) const");
 	}
+	
+	/*!
+	* \brief  Check if the parameter exists.
+	* \param  inLabel A const reference to the label of the parameter.
+	* \return True if the parameter exists, false if not.
+	*/
+	bool hasParameter(const std::string& inLabel) const {
+		schnaps_StackTraceBeginM();
+		ParametersMap::const_iterator lIterParameters = mParametersMap.find(inLabel);
+		if (lIterParameters == mParametersMap.end()) {
+			return false;
+		}
+		return true;
+		schnaps_StackTraceEndM("bool SCHNAPS::Core::Parameters::hasParameter(const std::string&) const");
+	}
 
 private:
 	ParametersMap mParametersMap;	//!< The map of parameter labels to values.
