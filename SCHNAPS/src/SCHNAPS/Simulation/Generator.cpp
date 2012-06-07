@@ -287,9 +287,10 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 		if(lContext->getThreadNb() > 0){
 			throw schnaps_RunTimeExceptionM("contact lists not supported when generator thread count > 1");
 		}
-		//unsigned int lNbContactsMax=0;
 		std::vector<Core::Vector::Handle> lListe;
 		std::vector<unsigned int> lListeNbContacts;
+		lListe.reserve(inThread->getSize());
+		lListeNbContacts.reserve(inThread->getSize());
 		Core::Vector::Handle lNbContactsVect;
 		if(lContext->getSystem().getParameters().hasParameter(NBCONTACTS_VARIABLE)){
 			lNbContactsVect = Core::castHandleT<Core::Vector>(lContext->getSystem().getParameters().getParameterHandle(NBCONTACTS_VARIABLE));
@@ -319,49 +320,54 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 				lSstm << " pas de nombre de contacts pour cette tranche d'âge : " << lTrancheAge << ". Assurez-vous aussi d'avoir une variable " << TRANCHE_AGE_VARIABLE;
 				throw schnaps_RunTimeExceptionM(lSstm.str());
 			}
-			/*if(lNbContactsMax<lListeNbContacts[i]){
-				lNbContactsMax=lListeNbContacts[i];
-			}*/
-			//std::cout << "individus # " << i << " a " << lListeNbContacts[i] << " contacts et une tranche " << lListeTranchesAge[i] << std::endl;
 		}
 
 		for (unsigned int i=0; i<inThread->getSize() ; i++) { //loop over all individuals to generate their contacts
-			unsigned long lRandom;
 			if(lListeNbContacts[i] >= inThread->getSize()){
 				throw schnaps_RunTimeExceptionM("Le nombre de contacts doit être inférieur au nombre d'individus!");
 			}
-			for (unsigned int j = lListe[i]->size(); j < lListeNbContacts[i]; j++){ //loop over all contacts to be generated
-				bool lInvalid = true;
-				unsigned int lCount=0;
-				while(lInvalid){
-					lRandom = lContext->getRandomizer().rollInteger(0,inThread->getSize()-1);
-					lInvalid = false;
-					if(i==lRandom)
-						lInvalid = true;
+			for (unsigned int j = lListe[i]->size(); j < lListeNbContacts[i]; j++){ //loop over all contacts to be generated	
+				unsigned int lRandom = lContext->getRandomizer().rollInteger(i+1,inThread->getSize()-1);
+				unsigned int lExtra=0; //il n'est pas toujours possible d'arriver à un nombre de contacts juste pour chaque individu. On devra parfois tolérer un extra
+				for(unsigned int lIndividu=lRandom;;){ //boucle jusqu'à ce qu'on trouve un contact
+					bool lInvalid = false;
+					if(lListe[lIndividu]->size() >= lListeNbContacts[lIndividu]+lExtra){
+						lInvalid = true; //lInvidu a déjà tous ses contacts
+					}
 					else{
-						if(lListe[lRandom]->size() >= lListeNbContacts[lRandom]){
-							lInvalid = true;
-							if(lCount++>inThread->getSize()*1000){ //bad hack pour empêcher les boucles infinies
-								lInvalid = false;
-								for(unsigned int k=0;k<j;k++){ //loop over all contacts already generated
-									if(Core::castHandleT<Core::UInt>((*(lListe[i]))[k])->getValue() == lRandom)
-										lInvalid = true;
-								}
-							}
+						if(i==lIndividu){
+							lInvalid = true; //ne peut être un contact de soi-même
 						}
 						else{
 							for(unsigned int k=0;k<j;k++){ //loop over all contacts already generated
-								if(Core::castHandleT<Core::UInt>((*(lListe[i]))[k])->getValue() == lRandom)
-									lInvalid = true;
+								if(Core::castHandleT<Core::UInt>((*(lListe[i]))[k])->getValue() == lIndividu)
+									lInvalid = true; //ne peut avoir 2 fois le même contact
+							}	
+						}
+					}
+					if(lInvalid){
+						if(lIndividu==lRandom-1 || (lRandom==0 && lIndividu==inThread->getSize()-1)){
+							//on a fait le tour des individus et aucun contact n'était disponible.
+							lExtra++; //on tolérera donc un contact d'extra
+							//on relance à partir de 0 pour être équiprobable
+							lRandom = lContext->getRandomizer().rollInteger(0,inThread->getSize()-1);
+							lIndividu=lRandom;
+						}
+						else{
+							//on prend l'individu suivant, en s'assurant de ne pas dépasser
+							if(++lIndividu>=inThread->getSize()){
+								lIndividu=0;
 							}
 						}
 					}
+					else{
+						//contact trouvé, ajout aux 2 listes et sortie de boucle
+						lListe[i]->push_back(new Core::UInt(lIndividu));
+						lListe[lIndividu]->push_back(new Core::UInt(i));
+						break;
+					}
 				}
-				lListe[i]->push_back(new Core::UInt(lRandom));
-				lListe[lRandom]->push_back(new Core::UInt(i));
 			}
-
-
 		}
 		for (unsigned int i=0; i<inThread->getSize() ; i++) { //loop over all individuals to finally add their contact lists to the simulation variables
 			inThread->getIndividuals()[i]->getState().insertVariable(VARIABLE_LISTE_CONTACTS,lListe[i]);
