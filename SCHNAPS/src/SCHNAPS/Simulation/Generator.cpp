@@ -284,11 +284,9 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 	
 	
 	if(lContext->getSystem().getParameters().hasParameter(CONTACTS_FLAG) || lContext->getSystem().getParameters().hasParameter(NBCONTACTS_VARIABLE)){ //code servant seulement lorsqu'il y a une liste de contacts
-		if(str2uint(inThread->getPrefix()) > 0){
+		if(lContext->getThreadNb() > 0){
 			throw schnaps_RunTimeExceptionM("contact lists not supported when generator thread count > 1");
 		}
-
-		
 		//unsigned int lNbContactsMax=0;
 		std::vector<Core::Vector::Handle> lListe;
 		std::vector<unsigned int> lListeNbContacts;
@@ -357,10 +355,7 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 									lInvalid = true;
 							}
 						}
-
 					}
-
-
 				}
 				lListe[i]->push_back(new Core::UInt(lRandom));
 				lListe[lRandom]->push_back(new Core::UInt(i));
