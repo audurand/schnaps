@@ -464,12 +464,12 @@ printf("Reading randomizer info\n");
 	mRandomizerInitSeed.resize(lThreadsGenerator, 0);
 	mRandomizerInitState.resize(lThreadsGenerator, "");
 
-	if ((inIter->getChildCount() != 0) && (inIter->getChildCount() != lThreadsGenerator)) {
-		throw schnaps_IOExceptionNodeM(*inIter, "expected a randomizer per thread!");
+	if ((inIter->getChildCount() != 0) && (inIter->getChildCount() < lThreadsGenerator)) {
+		throw schnaps_IOExceptionNodeM(*inIter, "expected at least a randomizer per thread!");
 	}
 
 	unsigned int lThreadNumber = 0;
-	for (PACC::XML::ConstIterator lChild = inIter->getFirstChild(); lChild; lChild++) {
+	for (PACC::XML::ConstIterator lChild = inIter->getFirstChild(); lThreadNumber<lThreadsGenerator; lChild++) {
 		if (lChild->getType() == PACC::XML::eData) {
 			if (lChild->getValue() != "Randomizer") {
 				std::ostringstream lOSS;
