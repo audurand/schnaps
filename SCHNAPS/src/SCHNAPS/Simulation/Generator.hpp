@@ -144,6 +144,9 @@ private:
 	// sub writes
 	void writeRandomizerInfo(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 	void writeProfiles(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
+	
+	//! Optionally generate contact lists for all individuals.
+	static void generateContacts(GenerationThread::Handle inThread);
 
 private:
 	// system structures
