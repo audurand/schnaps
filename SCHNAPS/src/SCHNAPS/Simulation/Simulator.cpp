@@ -72,6 +72,9 @@ Simulator::~Simulator() {
 	mParallel->lock();
 	mParallel->broadcast();
 	mParallel->unlock();
+	delete mParallel;
+	delete mSequential;
+	delete mBlackBoardWrt;
 }
 
 /*!

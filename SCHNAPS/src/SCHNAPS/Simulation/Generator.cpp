@@ -74,6 +74,17 @@ Generator::Generator(Core::System::Handle inSystem, Clock::Handle inClock, Envir
 }
 
 /*!
+ * \brief Destructor.
+ */
+
+Generator::~Generator()
+{
+	delete mParallel;
+	delete mSequential;
+}
+
+
+/*!
  * \brief Read object from XML.
  * \param inIter XML iterator of input document.
  * \throw SCHNAPS::Core::IOException if a wrong tag is encountered.
