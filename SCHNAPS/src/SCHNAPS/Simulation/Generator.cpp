@@ -346,9 +346,9 @@ void Generator::generateContacts(GenerationThread::Handle inThread){
 		if(lListeNbContacts[i] >= lNbIndividus){
 			throw schnaps_RunTimeExceptionM("Le nombre de contacts doit être inférieur au nombre d'individus!");
 		}
-		for (unsigned int j = lListe[i]->size(); j < lListeNbContacts[i]; j++){ //loop over all contacts to be generated	
-			unsigned int lRandom = lContext->getRandomizer().rollInteger(i+1,lNbIndividus-1);
-			unsigned int lExtra=0; //il n'est pas toujours possible d'arriver à un nombre de contacts juste pour chaque individu. On devra parfois tolérer un extra
+		unsigned int lExtra = i+1<lNbIndividus ? 0 : 1; //il n'est pas toujours possible d'arriver à un nombre de contacts juste pour chaque individu. On devra parfois tolérer un extra
+		for (unsigned int j = lListe[i]->size(); j < lListeNbContacts[i]; j++){ //loop over all contacts to be generated
+			unsigned int lRandom = lContext->getRandomizer().rollInteger(lExtra==0 ? i+1 : 0,lNbIndividus-1);
 			for(unsigned int lIndividu=lRandom;;){ //boucle jusqu'à ce qu'on trouve un contact
 				bool lInvalid = false;
 				if(lListe[lIndividu]->size() >= lListeNbContacts[lIndividu]+lExtra){
