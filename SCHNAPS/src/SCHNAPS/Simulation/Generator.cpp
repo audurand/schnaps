@@ -350,45 +350,38 @@ void Generator::generateContacts(GenerationThread::Handle inThread){
 		for (unsigned int j = lListe[i]->size(); j < lListeNbContacts[i]; j++){ //loop over all contacts to be generated
 			unsigned int lIndividu = lContext->getRandomizer().rollInteger(lExtra==0 ? i+1 : 0,lNbIndividus-1);
 			for(unsigned int lCompte=1;;lCompte++){ //boucle jusqu'à ce qu'on trouve un contact
-				bool lInvalid = false;
-				if(lListe[lIndividu]->size() >= lListeNbContacts[lIndividu]+lExtra){
-					lInvalid = true; //lInvidu a déjà tous ses contacts
-				}
-				else{
-					if(i==lIndividu){
-						lInvalid = true; //ne peut être un contact de soi-même
-					}
-					else{
+				if(lListe[lIndividu]->size() < lListeNbContacts[lIndividu]+lExtra){
+					if(i!=lIndividu){
+						bool lValide = true;
 						for(unsigned int k=0;k<j;k++){ //loop over all contacts already generated
 							if(Core::castHandleT<Core::UInt>((*(lListe[i]))[k])->getValue() == lIndividu){
-								lInvalid = true; //ne peut avoir 2 fois le même contact
+								lValide = false; //ne peut avoir 2 fois le même contact
 								break;
 							}
 						}
-					}
-				}
-				if(lInvalid){
-					if(lCompte>=lNbIndividus){
-						lCompte=0;
-						//on a fait le tour des individus et aucun contact n'était disponible.
-						lExtra++; //on tolérera donc un contact d'extra
-						//on relance à partir de 0 pour être équiprobable
-						lIndividu = lContext->getRandomizer().rollInteger(0,lNbIndividus-1);
-					}
-					else{
-						//on prend l'individu suivant, en s'assurant de ne pas dépasser
-						if(++lIndividu>=lNbIndividus){
-							lIndividu=0;
+						if(lValide){
+							//contact valide trouvé
+							break;
 						}
 					}
 				}
+				if(lCompte>=lNbIndividus){
+					lCompte=0;
+					//on a fait le tour des individus et aucun contact n'était disponible.
+					lExtra++; //on tolérera donc un contact d'extra
+					//on relance à partir de 0 pour être équiprobable
+					lIndividu = lContext->getRandomizer().rollInteger(0,lNbIndividus-1);
+				}
 				else{
-					//contact trouvé, ajout aux 2 listes et sortie de boucle
-					lListe[i]->push_back(new Core::UInt(lIndividu));
-					lListe[lIndividu]->push_back(new Core::UInt(i));
-					break;
+					//on prend l'individu suivant, en s'assurant de ne pas dépasser
+					if(++lIndividu>=lNbIndividus){
+						lIndividu=0;
+					}
 				}
 			}
+			//ajout aux listes des deux individus
+			lListe[i]->push_back(new Core::UInt(lIndividu));
+			lListe[lIndividu]->push_back(new Core::UInt(i));
 		}
 	}
 	for (unsigned int i=0; i<lNbIndividus ; i++) { //loop over all individuals to finally add their contact lists to the simulation variables
