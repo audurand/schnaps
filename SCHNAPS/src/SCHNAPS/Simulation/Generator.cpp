@@ -340,16 +340,16 @@ void Generator::generateContacts(GenerationThread::Handle inThread){
 			lSstm << " pas de nombre de contacts pour cette tranche d'âge : " << lTrancheAge << ". Assurez-vous aussi d'avoir une variable " << TRANCHE_AGE_VARIABLE;
 			throw schnaps_RunTimeExceptionM(lSstm.str());
 		}
-	}
-
-	for (unsigned int i=0; i<lNbIndividus ; i++) { //loop over all individuals to generate their contacts
 		if(lListeNbContacts[i] >= lNbIndividus){
 			throw schnaps_RunTimeExceptionM("Le nombre de contacts doit être inférieur au nombre d'individus!");
 		}
+	}
+
+	for (unsigned int i=0; i<lNbIndividus ; i++) { //loop over all individuals to generate their contacts
 		unsigned int lExtra = i+1<lNbIndividus ? 0 : 1; //il n'est pas toujours possible d'arriver à un nombre de contacts juste pour chaque individu. On devra parfois tolérer un extra
 		for (unsigned int j = lListe[i]->size(); j < lListeNbContacts[i]; j++){ //loop over all contacts to be generated
-			unsigned int lRandom = lContext->getRandomizer().rollInteger(lExtra==0 ? i+1 : 0,lNbIndividus-1);
-			for(unsigned int lIndividu=lRandom;;){ //boucle jusqu'à ce qu'on trouve un contact
+			unsigned int lIndividu = lContext->getRandomizer().rollInteger(lExtra==0 ? i+1 : 0,lNbIndividus-1);
+			for(unsigned int lCompte=1;;lCompte++){ //boucle jusqu'à ce qu'on trouve un contact
 				bool lInvalid = false;
 				if(lListe[lIndividu]->size() >= lListeNbContacts[lIndividu]+lExtra){
 					lInvalid = true; //lInvidu a déjà tous ses contacts
@@ -360,18 +360,20 @@ void Generator::generateContacts(GenerationThread::Handle inThread){
 					}
 					else{
 						for(unsigned int k=0;k<j;k++){ //loop over all contacts already generated
-							if(Core::castHandleT<Core::UInt>((*(lListe[i]))[k])->getValue() == lIndividu)
+							if(Core::castHandleT<Core::UInt>((*(lListe[i]))[k])->getValue() == lIndividu){
 								lInvalid = true; //ne peut avoir 2 fois le même contact
-						}	
+								break;
+							}
+						}
 					}
 				}
 				if(lInvalid){
-					if(lIndividu==lRandom-1 || (lRandom==0 && lIndividu==lNbIndividus-1)){
+					if(lCompte>=lNbIndividus){
+						lCompte=0;
 						//on a fait le tour des individus et aucun contact n'était disponible.
 						lExtra++; //on tolérera donc un contact d'extra
 						//on relance à partir de 0 pour être équiprobable
-						lRandom = lContext->getRandomizer().rollInteger(0,lNbIndividus-1);
-						lIndividu=lRandom;
+						lIndividu = lContext->getRandomizer().rollInteger(0,lNbIndividus-1);
 					}
 					else{
 						//on prend l'individu suivant, en s'assurant de ne pas dépasser
