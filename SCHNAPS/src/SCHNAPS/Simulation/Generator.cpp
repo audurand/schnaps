@@ -308,9 +308,9 @@ void Generator::generateContacts(GenerationThread::Handle inThread){
 	if(lContext->getThreadNb() > 0){
 		throw schnaps_RunTimeExceptionM("contact lists not supported when generator thread count > 1");
 	}
-	unsigned int lNbIndividus=inThread->getSize();
-	std::vector<Core::Vector::Handle> lListe(lNbIndividus);
-	std::vector<unsigned int> lListeNbContacts(lNbIndividus);
+	unsigned int lNbIndividuals=inThread->getSize();
+	std::vector<Core::Vector::Handle> lList(lNbIndividuals);
+	std::vector<unsigned int> lListNbContacts(lNbIndividuals);
 	Core::Vector::Handle lNbContactsVect;
 	if(lContext->getSystem().getParameters().hasParameter(NBCONTACTS_VARIABLE)){
 		lNbContactsVect = Core::castHandleT<Core::Vector>(lContext->getSystem().getParameters().getParameterHandle(NBCONTACTS_VARIABLE));
@@ -318,77 +318,79 @@ void Generator::generateContacts(GenerationThread::Handle inThread){
 	else{
 		lNbContactsVect=NULL;
 	}
-	for(unsigned int i=0; i<lNbIndividus ; i++){ //loop over all individuals to get their number of contacts
-		lListe[i]=new Core::Vector();
+	for(unsigned int i=0; i<lNbIndividuals ; i++){ //loop over all individuals to get their number of contacts
+		lList[i]=new Core::Vector();
 		std::stringstream lSstm;
-		unsigned int lTrancheAge;
+		unsigned int lAgeGroup;
 		try{
-			lTrancheAge = Core::castObjectT<const Core::UInt&>(inThread->getIndividuals()[i]->getState().getVariable(TRANCHE_AGE_VARIABLE)).getValue();
+			lAgeGroup = Core::castObjectT<const Core::UInt&>(inThread->getIndividuals()[i]->getState().getVariable(AGE_GROUP_VARIABLE)).getValue();
+			//There are two ways to specify the number of contacts for each age group. The first one is in a vector parameter and the second one is to have one parameter for each age group.
+			//Vectors are cleaner but both ways are supported in this code
 			if(lNbContactsVect != NULL){
-				if(lNbContactsVect->size() <= lTrancheAge){
-					throw schnaps_RunTimeExceptionM("Erreur de tranche d'âge");
+				if(lNbContactsVect->size() <= lAgeGroup){
+					throw schnaps_RunTimeExceptionM("Age group error");
 				}
-				lListeNbContacts[i]=Core::castHandleT<Core::UInt>((*lNbContactsVect)[lTrancheAge])->getValue();
+				lListNbContacts[i]=Core::castHandleT<Core::UInt>((*lNbContactsVect)[lAgeGroup])->getValue();
 			}
 			else
 			{
-				lSstm << NBCONTACTS_VARIABLE << lTrancheAge;
-				lListeNbContacts[i]=Core::castObjectT<const Core::UInt&>(lContext->getSystem().getParameters().getParameter(lSstm.str())).getValue();
+				lSstm << NBCONTACTS_VARIABLE << lAgeGroup;
+				lListNbContacts[i]=Core::castObjectT<const Core::UInt&>(lContext->getSystem().getParameters().getParameter(lSstm.str())).getValue();
 			}
 		}
 		catch(Core::RunTimeException) {
-			lSstm << " pas de nombre de contacts pour cette tranche d'âge : " << lTrancheAge << ". Assurez-vous aussi d'avoir une variable " << TRANCHE_AGE_VARIABLE;
+			lSstm << " no number of contacts for this age group : " << lAgeGroup << ". Make sure you also have a variable " << AGE_GROUP_VARIABLE;
 			throw schnaps_RunTimeExceptionM(lSstm.str());
 		}
-		if(lListeNbContacts[i] >= lNbIndividus){
-			throw schnaps_RunTimeExceptionM("Le nombre de contacts doit être inférieur au nombre d'individus!");
+		if(lListNbContacts[i] >= lNbIndividuals){
+			throw schnaps_RunTimeExceptionM("Number of contacts must be lower than the number of individuals!");
 		}
 	}
 
-	for (unsigned int i=0; i<lNbIndividus ; i++) { //loop over all individuals to generate their contacts
-		unsigned int lExtra = i+1<lNbIndividus ? 0 : 1; //il n'est pas toujours possible d'arriver à un nombre de contacts juste pour chaque individu. On devra parfois tolérer un extra
-		for (unsigned int j = lListe[i]->size(); j < lListeNbContacts[i]; j++){ //loop over all contacts to be generated
-			unsigned int lIndividu = lContext->getRandomizer().rollInteger(lExtra==0 ? i+1 : 0,lNbIndividus-1);
-			for(unsigned int lCompte=1;;lCompte++){ //boucle jusqu'à ce qu'on trouve un contact
-				if(lListe[lIndividu]->size() < lListeNbContacts[lIndividu]+lExtra){
-					if(i!=lIndividu){
-						bool lValide = true;
-						for(unsigned int k=0;k<j;k++){ //loop over all contacts already generated
-							if(Core::castHandleT<Core::UInt>((*(lListe[i]))[k])->getValue() == lIndividu){
-								lValide = false; //ne peut avoir 2 fois le même contact
+	for (unsigned int i=0; i<lNbIndividuals ; i++) { //loop over all individuals to generate their contacts
+		unsigned int lExtra = i+1<lNbIndividuals ? 0 : 1; //It is not always possible to arrive to the good number of contacts for each individual. We will sometimes need to tolerate an extra
+		for (unsigned int j = lList[i]->size(); j < lListNbContacts[i]; j++){ //loop over all contacts to be generated
+			unsigned int lIndividual = lContext->getRandomizer().rollInteger(lExtra==0 ? i+1 : 0,lNbIndividuals-1);
+			for(unsigned int lCount=1;;lCount++){ //loop until a contact is found
+				if(lList[lIndividual]->size() < lListNbContacts[lIndividual]+lExtra){
+					if(i!=lIndividual){
+						bool lValid = true;
+						for(unsigned int k=0;k<j;k++){ //loop over all contacts already generated to check if they are already in the list
+							if(Core::castHandleT<Core::UInt>((*(lList[i]))[k])->getValue() == lIndividual){
+								lValid = false; //Can't have the same contact twice
 								break;
 							}
 						}
-						if(lValide){
-							//contact valide trouvé
+						if(lValid){
+							//valid contact found
 							break;
 						}
 					}
 				}
-				if(lCompte>=lNbIndividus){
-					lCompte=0;
-					//on a fait le tour des individus et aucun contact n'était disponible.
-					lExtra++; //on tolérera donc un contact d'extra
-					//on relance à partir de 0 pour être équiprobable
-					lIndividu = lContext->getRandomizer().rollInteger(0,lNbIndividus-1);
+				if(lCount>=lNbIndividuals){
+					lCount=0;
+					//We tried all individuals and none were available
+					lExtra++; //We will tolerate an extra contact
+					//We redraw to be fair
+					lIndividual = lContext->getRandomizer().rollInteger(0,lNbIndividuals-1);
 				}
 				else{
-					//on prend l'individu suivant, en s'assurant de ne pas dépasser
-					if(++lIndividu>=lNbIndividus){
-						lIndividu=0;
+					//We take the next individual, making sure we don't overflow.
+					if(++lIndividual>=lNbIndividuals){
+						lIndividual=0;
 					}
 				}
 			}
-			//ajout aux listes des deux individus
-			lListe[i]->push_back(new Core::UInt(lIndividu));
-			lListe[lIndividu]->push_back(new Core::UInt(i));
+			//Add to both contact lists
+			lList[i]->push_back(new Core::UInt(lIndividual));
+			lList[lIndividual]->push_back(new Core::UInt(i));
 		}
 	}
-	for (unsigned int i=0; i<lNbIndividus ; i++) { //loop over all individuals to finally add their contact lists to the simulation variables
-		inThread->getIndividuals()[i]->getState().insertVariable(VARIABLE_LISTE_CONTACTS,lListe[i]);
+	for (unsigned int i=0; i<lNbIndividuals ; i++) { //loop over all individuals to finally add their contact lists to the simulation variables
+		inThread->getIndividuals()[i]->getState().insertVariable(CONTACTS_LIST_VARIABLE,lList[i]);
 #ifdef SCHNAPS_DEBUG_CONTACTS
 
-		std::cout << "individu " << i << " liste de " << lListe[i]->size() << "/" << lListeNbContacts[i] << " contacts " << lListe[i]->writeStr() << std::endl;
+		std::cout << "individual " << i << " list of " << lList[i]->size() << "/" << lListNbContacts[i] << " contacts " << lList[i]->writeStr() << std::endl;
 #endif
 	}
 
