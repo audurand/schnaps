@@ -140,6 +140,8 @@ Individual::Bag::Handle SCHNAPS::Simulation::PopulationManager::getIndividuals()
 		// add new individuals to time step population
 		lIndividuals->insert(lIndividuals->end(), lSubPop->begin(), lSubPop->end());
 	}
+	if(mGenerator->getSystem().getParameters().hasParameter(CONTACTS_FLAG) || mGenerator->getSystem().getParameters().hasParameter(NBCONTACTS_VARIABLE))
+		mGenerator->generateContacts(lIndividuals);
 
 	return lIndividuals;
 	schnaps_StackTraceEndM("SCHNAPS::Simulation::Individual::Bag::Handle SCHNAPS::Simulation::PopulationManager::getIndividuals()");

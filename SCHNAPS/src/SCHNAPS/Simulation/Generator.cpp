@@ -292,38 +292,33 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
 			lContext->getIndividual().getState().removeVariable(inThread->getEraseVariables()[j]);
 		}
 	}
-	if(lContext->getSystem().getParameters().hasParameter(CONTACTS_FLAG) || lContext->getSystem().getParameters().hasParameter(NBCONTACTS_VARIABLE))
-		generateContacts(inThread);
 	
 	schnaps_StackTraceEndM("void SCHNAPS::Simulation::Generator::buildIndividuals(SCHNAPS::Simulation::GenerationThread::Handle)");
 }
 
 /*!
- * \brief Generate contacts for all individual of a thread. There must only be 1 thread.
+ * \brief Generate contacts for all individuals
  * \param inThread A handle to the executing thread.
  */
-void Generator::generateContacts(GenerationThread::Handle inThread){
+void Generator::generateContacts(Individual::Bag::Handle inPop){
 	schnaps_StackTraceBeginM();
-	GenerationContext::Handle lContext = inThread->getContextHandle();
-	if(lContext->getThreadNb() > 0){
-		throw schnaps_RunTimeExceptionM("contact lists not supported when generator thread count > 1");
-	}
-	unsigned int lNbIndividuals=inThread->getSize();
-	std::vector<Core::Vector::Handle> lList(lNbIndividuals);
-	std::vector<unsigned int> lListNbContacts(lNbIndividuals);
 	Core::Vector::Handle lNbContactsVect;
-	if(lContext->getSystem().getParameters().hasParameter(NBCONTACTS_VARIABLE)){
-		lNbContactsVect = Core::castHandleT<Core::Vector>(lContext->getSystem().getParameters().getParameterHandle(NBCONTACTS_VARIABLE));
+	if(mSystem->getParameters().hasParameter(NBCONTACTS_VARIABLE)){
+		lNbContactsVect = Core::castHandleT<Core::Vector>(mSystem->getParameters().getParameterHandle(NBCONTACTS_VARIABLE));
 	}
 	else{
 		lNbContactsVect=NULL;
 	}
+	//Individual::Bag lPop=*inPop;
+	unsigned int lNbIndividuals=inPop->size();
+	std::vector<unsigned int> lListNbContacts(lNbIndividuals);
+	std::vector<Core::Vector::Handle> lList(lNbIndividuals);
 	for(unsigned int i=0; i<lNbIndividuals ; i++){ //loop over all individuals to get their number of contacts
 		lList[i]=new Core::Vector();
 		std::stringstream lSstm;
 		unsigned int lAgeGroup;
 		try{
-			lAgeGroup = Core::castObjectT<const Core::UInt&>(inThread->getIndividuals()[i]->getState().getVariable(AGE_GROUP_VARIABLE)).getValue();
+			lAgeGroup = Core::castObjectT<const Core::UInt&>((*inPop)[i]->getState().getVariable(AGE_GROUP_VARIABLE)).getValue();
 			//There are two ways to specify the number of contacts for each age group. The first one is in a vector parameter and the second one is to have one parameter for each age group.
 			//Vectors are cleaner but both ways are supported in this code
 			if(lNbContactsVect != NULL){
@@ -335,7 +330,7 @@ void Generator::generateContacts(GenerationThread::Handle inThread){
 			else
 			{
 				lSstm << NBCONTACTS_VARIABLE << lAgeGroup;
-				lListNbContacts[i]=Core::castObjectT<const Core::UInt&>(lContext->getSystem().getParameters().getParameter(lSstm.str())).getValue();
+				lListNbContacts[i]=Core::castObjectT<const Core::UInt&>(mSystem->getParameters().getParameter(lSstm.str())).getValue();
 			}
 		}
 		catch(Core::RunTimeException) {
@@ -346,11 +341,13 @@ void Generator::generateContacts(GenerationThread::Handle inThread){
 			throw schnaps_RunTimeExceptionM("Number of contacts must be lower than the number of individuals!");
 		}
 	}
-
+	unsigned long lBackupSeed=mSystem->getRandomizer(0).getSeed();
+	std::string lBackupState=mSystem->getRandomizer(0).getState();
+	mSystem->getRandomizer(0).reset(mRandomizerCurrentSeed[0], mRandomizerCurrentState[0]);
 	for (unsigned int i=0; i<lNbIndividuals ; i++) { //loop over all individuals to generate their contacts
 		unsigned int lExtra = i+1<lNbIndividuals ? 0 : 1; //It is not always possible to arrive to the good number of contacts for each individual. We will sometimes need to tolerate an extra
 		for (unsigned int j = lList[i]->size(); j < lListNbContacts[i]; j++){ //loop over all contacts to be generated
-			unsigned int lIndividual = lContext->getRandomizer().rollInteger(lExtra==0 ? i+1 : 0,lNbIndividuals-1);
+			unsigned int lIndividual = mSystem->getRandomizer(0).rollInteger(lExtra==0 ? i+1 : 0,lNbIndividuals-1);
 			for(unsigned int lCount=1;;lCount++){ //loop until a contact is found
 				if(lList[lIndividual]->size() < lListNbContacts[lIndividual]+lExtra){
 					if(i!=lIndividual){
@@ -372,7 +369,7 @@ void Generator::generateContacts(GenerationThread::Handle inThread){
 					//We tried all individuals and none were available
 					lExtra++; //We will tolerate an extra contact
 					//We redraw to be fair
-					lIndividual = lContext->getRandomizer().rollInteger(0,lNbIndividuals-1);
+					lIndividual = mSystem->getRandomizer(0).rollInteger(0,lNbIndividuals-1);
 				}
 				else{
 					//We take the next individual, making sure we don't overflow.
@@ -386,8 +383,11 @@ void Generator::generateContacts(GenerationThread::Handle inThread){
 			lList[lIndividual]->push_back(new Core::UInt(i));
 		}
 	}
+	mRandomizerCurrentSeed[0] = mSystem->getRandomizer(0).getSeed();
+	mRandomizerCurrentState[0] = mSystem->getRandomizer(0).getState();
+	mSystem->getRandomizer(0).reset(lBackupSeed, lBackupState);
 	for (unsigned int i=0; i<lNbIndividuals ; i++) { //loop over all individuals to finally add their contact lists to the simulation variables
-		inThread->getIndividuals()[i]->getState().insertVariable(CONTACTS_LIST_VARIABLE,lList[i]);
+		(*inPop)[i]->getState().insertVariable(CONTACTS_LIST_VARIABLE,lList[i]);
 #ifdef SCHNAPS_DEBUG_CONTACTS
 
 		std::cout << "individual " << i << " list of " << lList[i]->size() << "/" << lListNbContacts[i] << " contacts " << lList[i]->writeStr() << std::endl;

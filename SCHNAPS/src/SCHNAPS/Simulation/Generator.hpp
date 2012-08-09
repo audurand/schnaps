@@ -97,6 +97,9 @@ public:
 	
 	//! Build individuals using specific thread.
 	static void buildIndividuals(GenerationThread::Handle inThread);
+	
+	//! Optionally generate contact lists for all individuals.
+	void generateContacts(Individual::Bag::Handle inPop);
 
 	//! Refresh generator structure with up-to-date parameters.
 	void refresh();
@@ -145,8 +148,6 @@ private:
 	void writeRandomizerInfo(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 	void writeProfiles(PACC::XML::Streamer& ioStreamer, bool inIndent = true) const;
 	
-	//! Optionally generate contact lists for all individuals.
-	static void generateContacts(GenerationThread::Handle inThread);
 
 private:
 	// system structures
