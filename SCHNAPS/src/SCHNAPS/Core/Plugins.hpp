@@ -90,7 +90,7 @@ public:
 	Plugin::Handle getPlugin(const std::string& inLabel) const {
 		schnaps_StackTraceBeginM();
 		Plugins::PluginMap::const_iterator lIterPlugins = mPluginMap.find(inLabel);
-		if(lIterPlugins != mPluginMap.end()) {
+		if(lIterPlugins == mPluginMap.end()) {
 			std::ostringstream lOSS;
 			lOSS << "The plugin '" << inLabel << "' does not exist; ";
 			lOSS << "could not get it.";
