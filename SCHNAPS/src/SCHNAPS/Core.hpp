@@ -69,6 +69,7 @@
 #include "Core/ULong.hpp"
 #include "Core/Double.hpp"
 #include "Core/String.hpp"
+#include "Core/ContactsGen.hpp"
 
 // Generic framework
 #include "Core/Component.hpp"
