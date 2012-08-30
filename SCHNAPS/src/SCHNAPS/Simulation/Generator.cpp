@@ -310,7 +310,15 @@ void Generator::generateContacts(Individual::Bag::Handle inPop){
 	std::string lBackupState=mSystem->getRandomizer(0).getState();
 	mSystem->getRandomizer(0).reset(mRandomizerCurrentSeed[0], mRandomizerCurrentState[0]);
 	
-	std::string lContactsGenAlgo = Core::castObjectT<const Core::String&>(mSystem->getParameters().getParameter("contacts.algo")).getValue();
+	std::string lContactsGenAlgo;
+	if(mSystem->getParameters().hasParameter(CONTACTS_ALGO)){
+		//get the algorithm from the parameters (usually in the XML file)
+		lContactsGenAlgo = Core::castObjectT<const Core::String&>(mSystem->getParameters().getParameter(CONTACTS_ALGO)).getValue();
+	}
+	else{
+		//default algorithm will be used.
+		lContactsGenAlgo = "Contacts_Base";
+	}
 	Core::ContactsGen::Handle lContactsGen = Core::castHandleT<Core::ContactsGen>(mSystem->getPlugins().getPlugin("Contacts")->getAllocator(lContactsGenAlgo)->allocate());
 	lContactsGen->generate(inPop,mSystem,lList);
 	

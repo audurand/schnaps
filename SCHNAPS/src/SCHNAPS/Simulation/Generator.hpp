@@ -42,6 +42,7 @@
 #define NBCONTACTS_VARIABLE "ref.nbContacts_"
 #define CONTACTS_FLAG "ref.Contacts"
 #define CONTACTS_LIST_VARIABLE "liste_contacts"
+#define CONTACTS_ALGO "contacts.algo" //name of the parameter which select the contact generation algorithm
 
 namespace SCHNAPS {
 namespace Simulation {
