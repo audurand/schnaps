@@ -55,6 +55,8 @@ Simulator::Simulator() :
 	mSystem->getParameters().insertParameter("print.conf", new Core::Bool(false));
 	mSystem->getParameters().insertParameter("threads.simulator", new Core::UInt(1));
 	mSystem->getParameters().insertParameter("threads.generator", new Core::UInt(1));
+	mSystem->getParameters().insertParameter("contacts.algo", new Core::String("Contacts_Base"));
+	mSystem->getParameters().insertParameter("contacts.variable", new Core::String("liste_contacts"));
 	
 	// create default context
 	mContext.push_back(new SimulationContext(mSystem, mClock, mEnvironment));

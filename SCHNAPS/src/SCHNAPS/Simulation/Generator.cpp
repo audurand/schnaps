@@ -302,23 +302,14 @@ void Generator::buildIndividuals(GenerationThread::Handle inThread) {
  */
 void Generator::generateContacts(Individual::Bag::Handle inPop){
 	schnaps_StackTraceBeginM();
- 	unsigned int lNbIndividuals=inPop->size();
- 	std::vector<Core::Vector::Handle> lList(lNbIndividuals);
+ 	std::vector<Core::Vector::Handle> lList(inPop->size());
 	
 	//backup simulation randomizer, load generation randomizer
 	unsigned long lBackupSeed=mSystem->getRandomizer(0).getSeed();
 	std::string lBackupState=mSystem->getRandomizer(0).getState();
 	mSystem->getRandomizer(0).reset(mRandomizerCurrentSeed[0], mRandomizerCurrentState[0]);
 	
-	std::string lContactsGenAlgo;
-	if(mSystem->getParameters().hasParameter(CONTACTS_ALGO)){
-		//get the algorithm from the parameters (usually in the XML file)
-		lContactsGenAlgo = Core::castObjectT<const Core::String&>(mSystem->getParameters().getParameter(CONTACTS_ALGO)).getValue();
-	}
-	else{
-		//default algorithm will be used.
-		lContactsGenAlgo = "Contacts_Base";
-	}
+	std::string lContactsGenAlgo = Core::castObjectT<const Core::String&>(mSystem->getParameters().getParameter("contacts.algo")).getValue();
 	Core::ContactsGen::Handle lContactsGen = Core::castHandleT<Core::ContactsGen>(mSystem->getPlugins().getPlugin("Contacts")->getAllocator(lContactsGenAlgo)->allocate());
 	lContactsGen->generate(inPop,mSystem,lList);
 	
@@ -327,8 +318,9 @@ void Generator::generateContacts(Individual::Bag::Handle inPop){
 	mRandomizerCurrentState[0] = mSystem->getRandomizer(0).getState();
 	mSystem->getRandomizer(0).reset(lBackupSeed, lBackupState);
 	
-	for (unsigned int i=0; i<lNbIndividuals ; i++) { //loop over all individuals to finally add their contact lists to the simulation variables
-		(*inPop)[i]->getState().insertVariable(CONTACTS_LIST_VARIABLE,lList[i]);
+	std::string lContactListVariable = Core::castObjectT<const Core::String&>(mSystem->getParameters().getParameter("contacts.variable")).getValue();
+	for (unsigned int i=0; i<inPop->size() ; i++) { //loop over all individuals to finally add their contact lists to the simulation variables
+		(*inPop)[i]->getState().insertVariable(lContactListVariable,lList[i]);
 #ifdef SCHNAPS_DEBUG_CONTACTS
 
 		std::cout << "individual " << i << " list of " << lList[i]->size() << "/" << lListNbContacts[i] << " contacts " << lList[i]->writeStr() << std::endl;
