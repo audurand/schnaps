@@ -33,7 +33,7 @@ using namespace Core;
 void ContactsGen::generate(Simulation::Individual::Bag::Handle inPop, Core::System::Handle inSystem, std::vector<Core::Vector::Handle>& ioList) const {
 	schnaps_StackTraceBeginM();
 	throw schnaps_UndefinedMethodInternalExceptionM("generate", "ContactsGen", getName());
-	schnaps_StackTraceEndM("void ContactsGen::generate(Simulation::Individual::Bag::Handle inPop) const");
+	schnaps_StackTraceEndM("void ContactsGen::generate(Simulation::Individual::Bag::Handle inPop, Core::System::Handle inSystem, std::vector<Core::Vector::Handle>& ioList) const");
 }
 
 
