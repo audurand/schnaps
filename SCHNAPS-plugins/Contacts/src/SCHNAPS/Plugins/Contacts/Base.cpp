@@ -33,7 +33,6 @@ using namespace Contacts;
  */
 void Base::generate(Simulation::Individual::Bag::Handle inPop,Core::System::Handle inSystem,std::vector<Core::Vector::Handle>& ioList) const {
 	schnaps_StackTraceBeginM();
-	std::cout << "generate1" << std::endl;
 	Core::Vector::Handle lNbContactsVect;
 	if(inSystem->getParameters().hasParameter(NBCONTACTS_VARIABLE)){
 		lNbContactsVect = Core::castHandleT<Core::Vector>(inSystem->getParameters().getParameterHandle(NBCONTACTS_VARIABLE));
@@ -41,7 +40,6 @@ void Base::generate(Simulation::Individual::Bag::Handle inPop,Core::System::Hand
 	else{
 		lNbContactsVect=NULL;
 	}
-	//Individual::Bag lPop=*inPop;
 	unsigned int lNbIndividuals=inPop->size();
 	std::vector<unsigned int> lListNbContacts(lNbIndividuals);
 	for(unsigned int i=0; i<lNbIndividuals ; i++){ //loop over all individuals to get their number of contacts

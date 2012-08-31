@@ -51,7 +51,7 @@ public:
 		schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Contacts::Base::getName() const");
 	}
 
-	void generate(Simulation::Individual::Bag::Handle inPop, Core::System::Handle inSystem, std::vector<Core::Vector::Handle>& ioList) const;
+	virtual void generate(Simulation::Individual::Bag::Handle inPop, Core::System::Handle inSystem, std::vector<Core::Vector::Handle>& ioList) const;
 
 };
 } // end of Contacts namespace
