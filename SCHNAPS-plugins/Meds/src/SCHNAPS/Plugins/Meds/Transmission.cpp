@@ -304,22 +304,6 @@ Core::AnyType::Handle Transmission::execute(unsigned int inIndex, Core::Executio
 }
 
 /*!
- * \brief  Return the nth argument requested return type.
- * \param  inIndex Index of the current primitive.
- * \param  inN Index of the argument to get the type.
- * \param  ioContext A reference to the execution context.
- * \return A const reference to the type of the nth argument.
- * \throw  SCHNAPS::Core::AssertException if the argument index is out of bounds.
- */
-const std::string& Transmission::getArgType(unsigned int inIndex, unsigned int inN, Core::ExecutionContext& ioContext) const {
-	schnaps_StackTraceBeginM();
-	schnaps_UpperBoundCheckAssertM(inN, 1);
-	const static std::string lType("Any");
-	return lType;
-	schnaps_StackTraceEndM("const std::string& SCHNAPS::Plugins::Meds::Transmission::getArgType(unsigned int, unsigned int, SCHNAPS::Core::ExecutionContext&) const");
-}
-
-/*!
  * \brief  Return the primitive return type.
  * \param  inIndex Index of the current primitive.
  * \param  ioContext A reference to the execution context.
