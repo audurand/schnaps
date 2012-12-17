@@ -105,7 +105,7 @@ void* Plugin::bindDynLibFunction(void* inDynLib, std::string inFunctionName) {
 		throw std::runtime_error(lOSS.str());
 	}
 #ifdef SCHNAPS_IS_WINDOWS
-	void* lFunction = GetProcAddress((HMODULE)inDynLib, TEXT(inFunctionName.c_str()));
+	FARPROC lFunction = GetProcAddress((HMODULE)inDynLib, TEXT(inFunctionName.c_str()));
 	if(lFunction == NULL) {
 		std::ostringstream lOSS;
 		lOSS << "It seems that it is impossible to bind function \"" << inFunctionName;
@@ -159,7 +159,8 @@ void* Plugin::bindDynLibFunction(void* inDynLib, std::string inFunctionName) {
  */
 void* Plugin::loadDynLib(std::string inSource) {
 #ifdef SCHNAPS_IS_WINDOWS
-	HINSTANCE lHandle = LoadLibrary(inSource.c_str());
+//	HINSTANCE lHandle = LoadLibrary(inSource.c_str());
+	HMODULE lHandle = LoadLibrary(inSource.c_str());
 	if(lHandle == NULL) {
 		std::ostringstream lOSS;
 		lOSS << "It seems that it is impossible to load filename \"" << inSource;
