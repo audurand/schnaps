@@ -37,14 +37,6 @@
 // assumes little-endian notation
 #define get16bits(d) (*((const uint16_t *) (d)))
 
-#if defined(SCHNAPS_HAVE_STD_HASHMAP) | defined(SCHNAPS_HAVE_STDEXT_HASHMAP)
-#include <hash_map>
-#endif // defined(SCHNAPS_HAVE_STD_HASHMAP) | defined(SCHNAPS_HAVE_STDEXT_HASHMAP)
-
-#ifdef SCHNAPS_HAVE_GNUCXX_HASHMAP
-#include <ext/hash_map>
-#endif // SCHNAPS_HAVE_GNUCXX_HASHMAP
-
 namespace SCHNAPS {
 namespace Core {
 

@@ -5,10 +5,10 @@
       <Control_IfThenElse>
         <Control_ProcessCall inLabel="Evenements_Trimestre_1"/>
         <Control_Nothing/>
-        <Meds_Test inSpecificity="0.999" inDiscountRate="0" inState="@SD" inLabel="Sequential_Combined" inCompliance="$ref.Consentement_Depistage" inSensitivity="0.51" outCost="@Cout" inCost="40.00">
+        <Meds_Test inSpecificity="0.999" inDiscountRate="0" inState="@SD" inLabel="Sequential_Combined" inCompliance="$Consentement_Depistage" inSensitivity="0.51" outCost="@Cout" inCost="40.00">
           <Control_Sequential>
             <Control_ProcessCall inLabel="Visite_Conseiller"/>
-            <Meds_Test inSpecificity="1.0" inDiscountRate="0" inState="@SD" inLabel="CVS_QF-PCR" inCompliance="$ref.Consentement_Diagnostique" inSensitivity="0.993" outCost="@Cout" inCost="$ref.Cout_Diagnostique">
+            <Meds_Test inSpecificity="1.0" inDiscountRate="0" inState="@SD" inLabel="CVS_QF-PCR" inCompliance="$Consentement_Diagnostique" inSensitivity="0.993" outCost="@Cout" inCost="$Cout_Diagnostique">
               <Control_Sequential>
                 <Control_ProcessPush inDelay="0" inTarget="environment" inLabel="Ajouter_CVS"/>
                 <Meds_Event inLabel="PF_CVS" inProbability="@Probabilite_PF_CVS">
@@ -38,7 +38,7 @@
             <Meds_Test inSpecificity="0.9798" inDiscountRate="0" inState="@SD" inLabel="Sequential_Integrated" inCompliance="1" inSensitivity="0.7928" outCost="@Cout" inCost="25.00">
               <Control_Sequential>
                 <Control_ProcessCall inLabel="Visite_Conseiller"/>
-                <Meds_Test inSpecificity="1.0" inDiscountRate="0" inState="@SD" inLabel="Amnio_QF-PCR" inCompliance="$ref.Consentement_Diagnostique" inSensitivity="0.993" outCost="@Cout" inCost="$ref.Cout_Diagnostique">
+                <Meds_Test inSpecificity="1.0" inDiscountRate="0" inState="@SD" inLabel="Amnio_QF-PCR" inCompliance="$Consentement_Diagnostique" inSensitivity="0.993" outCost="@Cout" inCost="$Cout_Diagnostique">
                   <Control_Sequential>
                     <Control_ProcessPush inDelay="0" inTarget="environment" inLabel="Ajouter_Amnio"/>
                     <Meds_Event inLabel="PF_Amnio" inProbability="@Probabilite_PF_Amnio">

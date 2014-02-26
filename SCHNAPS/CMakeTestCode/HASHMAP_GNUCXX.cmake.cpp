@@ -1,5 +1,5 @@
-#include <ext/hash_map>
+#include <tr1/unordered_map>
 
-using __gnu_cxx::hash_map; 
+using std::tr1::unordered_map; 
 
 int main(int,char**) {}

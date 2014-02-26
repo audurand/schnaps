@@ -25,13 +25,13 @@
 #include "SCHNAPS/Core/Atom.hpp"
 #include "SCHNAPS/Core/HashString.hpp"
 
-#include <map>
 #if defined(SCHNAPS_HAVE_STD_HASHMAP) | defined(SCHNAPS_HAVE_STDEXT_HASHMAP)
 #include <hash_map>
-#endif // defined(SCHNAPS_HAVE_STD_HASHMAP) | defined(SCHNAPS_HAVE_STDEXT_HASHMAP)
-#ifdef SCHNAPS_HAVE_GNUCXX_HASHMAP
-#include <ext/hash_map>
-#endif // SCHNAPS_HAVE_GNUCXX_HASHMAP
+#elif defined(SCHNAPS_HAVE_GNUCXX_HASHMAP)
+#include <tr1/unordered_map>
+#else
+#include <map>
+#endif
 
 namespace SCHNAPS {
 namespace Simulation {
@@ -45,7 +45,7 @@ protected:
 #if defined(SCHNAPS_HAVE_STD_HASHMAP)
 	typedef std::hash_map<std::string, Core::AnyType::Handle, Core::HashString> VariablesMap;
 #elif defined(SCHNAPS_HAVE_GNUCXX_HASHMAP)
-	typedef __gnu_cxx::hash_map<std::string, Core::AnyType::Handle, Core::HashString> VariablesMap;
+	typedef std::tr1::unordered_map<std::string, Core::AnyType::Handle, Core::HashString> VariablesMap;
 #elif defined(SCHNAPS_HAVE_STDEXT_HASHMAP)
 	typedef stdext::hash_map<std::string, Core::AnyType::Handle, Core::HashString> VariablesMap;
 #else // No hash_map found

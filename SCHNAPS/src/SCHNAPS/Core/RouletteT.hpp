@@ -55,7 +55,7 @@ public:
 		if (this->empty() == false) {
 			inWeight += this->back().first;
 		}
-		push_back(std::make_pair(inWeight, inValue));
+		this->push_back(std::make_pair(inWeight, inValue));
 		schnaps_StackTraceEndM("void SCHNAPS::Core::RouletteT<T>::insert(const T&, double)");
 	}
 

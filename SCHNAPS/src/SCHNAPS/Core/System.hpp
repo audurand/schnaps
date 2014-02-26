@@ -33,7 +33,7 @@
 #include <hash_map>
 #include "SCHNAPS/Core/HashString.hpp"
 #elif defined(SCHNAPS_HAVE_GNUCXX_HASHMAP)
-#include <ext/hash_map>
+#include <tr1/unordered_map>
 #include "SCHNAPS/Core/HashString.hpp"
 #else
 #include <map>
@@ -57,7 +57,7 @@ namespace Core {
 #if defined(SCHNAPS_HAVE_STD_HASHMAP)
 	class System: public Object, public std::hash_map<std::string, Component::Handle, HashString>
 #elif defined(SCHNAPS_HAVE_GNUCXX_HASHMAP)
-	class System: public Object, public __gnu_cxx::hash_map<std::string, Component::Handle, HashString>
+	class System: public Object, public std::tr1::unordered_map<std::string, Component::Handle, HashString>
 #elif defined(SCHNAPS_HAVE_STDEXT_HASHMAP)
 	class System: public Object, public stdext::hash_map<std::string, Component::Handle, HashString>
 #else // no hash_map found

@@ -28,7 +28,7 @@
 #if defined(SCHNAPS_HAVE_STD_HASHMAP) | defined(SCHNAPS_HAVE_STDEXT_HASHMAP)
 #include <hash_map>
 #elif defined(SCHNAPS_HAVE_GNUCXX_HASHMAP)
-#include <ext/hash_map>
+#include <tr1/unordered_map>
 #else
 #include <map>
 #endif
@@ -49,7 +49,7 @@ protected:
 #if defined(SCHNAPS_HAVE_STD_HASHMAP)
 	typedef std::hash_map<std::string, StringArray, HashString> TypeMap;
 #elif defined(SCHNAPS_HAVE_GNUCXX_HASHMAP)
-	typedef __gnu_cxx::hash_map<std::string, StringArray, HashString> TypeMap;
+	typedef std::tr1::unordered_map<std::string, StringArray, HashString> TypeMap;
 #elif defined(SCHNAPS_HAVE_STDEXT_HASHMAP)
 	typedef stdext::hash_map<std::string, StringArray, HashString> TypeMap;
 #else // No hash_map found

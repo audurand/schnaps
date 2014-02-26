@@ -794,23 +794,24 @@ void Simulator::readRandomizerInfo(PACC::XML::ConstIterator inIter) {
 	mRandomizerInitSeed.resize(lThreadsSimulator, 0);
 	mRandomizerInitState.resize(lThreadsSimulator, "");
 
-	if ((inIter->getChildCount() != 0) && (inIter->getChildCount() < lThreadsSimulator)) {
-		throw schnaps_IOExceptionNodeM(*inIter, "expected at least a randomizer per thread!");
-	}
-
-	unsigned int lThreadNumber = 0;
-	for (PACC::XML::ConstIterator lChild = inIter->getFirstChild(); lThreadNumber<lThreadsSimulator; lChild++) {
-		if (lChild->getType() == PACC::XML::eData) {
-			if (lChild->getValue() != "Randomizer") {
-				std::ostringstream lOSS;
-				lOSS << "tag <Randomizer> expected, but ";
-				lOSS << "got tag <" << lChild->getValue() << "> instead!";
-				throw schnaps_IOExceptionNodeM(*lChild, lOSS.str());
-			}
-			mRandomizerInitSeed[lThreadNumber] = static_cast<unsigned long>(SCHNAPS::str2ulonglong(lChild->getAttribute("seed")));
-			mRandomizerInitState[lThreadNumber] = lChild->getAttribute("state");
-			lThreadNumber++;
-		}
+	if (inIter->getChildCount() > 0) {
+	    if (inIter->getChildCount() < lThreadsSimulator) {
+    		throw schnaps_IOExceptionNodeM(*inIter, "expected at least a randomizer per thread!");
+    	}
+    	PACC::XML::ConstIterator lChild = inIter->getFirstChild();
+	    for (unsigned int i = 0; i < lThreadsSimulator; i++) {
+		    if (lChild->getType() == PACC::XML::eData) {
+			    if (lChild->getValue() != "Randomizer") {
+				    std::ostringstream lOSS;
+				    lOSS << "tag <Randomizer> expected, but ";
+				    lOSS << "got tag <" << lChild->getValue() << "> instead!";
+				    throw schnaps_IOExceptionNodeM(*lChild, lOSS.str());
+			    }
+			    mRandomizerInitSeed[i] = static_cast<unsigned long>(SCHNAPS::str2ulonglong(lChild->getAttribute("seed")));
+			    mRandomizerInitState[i] = lChild->getAttribute("state");
+			    lChild++;
+		    }
+	    }
 	}
 
 	mRandomizerCurrentSeed = mRandomizerInitSeed;

@@ -32,10 +32,10 @@
 #if defined(SCHNAPS_HAVE_STD_HASHMAP) | defined(SCHNAPS_HAVE_STDEXT_HASHMAP)
 #include <hash_map>
 #elif defined(SCHNAPS_HAVE_GNUCXX_HASHMAP)
-#include <ext/hash_map>
-#endif
-
+#include <tr1/unordered_map>
+#else
 #include <map>
+#endif
 
 namespace SCHNAPS {
 namespace Simulation {
@@ -89,9 +89,9 @@ protected:
 	typedef std::hash_map<std::string, Scenario, Core::HashString> ScenarioMap;
 	typedef std::hash_map<std::string, Observer, Core::HashString> ObserverMap;
 #elif defined(SCHNAPS_HAVE_GNUCXX_HASHMAP)
-	typedef __gnu_cxx::hash_map<std::string, Process::Handle, Core::HashString> ProcessMap;
-	typedef __gnu_cxx::hash_map<std::string, Scenario, Core::HashString> ScenarioMap;
-	typedef __gnu_cxx::hash_map<std::string, Observer, Core::HashString> ObserverMap;
+	typedef std::tr1::unordered_map<std::string, Process::Handle, Core::HashString> ProcessMap;
+	typedef std::tr1::unordered_map<std::string, Scenario, Core::HashString> ScenarioMap;
+	typedef std::tr1::unordered_map<std::string, Observer, Core::HashString> ObserverMap;
 #elif defined(SCHNAPS_HAVE_STDEXT_HASHMAP)
 	typedef stdext::hash_map<std::string, Process::Handle, Core::HashString> ProcessMap;
 	typedef stdext::hash_map<std::string, Scenario, Core::HashString> ScenarioMap;

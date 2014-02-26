@@ -8,22 +8,22 @@
         <Plugin source="libmeds.so" xsdfile="XSD/Meds.xsd"/>
       </Plugins>
       <Parameters>
-        <Entry label="ref.Cout_IVG_Diagnostique">
+        <Entry label="Cout_IVG_Diagnostique">
           <Double value="1357.33"/>
         </Entry>
-        <Entry label="ref.Cout_Conseiller">
+        <Entry label="Cout_Conseiller">
           <Double value="73.90"/>
         </Entry>
-        <Entry label="ref.Consentement_Depistage">
+        <Entry label="Consentement_Depistage">
           <Double value="0.7"/>
         </Entry>
-        <Entry label="ref.Consentement_Diagnostique">
+        <Entry label="Consentement_Diagnostique">
           <Double value="0.9"/>
         </Entry>
-        <Entry label="ref.Cout_Diagnostique">
+        <Entry label="Cout_Diagnostique">
           <Double value="180.58"/>
         </Entry>
-        <Entry label="ref.Age_13_49_1ans">
+        <Entry label="Age_13_49_1ans">
           <Vector>
             <Int value="13"/>
             <Int value="14"/>
