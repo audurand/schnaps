@@ -1,0 +1,25 @@
+ <Process label="Scenario_Apprentissage">
+	 <LocalVariables/>
+	 <PrimitiveTree size="1">
+		 <Control_Sequential>
+		 <Learning_DecisionNode inLabel="Groupe_1">
+		  <Control_ProcessCall inLabel="TestA"/>
+		  <Control_ProcessCall inLabel="TestB"/>
+		  <Control_ProcessCall inLabel="TestC"/>
+		  <Control_ProcessCall inLabel="TestD"/>
+		  <Control_ProcessCall inLabel="Aucun"/>
+		 </Learning_DecisionNode>
+		 <Learning_DecisionNode inLabel="Groupe_2">
+		  <Control_ProcessCall inLabel="TestA"/>
+		  <Control_ProcessCall inLabel="TestB"/>
+		  <Control_ProcessCall inLabel="TestC"/>
+		  <Control_ProcessCall inLabel="TestD"/>
+		  <Control_ProcessCall inLabel="Aucun"/>
+		 </Learning_DecisionNode>
+		 <Learning_DecisionNode inLabel="Groupe_3">
+		  <Control_ProcessCall inLabel="TestE"/>
+		  <Control_ProcessCall inLabel="Aucun"/>
+		 </Learning_DecisionNode>
+		 </Control_Sequential>
+	 </PrimitiveTree>
+ </Process>

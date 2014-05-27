@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="CAROC_Initial">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+        <Control_Sequential>
+          <Data_Log inMessage="CAROC" inType="Test"/>
+          <Data_SetVariable inValue="true" outVariable="@Depistage" inValue_Type="Bool"/>
+          <Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="DXA" inCompliance="1" outCost="@Cout" inCost="107.50" inChargeNonCompliant="false">
+            <Control_Nothing/>
+            <Control_Nothing/>
+          </Meds_Treatment>
+          <Control_ChoiceIsEqual inChoices="$ref.DMO" inValue="@DMO">
+            <!--Application de traitement et prevention.-->
+            <Control_Sequential>
+              <Control_Branch inProbability="0.09">
+                <Control_IfThenElse>
+                  <Data_Value inValue="@Pratiquant"/>
+                  <Control_Nothing/>
+                  <Data_SetVariable inValue="true" outVariable="@Prevention" inValue_Type="Bool"/>
+                </Control_IfThenElse>
+                <Control_Nothing/>
+              </Control_Branch>
+              <Control_ProcessPush inDelay="5" inTarget="current" inLabel="CAROC_Ctrl"/>
+            </Control_Sequential>
+            <Control_Sequential>
+              <Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Radiographie_Colonne" inCompliance="1" outCost="@Cout" inCost="72.65" inChargeNonCompliant="false">
+                <Control_Nothing/>
+                <Control_Nothing/>
+              </Meds_Treatment>
+              <Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Examen_Laboratoire" inCompliance="1" outCost="@Cout" inCost="105.16" inChargeNonCompliant="false">
+                <Control_Nothing/>
+                <Control_Nothing/>
+              </Meds_Treatment>
+              <Control_Sequential>
+                <Control_Branch inProbability="0.294">
+                  <Control_IfThenElse>
+                    <Data_Value inValue="@Pratiquant"/>
+                    <Control_Nothing/>
+                    <Data_SetVariable inValue="true" outVariable="@Prevention" inValue_Type="Bool"/>
+                  </Control_IfThenElse>
+                  <Control_Nothing/>
+                </Control_Branch>
+                <Control_ProcessPush inDelay="5" inTarget="current" inLabel="CAROC_Ctrl"/>
+              </Control_Sequential>
+            </Control_Sequential>
+            <Control_Sequential>
+              <Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Radiographie_Colonne" inCompliance="1" outCost="@Cout" inCost="72.65" inChargeNonCompliant="false">
+                <Control_Nothing/>
+                <Control_Nothing/>
+              </Meds_Treatment>
+              <Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Examen_Laboratoire" inCompliance="1" outCost="@Cout" inCost="105.16" inChargeNonCompliant="false">
+                <Control_Nothing/>
+                <Control_Nothing/>
+              </Meds_Treatment>
+              <Control_ChoiceIsBetween inValue="@Age" inBounds="$ref.tranche_age_40_90_5ans">
+                <Control_Branch inProbability="0.009">
+                  <Control_Branch inProbability="0.756">
+                    <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                    <Control_Nothing/>
+                  </Control_Branch>
+                  <Control_Branch inProbability="0.756">
+                    <Control_IfThenElse>
+                      <Data_Value inValue="@Pratiquant"/>
+                      <Control_Nothing/>
+                      <Data_SetVariable inValue="true" outVariable="@Prevention" inValue_Type="Bool"/>
+                    </Control_IfThenElse>
+                    <Control_Nothing/>
+                  </Control_Branch>
+                </Control_Branch>
+                <Control_Branch inProbability="0.029">
+                  <Control_Branch inProbability="0.756">
+                    <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                    <Control_Nothing/>
+                  </Control_Branch>
+                  <Control_Branch inProbability="0.756">
+                    <Control_IfThenElse>
+                      <Data_Value inValue="@Pratiquant"/>
+                      <Control_Nothing/>
+                      <Data_SetVariable inValue="true" outVariable="@Prevention" inValue_Type="Bool"/>
+                    </Control_IfThenElse>
+                    <Control_Nothing/>
+                  </Control_Branch>
+                </Control_Branch>
+                <Control_Branch inProbability="0.029">
+                  <Control_Branch inProbability="0.756">
+                    <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                    <Control_Nothing/>
+                  </Control_Branch>
+                  <Control_Branch inProbability="0.756">
+                    <Control_IfThenElse>
+                      <Data_Value inValue="@Pratiquant"/>
+                      <Control_Nothing/>
+                      <Data_SetVariable inValue="true" outVariable="@Prevention" inValue_Type="Bool"/>
+                    </Control_IfThenElse>
+                    <Control_Nothing/>
+                  </Control_Branch>
+                </Control_Branch>
+                <Control_Branch inProbability="0.034">
+                  <Control_Branch inProbability="0.756">
+                    <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                    <Control_Nothing/>
+                  </Control_Branch>
+                  <Control_Branch inProbability="0.756">
+                    <Control_IfThenElse>
+                      <Data_Value inValue="@Pratiquant"/>
+                      <Control_Nothing/>
+                      <Data_SetVariable inValue="true" outVariable="@Prevention" inValue_Type="Bool"/>
+                    </Control_IfThenElse>
+                    <Control_Nothing/>
+                  </Control_Branch>
+                </Control_Branch>
+                <Control_Branch inProbability="0.084">
+                  <Control_Branch inProbability="0.756">
+                    <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                    <Control_Nothing/>
+                  </Control_Branch>
+                  <Control_Branch inProbability="0.756">
+                    <Control_IfThenElse>
+                      <Data_Value inValue="@Pratiquant"/>
+                      <Control_Nothing/>
+                      <Data_SetVariable inValue="true" outVariable="@Prevention" inValue_Type="Bool"/>
+                    </Control_IfThenElse>
+                    <Control_Nothing/>
+                  </Control_Branch>
+                </Control_Branch>
+                <Control_Branch inProbability="0.175">
+                  <Control_Branch inProbability="0.756">
+                    <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                    <Control_Nothing/>
+                  </Control_Branch>
+                  <Control_Branch inProbability="0.756">
+                    <Control_IfThenElse>
+                      <Data_Value inValue="@Pratiquant"/>
+                      <Control_Nothing/>
+                      <Data_SetVariable inValue="true" outVariable="@Prevention" inValue_Type="Bool"/>
+                    </Control_IfThenElse>
+                    <Control_Nothing/>
+                  </Control_Branch>
+                </Control_Branch>
+                <Control_Branch inProbability="0.314">
+                  <Control_Branch inProbability="0.756">
+                    <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                    <Control_Nothing/>
+                  </Control_Branch>
+                  <Control_Branch inProbability="0.756">
+                    <Control_IfThenElse>
+                      <Data_Value inValue="@Pratiquant"/>
+                      <Control_Nothing/>
+                      <Data_SetVariable inValue="true" outVariable="@Prevention" inValue_Type="Bool"/>
+                    </Control_IfThenElse>
+                    <Control_Nothing/>
+                  </Control_Branch>
+                </Control_Branch>
+                <Control_Branch inProbability="0.572">
+                  <Control_Branch inProbability="0.756">
+                    <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                    <Control_Nothing/>
+                  </Control_Branch>
+                  <Control_Branch inProbability="0.756">
+                    <Control_IfThenElse>
+                      <Data_Value inValue="@Pratiquant"/>
+                      <Control_Nothing/>
+                      <Data_SetVariable inValue="true" outVariable="@Prevention" inValue_Type="Bool"/>
+                    </Control_IfThenElse>
+                    <Control_Nothing/>
+                  </Control_Branch>
+                </Control_Branch>
+                <Control_Branch inProbability="0.756">
+                  <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                  <Control_Nothing/>
+                </Control_Branch>
+                <Control_Branch inProbability="0.756">
+                  <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                  <Control_Nothing/>
+                </Control_Branch>
+                <Control_Branch inProbability="0.756">
+                  <Data_SetVariable inValue="true" outVariable="@Traitement" inValue_Type="Bool"/>
+                  <Control_Nothing/>
+                </Control_Branch>
+              </Control_ChoiceIsBetween>
+              <Control_ProcessPush inDelay="2" inTarget="current" inLabel="CAROC_Ctrl"/>
+            </Control_Sequential>
+          </Control_ChoiceIsEqual>
+        </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

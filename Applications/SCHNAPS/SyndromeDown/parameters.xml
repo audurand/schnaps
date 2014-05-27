@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Simulator version="0.1">
+    <System>
+      <Plugins>
+        <Plugin source="libcontrol.so" xsdfile="XSD/Control.xsd"/>
+        <Plugin source="libdata.so" xsdfile="XSD/Data.xsd"/>
+        <Plugin source="liboperators.so" xsdfile="XSD/Operators.xsd"/>
+        <Plugin source="libmeds.so" xsdfile="XSD/Meds.xsd"/>
+      </Plugins>
+      <Parameters>
+        <Entry label="Cout_IVG_Diagnostique">
+          <Double value="1357.33"/>
+        </Entry>
+        <Entry label="Cout_Conseiller">
+          <Double value="73.90"/>
+        </Entry>
+        <Entry label="Consentement_Depistage">
+          <Double value="0.7"/>
+        </Entry>
+        <Entry label="Consentement_Diagnostique">
+          <Double value="0.9"/>
+        </Entry>
+        <Entry label="Cout_Diagnostique">
+          <Double value="180.58"/>
+        </Entry>
+        <Entry label="Age_13_49_1ans">
+          <Vector>
+            <Int value="13"/>
+            <Int value="14"/>
+            <Int value="15"/>
+            <Int value="16"/>
+            <Int value="17"/>
+            <Int value="18"/>
+            <Int value="19"/>
+            <Int value="20"/>
+            <Int value="21"/>
+            <Int value="22"/>
+            <Int value="23"/>
+            <Int value="24"/>
+            <Int value="25"/>
+            <Int value="26"/>
+            <Int value="27"/>
+            <Int value="28"/>
+            <Int value="29"/>
+            <Int value="30"/>
+            <Int value="31"/>
+            <Int value="32"/>
+            <Int value="33"/>
+            <Int value="34"/>
+            <Int value="35"/>
+            <Int value="36"/>
+            <Int value="37"/>
+            <Int value="38"/>
+            <Int value="39"/>
+            <Int value="40"/>
+            <Int value="41"/>
+            <Int value="42"/>
+            <Int value="43"/>
+            <Int value="44"/>
+            <Int value="45"/>
+            <Int value="46"/>
+            <Int value="47"/>
+            <Int value="48"/>
+            <Int value="49"/>
+          </Vector>
+        </Entry>
+      </Parameters>
+    </System>
+    <Input>
+      <Environment file="Environment/Environment.xml"/>
+      <PopulationManager>
+        <Generator>
+          <RandomizerInfo/>
+          <Profiles>
+            <GenProfile label="FemmesEnceintes_2001">
+              <Demography file="Populations/FemmesEnceintes_2001.xml"/>
+              <AcceptFunction>
+                <PrimitiveTree>
+                  <Data_Value inValue="true" inValue_Type="Bool"/>
+                </PrimitiveTree>
+              </AcceptFunction>
+              <IndividualModel>
+                <Variable label="Age"/>
+                <Variable label="IVG_T2"/>
+                <Variable label="IVG_T1"/>
+                <Variable label="Mortinaissance"/>
+                <Variable label="PF_T1"/>
+                <Variable label="PF_T2"/>
+                <Variable label="SD"/>
+              </IndividualModel>
+              <SimulationVariables file="Populations/SimulationVariables.xml"/>
+            </GenProfile>
+          </Profiles>
+        </Generator>
+        <Population>
+          <SubPopulation profile="FemmesEnceintes_2001" size="100000" time="0"/>
+        </Population>
+      </PopulationManager>
+    </Input>
+    <Simulation>
+      <RandomizerInfo/>
+      <Clock units="year">
+        <PrimitiveTree>
+          <Operators_IsEqualComplex>
+            <Data_Clock/>
+            <Data_Value inValue="1" inValue_Type="ULong"/>
+          </Operators_IsEqualComplex>
+        </PrimitiveTree>
+      </Clock>
+      <Processes>
+        <Process file="Processes/Ajouter_Amnio.xml" label="Ajouter_Amnio"/>
+        <Process file="Processes/Ajouter_CVS.xml" label="Ajouter_CVS"/>
+        <Process file="Processes/Ajouter_PF_Diagnostique.xml" label="Ajouter_PF_Diagnostique"/>
+        <Process file="Processes/Ajouter_IVG_Diagnostique.xml" label="Ajouter_IVG_Diagnostique"/>
+        <Process file="Processes/Evenements_Trimestre_1.xml" label="Evenements_Trimestre_1"/>
+        <Process file="Processes/Evenements_Trimestre_2.xml" label="Evenements_Trimestre_2"/>
+        <Process file="Processes/Visite_Conseiller.xml" label="Visite_Conseiller"/>
+        <Process file="Processes/Combined.xml" label="Combined"/>
+        <Process file="Processes/Contingent.xml" label="Contingent"/>
+        <Process file="Processes/Quad.xml" label="Quad"/>
+        <Process file="Processes/Sequential.xml" label="Sequential"/>
+      </Processes>
+      <Scenarios>
+        <Scenario processIndividual="Combined" label="Combined"/>
+        <Scenario processIndividual="Contingent" label="Contingent"/>
+        <Scenario processIndividual="Quad" label="Quad"/>
+        <Scenario processIndividual="Sequential" label="Sequential"/>
+      </Scenarios>
+      <ClockObservers/>
+    </Simulation>
+    <Output>
+      <Environment>
+        <Variable label="Total_CVS"/>
+        <Variable label="Total_Amnio"/>
+        <Variable label="PF_Diagnostique"/>
+        <Variable label="IVG_Diagnostique"/>
+      </Environment>
+      <Population>
+        <SubPopulation profile="FemmesEnceintes_2001">
+          <Variable label="Mortinaissance"/>
+          <Variable label="Cout"/>
+        </SubPopulation>
+      </Population>
+    </Output>
+  </Simulator>

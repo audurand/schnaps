@@ -1,0 +1,27 @@
+/* Compiler constants
+//
+//
+// Auto defined by CMake
+*/
+
+#ifndef config_hpp
+#define config_hpp
+
+#cmakedefine SCHNAPS_IS_UNIX
+#cmakedefine SCHNAPS_IS_WINDOWS
+
+#cmakedefine SCHNAPS_FULL_DEBUG
+#cmakedefine SCHNAPS_NDEBUG
+
+#cmakedefine SCHNAPS_HAVE_DEV_URANDOM
+
+#cmakedefine SCHNAPS_HAVE_DYNAMIC_CAST
+
+#cmakedefine SCHNAPS_HAVE_GNUCXX_HASHMAP
+#cmakedefine SCHNAPS_HAVE_STD_HASHMAP
+#cmakedefine SCHNAPS_HAVE_STDEXT_HASHMAP
+
+#cmakedefine SCHNAPS_HAVE_NUMERIC_LIMITS
+
+#cmakedefine SCHNAPS_HAVE_RTTI
+#endif // config_hpp

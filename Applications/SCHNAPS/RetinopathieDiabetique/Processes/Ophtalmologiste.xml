@@ -1,0 +1,76 @@
+ <Process label="Ophtalmologiste">
+  <LocalVariables/>
+  <PrimitiveTree size="1">
+   <Control_Sequential>
+    <!--Gold standard chez l'ophtalmologiste-->
+    <Control_IfThenElse>
+     <!--Compter le cout et le passage au depistage seulement quand le systeme est stable.-->
+     <Operators_IsGreaterComplex>
+      <Data_Clock/>
+      <Data_Value inValue_Type="ULong" inValue="11"/>
+     </Operators_IsGreaterComplex>
+     <Control_Sequential>
+      <Operators_AddVariable inArgRight="$ref.GoldStandard_Cout" inArgLeft="@Cout" outResult="@Cout"/>
+      <Control_ProcessPush inTarget="environment" inLabel="Ajouter_Ophtalmologiste" inUnits="month" inDelay="0"/>
+     </Control_Sequential>
+     <Control_Nothing/>
+    </Control_IfThenElse>
+    <Control_IfThenElse>
+		 <!--Detection PDR un oeil-->
+		 <Operators_IsEqual inArgRight_Type="String" inArgRight="PDR" inArgLeft="@BDR"/>
+		 <Control_Branch inProbability="$ref.GoldStandard_Sensibilite">
+			 <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_PDR"/>
+			 <Data_SetVariable inValue_Type="Bool" inValue="false" outVariable="@Resultat_GoldStandard_PDR"/>
+		 </Control_Branch>
+		<Control_Branch inProbability="$ref.GoldStandard_Specificite">
+			<Data_SetVariable inValue_Type="Bool" inValue="false" outVariable="@Resultat_GoldStandard_PDR"/>
+			<Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_PDR"/>
+		</Control_Branch>
+	</Control_IfThenElse>
+	<Control_IfThenElse>
+		<Data_Value inValue="@Deux_Yeux_BDR"/>
+		<Control_IfThenElse>
+			 <!--Detection PDR l'autre oeil-->
+			 <Operators_IsEqual inArgRight_Type="String" inArgRight="PDR" inArgLeft="@BDR"/>
+			 <Control_Branch inProbability="$ref.GoldStandard_Sensibilite">
+				 <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_PDR"/>
+				 <Control_Nothing/>
+			 </Control_Branch>
+			<Control_Branch inProbability="$ref.GoldStandard_Specificite">
+				<Control_Nothing/>
+				<Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_PDR"/>
+			</Control_Branch>
+		</Control_IfThenElse>
+		<Control_Nothing/>
+	</Control_IfThenElse>
+    <Control_IfThenElse>
+		 <!--Detection CSMO un oeil-->
+		 <Operators_IsEqual inArgRight_Type="String" inArgRight="CSMO" inArgLeft="@DMO"/>
+		 <Control_Branch inProbability="$ref.GoldStandard_Sensibilite">
+			<Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_CSMO"/>
+			<Data_SetVariable inValue_Type="Bool" inValue="false" outVariable="@Resultat_GoldStandard_CSMO"/>
+		 </Control_Branch>
+		<Control_Branch inProbability="$ref.GoldStandard_Specificite">
+			<Data_SetVariable inValue_Type="Bool" inValue="false" outVariable="@Resultat_GoldStandard_CSMO"/>
+			<Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_CSMO"/>
+		</Control_Branch>
+	</Control_IfThenElse>
+	<Control_IfThenElse>
+		<Data_Value inValue="@Deux_Yeux_DMO"/>
+		<Control_IfThenElse>
+			 <!--Detection CSMO l'autre oeil-->
+			 <Operators_IsEqual inArgRight_Type="String" inArgRight="CSMO" inArgLeft="@DMO"/>
+			 <Control_Branch inProbability="$ref.GoldStandard_Sensibilite">
+				 <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_CSMO"/>
+				 <Control_Nothing/>
+			 </Control_Branch>
+			<Control_Branch inProbability="$ref.GoldStandard_Specificite">
+				<Control_Nothing/>
+				<Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Resultat_GoldStandard_CSMO"/>
+			</Control_Branch>
+		</Control_IfThenElse>
+		<Control_Nothing/>
+	</Control_IfThenElse>
+   </Control_Sequential>
+  </PrimitiveTree>
+ </Process>

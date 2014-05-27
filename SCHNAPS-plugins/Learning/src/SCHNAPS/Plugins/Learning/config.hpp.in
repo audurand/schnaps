@@ -1,0 +1,11 @@
+/* Compiler constants
+//
+//
+// Auto defined by CMake
+*/
+
+#ifndef config_hpp
+#define config_hpp
+
+#cmakedefine PARALLEL_UPDATE
+#endif // config_hpp

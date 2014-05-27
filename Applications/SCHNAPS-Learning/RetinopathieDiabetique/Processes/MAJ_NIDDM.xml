@@ -1,0 +1,166 @@
+ <Process label="MAJ_NIDDM">
+  <LocalVariables/>
+  <PrimitiveTree size="1">
+   <Control_IfThenElse>
+    <Data_Value inValue="@NIDDM"/>
+    <Control_ProcessCall inLabel="MAJ_Retinopathie"/>
+    <Control_Sequential>
+     <Control_ChoiceIsEqual inChoices="$ref.Ethnie" inValue="@Ethnie">
+      <Control_ChoiceIsEqual inChoices="$ref.Genre" inValue="@Genre">
+       <Control_ChoiceIsBetween inBounds="$ref.Age_10ans" inValue="@Age">
+        <Control_Nothing/>
+        <Control_Nothing/>
+        <Control_Branch inProbability="0.0002">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0005">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0014">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0022">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0031">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0034">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0037">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0037">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+       </Control_ChoiceIsBetween>
+       <Control_ChoiceIsBetween inBounds="$ref.Age_10ans" inValue="@Age">
+        <Control_Nothing/>
+        <Control_Nothing/>
+        <Control_Branch inProbability="0.0002">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0003">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0010">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0020">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0029">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0032">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0034">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0034">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+       </Control_ChoiceIsBetween>
+      </Control_ChoiceIsEqual>
+      <Control_ChoiceIsEqual inChoices="$ref.Genre" inValue="@Genre">
+       <Control_ChoiceIsBetween inBounds="$ref.Age_10ans" inValue="@Age">
+        <Control_Nothing/>
+        <Control_Nothing/>
+        <Control_Branch inProbability="0.0007">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0031">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0054">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0077">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0088">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0095">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0102">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0102">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+       </Control_ChoiceIsBetween>
+       <Control_ChoiceIsBetween inBounds="$ref.Age_10ans" inValue="@Age">
+        <Control_Nothing/>
+        <Control_Nothing/>
+        <Control_Branch inProbability="0.0005">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0020">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0051">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0065">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0085">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0092">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0099">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+        <Control_Branch inProbability="0.0099">
+         <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@NIDDM"/>
+         <Control_Nothing/>
+        </Control_Branch>
+       </Control_ChoiceIsBetween>
+      </Control_ChoiceIsEqual>
+     </Control_ChoiceIsEqual>
+     <Control_IfThenElse>
+      <Data_Value inValue="@NIDDM"/>
+      <Control_ProcessCall inLabel="MAJ_Retinopathie"/>
+      <Control_Nothing/>
+     </Control_IfThenElse>
+    </Control_Sequential>
+   </Control_IfThenElse>
+  </PrimitiveTree>
+ </Process>

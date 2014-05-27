@@ -1,0 +1,61 @@
+  <Process label="Traitement_CSMO">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Control_IfThenElse>
+          <!--Comptabiliser les couts seulement quand le systeme est stable.-->
+          <Operators_IsGreaterComplex>
+            <Data_Clock/>
+            <Data_Value inValue_Type="ULong" inValue="11"/>
+          </Operators_IsGreaterComplex>
+          <Control_Sequential>
+            <Operators_AddVariable inArgLeft="@Cout" inArgRight="$ref.Traitement_CSMO_Cout" inArgRight_Type="Double" outResult="@Cout"/>
+            <Control_ProcessPush inTarget="environment" inLabel="Ajouter_Traitement_CSMO" inUnits="month" inDelay="0"/>
+            <Control_ProcessPush inTarget="environment" inDelay="0" inUnits="month" inLabel="Ajouter_Ophtalmologiste"/>
+			<Control_IfThenElse>
+				<Data_Value inValue="@Deux_Yeux_DMO"/>
+				<Control_Sequential>
+					<Operators_AddVariable inArgLeft="@Cout" inArgRight="$ref.Traitement_CSMO_Cout" inArgRight_Type="Double" outResult="@Cout"/>
+					<Control_ProcessPush inTarget="environment" inLabel="Ajouter_Traitement_CSMO" inUnits="month" inDelay="0"/>
+				</Control_Sequential>
+				<Control_Nothing/>
+			</Control_IfThenElse>
+          </Control_Sequential>
+          <Control_Nothing/>
+        </Control_IfThenElse>
+        <Data_SetVariable inValue_Type="Bool" inValue="true" outVariable="@Traitement_CSMO"/>
+        <Control_Branch inProbability="$ref.Traitement_CSMO_Efficacite">
+          <Data_Value inValue_Type="Bool" inValue="true"/>
+          <Control_Branch inProbability="0.5">
+            <Data_Value inValue_Type="Bool" inValue="false"/>
+            <Control_Sequential>
+              <Control_IfThenElse>
+                <!--Comptabiliser les couts seulement quand le systeme est stable.-->
+                <Operators_IsGreaterComplex>
+                  <Data_Clock/>
+                  <Data_Value inValue_Type="ULong" inValue="11"/>
+                </Operators_IsGreaterComplex>
+                <Control_Sequential>
+					<Operators_AddVariable inArgLeft="@Cout" inArgRight="$ref.Traitement_CSMO_Cout" inArgRight_Type="Double" outResult="@Cout"/>
+					<Control_ProcessPush inTarget="environment" inLabel="Ajouter_Traitement_CSMO" inUnits="month" inDelay="0"/>
+					<Control_IfThenElse>
+						<Data_Value inValue="@Deux_Yeux_DMO"/>
+						<Control_Sequential>
+							<Operators_AddVariable inArgLeft="@Cout" inArgRight="$ref.Traitement_CSMO_Cout" inArgRight_Type="Double" outResult="@Cout"/>
+							<Control_ProcessPush inTarget="environment" inLabel="Ajouter_Traitement_CSMO" inUnits="month" inDelay="0"/>
+						</Control_Sequential>
+						<Control_Nothing/>
+					</Control_IfThenElse>
+                </Control_Sequential>
+                <Control_Nothing/>
+              </Control_IfThenElse>
+              <Control_Branch inProbability="$ref.Traitement_CSMO_Efficacite">
+                <Data_Value inValue_Type="Bool" inValue="true"/>
+                <Data_Value inValue_Type="Bool" inValue="false"/>
+              </Control_Branch>
+            </Control_Sequential>
+          </Control_Branch>
+        </Control_Branch>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

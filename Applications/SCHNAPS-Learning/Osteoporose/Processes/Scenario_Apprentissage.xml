@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="Scenario_Apprentissage">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Control_ProcessCall inLabel="Campagne_Prevention_ActPhys"/>
+        <Control_ProcessCall inLabel="Apprentissage"/>
+        <Control_ProcessCall inLabel="Evenements"/>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

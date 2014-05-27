@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="Combined">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_IfThenElse>
+        <Control_ProcessCall inLabel="Evenements_Trimestre_1"/>
+        <Control_Nothing/>
+        <Meds_Test inSpecificity="0.916" inDiscountRate="0" inState="@SD" inLabel="Combined" inCompliance="$Consentement_Depistage" inSensitivity="0.9" outCost="@Cout" inCost="40.00">
+          <Control_Sequential>
+            <Control_ProcessCall inLabel="Visite_Conseiller"/>
+            <Meds_Test inSpecificity="1.0" inDiscountRate="0" inState="@SD" inLabel="CVS_QF-PCR" inCompliance="$Consentement_Diagnostique" inSensitivity="0.993" outCost="@Cout" inCost="$Cout_Diagnostique">
+              <Control_Sequential>
+                <Control_ProcessPush inDelay="0" inTarget="environment" inLabel="Ajouter_CVS"/>
+                <Meds_Event inLabel="PF_CVS" inProbability="@Probabilite_PF_CVS">
+                  <Control_ProcessPush inDelay="0" inTarget="environment" inLabel="Ajouter_PF_Diagnostique"/>
+                  <Meds_Event inLabel="IVG_D" inProbability="@Probabilite_IVG_D">
+                    <Control_Sequential>
+                      <Operators_AddVariable inArgRight="$Cout_IVG_Diagnostique" inArgLeft="@Cout" outResult="@Cout"/>
+                      <Control_ProcessPush inDelay="0" inTarget="environment" inLabel="Ajouter_IVG_Diagnostique"/>
+                    </Control_Sequential>
+                    <Control_Nothing/>
+                  </Meds_Event>
+                </Meds_Event>
+              </Control_Sequential>
+              <Control_Sequential>
+                <Control_ProcessPush inDelay="0" inTarget="environment" inLabel="Ajouter_CVS"/>
+                <Meds_Event inLabel="PF_CVS" inProbability="@Probabilite_PF_CVS">
+                  <Control_ProcessPush inDelay="0" inTarget="environment" inLabel="Ajouter_PF_Diagnostique"/>
+                  <Control_Nothing/>
+                </Meds_Event>
+              </Control_Sequential>
+              <Control_Nothing/>
+            </Meds_Test>
+          </Control_Sequential>
+          <Control_Nothing/>
+          <Control_Nothing/>
+        </Meds_Test>
+      </Control_IfThenElse>
+    </PrimitiveTree>
+  </Process>

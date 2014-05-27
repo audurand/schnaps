@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="Apprentissage">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+	  <Control_IfThenElse>
+		<Operators_OrComplex>
+		  <Data_Value inValue="@Depistage"/>
+		  <Data_Value inValue="@Traitement"/>
+		</Operators_OrComplex>
+		<Control_Nothing/>
+		<Control_IfThenElse>
+			<Data_Value inValue="@Compliant"/>
+			<Control_Sequential>
+			  <Learning_DecisionNode inLabel="Methode_Depistage">
+				<!--Apprentissage depistage-->
+			    <Data_SetVariable inValue="true" outVariable="@Prevention" inValue_Type="Bool">
+				  <!--Aucune-->
+			    </Data_SetVariable>
+				<Control_Sequential>
+				  <!--CAROC-->
+				  <Data_SetVariable inValue="CAROC" outVariable="@Methode_Depistage" inValue_Type="String"/>
+				  <Control_IfThenElse>
+					<Operators_IsLess inArgRight="70" inArgRight_Type="Int" inArgLeft="@Age"/>
+					<Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Visite_Medicale" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="99.53">
+					  <Control_Nothing/>
+					  <Control_Nothing/>
+					</Meds_Treatment>
+					<Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Visite_Medicale" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="102.78">
+					  <Control_Nothing/>
+					  <Control_Nothing/>
+					</Meds_Treatment>
+				  </Control_IfThenElse>
+				  <Control_ProcessCall inLabel="CAROC_Initial"/>
+				</Control_Sequential>
+				<Control_Sequential>
+				  <!--ORAI+CAROC-->
+				  <Data_SetVariable inValue="ORAI+CAROC" outVariable="@Methode_Depistage" inValue_Type="String"/>
+				  <Control_IfThenElse>
+					<Operators_IsLess inArgRight="70" inArgRight_Type="Int" inArgLeft="@Age"/>
+					<Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Visite_Medicale" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="99.53">
+					  <Control_Nothing/>
+					  <Control_Nothing/>
+					</Meds_Treatment>
+					<Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Visite_Medicale" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="102.78">
+					  <Control_Nothing/>
+					  <Control_Nothing/>
+					</Meds_Treatment>
+				  </Control_IfThenElse>
+				  <Control_ProcessCall inLabel="ORAI"/>
+				</Control_Sequential>
+				<Control_Sequential>
+				  <!--OST+CAROC-->
+				  <Data_SetVariable inValue="OST+CAROC" outVariable="@Methode_Depistage" inValue_Type="String"/>
+				  <Control_IfThenElse>
+					<Operators_IsLess inArgRight="70" inArgRight_Type="Int" inArgLeft="@Age"/>
+					<Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Visite_Medicale" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="99.53">
+					  <Control_Nothing/>
+					  <Control_Nothing/>
+					</Meds_Treatment>
+					<Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Visite_Medicale" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="102.78">
+					  <Control_Nothing/>
+					  <Control_Nothing/>
+					</Meds_Treatment>
+				  </Control_IfThenElse>
+				  <Control_ProcessCall inLabel="OST"/>
+				</Control_Sequential>
+				<Control_Sequential>
+				  <!--SCORE+CAROC-->
+				  <Data_SetVariable inValue="SCORE+CAROC" outVariable="@Methode_Depistage" inValue_Type="String"/>
+				  <Control_IfThenElse>
+					<Operators_IsLess inArgRight="70" inArgRight_Type="Int" inArgLeft="@Age"/>
+					<Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Visite_Medicale" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="99.53">
+					  <Control_Nothing/>
+					  <Control_Nothing/>
+					</Meds_Treatment>
+					<Meds_Treatment inDiscountRate="$ref.taux_actualisation" inLabel="Visite_Medicale" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="102.78">
+					  <Control_Nothing/>
+					  <Control_Nothing/>
+					</Meds_Treatment>
+				  </Control_IfThenElse>
+				  <Control_ProcessCall inLabel="SCORE"/>
+				</Control_Sequential>
+			  </Learning_DecisionNode>
+			  <Control_IfThenElse>
+				<!--Apprentissage prevention-->
+				<Data_Value inValue="@Prevention"/>
+				<Learning_DecisionNode inLabel="Methode_Prevention">
+				  <Data_SetVariable inValue="false" outVariable="@Prevention" inValue_Type="Bool">
+					<!--Aucune-->
+				  </Data_SetVariable>
+				  <Control_Sequential>
+					<!--ActPhys-->
+					<Data_SetVariable inValue="ActPhys" outVariable="@Methode_Prevention" inValue_Type="String"/>
+					<Control_IfThenElse>
+					  <Data_Value inValue="@ActPhys_Pratiquant"/>
+					  <Data_SetVariable inValue="true" outVariable="@Pratiquant" inValue_Type="Bool"/>
+					  <Control_Nothing/>
+					</Control_IfThenElse>
+				  </Control_Sequential>
+				  <Control_Sequential>
+					<!--VitDCalcium-->
+					<Data_SetVariable inValue="VitDCalcium" outVariable="@Methode_Prevention" inValue_Type="String"/>
+					<Control_IfThenElse>
+					  <Data_Value inValue="@VitDCalcium_Pratiquant"/>
+					  <Data_SetVariable inValue="true" outVariable="@Pratiquant" inValue_Type="Bool"/>
+					  <Control_Nothing/>
+					</Control_IfThenElse>
+				  </Control_Sequential>
+				  <Control_Sequential>
+					<Data_SetVariable inValue="ActPhys+VitDCalcium" outVariable="@Methode_Prevention" inValue_Type="String"/>
+					<!--ActPhys+VitDCalcium-->
+					<Control_IfThenElse>
+					  <Data_Value inValue="@ActPhys+VitDCalcium_Pratiquant"/>
+					  <Data_SetVariable inValue="true" outVariable="@Pratiquant" inValue_Type="Bool"/>
+					  <Control_Nothing/>
+					</Control_IfThenElse>
+				  </Control_Sequential>
+				</Learning_DecisionNode>
+				<Control_Nothing/>
+			  </Control_IfThenElse>
+			  <Control_ProcessPush inLabel="Apprentissage" inTarget="current" inDelay="10" inUnits="year"/>
+			</Control_Sequential>
+			<Control_Nothing/>
+		</Control_IfThenElse>
+	  </Control_IfThenElse>
+    </PrimitiveTree>
+  </Process>

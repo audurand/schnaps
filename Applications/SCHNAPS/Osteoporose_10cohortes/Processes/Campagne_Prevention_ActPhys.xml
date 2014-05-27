@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="Campagne_Prevention_ActPhys">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Meds_PreventionCampaign inDiscountRate="$ref.taux_actualisation" outCost="@Cout" inCost="$ref.cout_campagne_ActPhys"/>
+        <Control_ProcessPush inDelay="1" inTarget="current" inLabel="Campagne_Prevention_ActPhys"/>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>
