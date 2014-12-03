@@ -1,7 +1,7 @@
 +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 SCHNAPS: SynCHroNous Agent- and Population-based Simulator
 
-Copyright (C) 2009-2011
+Copyright (C) 2009-2014
 by Audrey Durand <audrey.durand.gif@gmail.com> and other contributors:
    Christian Gagne
    Mathieu Gagnon
