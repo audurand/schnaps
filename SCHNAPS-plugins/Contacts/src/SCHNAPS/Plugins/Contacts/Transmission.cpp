@@ -237,15 +237,12 @@ void Transmission::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) 
 Core::AnyType::Handle Transmission::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
-
-	
-	
+    
 	double lProbability;
 	unsigned int lIndividual;
 	
 	Core::Vector::Handle lContacts;
 
-	
 	switch (mContacts_Ref[0]) {
 		case '@':
 			// individual variable value

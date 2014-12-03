@@ -240,52 +240,52 @@ void PreventionCampaign::writeContent(PACC::XML::Streamer& ioStreamer, bool inIn
  */
 Core::AnyType::Handle PreventionCampaign::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
-		Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
-		double lTime = lContext.getClock().getValue();
-		double lCost, lCurrentCost, lDiscountRate;
+	Simulation::SimulationContext& lContext = Core::castObjectT<Simulation::SimulationContext&>(ioContext);
+	double lTime = lContext.getClock().getValue();
+	double lCost, lCurrentCost, lDiscountRate;
 
-		switch (mCost_Ref[0]) {
-			case '@':
-				// individual variable value
-				lCost = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mCost_Ref.substr(1))).getValue();
-				break;
-			case '#':
-				// environment variable value
-				lCost = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mCost_Ref.substr(1))).getValue();
-				break;
-			case '%':
-				// local variable value
-				lCost = Core::castObjectT<const Core::Double&>(lContext.getLocalVariable(mCost_Ref.substr(1))).getValue();
-				break;
-			default:
-				// parameter value or direct value
-				lCost = mCost->getValue();
-				break;
-		}
+	switch (mCost_Ref[0]) {
+		case '@':
+			// individual variable value
+			lCost = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mCost_Ref.substr(1))).getValue();
+			break;
+		case '#':
+			// environment variable value
+			lCost = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mCost_Ref.substr(1))).getValue();
+			break;
+		case '%':
+			// local variable value
+			lCost = Core::castObjectT<const Core::Double&>(lContext.getLocalVariable(mCost_Ref.substr(1))).getValue();
+			break;
+		default:
+			// parameter value or direct value
+			lCost = mCost->getValue();
+			break;
+	}
 
-		switch (mDiscountRate_Ref[0]) {
-			case '@':
-				// individual variable value
-				lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mDiscountRate_Ref.substr(1))).getValue();
-				break;
-			case '#':
-				// environment variable value
-				lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mDiscountRate_Ref.substr(1))).getValue();
-				break;
-			case '%':
-				// local variable value
-				lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getLocalVariable(mDiscountRate_Ref.substr(1))).getValue();
-				break;
-			default:
-				// parameter value or direct value
-				lDiscountRate = mDiscountRate->getValue();
-				break;
-		}
-		
-		lCost = lCost/std::pow(lDiscountRate + 1, lTime);
-		lCurrentCost = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mOutCost_Ref.substr(1))).getValue();
-		lContext.getIndividual().getState().setVariable(mOutCost_Ref.substr(1), new Core::Double(lCurrentCost + lCost));
-		return NULL;
+	switch (mDiscountRate_Ref[0]) {
+		case '@':
+			// individual variable value
+			lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mDiscountRate_Ref.substr(1))).getValue();
+			break;
+		case '#':
+			// environment variable value
+			lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getEnvironment().getState().getVariable(mDiscountRate_Ref.substr(1))).getValue();
+			break;
+		case '%':
+			// local variable value
+			lDiscountRate = Core::castObjectT<const Core::Double&>(lContext.getLocalVariable(mDiscountRate_Ref.substr(1))).getValue();
+			break;
+		default:
+			// parameter value or direct value
+			lDiscountRate = mDiscountRate->getValue();
+			break;
+	}
+	
+	lCost = lCost/std::pow(lDiscountRate + 1, lTime);
+	lCurrentCost = Core::castObjectT<const Core::Double&>(lContext.getIndividual().getState().getVariable(mOutCost_Ref.substr(1))).getValue();
+	lContext.getIndividual().getState().setVariable(mOutCost_Ref.substr(1), new Core::Double(lCurrentCost + lCost));
+	return NULL;
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Meds::PreventionCampaign::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
 }
 

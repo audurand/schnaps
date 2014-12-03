@@ -2,7 +2,7 @@
  * IsLessOrEqual.cpp
  *
  * SCHNAPS
- * Copyright (C) 2009-2011 by Audrey Durand
+ * Copyright (C) 2009-2014 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -243,19 +243,20 @@ void IsLessOrEqual::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent)
 Core::AnyType::Handle IsLessOrEqual::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	Core::Number::Handle lArgLeft, lArgRight;
+	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
 	
 	switch (mArgLeft_Ref[0]) {
 		case '@':
 			// individual variable value
-			lArgLeft = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getIndividual().getState().getVariableHandle(mArgLeft_Ref.substr(1)));
+			lArgLeft = Core::castHandleT<Core::Number>(lContext.getIndividual().getState().getVariableHandle(mArgLeft_Ref.substr(1)));
 			break;
 		case '#':
 			// environment variable value
-			lArgLeft = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getEnvironment().getState().getVariableHandle(mArgLeft_Ref.substr(1))->clone());
+			lArgLeft = Core::castHandleT<Core::Number>(lContext.getEnvironment().getState().getVariableHandle(mArgLeft_Ref.substr(1))->clone());
 			break;
 		case '%':
 			// local variable value
-			lArgLeft = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::SimulationContext&>(ioContext).getLocalVariableHandle(mArgLeft_Ref.substr(1)));
+			lArgLeft = Core::castHandleT<Core::Number>(lContext.getLocalVariableHandle(mArgLeft_Ref.substr(1)));
 			break;
 		case '$':
 			// parameter value
@@ -270,15 +271,15 @@ Core::AnyType::Handle IsLessOrEqual::execute(unsigned int inIndex, Core::Executi
 	switch (mArgRight_Ref[0]) {
 		case '@':
 			// individual variable value
-			lArgRight = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getIndividual().getState().getVariableHandle(mArgRight_Ref.substr(1)));
+			lArgRight = Core::castHandleT<Core::Number>(lContext.getIndividual().getState().getVariableHandle(mArgRight_Ref.substr(1)));
 			break;
 		case '#':
 			// environment variable value
-			lArgRight = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getEnvironment().getState().getVariableHandle(mArgRight_Ref.substr(1))->clone());
+			lArgRight = Core::castHandleT<Core::Number>(lContext.getEnvironment().getState().getVariableHandle(mArgRight_Ref.substr(1))->clone());
 			break;
 		case '%':
 			// local variable value
-			lArgRight = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::SimulationContext&>(ioContext).getLocalVariableHandle(mArgRight_Ref.substr(1)));
+			lArgRight = Core::castHandleT<Core::Number>(lContext.getLocalVariableHandle(mArgRight_Ref.substr(1)));
 			break;
 		case '$':
 			// parameter value

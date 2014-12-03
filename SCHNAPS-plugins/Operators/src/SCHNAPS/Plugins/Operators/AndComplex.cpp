@@ -2,7 +2,7 @@
  * AndComplex.cpp
  *
  * SCHNAPS
- * Copyright (C) 2009-2011 by Audrey DurAndComplex
+ * Copyright (C) 2009-2014 by Audrey DurAndComplex
  *
  * This program is free software: you can redistribute it AndComplex/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,8 +67,10 @@ Core::AnyType::Handle AndComplex::execute(unsigned int inIndex, Core::ExecutionC
 	}
 	
 	bool lResult = true;
+	Core::Bool::Handle lArg;
 	for (unsigned int i = 0; i < getNumberArguments(); i++) {
-		lResult = lResult && Core::castHandleT<Core::Bool>(getArgument(inIndex, i, ioContext))->getValue();
+	    lArg = Core::castHandleT<Core::Bool>(getArgument(inIndex, i, ioContext));
+		lResult = lResult && lArg->getValue();
 	}
 	return new Core::Bool(lResult);
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Operators::AndComplex::execute(unsigned int, SCHNAPS::Core::ExecutionContext&)");

@@ -2,7 +2,7 @@
  * DecisionMaker.cpp
  *
  * SCHNAPS
- * Copyright (C) 2009-2011 by Audrey Durand
+ * Copyright (C) 2009-2014 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -88,8 +88,10 @@ Core::Object::Handle DecisionMaker::deepCopy(const Core::System& inSystem) const
 	schnaps_StackTraceBeginM();
 	DecisionMaker::Handle lCopy = new DecisionMaker();
 	
+	Choice::Handle lChoice;
 	for (DecisionMaker::const_iterator lIt = this->begin(); lIt != this->end(); lIt++) {
-		lCopy->insert(std::pair<std::string, Choice::Handle>(lIt->first.c_str(), Core::castHandleT<Choice>(lIt->second->deepCopy(inSystem))));
+	    lChoice = Core::castHandleT<Choice>(lIt->second->deepCopy(inSystem));
+		lCopy->insert(std::pair<std::string, Choice::Handle>(lIt->first.c_str(), lChoice));
 	}
 	
 	return lCopy;

@@ -2,7 +2,7 @@
  * Choice.cpp
  *
  * SCHNAPS
- * Copyright (C) 2009-2011 by Audrey Durand
+ * Copyright (C) 2009-2014 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -112,6 +112,7 @@ Choice::Choice(const Choice& inOriginal) :
  */
 Core::Object::Handle Choice::deepCopy(const Core::System& inSystem) const {
 	schnaps_StackTraceBeginM();
+	Core::AnyType::Handle lFunction; // to copy state and reward functions
 	Choice::Handle lCopy = new Choice();
 	
 	// copy label
@@ -124,13 +125,15 @@ Core::Object::Handle Choice::deepCopy(const Core::System& inSystem) const {
 	
 	// copy state function
 	for (unsigned int i = 0; i < this->mFunctionState.mLocalVariables.size(); i++) {
-		lCopy->mFunctionState.mLocalVariables.push_back(std::pair<std::string, Core::AnyType::Handle>(this->mFunctionState.mLocalVariables[i].first.c_str(), Core::castHandleT<Core::AnyType>(this->mFunctionState.mLocalVariables[i].second->clone())));
+	    lFunction = Core::castHandleT<Core::AnyType>(this->mFunctionState.mLocalVariables[i].second->clone());
+		lCopy->mFunctionState.mLocalVariables.push_back(std::pair<std::string, Core::AnyType::Handle>(this->mFunctionState.mLocalVariables[i].first.c_str(), lFunction));
 	}
 	lCopy->mFunctionState.mExecution = Core::castHandleT<Core::PrimitiveTree>(this->mFunctionState.mExecution->deepCopy(inSystem));
 	
 	// copy reward function
 	for (unsigned int i = 0; i < this->mFunctionReward.mLocalVariables.size(); i++) {
-		lCopy->mFunctionReward.mLocalVariables.push_back(std::pair<std::string, Core::AnyType::Handle>(this->mFunctionReward.mLocalVariables[i].first.c_str(), Core::castHandleT<Core::AnyType>(this->mFunctionReward.mLocalVariables[i].second->clone())));
+	    lFunction = Core::castHandleT<Core::AnyType>(this->mFunctionReward.mLocalVariables[i].second->clone());
+		lCopy->mFunctionReward.mLocalVariables.push_back(std::pair<std::string, Core::AnyType::Handle>(this->mFunctionReward.mLocalVariables[i].first.c_str(), lFunction));
 	}
 	lCopy->mFunctionReward.mExecution = Core::castHandleT<Core::PrimitiveTree>(this->mFunctionReward.mExecution->deepCopy(inSystem));
 	
@@ -203,11 +206,12 @@ void Choice::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const 
  */
 std::string Choice::computeState(LearningContext& ioContext) const {
 	schnaps_StackTraceBeginM();
+	Core::AnyType::Handle lVariable;
 	// set local variables
 	for (unsigned int i = 0; i < mFunctionState.mLocalVariables.size(); i++) {
+	    lVariable = Core::castHandleT<Core::AnyType>(mFunctionState.mLocalVariables[i].second->clone());
 		ioContext.insertLocalVariable(
-			mFunctionState.mLocalVariables[i].first,
-			Core::castHandleT<Core::AnyType>(mFunctionState.mLocalVariables[i].second->clone()));
+			mFunctionState.mLocalVariables[i].first, lVariable);
 	}
 	
 	std::string lState = Core::castHandleT<Core::String>(mFunctionState.mExecution->interpret(ioContext))->getValue();
@@ -224,11 +228,12 @@ std::string Choice::computeState(LearningContext& ioContext) const {
  */
 double Choice::computeReward(LearningContext& ioContext) const {
 	schnaps_StackTraceBeginM();
+	Core::AnyType::Handle lVariable;
 	// set local variables
 	for (unsigned int i = 0; i < mFunctionReward.mLocalVariables.size(); i++) {
+	    lVariable = Core::castHandleT<Core::AnyType>(mFunctionReward.mLocalVariables[i].second->clone());
 		ioContext.insertLocalVariable(
-			mFunctionReward.mLocalVariables[i].first,
-			Core::castHandleT<Core::AnyType>(mFunctionReward.mLocalVariables[i].second->clone()));
+			mFunctionReward.mLocalVariables[i].first, lVariable);
 	}
 	
 	double lReward = Core::castHandleT<Core::Double>(mFunctionReward.mExecution->interpret(ioContext))->getValue();

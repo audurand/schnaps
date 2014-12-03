@@ -2,7 +2,7 @@
  * LearningModule.cpp
  *
  * SCHNAPS
- * Copyright (C) 2009-2011 by Audrey Durand
+ * Copyright (C) 2009-2014 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,8 +69,10 @@ void LearningModule::readWithSystem(PACC::XML::ConstIterator inIter, Core::Syste
 	mDecisionMakers[0]->readWithSystem(inIter->getFirstChild(), ioSystem);
 	
 	unsigned int lNbThreads = Core::castHandleT<Core::UInt>(ioSystem.getParameters().getParameterHandle("threads.simulator"))->getValue();
+	DecisionMaker::Handle lDecisionMaker;
 	for (unsigned int i = 1; i < lNbThreads; i++) {
-		mDecisionMakers.push_back(Core::castHandleT<DecisionMaker>(mDecisionMakers[0]->deepCopy(ioSystem)));
+	    lDecisionMaker = Core::castHandleT<DecisionMaker>(mDecisionMakers[0]->deepCopy(ioSystem));
+		mDecisionMakers.push_back(lDecisionMaker);
 		mDecisionMakers.back()->setThreadNb(i);
 	}
 	schnaps_StackTraceEndM("void SCHNAPS::Plugins::Learning::LearningModule::readWithSystem(PACC::XML::ConstIterator, SCHNAPS::Core::System&)");
@@ -97,9 +99,11 @@ void LearningModule::init(Core::System& ioSystem) {
 	unsigned int lThreads_Old = mDecisionMakers.size();
 	
 	if (lThreads_New > lThreads_Old) {
+	    DecisionMaker::Handle lDecisionMaker;
 		for (unsigned int i = lThreads_Old; i < lThreads_New; i++) {
+		    lDecisionMaker = Core::castHandleT<DecisionMaker>(mDecisionMakers[0]->deepCopy(ioSystem));
 			// add decision maker for the specific thread
-			mDecisionMakers.push_back(Core::castHandleT<DecisionMaker>(mDecisionMakers[0]->deepCopy(ioSystem)));
+			mDecisionMakers.push_back(lDecisionMaker);
 			mDecisionMakers.back()->setThreadNb(i);
 		}
 	} else {

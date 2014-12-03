@@ -103,8 +103,8 @@ void Clock::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
 			ioStreamer.insertAttribute("units", "month");
 			break;
 		case eWeek:
-                        ioStreamer.insertAttribute("units", "week");
-                        break;
+            ioStreamer.insertAttribute("units", "week");
+            break;
 		case eDay:
 			ioStreamer.insertAttribute("units", "day");
 			break;

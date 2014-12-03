@@ -2,7 +2,7 @@
  * BranchMulti.cpp
  *
  * SCHNAPS
- * Copyright (C) 2009-2011 by Audrey Durand
+ * Copyright (C) 2009-2014 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -205,8 +205,10 @@ Core::AnyType::Handle BranchMulti::execute(unsigned int inIndex, Core::Execution
 			break;
 	}
 	
+	Core::Double::Handle lProbability;
 	for (unsigned int i = 0; i < lProbabilities->size(); i++) {
-		lRoulette.insert(i, Core::castHandleT<Core::Double>((*lProbabilities)[i])->getValue());
+	    lProbability = Core::castHandleT<Core::Double>((*lProbabilities)[i]);
+		lRoulette.insert(i, lProbability->getValue());
 	}
 	return getArgument(inIndex, lRoulette.select(ioContext.getRandomizer()), ioContext);
 	schnaps_StackTraceEndM("Core::AnyType::Handle SCHNAPS::Plugins::Control::BranchMulti::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");

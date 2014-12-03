@@ -2,7 +2,7 @@
  * IsBetween.cpp
  *
  * SCHNAPS
- * Copyright (C) 2009-2011 by Audrey Durand
+ * Copyright (C) 2009-2014 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -319,19 +319,20 @@ void IsBetween::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) con
 Core::AnyType::Handle IsBetween::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
 	schnaps_StackTraceBeginM();
 	Core::Number::Handle lArgLeft, lArgRight, lValue;
+	Simulation::ExecutionContext lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
 	
 	switch (mArgLeft_Ref[0]) {
 		case '@':
 			// individual variable value
-			lArgLeft = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getIndividual().getState().getVariableHandle(mArgLeft_Ref.substr(1)));
+			lArgLeft = Core::castHandleT<Core::Number>(lContext.getIndividual().getState().getVariableHandle(mArgLeft_Ref.substr(1)));
 			break;
 		case '#':
 			// environment variable value
-			lArgLeft = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getEnvironment().getState().getVariableHandle(mArgLeft_Ref.substr(1))->clone());
+			lArgLeft = Core::castHandleT<Core::Number>(lContext.getEnvironment().getState().getVariableHandle(mArgLeft_Ref.substr(1))->clone());
 			break;
 		case '%':
 			// local variable value
-			lArgLeft = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::SimulationContext&>(ioContext).getLocalVariableHandle(mArgLeft_Ref.substr(1)));
+			lArgLeft = Core::castHandleT<Core::Number>(lContext.getLocalVariableHandle(mArgLeft_Ref.substr(1)));
 			break;
 		case '$':
 			// parameter value or
@@ -346,15 +347,15 @@ Core::AnyType::Handle IsBetween::execute(unsigned int inIndex, Core::ExecutionCo
 	switch (mArgRight_Ref[0]) {
 		case '@':
 			// individual variable value
-			lArgRight = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getIndividual().getState().getVariableHandle(mArgRight_Ref.substr(1)));
+			lArgRight = Core::castHandleT<Core::Number>(lContext.getIndividual().getState().getVariableHandle(mArgRight_Ref.substr(1)));
 			break;
 		case '#':
 			// environment variable value
-			lArgRight = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getEnvironment().getState().getVariableHandle(mArgRight_Ref.substr(1))->clone());
+			lArgRight = Core::castHandleT<Core::Number>(lContext.getEnvironment().getState().getVariableHandle(mArgRight_Ref.substr(1))->clone());
 			break;
 		case '%':
 			// local variable value
-			lArgRight = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::SimulationContext&>(ioContext).getLocalVariableHandle(mArgRight_Ref.substr(1)));
+			lArgRight = Core::castHandleT<Core::Number>(lContext.getLocalVariableHandle(mArgRight_Ref.substr(1)));
 			break;
 		case '$':
 			// parameter value
@@ -369,15 +370,15 @@ Core::AnyType::Handle IsBetween::execute(unsigned int inIndex, Core::ExecutionCo
 	switch (mValue_Ref[0]) {
 		case '@':
 			// individual variable value
-			lValue = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getIndividual().getState().getVariableHandle(mValue_Ref.substr(1)));
+			lValue = Core::castHandleT<Core::Number>(lContext.getIndividual().getState().getVariableHandle(mValue_Ref.substr(1)));
 			break;
 		case '#':
 			// environment variable value
-			lValue = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getEnvironment().getState().getVariableHandle(mValue_Ref.substr(1))->clone());
+			lValue = Core::castHandleT<Core::Number>(lContext.getEnvironment().getState().getVariableHandle(mValue_Ref.substr(1))->clone());
 			break;
 		case '%':
 			// local variable value
-			lValue = Core::castHandleT<Core::Number>(Core::castObjectT<Simulation::SimulationContext&>(ioContext).getLocalVariableHandle(mValue_Ref.substr(1)));
+			lValue = Core::castHandleT<Core::Number>(lContext.getLocalVariableHandle(mValue_Ref.substr(1)));
 			break;
 		case '$':
 			// parameter value

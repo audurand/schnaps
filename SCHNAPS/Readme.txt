@@ -6,6 +6,7 @@ by Audrey Durand <audrey.durand.gif@gmail.com> and other contributors:
    Christian Gagne
    Mathieu Gagnon
    Marc-Andre Gardner
+   Xavier Douville
 +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 
 ABOUT

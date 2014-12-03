@@ -2,7 +2,7 @@
  * And.cpp
  *
  * SCHNAPS
- * Copyright (C) 2009-2011 by Audrey Durand
+ * Copyright (C) 2009-2014 by Audrey Durand
  *
  * This program is free software: you can redistribute it And/or modify
  * it under the terms of the GNU General Public License as published by
@@ -224,22 +224,23 @@ void And::writeContent(PACC::XML::Streamer& ioStreamer, bool inIndent) const {
  * \throw  SCHNAPS::Core::RunTimeException if the primitive is not defined for the specific right argument source.
  */
 Core::AnyType::Handle And::execute(unsigned int inIndex, Core::ExecutionContext& ioContext) const {
-	schnaps_StackTraceBeginM();	
+	schnaps_StackTraceBeginM();
+	Simulation::ExecutionContext& lContext = Core::castObjectT<Simulation::ExecutionContext&>(ioContext);
 	bool lArgLeft, lArgRight;
 	
 	if (mArgLeft == NULL) {
 		switch (mArgLeft_Ref[0]) {
 			case '@':
 				// individual variable value
-				lArgLeft = Core::castObjectT<const Core::Bool&>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getIndividual().getState().getVariable(mArgLeft_Ref.substr(1))).getValue();
+				lArgLeft = Core::castObjectT<const Core::Bool&>(lContext.getIndividual().getState().getVariable(mArgLeft_Ref.substr(1))).getValue();
 				break;
 			case '#':
 				// environment variable value
-				lArgLeft = Core::castObjectT<const Core::Bool&>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getEnvironment().getState().getVariable(mArgLeft_Ref.substr(1))).getValue();
+				lArgLeft = Core::castObjectT<const Core::Bool&>(lContext.getEnvironment().getState().getVariable(mArgLeft_Ref.substr(1))).getValue();
 				break;
 			case '%':
 				// local variable value
-				lArgLeft = Core::castObjectT<const Core::Bool&>(Core::castObjectT<Simulation::SimulationContext&>(ioContext).getLocalVariable(mArgLeft_Ref.substr(1))).getValue();
+				lArgLeft = Core::castObjectT<const Core::Bool&>(lContext.getLocalVariable(mArgLeft_Ref.substr(1))).getValue();
 				break;
 			default:
 				throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific left argument source.");
@@ -254,15 +255,15 @@ Core::AnyType::Handle And::execute(unsigned int inIndex, Core::ExecutionContext&
 		switch (mArgRight_Ref[0]) {
 			case '@':
 				// individual variable value
-				lArgRight = Core::castObjectT<const Core::Bool&>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getIndividual().getState().getVariable(mArgRight_Ref.substr(1))).getValue();
+				lArgRight = Core::castObjectT<const Core::Bool&>(lContext.getIndividual().getState().getVariable(mArgRight_Ref.substr(1))).getValue();
 				break;
 			case '#':
 				// environment variable value
-				lArgRight = Core::castObjectT<const Core::Bool&>(Core::castObjectT<Simulation::ExecutionContext&>(ioContext).getEnvironment().getState().getVariable(mArgRight_Ref.substr(1))).getValue();
+				lArgRight = Core::castObjectT<const Core::Bool&>(lContext.getEnvironment().getState().getVariable(mArgRight_Ref.substr(1))).getValue();
 				break;
 			case '%':
 				// local variable value
-				lArgRight = Core::castObjectT<const Core::Bool&>(Core::castObjectT<Simulation::SimulationContext&>(ioContext).getLocalVariable(mArgRight_Ref.substr(1))).getValue();
+				lArgRight = Core::castObjectT<const Core::Bool&>(lContext.getLocalVariable(mArgRight_Ref.substr(1))).getValue();
 				break;
 			default:
 				throw schnaps_RunTimeExceptionM("The primitive is undefined for the specific right argument source.");

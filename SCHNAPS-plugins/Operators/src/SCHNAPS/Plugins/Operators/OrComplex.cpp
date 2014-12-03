@@ -2,7 +2,7 @@
  * OrComplex.cpp
  *
  * SCHNAPS
- * Copyright (C) 2009-2011 by Audrey Durand
+ * Copyright (C) 2009-2014 by Audrey Durand
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,9 +65,12 @@ Core::AnyType::Handle OrComplex::execute(unsigned int inIndex, Core::ExecutionCo
 		lOSS << "could not perform the logical OR.";
 		schnaps_RunTimeExceptionM(lOSS.str());
 	}
+	
+	Core::Bool::Handle lArg;
 	bool lResult = false;
 	for (unsigned int i = 0; i < getNumberArguments(); i++) {
-		lResult = lResult || Core::castHandleT<Core::Bool>(getArgument(inIndex, i, ioContext))->getValue();
+	    lArg = Core::castHandleT<Core::Bool>(getArgument(inIndex, i, ioContext));
+		lResult = lResult || lArg->getValue();
 	}
 	return new Core::Bool(lResult);
 	schnaps_StackTraceEndM("SCHNAPS::Core::AnyType::Handle SCHNAPS::Plugins::Operators::OrComplex::execute(unsigned int, SCHNAPS::Core::ExecutionContext&) const");
